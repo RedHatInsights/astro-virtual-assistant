@@ -21,7 +21,7 @@ This will install [rasa](https://rasa.com/docs/rasa/) inside the virtual environ
 To access it you can run `pipenv run rasa` to execute any 
 [rasa](https://rasa.com/docs/rasa/) command or `pipenv shell` to start a session within the virtual environment.
 
-> :info: Any command below assumes that you are within a pipenv shell (i.e. after executing `pipenv shell`). If you
+> :information_source:  Any command below assumes that you are within a pipenv shell (i.e. after executing `pipenv shell`). If you
 > don't want to use that mode, just preprend `pipenv run` to any command.
 
 
