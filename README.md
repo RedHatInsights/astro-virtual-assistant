@@ -46,9 +46,11 @@ You can run `rasa train` to start a full training session or if appending `--fin
 you can do an incremental training of your previous model. Note that incremental training doesn't work if you added
 new intent or actions.
 
-### Executing
+### Storing the models
 
-Once you have a trained model, you can run a local chat instance by running `rasa shell`.
+The models are by default saved to `./models`.
+
+### Offline Token
 
 To be able to locally run the actions, you need to have a valid offline token for https://sso.redhat.com. 
 All the API calls will be made on behalf of the user of this token. You can generate an offline token at
@@ -59,4 +61,8 @@ Copy this token to the environment variable `OFFLINE_REFRESH_TOKEN` (`.env` file
 > [https://access.stage.redhat.com/management/api](https://access.stage.redhat.com/management/api) and also set the
 > environment variable `SSO_REFRESH_TOKEN_URL` to `https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token`
 
-When you are ready, start the actions server by executing `rasa run actions --auto-reload`. 
+### Executing
+
+Once you have a trained model, you can run a local chat instance with `rasa shell`.
+
+After setting up your offline token, start the actions server by executing `rasa run actions --auto-reload`.
