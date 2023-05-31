@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pipenv install --dev
       - name: Validate data
-        run: pipenv run rasa data validate
+        run: pipenv run rasa data validate --fail-on-warnings
       - name: Train
         run: pipenv run rasa train
       - name: Test
