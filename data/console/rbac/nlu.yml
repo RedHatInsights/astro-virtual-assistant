@@ -1,0 +1,32 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_console_rbac.add-user-to-group
+    examples: |
+      - Add user (username) to group (group)
+      - Add [joe](username) to group [notification users](group)
+      - Enroll [jdoe](username) to [vulnerability](group)
+      - Add [joe doe](username) to group [my favorites](group)
+      - Add [jmartine](username) to group [vulnerability admins](group)
+      - Add user to group
+      - Put user in group
+      - Put user in role
+      - Add user to role
+      - Add (username) to group (group)
+      - Add (username) to (group)
+      - I want to add (username) to (group)
+      - I want to add user (username) to group (group)
+      - I want to add user (username) to (group)
+      - I want to add (username) to group (group)
+      - I would like to add [jmartine](username) to group [super admins](group)
+  - intent: intent_console_rbac_join-group
+    examples: |
+      - I want to join group (group)
+      - I want to join a group
+      - I would like to bet part of a group
+      - I want to join a role
+      - I would like to bet included in the group
+      - I want to be part of this role
+      - Add me to a group
+      - Add myself to group
+      - Join group

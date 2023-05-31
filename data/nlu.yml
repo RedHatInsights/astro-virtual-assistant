@@ -1,0 +1,41 @@
+version: "3.1"
+
+nlu:
+  - synonym: RHEL
+    examples: |
+      - rhel
+      - system
+      - box
+      - machine
+  - synonym: playbook
+    examples: |
+      - ansible script
+
+  - intent: intent_greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - moin
+      - hey there
+      - let's go
+      - hey dude
+      - goodmorning
+      - goodevening
+      - good afternoon
+
+  - intent: intent_goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later

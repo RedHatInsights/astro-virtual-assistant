@@ -1,0 +1,11 @@
+version: "3.1"
+
+stories:
+  - story: Add user to group
+    steps:
+      - intent: intent_console_rbac_add-user-to-group
+      - action: utter_console_rbac_add-user-to-group
+  - story: Add myself to group
+    steps:
+      - intent: intent_console_rbac_join-group
+      - action: utter_console_rbac_join-group

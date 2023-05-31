@@ -1,0 +1,39 @@
+version: "3.1"
+# We could split this file by using https://rasa.com/docs/rasa/training-data-importers/#training-data-importers-trainingfileimporter
+
+entities:
+  - username
+  - group
+
+intents:
+  - intent_console_rbac_add-user-to-group
+  - intent_console_rbac_join-group
+  - intent_insights_ansible_recent-run
+  - insights_vulnerability_my-cves
+  - intent_greet
+  - intent_goodbye
+
+responses:
+  utter_greet:
+    - text: Hello!
+  utter_goodbye:
+    - text: Bye
+  utter_processing:
+    - text: ":robot_face: Processing your request..."
+
+  # console/rbac
+  utter_console_rbac_add-user-to-group:
+    - text: You want to add an user to a group.
+    - text: Beep boop... starting <<add user to group>> procedure...
+  utter_console_rbac_join-group:
+    - text: You want to join a group.
+    - text: Beep boop... starting <<join group>> procedure...
+
+  # insights/ansible
+  utter_insights_ansible_recent-run:
+    - text: Beep boop... checking for your latest ansible playbooks...
+
+  # insights/vulnerability
+
+actions:
+  - action_console_api
