@@ -1,17 +1,35 @@
 version: "3.1"
 # We could split this file by using https://rasa.com/docs/rasa/training-data-importers/#training-data-importers-trainingfileimporter
 
-entities:
-  - username
-  - group
-
 intents:
-  - intent_console_rbac_add-user-to-group
-  - intent_console_rbac_join-group
   - intent_insights_ansible_recent-run
   - insights_vulnerability_my-cves
   - intent_greet
   - intent_goodbye
+  - intent_console_rbac_add-user-to-group
+  - intent_console_rbac_join-group
+
+slots:
+  group:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_console_rbac_add-user-to-group
+            requested_slot: group
+  username:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_console_rbac_add-user-to-group
+            requested_slot: username
+
+forms:
+  form_console_rbac_add-user-to-group:
+    required_slots:
+      - username
+      - group
 
 responses:
   utter_greet:
@@ -23,17 +41,17 @@ responses:
 
   # console/rbac
   utter_console_rbac_add-user-to-group:
-    - text: You want to add an user to a group.
-    - text: Beep boop... starting <<add user to group>> procedure...
+    - text: "You want to add user: {username} to group: {group}."
+  utter_ask_form_console_rbac_add-user-to-group_username:
+    - text: What username do you want to add to the group?
+  utter_ask_form_console_rbac_add-user-to-group_group:
+    - text: What group would you like to add the user to?
   utter_console_rbac_join-group:
     - text: You want to join a group.
-    - text: Beep boop... starting <<join group>> procedure...
 
   # insights/ansible
   utter_insights_ansible_recent-run:
     - text: Beep boop... checking for your latest ansible playbooks...
-
-  # insights/vulnerability
 
 actions:
   - action_console_api

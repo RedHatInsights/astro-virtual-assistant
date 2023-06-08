@@ -1,0 +1,22 @@
+version: "3.1"
+
+rules:
+  - rule: Add user to group
+    steps:
+      - intent: intent_console_rbac_add-user-to-group
+      - action: form_console_rbac_add-user-to-group
+      - active_loop: form_console_rbac_add-user-to-group
+  - rule: Process add user to group
+    condition:
+      - active_loop: form_console_rbac_add-user-to-group
+    steps:
+      - action: form_console_rbac_add-user-to-group
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_console_rbac_add-user-to-group
+
+  - rule: Add myself to group
+    steps:
+      - intent: intent_console_rbac_join-group
+      - action: utter_console_rbac_join-group

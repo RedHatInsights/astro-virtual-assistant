@@ -6,7 +6,7 @@ stories:
   steps:
   - user: |
       hello there!
-    intent: greet
+    intent: intent_greet
   - action: utter_greet
   - user: |
       I would like to see my cves
