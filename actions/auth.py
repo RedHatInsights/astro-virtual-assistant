@@ -57,4 +57,4 @@ def _is_jwt_valid(token: str) -> bool:
 
 def _jwt_decode(token: str) -> None:
     # Skip signature check - token service is going to validate for us
-    jwt.decode(token, options={'verify_signature': False})
+    jwt.decode(token, options={'verify_signature': False, 'verify_exp': True, 'verify_nbf': True})
