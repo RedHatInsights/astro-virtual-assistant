@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 pyjwt = "2.7.0"
 python-dotenv = "*"
+rasa = "~=3.5.10"
+requests = "2.31.0"
 
 [dev-packages]
-rasa = "3.5.10"
 pyopenssl = "23.2.0"
 
 [requires]

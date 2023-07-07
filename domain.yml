@@ -8,6 +8,14 @@ intents:
   - intent_goodbye
   - intent_console_rbac_add-user-to-group
   - intent_console_rbac_join-group
+  - intent_openshift_clusters_create-cluster
+  - intent_openshift_where_cloud
+  - intent_openshift_where_on_premise
+  - intent_openshift_provider_aws
+  - intent_openshift_provider_google
+  - intent_openshift_provider_microsoft
+  - intent_openshift_managed_yes
+  - intent_openshift_managed_no
 
 slots:
   group:
@@ -24,12 +32,39 @@ slots:
         conditions:
           - active_loop: form_console_rbac_add-user-to-group
             requested_slot: username
+  openshift_where:
+      type: any
+      mappings:
+        - type: custom
+# This is an alternative way to define the mappings.
+# Instead of a custom mapping (using python code) this one below maps intents to values
+#        - type: from_intent
+#          value: cloud
+#          intent: intent_openshift_where_cloud
+#        - type: from_intent
+#          value: on_premise
+#          intent: intent_openshift_where_on_premise
+  openshift_provider:
+      type: any
+      mappings:
+        - type: custom
+  openshift_managed:
+      type: any
+      mappings:
+        - type: custom
+
+  openshift_hosted:
+    type: any
+    mappings:
+      - type: custom
 
 forms:
   form_console_rbac_add-user-to-group:
     required_slots:
       - username
       - group
+  form_openshift_clusters_create-cluster:
+    required_slots: []
 
 responses:
   utter_greet:
@@ -49,9 +84,20 @@ responses:
   utter_console_rbac_join-group:
     - text: You want to join a group.
 
+  utter_ask_form_openshift_clusters_create-cluster_openshift_where:
+    - text: Where are your hosts?
+  utter_ask_form_openshift_clusters_create-cluster_openshift_provider:
+    - text: "Please choose your cloud provider from the list: Aws, Google cloud, Azure"
+  utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
+    - text: Do you wish to manage the cluster by yourself or let Red Hat manage it for you?
+  utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
+    - text: Is this cluster's control plane going to be hosted or standalone?
+
+
   # insights/ansible
   utter_insights_ansible_recent-run:
     - text: Beep boop... checking for your latest ansible playbooks...
 
 actions:
   - action_console_api
+  - validate_form_openshift_clusters_create-cluster
