@@ -1,0 +1,12 @@
+FROM rasa/rasa:3.5.10
+
+WORKDIR /app
+ENV HOME=/app
+COPY --chown=rasa ./data ./data
+COPY --chown=rasa *.yml .
+
+RUN rasa train
+
+ENTRYPOINT ["rasa"]
+
+CMD ["run"]
