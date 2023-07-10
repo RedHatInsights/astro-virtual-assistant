@@ -9,7 +9,7 @@ from typing import Any, Text, Dict, List, Optional
 from rasa_sdk import Action, Tracker
 from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted, EventType
+from rasa_sdk.events import ActionExecuted
 import requests
 from .auth import get_auth_token
 from ..common.identity import get_identity
