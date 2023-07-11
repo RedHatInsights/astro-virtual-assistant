@@ -22,6 +22,7 @@ class ConsoleInput(InputChannel):
         """Name of your custom channel."""
         return "console"
 
+
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[None]]
     ) -> Blueprint:
@@ -40,7 +41,6 @@ class ConsoleInput(InputChannel):
             metadata = self.get_metadata(request) # implemented below
 
             sender_id = self.get_sender(request) # implemented below
-            print("sender_id: " + sender_id)
             if not sender_id:
                 return response.json({"error": "Invalid x-rh-identity header (no user_id found)"})
 
@@ -71,7 +71,8 @@ class ConsoleInput(InputChannel):
             return response.json(collector.messages)
 
         return custom_webhook
-    
+
+
     def get_metadata(self, request: Request) -> Optional[Dict[Text, Any]]:
         """Extracts the metadata from the incoming request."""
 
@@ -80,6 +81,7 @@ class ConsoleInput(InputChannel):
         return {
             "identity": self.identity
         }
+    
     
     def get_sender(self, request: Request) -> Optional[Text]:
         # base64 decode the identity header
