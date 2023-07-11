@@ -5,19 +5,22 @@ from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
 
+from ..common.identity import decode_identity
+
 from rasa.core.channels.channel import (
     InputChannel,
     CollectingOutputChannel,
     UserMessage,
 )
 
-# Custom channel to read the identity header provided
+# Custom channel for console.redhat.com traffic
+# to read the identity header provided
 # and link it to the user session
-class IdentityInput(InputChannel):
+class ConsoleInput(InputChannel):
     @classmethod
     def name(cls) -> Text:
         """Name of your custom channel."""
-        return "identity"
+        return "console"
 
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[None]]
@@ -34,10 +37,15 @@ class IdentityInput(InputChannel):
 
         @custom_webhook.route("/webhook", methods=["POST"])
         async def receive(request: Request) -> HTTPResponse:
-            sender_id = request.json.get("sender")
+            metadata = self.get_metadata(request) # implemented below
+
+            sender_id = self.get_sender(request) # implemented below
+            print("sender_id: " + sender_id)
+            if not sender_id:
+                return response.json({"error": "Invalid x-rh-identity header (no user_id found)"})
+
             message = request.json.get("message")
             input_channel = self.name()
-            metadata = self.get_metadata(request) # implemented below
 
             collector = CollectingOutputChannel()
             
@@ -67,6 +75,14 @@ class IdentityInput(InputChannel):
     def get_metadata(self, request: Request) -> Optional[Dict[Text, Any]]:
         """Extracts the metadata from the incoming request."""
 
+        self.identity = request.headers.get("x-rh-identity")
+
         return {
-            "identity": request.headers.get("x-rh-identity")
+            "identity": self.identity
         }
+    
+    def get_sender(self, request: Request) -> Optional[Text]:
+        # base64 decode the identity header
+        identity_dict = decode_identity(self.identity)
+
+        return identity_dict['identity']['user']['user_id']

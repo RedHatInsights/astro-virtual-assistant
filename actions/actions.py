@@ -11,7 +11,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 import requests
 from .auth import get_auth_token
-from .identity import get_identity
+from ..common.identity import get_identity
 
 
 class ConsoleAPIAction(Action):
