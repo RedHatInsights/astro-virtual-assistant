@@ -30,6 +30,8 @@ nlu:
       - on-prem
       - on prem
       - I host myself
+      - myself
+      - by myself
 
   - intent: intent_openshift_provider_aws
     examples: |
