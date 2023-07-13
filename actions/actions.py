@@ -58,7 +58,7 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         return "validate_form_openshift_clusters_create-cluster"
 
     def utter_not_extracted(self, slot_name: Text) -> Optional[Text]:
-        return "Sorry. I did not understand your answer. Could you try again?"
+        return "Sorry, I didn't understand. Can you rephrasing your answer?"
 
     def form_finished(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
         slots = tracker.slots
@@ -69,17 +69,16 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         found = False
 
         if is_managed_and_hosted and is_on_cloud:
+            base_response = "Great, thanks for that information. I recommend using "
             if provider == "aws":
-                dispatcher.utter_message(text="Based on your answers, we think you should install using Red Hat "
-                                              "OpenShift Service on AWS (ROSA).")
+                dispatcher.utter_message(text=base_response + "Red Hat OpenShift Service on AWS (ROSA).")
                 found = True
             elif provider == "azure":
-                dispatcher.utter_message(text="Based on your answers, we think you should install using Azure Red Hat "
-                                              "Openshift")
+                dispatcher.utter_message(text=base_response + "Azure Red Hat Openshift")
                 found = True
 
         if not found:
-            dispatcher.utter_message(text="Based on your answers, we don't know what you should install - whoops.")
+            dispatcher.utter_message(text="Great, thanks for that information. I recommend using X.")
 
         dispatcher.utter_message(text="Your answers:")
         dispatcher.utter_message(text=f" - Where: {slots.get('openshift_where')}")
