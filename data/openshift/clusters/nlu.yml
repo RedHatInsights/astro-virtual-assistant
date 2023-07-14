@@ -1,0 +1,70 @@
+version: "3.1"
+
+nlu:
+
+  - intent: intent_openshift_clusters_create-cluster
+    examples: |
+      - I want to create a new cluster
+      - Help me creating a cluster
+      - I want a cluster
+      - Create a cluster
+      - New cluster
+      - Could you help me to create a new openshift cluster?
+      - Can I have a new cluster?
+      - I would like to create a new cluster
+
+  - intent: intent_openshift_where_cloud
+    examples: |
+      - In the cloud
+      - Cloud
+      - It is in the cloud
+      - I use a cloud provider
+      - I have a cloud provider
+      - On the cloud
+      - Cloud based
+
+  - intent: intent_openshift_where_on_premise
+    examples: |
+      - I host these internally
+      - I have them locally
+      - on-prem
+      - on prem
+      - I host myself
+      - myself
+      - by myself
+
+  - intent: intent_openshift_provider_aws
+    examples: |
+      - I use AWS
+      - AWS
+      - Amazon
+      - Amazon Web services
+      - I use Amazon Web Services
+
+  - intent: intent_openshift_provider_google
+    examples: |
+      - I use google
+      - Google cloud
+      - I use google cloud services
+
+  - intent: intent_openshift_provider_microsoft
+    examples: |
+      - I use microsoft
+      - Microsoft azure
+      - azure
+
+## yes/no should be managed by a common intent?
+  - intent: intent_openshift_managed_yes
+    examples: |
+      - I want Red Hat to manage my services
+      - Please manage it
+      - manage it
+      - I want Red Hat to manage them
+
+  - intent: intent_openshift_managed_no
+    examples: |
+      - I will manage my own services
+      - I want to manage them
+      - I will manage
+      - No, I don't want Red Hat to manage my services
+      - I want to manage them myself
