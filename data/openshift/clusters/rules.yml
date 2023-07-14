@@ -4,6 +4,7 @@ rules:
   - rule: Create cluster
     steps:
       - intent: intent_openshift_clusters_create-cluster
+      - action: utter_openshift_clusters_create-cluster
       - action: form_openshift_clusters_create-cluster
       - active_loop: form_openshift_clusters_create-cluster
   - rule: Process create cluster

@@ -93,6 +93,13 @@ class IntentBasedFormValidationAction(FormValidationAction):
             tracker: Tracker,
             domain: DomainDict,
     ) -> Dict[Text, Any]:
+
+        # To avoid issues - lets prevent from overwriting a slot once it has been set.
+        if tracker.slots.get(slot_name) is not None:
+            return {
+                slot_name: tracker.slots.get(slot_name)
+            }
+
         method_name = f"extract_{slot_name.replace('-', '_')}"
 
         if not getattr(self, method_name, None):

@@ -74,6 +74,9 @@ responses:
   utter_processing:
     - text: ":robot_face: Processing your request..."
 
+  utter_vulnerability_my-cves:
+    - text: "Sure, I can assist you looking the recent CVEs for your systems."
+
   # console/rbac
   utter_console_rbac_add-user-to-group:
     - text: "You want to add user: {username} to group: {group}."
@@ -84,19 +87,21 @@ responses:
   utter_console_rbac_join-group:
     - text: You want to join a group.
 
+  utter_openshift_clusters_create-cluster:
+    - text: Sure, I can help you create an OpenShift cluster that fits your needs. First, let me ask you a few questions.
   utter_ask_form_openshift_clusters_create-cluster_openshift_where:
-    - text: Where are your hosts?
+    - text: Tell us where your hosts live. [A public cloud / On premise / Virtualized]
   utter_ask_form_openshift_clusters_create-cluster_openshift_provider:
-    - text: "Please choose your cloud provider from the list: Aws, Google cloud, Azure"
+    - text: Okay. Which cloud provider do you use? [Amazon Web Services / Google Cloud Platform / Microsoft Azure]
   utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
-    - text: Do you wish to manage the cluster by yourself or let Red Hat manage it for you?
+    - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you? [Red Hat should manage it for me / I'll manage it for me]
   utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
-    - text: Is this cluster's control plane going to be hosted or standalone?
+    - text: Got it. Is this cluster's control plane going to be hosted or standalone? [Hosted / Standalone]
 
 
   # insights/ansible
   utter_insights_ansible_recent-run:
-    - text: Beep boop... checking for your latest ansible playbooks...
+    - text: Okay, I can assist you checking your latest ansible playbooks...
 
 actions:
   - action_console_api
