@@ -11,6 +11,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 import requests
 from .auth import get_auth_token
+from ..common.identity import get_identity
 
 
 class ConsoleAPIAction(Action):
@@ -24,11 +25,16 @@ class ConsoleAPIAction(Action):
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         token = get_auth_token()
+        identity = get_identity(tracker)
 
         result = requests.get(
             "https://console.redhat.com/api/vulnerability/v1/systems",
             headers={"Authorization": "Bearer " + token}
         ).json()
+
+        if not result or not result['meta']:
+            dispatcher.utter_message(text=":robot_face: Unable to retrieve systems.")
+            return []
 
         dispatcher.utter_message(text=":robot_face: You have {} systems, listing first {}:".format(result['meta']['total_items'], len(result['data'])))
 
