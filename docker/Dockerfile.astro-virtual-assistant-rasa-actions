@@ -1,0 +1,20 @@
+FROM rasa/rasa:3.5.10
+
+WORKDIR /app
+ENV HOME=/app
+COPY --chown=rasa ./actions ./actions
+COPY --chown=rasa *.yml .
+COPY --chown=rasa Pipfile* .
+
+USER root
+RUN pip install --upgrade pip && \
+    pip install pipenv && \
+    pipenv requirements > requirements.txt && \
+    pip install -r requirements.txt && \
+    rm requirements.txt Pipfile*
+
+USER rasa
+
+ENTRYPOINT ["rasa"]
+
+CMD ["run", "actions"]
