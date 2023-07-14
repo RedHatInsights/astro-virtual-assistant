@@ -12,7 +12,7 @@ stories:
   - user: |
       I would like to see my cves
     intent: insights_vulnerability_my-cves
-  - action: utter_processing
+  - action: utter_vulnerability_my-cves
   - action: action_console_api
 
 - story: Vulnerabilities without hello
@@ -20,5 +20,5 @@ stories:
     - user: |
         Show me my CVEs
       intent: insights_vulnerability_my-cves
-    - action: utter_processing
+    - action: utter_vulnerability_my-cves
     - action: action_console_api
