@@ -11,8 +11,7 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 import requests
-from .auth import get_auth_token
-from ..common.identity import get_identity
+from .auth import get_auth_token, get_identity
 from .forms import IntentBasedFormValidationAction
 
 
