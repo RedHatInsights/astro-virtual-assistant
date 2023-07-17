@@ -3,6 +3,7 @@ FROM rasa/rasa:3.5.10
 WORKDIR /app
 ENV HOME=/app
 COPY --chown=rasa ./actions ./actions
+COPY --chown=rasa ./common ./common
 COPY --chown=rasa *.yml .
 COPY --chown=rasa Pipfile* .
 
