@@ -10,6 +10,9 @@ SSO_REFRESH_TOKEN_URL = 'https://sso.redhat.com/auth/realms/redhat-external/prot
 
 local_dev_token: str | None = None
 
+def get_identity(tracker):
+    return tracker.get_slot('session_started_metadata')['identity']
+
 
 def get_auth_token() -> str:
     global local_dev_token

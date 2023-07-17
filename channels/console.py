@@ -5,7 +5,7 @@ from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
 
-from ..common.identity import decode_identity
+from .identity import decode_identity
 
 from rasa.core.channels.channel import (
     InputChannel,
