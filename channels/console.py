@@ -5,7 +5,7 @@ from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
 
-from .identity import decode_identity
+from common import decode_identity
 
 from rasa.core.channels.channel import (
     InputChannel,
@@ -48,7 +48,7 @@ class ConsoleInput(InputChannel):
             input_channel = self.name()
 
             collector = CollectingOutputChannel()
-            
+
             try:
                 await on_new_message(
                     UserMessage(
@@ -81,8 +81,8 @@ class ConsoleInput(InputChannel):
         return {
             "identity": self.identity
         }
-    
-    
+
+
     def get_sender(self, request: Request) -> Optional[Text]:
         # base64 decode the identity header
         identity_dict = decode_identity(self.identity)

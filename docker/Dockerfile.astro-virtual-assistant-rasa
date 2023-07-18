@@ -2,6 +2,8 @@ FROM rasa/rasa:3.5.10
 
 WORKDIR /app
 ENV HOME=/app
+COPY --chown=rasa ./channels ./channels
+COPY --chown=rasa ./common ./common
 COPY --chown=rasa ./data ./data
 COPY --chown=rasa *.yml .
 

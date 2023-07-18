@@ -1,11 +1,10 @@
-# Identity header format: https://github.com/RedHatInsights/identity/blob/main/identity.go
-
-from rasa_sdk import Tracker
 import base64
 import json
 
+from rasa_sdk import Tracker
 
-def get_identity(tracker):
+
+def get_identity(tracker: Tracker):
     return tracker.get_slot('session_started_metadata')['identity']
 
 

@@ -66,3 +66,18 @@ Copy this token to the environment variable `OFFLINE_REFRESH_TOKEN` (`.env` file
 Once you have a trained model, you can run a local chat instance with `rasa shell`.
 
 After setting up your offline token, start the actions server by executing `rasa run actions --auto-reload`.
+
+### Errors when launching
+
+#### Failed to find input channel class for 'channels.console.ConsoleInput'
+
+> RasaException: Failed to find input channel class for 'channels.console.ConsoleInput'. Unknown input channel. Check your credentials configuration to make sure the mentioned channel is not misspelled. If you are creating your own channel, make sure it is a proper name of a class in a module.
+
+This error happens when the class channels.console.ConsoleInput is not found OR the file containing that class fails to load. 
+If the later, the error doesn't appear in the console, but we can check it by importing that file.
+
+Running the following should make the error evident or at least give more information.
+
+```bash
+python -c "import channels.console"
+```
