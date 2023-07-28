@@ -26,7 +26,7 @@ class IntentBasedFormValidationAction(FormValidationAction):
         form_finished = getattr(self, 'form_finished', None)
         has_all_slots = (await self.next_requested_slot(dispatcher, tracker, domain)).get("value") is None
         if form_finished is not None and has_all_slots:
-            form_finished(dispatcher, tracker, domain)
+            form_finished(dispatcher, tracker, domain, result)
 
         return result
 

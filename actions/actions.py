@@ -9,7 +9,7 @@ from typing import Any, Text, Dict, List, Optional
 from rasa_sdk import Action, Tracker
 from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted
+from rasa_sdk.events import ActionExecuted, EventType, SlotSet
 import requests
 from .auth import get_auth_token
 from .forms import IntentBasedFormValidationAction
@@ -61,7 +61,7 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
     def utter_not_extracted(self, slot_name: Text) -> Optional[Text]:
         return "Sorry, I didn't understand. Can you rephrasing your answer?"
 
-    def form_finished(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
+    def form_finished(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict, result: List[EventType]):
         slots = tracker.slots
         is_managed_and_hosted = slots.get("openshift_managed") == "yes" and slots.get("openshift_hosted") == "hosted"
         is_on_cloud = slots.get("openshift_where") == "cloud"
@@ -89,10 +89,10 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         dispatcher.utter_message(text=f" - Hosted or Standalone control plane?: {slots.get('openshift_hosted')}")
 
         # Clear slots
-        tracker.slots["openshift_where"] = None
-        tracker.slots["openshift_provider"] = None
-        tracker.slots["openshift_managed"] = None
-        tracker.slots["openshift_hosted"] = None
+        result.append(SlotSet('openshift_where', None))
+        result.append(SlotSet('openshift_provider', None))
+        result.append(SlotSet('openshift_managed', None))
+        result.append(SlotSet('openshift_hosted', None))
 
     async def extract_openshift_hosted(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
         next_slot = (await self.next_requested_slot(dispatcher, tracker, domain)).get("value")
