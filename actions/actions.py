@@ -81,12 +81,11 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         if not found:
             dispatcher.utter_message(text="Great, thanks for that information. I recommend using X.")
 
-        dispatcher.utter_message(text="Your answers:")
-        dispatcher.utter_message(text=f" - Where: {slots.get('openshift_where')}")
-        if is_on_cloud:
-            dispatcher.utter_message(text=f" - Provider: {slots.get('openshift_provider')}")
-        dispatcher.utter_message(text=f" - Managed by Red Hat: {slots.get('openshift_managed')}")
-        dispatcher.utter_message(text=f" - Hosted or Standalone control plane?: {slots.get('openshift_hosted')}")
+        dispatcher.utter_message(text=f"""Your answers:
+ - Where: {slots.get('openshift_where')}
+ - Provider: {slots.get('openshift_provider')}
+ - Managed by Red Hat: {slots.get('openshift_managed')}
+ - Hosted or Standalone control plane?: {slots.get('openshift_hosted')}""")
 
         # Clear slots
         result.append(SlotSet('openshift_where', None))

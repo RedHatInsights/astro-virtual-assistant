@@ -90,13 +90,27 @@ responses:
   utter_openshift_clusters_create-cluster:
     - text: Sure, I can help you create an OpenShift cluster that fits your needs. First, let me ask you a few questions.
   utter_ask_form_openshift_clusters_create-cluster_openshift_where:
-    - text: Tell us where your hosts live. [A public cloud / On premise / Virtualized]
+    - text: Tell us where your hosts live.
+      buttons:
+        - title: Public cloud
+        - title: On premise
+        - title: Virtualized
   utter_ask_form_openshift_clusters_create-cluster_openshift_provider:
-    - text: Okay. Which cloud provider do you use? [Amazon Web Services / Google Cloud Platform / Microsoft Azure]
+    - text: Okay. Which cloud provider do you use?
+      buttons:
+        - title: Amazon Web Services
+        - title: Google Cloud Platform
+        - title: Microsoft Azure
   utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
-    - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you? [Red Hat should manage it for me / I'll manage it for me]
+    - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you?
+      buttons:
+        - title: Red Hat
+        - title: I'll manage by myself
   utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
-    - text: Got it. Is this cluster's control plane going to be hosted or standalone? [Hosted / Standalone]
+    - text: Got it. Is this cluster's control plane going to be hosted or standalone?
+      buttons:
+        - title: Hosted
+        - title: Standalone
 
 
   # insights/ansible
