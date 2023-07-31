@@ -1,13 +1,6 @@
 version: "3.1"
-# We could split this file by using https://rasa.com/docs/rasa/training-data-importers/#training-data-importers-trainingfileimporter
 
 intents:
-  - intent_insights_ansible_recent-run
-  - insights_vulnerability_my-cves
-  - intent_greet
-  - intent_goodbye
-  - intent_console_rbac_add-user-to-group
-  - intent_console_rbac_join-group
   - intent_openshift_clusters_create-cluster
   - intent_openshift_where_cloud
   - intent_openshift_where_on_premise
@@ -18,20 +11,6 @@ intents:
   - intent_openshift_managed_no
 
 slots:
-  group:
-    type: text
-    mappings:
-      - type: from_text
-        conditions:
-          - active_loop: form_console_rbac_add-user-to-group
-            requested_slot: group
-  username:
-    type: text
-    mappings:
-      - type: from_text
-        conditions:
-          - active_loop: form_console_rbac_add-user-to-group
-            requested_slot: username
   openshift_where:
       type: any
       mappings:
@@ -52,41 +31,16 @@ slots:
       type: any
       mappings:
         - type: custom
-
   openshift_hosted:
     type: any
     mappings:
       - type: custom
 
 forms:
-  form_console_rbac_add-user-to-group:
-    required_slots:
-      - username
-      - group
   form_openshift_clusters_create-cluster:
     required_slots: []
 
 responses:
-  utter_greet:
-    - text: Hello!
-  utter_goodbye:
-    - text: Bye
-  utter_processing:
-    - text: ":robot_face: Processing your request..."
-
-  utter_vulnerability_my-cves:
-    - text: "Sure, I can assist you looking the recent CVEs for your systems."
-
-  # console/rbac
-  utter_console_rbac_add-user-to-group:
-    - text: "You want to add user: {username} to group: {group}."
-  utter_ask_form_console_rbac_add-user-to-group_username:
-    - text: What username do you want to add to the group?
-  utter_ask_form_console_rbac_add-user-to-group_group:
-    - text: What group would you like to add the user to?
-  utter_console_rbac_join-group:
-    - text: You want to join a group.
-
   utter_openshift_clusters_create-cluster:
     - text: Sure, I can help you create an OpenShift cluster that fits your needs. First, let me ask you a few questions.
   utter_ask_form_openshift_clusters_create-cluster_openshift_where:
@@ -123,10 +77,5 @@ responses:
           payload: Standalone
 
 
-  # insights/ansible
-  utter_insights_ansible_recent-run:
-    - text: Okay, I can assist you checking your latest ansible playbooks...
-
 actions:
-  - action_console_api
   - validate_form_openshift_clusters_create-cluster

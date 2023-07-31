@@ -1,0 +1,13 @@
+version: "3.1"
+
+intents:
+  - intent_greet
+  - intent_goodbye
+
+responses:
+  utter_greet:
+    - text: Hello!
+  utter_goodbye:
+    - text: Bye
+  utter_processing:
+    - text: ":robot_face: Processing your request..."
