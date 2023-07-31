@@ -1,6 +1,9 @@
 train:
 	pipenv run rasa train --domain data
 
+finetune:
+	pipenv run rasa train --domain data --finetune
+
 run:
 	pipenv run rasa run
 

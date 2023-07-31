@@ -29,22 +29,23 @@ To access it you can run `pipenv run rasa` to execute any
 
 The training files are inside [data](./data) directory. The common files are on the root of this directory and specific
 files are in the subfolders. The current approach is to have a directory for the namespace/bundle and a sub-directory 
-for the application. Each application can write its own `nlu`, `stories` and `rules` file depending on its needs.
+for the application. Each application can write its own `nlu`, `domain`, `stories` and `rules` file depending on its needs.
 
 For example, [data/console/rbac/stories.yml](./data/console/rbac/nlu.yml) holds the `nlu` info for `RBAC`.
+
+Intents and responses are spread throughout the data directory in `domain.yml` files. This allows us to make changes to one bundle without affecting the other.
 
 The custom actions (python code) is found within [actions](./actions) and holds the required code to execute it.
 
 Test files are found in the [tests](./tests) folders.
 
-> :warning: At this point, all the applications share the same [domain.yml](./domain.yml) file and every `intent` must exist in
-this file. This might change in the future.
 
 ### Training the model
 
-You can run `rasa train` to start a full training session or if appending `--finetune`
-you can do an incremental training of your previous model. Note that incremental training doesn't work if you added
-new intent or actions.
+You can run `make train` to start a full training session, or
+you can do an incremental training of your previous model with `make finetune`. 
+
+Note that incremental training doesn't work if you added any new intents or actions.
 
 ### Storing the models
 
@@ -63,9 +64,9 @@ Copy this token to the environment variable `OFFLINE_REFRESH_TOKEN` (`.env` file
 
 ### Executing
 
-Once you have a trained model, you can run a local chat instance with `rasa shell`.
+Once you have a trained model, you can run a local chat instance with `rasa shell` or `make run-cli`.
 
-After setting up your offline token, start the actions server by executing `rasa run actions --auto-reload`.
+After setting up your offline token, start the actions server by executing `rasa run actions --auto-reload` or `make run-actions`.
 
 ### Errors when launching
 
