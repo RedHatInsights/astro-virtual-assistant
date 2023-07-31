@@ -4,6 +4,9 @@ import requests
 from os import getenv
 import jwt
 
+from rasa_sdk import Tracker
+
+
 OFFLINE_REFRESH_TOKEN = 'OFFLINE_REFRESH_TOKEN'
 SSO_REFRESH_TOKEN_URL_PARAM = 'SSO_REFRESH_TOKEN_URL'
 SSO_REFRESH_TOKEN_URL = 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
@@ -11,8 +14,12 @@ SSO_REFRESH_TOKEN_URL = 'https://sso.redhat.com/auth/realms/redhat-external/prot
 local_dev_token: str | None = None
 
 
-def get_auth_token() -> str:
+def get_auth_token(tracker: Tracker) -> str:
     global local_dev_token
+
+    session_metadata = tracker.get_slot('session_started_metadata')
+    if session_metadata:
+        return session_metadata['identity']
 
     if local_dev_token is not None and _is_jwt_valid(local_dev_token):
         return local_dev_token
