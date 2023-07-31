@@ -18,7 +18,7 @@ def get_auth_token(tracker: Tracker) -> str:
     global local_dev_token
 
     session_metadata = tracker.get_slot('session_started_metadata')
-    if session_metadata:
+    if session_metadata and 'identity' in session_metadata:
         return session_metadata['identity']
 
     if local_dev_token is not None and _is_jwt_valid(local_dev_token):
