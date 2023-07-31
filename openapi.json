@@ -1,0 +1,113 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "ConsoleDot Virtual Assistant",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "https://localhost:5005",
+            "description": "rasa server - local"
+        },
+        {
+            "url": "https://localhost:5055",
+            "description": "action server - local"
+        },
+        {
+            "url": "https://console.redhat.com",
+            "description": "production server"
+        }
+    ],
+    "paths": {
+        "/api/virtual-assistant/": {
+            "get": {
+                "operationId": "health",
+                "responses": {
+                    "200": {
+                    "description": "InputChannel is working",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/HealthResponse"
+                            }
+                        }
+                    }
+                    }
+                }
+            }
+        },
+        "/api/virtual-assistant/talk": {
+            "post": {
+                "operationId": "talkWithAssistant",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                    "description": "OK",
+                    "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                        {
+                            "3ScaleIdentity": []
+                        }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HealthResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Request": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Response": {
+                "type": "object",
+                "properties": {
+                    "recipient_id": {
+                        "type": "integer"
+                    },
+                    "text": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "3ScaleIdentity": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-rh-identity",
+                "description": "Base64-encoded JSON identity header provided by 3Scale. Contains an\naccount number of the user issuing the request. Format of the JSON:\n```\n{\n    \"identity\": {\n        \"account_number\": \"account123\",\n        \"org_id\": \"org123\",\n        \"type\": \"User\",\n        \"user\" : {\n            \"is_org_admin\": true\n        },\n        \"internal\" : {\n            \"org_id\": \"org123\"\n        }\n    }\n}\n```\nEncoded (via `base64 -w0`):\n`eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiJhY2NvdW50MTIzIiwib3JnX2lkIjoib3JnMTIzIiwidHlwZSI6IlVzZXIiLCJ1c2VyIjp7ImlzX29yZ19hZG1pbiI6dHJ1ZX0sImludGVybmFsIjp7Im9yZ19pZCI6Im9yZzEyMyJ9fX0K`\n"
+            }
+        }
+    }
+}
