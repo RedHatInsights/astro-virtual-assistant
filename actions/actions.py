@@ -5,6 +5,7 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 from typing import Any, Text, Dict, List, Optional
+from os import getenv
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.types import DomainDict
@@ -17,6 +18,8 @@ from .forms import IntentBasedFormValidationAction
 from common import get_identity
 
 
+CONSOLEDOT_BASE_URL = "https://console.redhat.com"
+
 class ConsoleAPIAction(Action):
 
     def name(self) -> Text:
@@ -27,11 +30,12 @@ class ConsoleAPIAction(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
         token = get_auth_token()
         identity = get_identity(tracker)
 
         result = requests.get(
-            "https://console.redhat.com/api/vulnerability/v1/systems",
+            base_url+"/api/vulnerability/v1/systems",
             headers={"Authorization": "Bearer " + token}
         ).json()
 
@@ -46,7 +50,7 @@ class ConsoleAPIAction(Action):
                 system['attributes']['display_name'],
                 system['attributes']['os'],
                 system['attributes']['cve_count'],
-                "https://console.redhat.com/insights/vulnerability/systems/{}".format(system['id'])
+                base_url+"/insights/vulnerability/systems/{}".format(system['id'])
             ))
 
         events = [ActionExecuted(self.name())]
