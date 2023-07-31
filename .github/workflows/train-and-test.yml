@@ -26,6 +26,6 @@ jobs:
       - name: Validate data
         run: pipenv run rasa data validate --fail-on-warnings
       - name: Train
-        run: pipenv run rasa train
+        run: pipenv run rasa train --domain data
       - name: Test
         run: pipenv run rasa test --fail-on-prediction-errors
