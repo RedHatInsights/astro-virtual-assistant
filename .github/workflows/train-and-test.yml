@@ -22,9 +22,9 @@ jobs:
       - name: Install pipenv
         run: pip install pipenv
       - name: Install dependencies
-        run: pipenv install --dev
+        run: make install
       - name: Validate data
-        run: pipenv run rasa data validate --fail-on-warnings
+        run: make validate
       - name: Train
         run: make train
       - name: Test

@@ -1,9 +1,14 @@
+# install and train the project
+install:
+	pipenv install --dev
+
 train:
 	pipenv run rasa train --domain data
 
 finetune:
 	pipenv run rasa train --domain data --finetune
 
+# runs the assistant
 run:
 	pipenv run rasa run
 
@@ -12,6 +17,10 @@ run-actions:
 
 run-cli:
 	pipenv run rasa shell
+
+# validate and test changes
+validate: 
+	pipenv run rasa data validate --fail-on-warnings --domain data
 
 test:
 	pipenv run rasa test --fail-on-prediction-errors
