@@ -34,6 +34,10 @@ class ConsoleInput(InputChannel):
         @custom_webhook.route("/", methods=["GET"])
         async def health(request: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
+        
+        @custom_webhook.route("/openapi.json", methods=["GET"])
+        async def openapi(request: Request) -> HTTPResponse:
+            return await response.file('openapi.json')
 
         @custom_webhook.route("/talk", methods=["POST"])
         async def receive(request: Request) -> HTTPResponse:

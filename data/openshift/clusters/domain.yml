@@ -47,24 +47,35 @@ responses:
     - text: Tell us where your hosts live.
       buttons:
         - title: Public cloud
+          payload: Public cloud
         - title: On premise
+          payload: On premise
         - title: Virtualized
+          payload: Virtualized
   utter_ask_form_openshift_clusters_create-cluster_openshift_provider:
     - text: Okay. Which cloud provider do you use?
       buttons:
         - title: Amazon Web Services
+          payload: Amazon Web Services
         - title: Google Cloud Platform
+          payload: Google Cloud Platform
         - title: Microsoft Azure
+          payload: Microsoft Azure
   utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
     - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you?
       buttons:
         - title: Red Hat
+          payload: Red Hat
         - title: I'll manage by myself
+          payload: I'll manage by myself
   utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
     - text: Got it. Is this cluster's control plane going to be hosted or standalone?
       buttons:
         - title: Hosted
+          payload: Hosted
         - title: Standalone
+          payload: Standalone
+
 
 actions:
   - validate_form_openshift_clusters_create-cluster
