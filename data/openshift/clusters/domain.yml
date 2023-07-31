@@ -1,0 +1,70 @@
+version: "3.1"
+
+intents:
+  - intent_openshift_clusters_create-cluster
+  - intent_openshift_where_cloud
+  - intent_openshift_where_on_premise
+  - intent_openshift_provider_aws
+  - intent_openshift_provider_google
+  - intent_openshift_provider_microsoft
+  - intent_openshift_managed_yes
+  - intent_openshift_managed_no
+
+slots:
+  openshift_where:
+      type: any
+      mappings:
+        - type: custom
+# This is an alternative way to define the mappings.
+# Instead of a custom mapping (using python code) this one below maps intents to values
+#        - type: from_intent
+#          value: cloud
+#          intent: intent_openshift_where_cloud
+#        - type: from_intent
+#          value: on_premise
+#          intent: intent_openshift_where_on_premise
+  openshift_provider:
+      type: any
+      mappings:
+        - type: custom
+  openshift_managed:
+      type: any
+      mappings:
+        - type: custom
+  openshift_hosted:
+    type: any
+    mappings:
+      - type: custom
+
+forms:
+  form_openshift_clusters_create-cluster:
+    required_slots: []
+
+responses:
+  utter_openshift_clusters_create-cluster:
+    - text: Sure, I can help you create an OpenShift cluster that fits your needs. First, let me ask you a few questions.
+  utter_ask_form_openshift_clusters_create-cluster_openshift_where:
+    - text: Tell us where your hosts live.
+      buttons:
+        - title: Public cloud
+        - title: On premise
+        - title: Virtualized
+  utter_ask_form_openshift_clusters_create-cluster_openshift_provider:
+    - text: Okay. Which cloud provider do you use?
+      buttons:
+        - title: Amazon Web Services
+        - title: Google Cloud Platform
+        - title: Microsoft Azure
+  utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
+    - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you?
+      buttons:
+        - title: Red Hat
+        - title: I'll manage by myself
+  utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
+    - text: Got it. Is this cluster's control plane going to be hosted or standalone?
+      buttons:
+        - title: Hosted
+        - title: Standalone
+
+actions:
+  - validate_form_openshift_clusters_create-cluster
