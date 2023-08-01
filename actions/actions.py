@@ -15,8 +15,6 @@ import requests
 from .auth import get_auth_token
 from .forms import IntentBasedFormValidationAction
 
-from common import get_identity
-
 
 CONSOLEDOT_BASE_URL = "https://console.redhat.com"
 
@@ -31,8 +29,7 @@ class ConsoleAPIAction(Action):
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
-        token = get_auth_token()
-        identity = get_identity(tracker)
+        token = get_auth_token(tracker)
 
         result = requests.get(
             base_url+"/api/vulnerability/v1/systems",
