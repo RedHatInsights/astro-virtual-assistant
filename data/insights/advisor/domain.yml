@@ -1,0 +1,11 @@
+version: "3.1"
+
+intents:
+  - insights_advisor_recommendation-pathways
+
+responses:
+  utter_advisor_recommendation-pathways:
+    - text: "I can assist you with finding recommendation from advisor."
+
+actions:
+  - action_advisor_api-pathway
