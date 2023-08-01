@@ -1,0 +1,11 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_insights_ansible_recent-run
+    examples: |
+      - What playbooks were run recently and against what systems?
+      - What playbooks were run recently?
+      - What scripts were run?
+      - Show my last runs
+      - Show my last playbooks
+      - Show latest ansible scripts
