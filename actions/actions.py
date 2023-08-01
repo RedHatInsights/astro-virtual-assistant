@@ -31,10 +31,15 @@ class ConsoleAPIAction(Action):
         base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
         token = get_auth_token(tracker)
 
-        result = requests.get(
-            base_url+"/api/vulnerability/v1/systems",
-            headers={"Authorization": "Bearer " + token}
-        ).json()
+        result = None
+
+        try:
+            result = requests.get(
+                base_url+"/api/vulnerability/v1/systems",
+                headers={"Authorization": "Bearer " + token}
+            ).json()
+        except Exception as e:
+            print(f"An Exception occured while handling response from the Vulnerability API: {e}")
 
         if not result or not result['meta']:
             dispatcher.utter_message(text="I was Unable to retrieve systems.")
