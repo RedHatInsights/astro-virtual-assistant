@@ -62,7 +62,7 @@ Copy this token to the environment variable `OFFLINE_REFRESH_TOKEN` (`.env` file
 > [https://access.stage.redhat.com/management/api](https://access.stage.redhat.com/management/api) and also set the
 > environment variable `SSO_REFRESH_TOKEN_URL` to `https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token`
 >
-> You will also need to point the `CONSOLEDOT_BASE_URL` environment variable to the appropriate domain name for your stage environment.
+> You will also need to point the `CONSOLEDOT_BASE_URL` environment variable to [https://console.stage.redhat.com](https://console.stage.redhat.com), and make sure that your http proxy url is set up properly.
 
 ### Executing
 
