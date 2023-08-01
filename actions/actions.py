@@ -12,7 +12,8 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted, EventType, SlotSet
 import requests
-from .auth import get_auth_token
+
+from common import get_auth_header
 from .forms import IntentBasedFormValidationAction
 
 
@@ -29,14 +30,20 @@ class ConsoleAPIAction(Action):
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
-        token = get_auth_token(tracker)
+
+        auth_header = None
+        try:
+            auth_header = get_auth_header(tracker)
+        except Exception as e:
+            dispatcher.utter_message(text="An Exception occured while handling retrieving your auth credentials: {}".format(e))
+            return []
 
         result = None
 
         try:
             result = requests.get(
                 base_url+"/api/vulnerability/v1/systems",
-                headers={"Authorization": "Bearer " + token}
+                headers=auth_header
             ).json()
         except Exception as e:
             print(f"An Exception occured while handling response from the Vulnerability API: {e}")
