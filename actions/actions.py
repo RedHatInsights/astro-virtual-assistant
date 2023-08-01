@@ -12,11 +12,37 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted, EventType, SlotSet
 import requests
+import random
+import math
+
 from .auth import get_auth_token
 from .forms import IntentBasedFormValidationAction
 
 
 CONSOLEDOT_BASE_URL = "https://console.redhat.com"
+
+people_talked_to: int = math.floor(random.random() * 2000000)
+
+# once we have metrics on number of responses in one day,
+# have the VA report on people talked to, number of responses, etc.
+class BotMetrics(Action):
+
+    def name(self) -> Text:
+        return 'action_bot_metrics'
+
+    async def run(self,
+                  dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        global people_talked_to
+
+        people_talked_to = people_talked_to + 1
+
+        dispatcher.utter_message(text="Well, it's been a long shift. I've talked to {} people and you!".format(people_talked_to))
+
+        events = [ActionExecuted(self.name())]
+        return events
+
 
 class ConsoleAPIAction(Action):
 

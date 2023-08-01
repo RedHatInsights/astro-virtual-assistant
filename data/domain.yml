@@ -2,11 +2,17 @@ version: "3.1"
 
 intents:
   - intent_greet
+  - intent_how_are_you
   - intent_goodbye
+
+actions:
+  - action_bot_metrics
 
 responses:
   utter_greet:
     - text: Hello!
+  utter_help_you:
+    - text: How can I help you?
   utter_goodbye:
     - text: Bye
   utter_processing:
