@@ -35,7 +35,8 @@ class ConsoleAPIAction(Action):
         try:
             auth_header = get_auth_header(tracker)
         except Exception as e:
-            dispatcher.utter_message(text="An Exception occured while handling retrieving your auth credentials: {}".format(e))
+            print(f"An Exception occured while handling retrieving auth credentials: {e}")
+            dispatcher.utter_message(id="utter_fallback_message")
             return []
 
         result = None
@@ -43,7 +44,7 @@ class ConsoleAPIAction(Action):
         try:
             result = requests.get(
                 base_url+"/api/vulnerability/v1/systems",
-                headers=auth_header
+                headers={auth_header['key']: auth_header['value']}
             ).json()
         except Exception as e:
             print(f"An Exception occured while handling response from the Vulnerability API: {e}")

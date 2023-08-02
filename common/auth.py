@@ -19,7 +19,7 @@ def get_auth_header(tracker: Tracker):
 
     # if its already saved, use it
     if local_dev_token is not None and _is_jwt_valid(local_dev_token):
-        return {"Authorization" : 'Bearer ' + local_dev_token}
+        return {"key" : "Authorization", "value" : 'Bearer ' + local_dev_token}
     else:
         local_dev_token = None
 
@@ -27,11 +27,11 @@ def get_auth_header(tracker: Tracker):
     offline_token = _get_offline_token()
     if offline_token is not None:
         local_dev_token = _with_refresh_token(offline_token)
-        return {"Authorization" : 'Bearer ' + local_dev_token}
+        return {"key" : "Authorization", "value" : 'Bearer ' + local_dev_token}
 
     session_metadata = tracker.get_slot('session_started_metadata')
     if session_metadata and 'identity' in session_metadata:
-        return {"x-rh-identity" : session_metadata['identity']}
+        return {"key" : "x-rh-identity", "value" : session_metadata['identity']}
     
     raise 'No authentication found'
 
