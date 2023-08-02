@@ -1,7 +1,7 @@
 version: "3.1"
 
 stories:
-  - story: insights_advisor_recommendation-pathways
+  - story: Advisor recommendation pathways
     steps:
       - intent: insights_advisor_recommendation-pathways
       - action: utter_advisor_recommendation-pathways

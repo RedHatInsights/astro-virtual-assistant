@@ -59,6 +59,51 @@ class ConsoleAPIAction(Action):
         return events
 
 
+class AdvisorAPIPathway(Action):
+
+    def name(self) -> Text:
+        return 'action_advisor_api-pathway'
+
+    async def run(self,
+                  dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
+        token = get_auth_token(tracker)
+
+        result = None
+
+        try:
+            result = requests.get(
+                base_url+"/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3",
+                headers={"Authorization": "Bearer " + token}
+            ).json()
+        except Exception as e:
+            print(f"An Exception occured while handling response from the Advisor API: {e}")
+
+        if not result or not result['meta']:
+            dispatcher.utter_message(text="I was unable to talk with Advisor to fulfill your request. :(")
+
+        rec_count = result['meta']['count']
+        message_string = "You have {} recommended pathways from Advisor.".format(rec_count)
+        if rec_count > 3:
+            message_string += " Here are the first 3."
+
+        dispatcher.utter_message(text=message_string)
+
+        for i, rec in enumerate(result['data']):
+            bot_response = "{}. {}\nImpacted Systems:{}\n{}".format(i+1, rec['name'], rec['impacted_systems_count'], rec['description'])
+            if len(rec['categories']) > 0:
+                bot_response += "\nCategories: "
+                bot_response += ",".join([c['name'] for c in rec['categories']])
+
+            dispatcher.utter_message(text=bot_response)
+
+        events = [ActionExecuted(self.name())]
+        return events
+
+
 class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
 
     def name(self) -> Text:
