@@ -5,7 +5,7 @@ intents:
 
 responses:
   utter_advisor_recommendation-pathways:
-    - text: "I can assist you with finding recommendation from advisor."
+    - text: "I am contacting Advisor to find your recommendations."
 
 actions:
   - action_advisor_api-pathway
