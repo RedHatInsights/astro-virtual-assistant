@@ -4,5 +4,5 @@ stories:
   - story: How are you?
     steps:
       - intent: intent_how_are_you
-      - action: action_bot_metrics
+      - action: action_how_are_you
       - action: utter_help_you

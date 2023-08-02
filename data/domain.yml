@@ -6,13 +6,13 @@ intents:
   - intent_goodbye
 
 actions:
-  - action_bot_metrics
+  - action_how_are_you
 
 responses:
   utter_greet:
     - text: Hello!
   utter_help_you:
-    - text: How can I help you?
+    - text: How can I help?
   utter_goodbye:
     - text: Bye
   utter_processing:
