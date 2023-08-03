@@ -4,61 +4,13 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-from typing import Any, Text, Dict, List, Optional
-from os import getenv
+from typing import Text, List, Optional
 
-from rasa_sdk import Action, Tracker
+from rasa_sdk import Tracker
 from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted, EventType, SlotSet
-import requests
-
-from .auth import get_auth_token
+from rasa_sdk.events import EventType, SlotSet
 from .forms import IntentBasedFormValidationAction
-
-
-CONSOLEDOT_BASE_URL = "https://console.redhat.com"
-
-class ConsoleAPIAction(Action):
-
-    def name(self) -> Text:
-        return 'action_console_api'
-
-    async def run(self,
-                  dispatcher: CollectingDispatcher,
-                  tracker: Tracker,
-                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
-        token = get_auth_token(tracker)
-
-        result = None
-
-        try:
-            result = requests.get(
-                base_url+"/api/vulnerability/v1/systems",
-                headers={"Authorization": "Bearer " + token}
-            ).json()
-        except Exception as e:
-            print(f"An Exception occured while handling response from the Vulnerability API: {e}")
-
-        if not result or not result['meta']:
-            dispatcher.utter_message(text="I was Unable to retrieve systems.")
-            return []
-
-        dispatcher.utter_message(text="You have {} systems, listing first {}:".format(result['meta']['total_items'], len(result['data'])))
-
-        for system in result['data']:
-            dispatcher.utter_message(text="{} ({}) has {} active CVEs. You can get more details on: {}".format(
-                system['attributes']['display_name'],
-                system['attributes']['os'],
-                system['attributes']['cve_count'],
-                base_url+"/insights/vulnerability/systems/{}".format(system['id'])
-            ))
-
-        events = [ActionExecuted(self.name())]
-        return events
-
 
 class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
 
