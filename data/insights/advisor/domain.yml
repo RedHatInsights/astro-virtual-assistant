@@ -1,0 +1,11 @@
+version: "3.1"
+
+intents:
+  - insights_advisor_recommendation-pathways
+
+responses:
+  utter_advisor_recommendation-pathways:
+    - text: "I am contacting Advisor to find your recommendations."
+
+actions:
+  - action_advisor_api-pathway
