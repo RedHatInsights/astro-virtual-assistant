@@ -39,3 +39,21 @@ nlu:
       - see you around
       - bye bye
       - see you later
+
+  - synonym: doing
+    examples: |
+      - feeling
+
+  - intent: intent_how_are_you
+    examples: |
+      - how are you?
+      - how r u?
+      - how's it going?
+      - how are you doing?
+      - what's up?
+      - how are you doing today?
+      - how do you do?
+      - how are things?
+      - how many people have you helped today?
+      - do you talk to a lot of people?
+      - assistant metrics
