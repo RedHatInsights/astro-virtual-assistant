@@ -35,7 +35,7 @@ slots:
     type: any
     mappings:
       - type: custom
-  openshift_need_changes:
+  openshift_is_correct:
     type: bool
     mappings:
       - type: from_intent
@@ -84,14 +84,7 @@ responses:
           payload: Hosted
         - title: Standalone
           payload: Standalone
-  utter_ask_form_openshift_clusters_create-cluster_openshift_need_changes:
-    - text: Perfect. Would you like to make any changes?
-      buttons:
-        - title: Yes
-          payload: Yes
-        - title: No
-          payload: No
-
 
 actions:
   - validate_form_openshift_clusters_create-cluster
+  - action_ask_form_openshift_clusters_create-cluster_openshift_is_correct
