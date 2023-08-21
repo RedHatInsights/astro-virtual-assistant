@@ -33,6 +33,17 @@ nlu:
       - myself
       - by myself
 
+  - intent: intent_openshift_where_virtualized
+    examples: |
+      - Virtualized
+      - virtual environment
+      - virtual software
+      - box
+      - VM
+      - virtual machine
+      - I am using a VM
+      - representation
+
   - intent: intent_openshift_provider_aws
     examples: |
       - I use AWS
