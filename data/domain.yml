@@ -4,6 +4,8 @@ intents:
   - intent_greet
   - intent_how_are_you
   - intent_goodbye
+  - intent_affirm
+  - intent_deny
 
 actions:
   - action_how_are_you

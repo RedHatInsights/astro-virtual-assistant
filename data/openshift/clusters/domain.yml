@@ -35,6 +35,15 @@ slots:
     type: any
     mappings:
       - type: custom
+  openshift_is_correct:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_affirm
+      - type: from_intent
+        value: false
+        intent: intent_deny
 
 forms:
   form_openshift_clusters_create-cluster:
@@ -66,8 +75,8 @@ responses:
       buttons:
         - title: Red Hat
           payload: Red Hat
-        - title: I'll manage by myself
-          payload: I'll manage by myself
+        - title: I’ll manage it myself
+          payload: I’ll manage it myself
   utter_ask_form_openshift_clusters_create-cluster_openshift_hosted:
     - text: Got it. Is this cluster's control plane going to be hosted or standalone?
       buttons:
@@ -76,6 +85,6 @@ responses:
         - title: Standalone
           payload: Standalone
 
-
 actions:
   - validate_form_openshift_clusters_create-cluster
+  - action_ask_form_openshift_clusters_create-cluster_openshift_is_correct
