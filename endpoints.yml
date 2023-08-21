@@ -19,10 +19,10 @@ action_endpoint:
 tracker_store:
     type: SQL
     dialect: "postgresql"  # the dialect used to interact with the db
-    url: "localhost"  # (optional) host of the sql db, e.g. "localhost"
-    db: "rasa"  # path to your db
-    username: "crc" # username used for authentication
-    password:  "crc" # password used for authentication
+    url: ${DB_HOST}  # (optional) host of the sql db, e.g. "localhost"
+    db: ${DB_DATABASE}  # path to your db
+    username: ${DB_USER} # username used for authentication
+    password:  ${DB_PASSWORD} # password used for authentication
 
 # Event broker which all conversation events should be streamed to.
 # https://rasa.com/docs/rasa/event-brokers

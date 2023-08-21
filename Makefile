@@ -1,8 +1,4 @@
-POSTGRES_PASSWORD=crc
-POSTGRES_USER=crc
-POSTGRES_DB=rasa
-POSTGRES_PORT=5432:5432
-POSTGRES_HOST=localhost
+CONTAINER_EXEC ?= podman
 
 # install and train the project
 install:
@@ -16,20 +12,26 @@ finetune:
 
 # runs the assistant
 run:
-	pipenv run rasa run
+	pipenv run rasa run --endpoints endpoints.yml
 
 run-actions:
 	pipenv run rasa run actions --auto-reload
 
 run-cli:
-	pipenv run rasa shell
+	pipenv run rasa shell --endpoints endpoints.yml
 
 run-db:
-	podman run --rm -it -p ${POSTGRES_PORT} -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -e POSTGRES_USER=${POSTGRES_USER} -e POSTGRES_DB=${POSTGRES_DB} --name postgres postgres:12.4
+	pipenv run make db
+
+db:
+	${CONTAINER_EXEC} run --rm -it -p 5432:${DB_PORT} -e POSTGRES_PASSWORD=${DB_PASSWORD} -e POSTGRES_USER=${DB_USER} -e POSTGRES_DB=${DB_DATABASE} --name postgres postgres:12.4
 
 drop-db:
-	podman stop postgres
-	podman rm postgres
+	${CONTAINER_EXEC} stop postgres
+	${CONTAINER_EXEC} rm postgres
+
+compose:
+	pipenv run docker-compose up
 
 # validate and test changes
 validate: 
