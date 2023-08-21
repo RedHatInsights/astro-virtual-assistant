@@ -47,7 +47,7 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         return "validate_form_openshift_clusters_create-cluster"
 
     def utter_not_extracted(self, slot_name: Text) -> Optional[Text]:
-        return "Sorry, I didn't understand. Can you rephrasing your answer?"
+        return "Sorry, I didn't understand. Can you rephrase your answer?"
 
     def validate_openshift_is_correct(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
@@ -104,6 +104,16 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         return {
             "openshift_hosted": value
         }
+
+    @staticmethod
+    def base_slots():
+        return [
+            "openshift_where",
+            "openshift_provider",
+            "openshift_managed",
+            "openshift_hosted",
+            "openshift_is_correct"
+        ]
 
     async def required_slots(
             self,
