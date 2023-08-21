@@ -52,6 +52,21 @@ nlu:
       - I use microsoft
       - Microsoft azure
       - azure
+  
+  - intent: intent_openshift_provider_other
+    examples: |
+      - other
+      - I don't use those
+      - IBM
+      - I use IBM
+      - Alibaba
+      - I use Alibaba
+      - Oracle
+      - I use Oracle
+      - Digital Ocean
+      - I use DigitalOcean
+      - Rackspace
+      - I use Rackspace
 
 ## yes/no should be managed by a common intent?
   - intent: intent_openshift_managed_yes
