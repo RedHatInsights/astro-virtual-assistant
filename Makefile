@@ -1,3 +1,9 @@
+POSTGRES_PASSWORD=crc
+POSTGRES_USER=crc
+POSTGRES_DB=rasa
+POSTGRES_PORT=5432:5432
+POSTGRES_HOST=localhost
+
 # install and train the project
 install:
 	pipenv install --dev
@@ -17,6 +23,13 @@ run-actions:
 
 run-cli:
 	pipenv run rasa shell
+
+run-db:
+	podman run --rm -it -p ${POSTGRES_PORT} -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -e POSTGRES_USER=${POSTGRES_USER} -e POSTGRES_DB=${POSTGRES_DB} --name postgres postgres:12.4
+
+drop-db:
+	podman stop postgres
+	podman rm postgres
 
 # validate and test changes
 validate: 
