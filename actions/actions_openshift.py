@@ -47,7 +47,7 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         return "validate_form_openshift_clusters_create-cluster"
 
     def utter_not_extracted(self, slot_name: Text) -> Optional[Text]:
-        return "Sorry, I didn't understand. Can you rephrasing your answer?"
+        return "Sorry, I didn't understand. Can you rephrase your answer?"
 
     def validate_openshift_is_correct(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
@@ -128,3 +128,45 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
             base_slots.remove("openshift_provider")
 
         return base_slots
+
+    def validate_openshift_where(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"openshift_where": slot_value}
+        
+    def validate_openshift_provider(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        intent_of_last_user_message = tracker.get_intent_of_latest_message()
+
+        if intent_of_last_user_message == "intent_openshift_provider_other":
+            dispatcher.utter_message(text="I only know how to work with AWS, Google Cloud, and Azure.")
+            return {"openshift_provider": None}
+        
+        return {"openshift_provider": slot_value}
+
+    def validate_openshift_managed(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"openshift_managed": slot_value}
+
+    def validate_openshift_hosted(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"openshift_hosted": slot_value}
