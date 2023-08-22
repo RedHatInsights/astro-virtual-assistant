@@ -7,10 +7,13 @@ name = "pypi"
 python-dotenv = "*"
 rasa = "~=3.5.10"
 requests = "2.31.0"
+rapidfuzz = "*"
+jsonpickle = "*"
 
 [dev-packages]
 pyopenssl = "23.2.0"
 pyjwt = "2.7.0"
+pytest = "*"
 
 [requires]
 python_version = "3.10"
