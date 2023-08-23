@@ -1,3 +1,6 @@
+CONTAINER_EXEC ?= podman
+COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
+
 # install and train the project
 install:
 	pipenv install --dev
@@ -10,13 +13,26 @@ finetune:
 
 # runs the assistant
 run:
-	pipenv run rasa run
+	pipenv run rasa run --endpoints endpoints.yml
 
 run-actions:
 	pipenv run rasa run actions --auto-reload
 
 run-cli:
-	pipenv run rasa shell
+	pipenv run rasa shell --endpoints endpoints.yml
+
+run-db:
+	pipenv run make db
+
+db:
+	${CONTAINER_EXEC} run --rm -it -p 5432:${DB_PORT} -e POSTGRES_PASSWORD=${DB_PASSWORD} -e POSTGRES_USER=${DB_USER} -e POSTGRES_DB=${DB_DATABASE} --name postgres postgres:12.4
+
+drop-db:
+	${CONTAINER_EXEC} stop postgres
+	${CONTAINER_EXEC} rm postgres
+
+compose:
+	pipenv run ${COMPOSE_EXEC} up
 
 # validate and test changes
 validate: 
