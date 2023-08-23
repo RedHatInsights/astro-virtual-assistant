@@ -1,4 +1,5 @@
 CONTAINER_EXEC ?= podman
+COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
 # install and train the project
 install:
@@ -31,7 +32,7 @@ drop-db:
 	${CONTAINER_EXEC} rm postgres
 
 compose:
-	pipenv run docker-compose up
+	pipenv run ${COMPOSE_EXEC} up
 
 # validate and test changes
 validate: 
