@@ -3,7 +3,11 @@ version: "3.1"
 rules:
   - rule: Create cluster
     steps:
-      - intent: intent_openshift_clusters_create-cluster
+      - intent: intent_create_action_single
+        entities:
+          - component: cluster
+            service: openshift
+          - component: cluster
       - action: utter_openshift_clusters_create-cluster
       - action: form_openshift_clusters_create-cluster
       - active_loop: form_openshift_clusters_create-cluster
