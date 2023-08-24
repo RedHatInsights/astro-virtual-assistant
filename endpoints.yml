@@ -17,7 +17,7 @@ action_endpoint:
 # By default the conversations are stored in memory.
 # https://rasa.com/docs/rasa/tracker-stores
 tracker_store:
-    type: SQL
+    type: ${TRACKER_STORE_TYPE}
     dialect: "postgresql"  # the dialect used to interact with the db
     url: ${DB_HOST}  # (optional) host of the sql db, e.g. "localhost"
     db: ${DB_DATABASE}  # path to your db
