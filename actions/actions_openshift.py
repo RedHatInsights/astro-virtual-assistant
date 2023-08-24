@@ -4,14 +4,13 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-from typing import Text, List, Optional, Dict, Any
+from typing import Text, List, Dict, Any
 
-from rasa_sdk import Tracker
+from rasa_sdk import Tracker, FormValidationAction
 from rasa_sdk.forms import Action
 from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import EventType, SlotSet
-from .forms import IntentBasedFormValidationAction
+from rasa_sdk.events import EventType, SlotSet, ActiveLoop
 
 
 class OpenshiftCreateClusterActionAskIsItCorrect(Action):
@@ -41,13 +40,10 @@ class OpenshiftCreateClusterActionAskIsItCorrect(Action):
         return []
 
 
-class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
+class OpenshiftCreateClusterAction(FormValidationAction):
 
     def name(self) -> Text:
         return "validate_form_openshift_clusters_create-cluster"
-
-    def utter_not_extracted(self, slot_name: Text) -> Optional[Text]:
-        return "Sorry, I didn't understand. Can you rephrase your answer?"
 
     def validate_openshift_is_correct(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
@@ -61,9 +57,40 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
             "openshift_is_correct": True
         }
 
-    def form_finished(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict,
-                      result: List[EventType]):
-        slots = tracker.slots
+    async def get_required_values(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
+        return {required_slot_name: tracker.slots.get(required_slot_name) for required_slot_name in await self.required_slots(
+            self.domain_slots(domain),
+            dispatcher,
+            tracker,
+            domain
+        )}
+
+    async def missing_slots(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> List[Text]:
+        required_slots = await self.required_slots(self.domain_slots(domain), dispatcher, tracker, domain)
+        return [
+            slot_name
+            for slot_name in required_slots
+            if tracker.slots.get(slot_name) is None
+        ]
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> List[EventType]:
+        required_values_before = await self.get_required_values(dispatcher, tracker, domain)
+        result = await super().run(dispatcher, tracker, domain)
+
+        required_values_are_equal = required_values_before == await self.get_required_values(dispatcher, tracker, domain)
+        requested_slot = tracker.slots.get("requested_slot")
+
+        is_missing_slots = len(await self.missing_slots(dispatcher, tracker, domain)) > 0
+
+        if is_missing_slots:
+            if required_values_are_equal and requested_slot is not None and tracker.slots.get(requested_slot) is None:
+                dispatcher.utter_message(text="Sorry, I didn't understand. Can you rephrase your answer?")
+        else:
+            result.extend(self.process_slots(dispatcher, tracker.slots))
+
+        return result
+
+    def process_slots(self, dispatcher: CollectingDispatcher, slots: Dict[Text, Text]) -> List[EventType]:
         is_managed_and_hosted = slots.get("openshift_managed") == "yes" and slots.get("openshift_hosted") == "hosted"
         is_on_cloud = slots.get("openshift_where") == "cloud"
         provider = slots.get("openshift_provider")
@@ -87,13 +114,16 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
             dispatcher.utter_message(text="Great, thanks for that information. I recommend using X.")
 
         # Clear slots
-        result.extend([SlotSet(slot, None) for slot in self.base_slots()])
+        results = [SlotSet(slot, None) for slot in self.base_slots()]
+        results.append(ActiveLoop(None))
+        return results
 
     async def extract_openshift_hosted(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict):
-        next_slot = (await self.next_requested_slot(dispatcher, tracker, domain)).get("value")
-        value = None
+        target_slot = "openshift_hosted"
+        next_slot = tracker.slots.get("requested_slot")
+        value = tracker.slots.get(target_slot)
 
-        if next_slot == "openshift_hosted":
+        if next_slot == target_slot:
             message = tracker.latest_message.get("text").lower()
             # Todo: Replace with embeddings
             if "standalone" in message:
@@ -137,7 +167,7 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         return {"openshift_where": slot_value}
-        
+
     def validate_openshift_provider(
         self,
         slot_value: Any,
@@ -145,12 +175,12 @@ class OpenshiftCreateClusterAction(IntentBasedFormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        intent_of_last_user_message = tracker.get_intent_of_latest_message()
-
-        if intent_of_last_user_message == "intent_openshift_provider_other":
-            dispatcher.utter_message(text="I only know how to work with AWS, Google Cloud, and Azure.")
+        if slot_value == "other":
+            dispatcher.utter_message(
+                text="I only know how to work with Amazon Web Services, Google Cloud, and Microsoft Azure."
+            )
             return {"openshift_provider": None}
-        
+
         return {"openshift_provider": slot_value}
 
     def validate_openshift_managed(
