@@ -110,7 +110,7 @@ slots:
 
 forms:
   form_openshift_clusters_create-cluster:
-    # Specifying the slots here silence UserWarning extract_ / validate_ about these slots
+    # Specifying the slots here silence UserWarning extract_ about these slots
     # These can be overriden by the actions
     required_slots: [openshift_where, openshift_provider, openshift_managed, openshift_hosted, openshift_is_correct]
 

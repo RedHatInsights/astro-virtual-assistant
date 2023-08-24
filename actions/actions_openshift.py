@@ -45,10 +45,10 @@ class OpenshiftCreateClusterAction(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_openshift_clusters_create-cluster"
 
-    def validate_openshift_is_correct(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
+    async def validate_openshift_is_correct(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
         if slot_value is False:
-            base_slots = self.base_slots()
+            base_slots = await self.required_slots(self.domain_slots(domain), dispatcher, tracker, domain)
 
             dispatcher.utter_message("OK. Lets try again.")
             return {slot: None for slot in base_slots}
@@ -86,11 +86,12 @@ class OpenshiftCreateClusterAction(FormValidationAction):
             if required_values_are_equal and requested_slot is not None and tracker.slots.get(requested_slot) is None:
                 dispatcher.utter_message(text="Sorry, I didn't understand. Can you rephrase your answer?")
         else:
-            result.extend(self.process_slots(dispatcher, tracker.slots))
+            result.extend(await self.process_slots(dispatcher, tracker, domain))
 
         return result
 
-    def process_slots(self, dispatcher: CollectingDispatcher, slots: Dict[Text, Text]) -> List[EventType]:
+    async def process_slots(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> List[EventType]:
+        slots = tracker.slots
         is_managed_and_hosted = slots.get("openshift_managed") == "yes" and slots.get("openshift_hosted") == "hosted"
         is_on_cloud = slots.get("openshift_where") == "cloud"
         provider = slots.get("openshift_provider")
@@ -114,7 +115,15 @@ class OpenshiftCreateClusterAction(FormValidationAction):
             dispatcher.utter_message(text="Great, thanks for that information. I recommend using X.")
 
         # Clear slots
-        results = [SlotSet(slot, None) for slot in self.base_slots()]
+        results = [
+            SlotSet(slot, None)
+            for slot in await self.required_slots(
+                self.domain_slots(domain),
+                dispatcher,
+                tracker,
+                domain
+            )
+        ]
         results.append(ActiveLoop(None))
         return results
 
@@ -152,7 +161,7 @@ class OpenshiftCreateClusterAction(FormValidationAction):
             tracker: Tracker,
             domain: DomainDict
     ) -> List[Text]:
-        base_slots = self.base_slots()
+        base_slots = domain_slots.copy()
 
         if tracker.slots.get("openshift_where") != "cloud":
             base_slots.remove("openshift_provider")
