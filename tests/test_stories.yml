@@ -10,7 +10,7 @@ stories:
     intent: intent_greet
   - action: utter_greet
   - user: |
-      I would like to see my cves
+      I would like to see my [cves]{"entity": "component", "value": "vulnerability"}
     intent: insights_vulnerability_my-cves
   - action: utter_vulnerability_my-cves
   - action: action_console_api
@@ -18,7 +18,7 @@ stories:
 - story: Vulnerabilities without hello
   steps:
     - user: |
-        Show me my CVEs
+        Show me my [CVEs]{"entity": "component", "value": "vulnerability"}
       intent: insights_vulnerability_my-cves
     - action: utter_vulnerability_my-cves
     - action: action_console_api
@@ -26,7 +26,7 @@ stories:
 - story: Advisor recommendations
   steps:
     - user: |
-        What is Advisor recommending that I do?
+        What is [Advisor]{"entity": "service", "value": "advisor"} recommending that I do?
       intent: insights_advisor_recommendation-pathways
     - action: utter_advisor_recommendation-pathways
     - action: action_advisor_api-pathway

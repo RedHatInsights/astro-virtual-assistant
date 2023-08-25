@@ -1,15 +1,40 @@
 version: "3.1"
 
 nlu:
-  - synonym: RHEL
+  - lookup: component
     examples: |
       - rhel
+      - vulnerability
+      - cluster
+  - lookup: service
+    examples: |
+      - policies
+      - advisor
+      - openshift
+
+  - synonym: vulnerability
+    examples: |
+      - cve
+  - synonym: rhel
+    examples: |
       - system
       - box
       - machine
+
   - synonym: playbook
     examples: |
       - ansible script
+  - intent: intent_create_action_single
+    examples: |
+      - I would like to create an (service) (component)
+      - I want to create a (component)
+      - Help me creating a (component)
+      - I would like to create a (component)
+      - Create a (component)
+      - I want to add a (component)
+      - Could you help me to create a new (service) (component)?
+      - Can I have a new (component)?
+      - Please create a (component)
 
   - intent: intent_greet
     examples: |
