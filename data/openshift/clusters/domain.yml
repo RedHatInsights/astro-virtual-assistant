@@ -1,7 +1,6 @@
 version: "3.1"
 
 intents:
-  - intent_openshift_clusters_create-cluster
   - intent_openshift_where_cloud
   - intent_openshift_where_on_premise
   - intent_openshift_where_virtualized

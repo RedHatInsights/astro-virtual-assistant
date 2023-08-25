@@ -6,6 +6,11 @@ intents:
   - intent_goodbye
   - intent_affirm
   - intent_deny
+  - intent_create_action_single
+
+entities:
+  - service
+  - component
 
 actions:
   - action_how_are_you

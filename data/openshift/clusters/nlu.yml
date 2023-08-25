@@ -1,18 +1,6 @@
 version: "3.1"
 
 nlu:
-
-  - intent: intent_openshift_clusters_create-cluster
-    examples: |
-      - I want to create a new cluster
-      - Help me creating a cluster
-      - I want a cluster
-      - Create a cluster
-      - New cluster
-      - Could you help me to create a new openshift cluster?
-      - Can I have a new cluster?
-      - I would like to create a new cluster
-
   - intent: intent_openshift_where_cloud
     examples: |
       - In the cloud
