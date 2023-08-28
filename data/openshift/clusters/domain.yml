@@ -15,23 +15,78 @@ slots:
   openshift_where:
       type: any
       mappings:
-        - type: custom
-# This is an alternative way to define the mappings.
-# Instead of a custom mapping (using python code) this one below maps intents to values
-#        - type: from_intent
-#          value: cloud
-#          intent: intent_openshift_where_cloud
-#        - type: from_intent
-#          value: on_premise
-#          intent: intent_openshift_where_on_premise
+        - type: from_intent
+          intent: intent_openshift_where_cloud
+          value: cloud
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_where
+        - type: from_intent
+          intent: intent_openshift_where_on_premise
+          value: on_premise
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_where
+        - type: from_intent
+          intent: intent_openshift_where_virtualized
+          value: virtualized
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_where
   openshift_provider:
       type: any
       mappings:
-        - type: custom
+        - type: from_intent
+          intent: intent_openshift_provider_aws
+          value: aws
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_provider
+        - type: from_intent
+          intent: intent_openshift_provider_google
+          value: google
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_provider
+        - type: from_intent
+          intent: intent_openshift_provider_microsoft
+          value: microsoft
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_provider
+        - type: from_intent
+          intent: intent_openshift_provider_other
+          value: other
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_provider
   openshift_managed:
       type: any
       mappings:
-        - type: custom
+        - type: from_intent
+          intent: intent_openshift_managed_yes
+          value: yes
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_managed
+        - type: from_intent
+          intent: intent_openshift_managed_no
+          value: no
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_managed
+        - type: from_intent
+          intent: intent_affirm
+          value: yes
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_managed
+        - type: from_intent
+          intent: intent_deny
+          value: no
+          conditions:
+            - active_loop: form_openshift_clusters_create-cluster
+              requested_slot: openshift_managed
   openshift_hosted:
     type: any
     mappings:
@@ -40,15 +95,23 @@ slots:
     type: bool
     mappings:
       - type: from_intent
-        value: true
         intent: intent_affirm
+        value: true
+        conditions:
+          - active_loop: form_openshift_clusters_create-cluster
+            requested_slot: openshift_is_correct
       - type: from_intent
-        value: false
         intent: intent_deny
+        value: false
+        conditions:
+          - active_loop: form_openshift_clusters_create-cluster
+            requested_slot: openshift_is_correct
 
 forms:
   form_openshift_clusters_create-cluster:
-    required_slots: []
+    # Specifying the slots here silence UserWarning extract_ about these slots
+    # These can be overriden by the actions
+    required_slots: [openshift_where, openshift_provider, openshift_managed, openshift_hosted, openshift_is_correct]
 
 responses:
   utter_openshift_clusters_create-cluster:
@@ -72,7 +135,7 @@ responses:
         - title: Microsoft Azure
           payload: Microsoft Azure
   utter_ask_form_openshift_clusters_create-cluster_openshift_managed:
-    - text: Alright. Do you want to manage the cluster or do you want Red Hat to manage it for you?
+    - text: Alright. Do you want Red Hat to manage the cluster for you?
       buttons:
         - title: Red Hat
           payload: Red Hat
