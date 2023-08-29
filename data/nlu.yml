@@ -57,3 +57,22 @@ nlu:
       - how many people have you helped today?
       - do you talk to a lot of people?
       - assistant metrics
+
+  - intent: intent_affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+
+  - intent: intent_deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
