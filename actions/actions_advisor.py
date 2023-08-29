@@ -12,7 +12,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 import requests
 
-from common import get_auth_header
+from common import Header, get_auth_header
 from .utils import show_more
 
 
@@ -30,9 +30,9 @@ class AdvisorAPIPathway(Action):
 
         base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
 
-        auth_header = None
+        header = Header()
         try:
-            auth_header = get_auth_header(tracker)
+            get_auth_header(tracker, header)
         except Exception as e:
             print(f"An Exception occured while handling retrieving auth credentials: {e}")
             dispatcher.utter_message(id="utter_fallback_message")
@@ -42,7 +42,7 @@ class AdvisorAPIPathway(Action):
         try:
             result = requests.get(
                 base_url+"/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3",
-                headers={auth_header['key']: auth_header['value']}
+                headers=header.build_headers()
             ).json()
         except Exception as e:
             print(f"An Exception occured while handling response from the Advisor API: {e}")
