@@ -64,6 +64,14 @@ Copy this token to the environment variable `OFFLINE_REFRESH_TOKEN` (`.env` file
 >
 > You will also need to point the `CONSOLEDOT_BASE_URL` environment variable to [https://console.stage.redhat.com](https://console.stage.redhat.com), and make sure that your http proxy url is set up properly.
 
+### Starting tracker store database
+
+This app is configured to use a postgres database to store its conversation history. To start the database, run `make run-db`.
+
+Once rasa is running, it will automatically migrate, creating an `events` table.
+
+[Tracker store docs](https://rasa.com/docs/rasa/tracker-stores/#sqltrackerstore)
+
 ### Executing
 
 Once you have a trained model, you can run a local chat instance with `rasa shell` or `make run-cli`.
