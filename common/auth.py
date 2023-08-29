@@ -16,19 +16,22 @@ local_dev_token: str | None = None
 def get_auth_header(tracker: Tracker, header: Header) -> Header:
     global local_dev_token
 
-    # if its already saved, use it
-    if local_dev_token is not None and _is_jwt_valid(local_dev_token):
-        header.add_header("Authorization", 'Bearer ' + local_dev_token)
-        return header
-    else:
-        local_dev_token = None
+    if _get_is_running_locally():
+        # if its already saved, use it
+        if local_dev_token is not None and _is_jwt_valid(local_dev_token):
+            header.add_header("Authorization", 'Bearer ' + local_dev_token)
+            return header
+        else:
+            local_dev_token = None
 
-    # need to set the offline token
-    offline_token = _get_offline_token()
-    if offline_token is not None:
-        local_dev_token = _with_refresh_token(offline_token)
-        header.add_header("Authorization", 'Bearer ' + local_dev_token)
-        return header
+        # need to set the offline token
+        offline_token = _get_offline_token()
+        if offline_token is not None:
+            local_dev_token = _with_refresh_token(offline_token)
+            header.add_header("Authorization", 'Bearer ' + local_dev_token)
+            return header
+        
+        raise 'No offline token found'
 
     session_metadata = tracker.get_slot('session_started_metadata')
     if session_metadata and 'identity' in session_metadata:
@@ -36,6 +39,9 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
         return header
     
     raise 'No authentication found'
+
+def _get_is_running_locally() -> bool:
+    return getenv('IS_RUNNING_LOCALLY', 'false').lower() == 'true'
 
 def _get_offline_token() -> str:
     return getenv(OFFLINE_REFRESH_TOKEN)
