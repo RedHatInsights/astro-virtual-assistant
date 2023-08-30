@@ -26,3 +26,5 @@ responses:
     - text: ":robot_face: Processing your request..."
   utter_fallback_message:
     - text: I found an error while looking for that. Sorry!
+  utter_create_action_single_fallback:
+    - text: I'm sorry but I don't know how to do that yet.
