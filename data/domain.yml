@@ -24,3 +24,5 @@ responses:
     - text: Bye
   utter_processing:
     - text: ":robot_face: Processing your request..."
+  utter_fallback_message:
+    - text: I found an error while looking for that. Sorry!

@@ -6,33 +6,45 @@ import jwt
 
 from rasa_sdk import Tracker
 
-
 OFFLINE_REFRESH_TOKEN = 'OFFLINE_REFRESH_TOKEN'
 SSO_REFRESH_TOKEN_URL_PARAM = 'SSO_REFRESH_TOKEN_URL'
 SSO_REFRESH_TOKEN_URL = 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
 
 local_dev_token: str | None = None
 
-
-def get_auth_token(tracker: Tracker) -> str:
+# if local token specified, it defaults to it
+def get_auth_header(tracker: Tracker, header: Header) -> Header:
     global local_dev_token
+
+    if _get_is_running_locally():
+        # if its already saved, use it
+        if local_dev_token is not None and _is_jwt_valid(local_dev_token):
+            header.add_header("Authorization", 'Bearer ' + local_dev_token)
+            return header
+        else:
+            local_dev_token = None
+
+        # need to set the offline token
+        offline_token = _get_offline_token()
+        if offline_token is not None:
+            local_dev_token = _with_refresh_token(offline_token)
+            header.add_header("Authorization", 'Bearer ' + local_dev_token)
+            return header
+        
+        raise 'No offline token found'
 
     session_metadata = tracker.get_slot('session_started_metadata')
     if session_metadata and 'identity' in session_metadata:
-        return session_metadata['identity']
+        header.add_header("x-rh-identity", session_metadata['identity'])
+        return header
+    
+    raise 'No authentication found'
 
-    if local_dev_token is not None and _is_jwt_valid(local_dev_token):
-        return local_dev_token
-    else:
-        local_dev_token = None
+def _get_is_running_locally() -> bool:
+    return getenv('IS_RUNNING_LOCALLY', 'false').lower() == 'true'
 
-    offline_token = getenv(OFFLINE_REFRESH_TOKEN)
-    if offline_token is None:
-        raise 'offline dev token not found'
-
-    local_dev_token = _with_refresh_token(offline_token)
-    return local_dev_token
-
+def _get_offline_token() -> str:
+    return getenv(OFFLINE_REFRESH_TOKEN)
 
 def _with_refresh_token(refresh_token: str) -> str:
     result = requests.post(
