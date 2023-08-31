@@ -6,6 +6,7 @@ nlu:
       - rhel
       - vulnerability
       - cluster
+      - policy
   - lookup: service
     examples: |
       - policies
@@ -35,6 +36,7 @@ nlu:
       - Could you help me to create a new (service) (component)?
       - Can I have a new (component)?
       - Please create a (component)
+      - I would like to add [cves]{"entity": "component", "value":"vulnerability"}
 
   - intent: intent_greet
     examples: |

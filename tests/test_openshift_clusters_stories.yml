@@ -1,0 +1,10 @@
+version: "3.1"
+
+stories:
+  - story: User would like to create an openshift cluster
+    steps:
+      - user: |
+          I would like to add an [openshift]{"entity": "service", "value": "openshift"} [cluster]{"entity": "component", "value": "cluster"}
+        intent: intent_create_action_single
+      - action: utter_openshift_clusters_create-cluster
+      - action: form_openshift_clusters_create-cluster
