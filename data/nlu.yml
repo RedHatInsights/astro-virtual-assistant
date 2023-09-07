@@ -25,6 +25,9 @@ nlu:
       - Could you help me to create a new (create_action_component)?
       - Can I have a new (create_action_component)?
       - Please create a (create_action_component)
+      - I would like to add {"entity": "create_action_component"}
+      - I would like to add {"entity": "create_action_component"} to my data
+      - I would like to add an openshift [cluster](create_action_component)
 
   - intent: intent_greet
     examples: |
