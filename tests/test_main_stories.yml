@@ -4,13 +4,27 @@ stories:
   - story: User would like to create policies
     steps:
       - user: |
-          I would like to create a [policy]{"entity": "component", "value": "policy"}
+          I would like to create a policy
         intent: intent_create_action_single
       - action: utter_create_action_single_fallback
 
   - story: User would like to create CVEs
     steps:
       - user: |
-          I would like to add [cves]{"entity": "component", "value": "vulnerability"}
+          I would like to add cves
+        intent: intent_create_action_single
+      - action: utter_create_action_single_fallback
+
+  - story: User would like to create RHEL 1
+    steps:
+      - user: |
+          I would like to add rhel
+        intent: intent_create_action_single
+      - action: utter_create_action_single_fallback
+
+  - story: User would like to create RHEL 2
+    steps:
+      - user: |
+          I would like to add a machine
         intent: intent_create_action_single
       - action: utter_create_action_single_fallback

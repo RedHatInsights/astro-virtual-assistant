@@ -6,3 +6,8 @@ stories:
       - intent: intent_how_are_you
       - action: action_how_are_you
       - action: utter_help_you
+
+  - story: User wants to create but we don't know how
+    steps:
+      - intent: intent_create_action_single
+      - action: utter_create_action_single_fallback

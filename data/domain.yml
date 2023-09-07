@@ -9,8 +9,16 @@ intents:
   - intent_create_action_single
 
 entities:
-  - service
-  - component
+  - create_action_component
+
+slots:
+  create_action_component:
+    type: categorical
+    values:
+      - cluster
+    mappings:
+      - type: from_entity
+        entity: create_action_component
 
 actions:
   - action_how_are_you
