@@ -53,7 +53,7 @@ validate:
 	pipenv run rasa data validate --fail-on-warnings --domain data
 
 test:
-	pipenv run rasa test --fail-on-prediction-errors
+	pipenv run rasa test --fail-on-prediction-errors ${RASA_TRAIN_ARGS}
 
 test-python:
 	pipenv run pytest
