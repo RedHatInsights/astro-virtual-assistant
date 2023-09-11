@@ -9,16 +9,17 @@ intents:
   - intent_create_action_single
 
 entities:
-  - create_action_component
+  - console_component
 
 slots:
-  create_action_component:
+  console_component:
     type: categorical
     values:
       - cluster
+      - policy
     mappings:
       - type: from_entity
-        entity: create_action_component
+        entity: console_component
 
 actions:
   - action_how_are_you

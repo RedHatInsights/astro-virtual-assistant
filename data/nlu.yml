@@ -16,18 +16,18 @@ nlu:
 
   - intent: intent_create_action_single
     examples: |
-      - I would like to create an (create_action_component)
-      - I want to create a (create_action_component)
-      - Help me creating a (create_action_component)
-      - I would like to create a (create_action_component)
-      - Create a (create_action_component)
-      - I want to add a (create_action_component)
-      - Could you help me to create a new (create_action_component)?
-      - Can I have a new (create_action_component)?
-      - Please create a (create_action_component)
-      - I would like to add {"entity": "create_action_component"}
-      - I would like to add {"entity": "create_action_component"} to my data
-      - I would like to add an openshift [cluster](create_action_component)
+      - I would like to create an {"entity": "console_component"}
+      - I want to create a {"entity": "console_component"}
+      - Help me creating a {"entity": "console_component"}
+      - I would like to create a {"entity": "console_component"}
+      - Create a {"entity": "console_component"})
+      - I want to add a {"entity": "console_component"}
+      - Could you help me to create a new {"entity": "console_component"}?
+      - Can I have a new {"entity": "console_component"}?
+      - Please create a {"entity": "console_component"}
+      - I would like to add {"entity": "console_component"}
+      - I would like to add {"entity": "console_component"} to my data
+      - I would like to add an openshift [cluster](console_component)
 
   - intent: intent_greet
     examples: |

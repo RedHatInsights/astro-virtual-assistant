@@ -4,7 +4,7 @@ stories:
   - story: User would like to create an openshift cluster 1
     steps:
       - user: |
-          I would like to add an openshift [cluster]{"entity": "create_action_component", "value": "cluster"}
+          I would like to add an openshift [cluster]{"entity": "console_component", "value": "cluster"}
         intent: intent_create_action_single
       - action: utter_openshift_clusters_create-cluster
       - action: form_openshift_clusters_create-cluster
@@ -12,7 +12,7 @@ stories:
   - story: User would like to create an openshift cluster 2
     steps:
       - user: |
-          I would like to create a [cluster]{"entity": "create_action_component", "value": "cluster"}
+          I would like to create a [cluster]{"entity": "console_component", "value": "cluster"}
         intent: intent_create_action_single
       - action: utter_openshift_clusters_create-cluster
       - action: form_openshift_clusters_create-cluster
