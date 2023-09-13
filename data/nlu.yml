@@ -1,18 +1,6 @@
 version: "3.1"
 
 nlu:
-  - lookup: component
-    examples: |
-      - rhel
-      - vulnerability
-      - cluster
-      - policy
-  - lookup: service
-    examples: |
-      - policies
-      - advisor
-      - openshift
-
   - synonym: vulnerability
     examples: |
       - cve
@@ -25,18 +13,21 @@ nlu:
   - synonym: playbook
     examples: |
       - ansible script
+
   - intent: intent_create_action_single
     examples: |
-      - I would like to create an (service) (component)
-      - I want to create a (component)
-      - Help me creating a (component)
-      - I would like to create a (component)
-      - Create a (component)
-      - I want to add a (component)
-      - Could you help me to create a new (service) (component)?
-      - Can I have a new (component)?
-      - Please create a (component)
-      - I would like to add [cves]{"entity": "component", "value":"vulnerability"}
+      - I would like to create an {"entity": "console_component"}
+      - I want to create a {"entity": "console_component"}
+      - Help me creating a {"entity": "console_component"}
+      - I would like to create a {"entity": "console_component"}
+      - Create a {"entity": "console_component"})
+      - I want to add a {"entity": "console_component"}
+      - Could you help me to create a new {"entity": "console_component"}?
+      - Can I have a new {"entity": "console_component"}?
+      - Please create a {"entity": "console_component"}
+      - I would like to add {"entity": "console_component"}
+      - I would like to add {"entity": "console_component"} to my data
+      - I would like to add an openshift [cluster](console_component)
 
   - intent: intent_greet
     examples: |

@@ -27,6 +27,7 @@ pipeline:
      sentence_score_cutoff: 55
      word_score_cutoff: 75
      case_sensitive: False
+     use_slots: True
    - name: ResponseSelector
      epochs: 100
      constrain_similarities: true

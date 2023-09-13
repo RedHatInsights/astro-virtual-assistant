@@ -8,12 +8,13 @@ from rasa.nlu.tokenizers.tokenizer import Tokenizer
 
 import rasa.shared.utils.io
 import rasa.utils.io
-import rasa.nlu.utils.pattern_utils as pattern_utils
 from rasa.engine.graph import ExecutionContext, GraphComponent
 from rasa.engine.recipes.default_recipe import DefaultV1Recipe
 from rasa.engine.storage.resource import Resource
 from rasa.engine.storage.storage import ModelStorage
 from rasa.nlu.constants import TOKENS_NAMES
+from rasa.shared.core.domain import Domain
+from rasa.shared.core.slots import Slot, CategoricalSlot
 from rasa.shared.nlu.constants import TEXT, ENTITIES, ENTITY_ATTRIBUTE_TYPE, \
     ENTITY_ATTRIBUTE_START, ENTITY_ATTRIBUTE_VALUE, ENTITY_ATTRIBUTE_END
 from rasa.shared.nlu.training_data.training_data import TrainingData
@@ -28,19 +29,14 @@ FUZZY_ENTITIES_FILENAME = "fuzzy_entities.pkl"
 CONFIG_SENTENCE_SCORE_CUTOFF = 'sentence_score_cutoff'
 CONFIG_WORD_SCORE_CUTOFF = 'word_score_cutoff'
 CONFIG_CASE_SENSITIVE = 'case_sensitive'
-
+CONFIG_USE_SLOTS = 'use_slots'
 
 class FuzzyEntities:
     name: Text
     entity_list: List[Text]
     value_mapping: Dict[Text, Text]
 
-    def __init__(self, name: Text, entity_list: Optional[List[Text]] = None, synonyms: Optional[Dict[Text, Text]] = None):
-        if entity_list is None:
-            entity_list = []
-        if synonyms is None:
-            synonyms = {}
-
+    def __init__(self, name: Text, entity_list: List[Text], synonyms: Dict[Text, Text]):
         self.name = name
         self.entity_list = entity_list.copy()
         self.entity_list.extend(
@@ -66,6 +62,7 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
     sentence_score_cutoff: float
     word_score_cutoff: float
     case_sensitive: bool
+    use_slots: bool
 
     @classmethod
     def required_components(cls) -> List[Type]:
@@ -81,7 +78,9 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             # Score used to check if a word is part of the choices.
             CONFIG_WORD_SCORE_CUTOFF: 75,
             # If the matching is case sensitive
-            CONFIG_CASE_SENSITIVE: False
+            CONFIG_CASE_SENSITIVE: False,
+            # Use slots
+            CONFIG_USE_SLOTS: False
         }
 
     def __init__(
@@ -100,6 +99,7 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         self.sentence_score_cutoff = self._config[CONFIG_SENTENCE_SCORE_CUTOFF]
         self.word_score_cutoff = self._config[CONFIG_WORD_SCORE_CUTOFF]
         self.case_sensitive = self._config[CONFIG_CASE_SENSITIVE]
+        self.use_slots = self._config[CONFIG_USE_SLOTS]
 
     @classmethod
     def create(
@@ -112,28 +112,9 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         """Creates a new untrained component"""
         return cls(config, model_storage, resource)
 
-    def train(self, training_data: TrainingData) -> Resource:
+    def train(self, training_data: TrainingData, domain: Domain) -> Resource:
         """Train the component with all know look up tables"""
-        for lookup_table in training_data.lookup_tables:
-            lookup_elements = lookup_table["elements"]
-
-            if not isinstance(lookup_elements, list):
-                lookup_elements = pattern_utils.read_lookup_table_file(lookup_elements)
-
-            self.fuzzy_entities.append(FuzzyEntities(
-                lookup_table["name"],
-                list(map(self._process_text, lookup_elements)),
-                {
-                    self._process_text(synonym): self._process_text(entity)
-                    for synonym, entity in training_data.entity_synonyms.items()
-                }
-            ))
-
-        if not self.fuzzy_entities:
-            rasa.shared.utils.io.raise_warning(
-                "No lookup tables found."
-            )
-
+        self.fuzzy_entities = self._get_entities(training_data, domain)
         self._persist()
         return self._resource
 
@@ -161,8 +142,8 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             self, message: Message
     ) -> List[Dict[Text, Any]]:
         """Process the message to find entities.
-        The algorithm tries to find the matches from the lookup tables using fuzzy search
-        It tries the whole message first and then it goes token by token to find the match.
+        The algorithm tries to find the matches from entities using fuzzy search
+        It tries the whole message first and then it goes token by token to find the match location.
         The first goal is to use only one word and we might eventually add other heuristics
         to support multiple words.
         """
@@ -243,6 +224,89 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
                 fuzzy_entities_file,
                 jsonpickle.encode(self.fuzzy_entities, unpicklable=True)
             )
+
+    def _get_entities(self, training_data: TrainingData, domain: Domain) -> List[FuzzyEntities]:
+        """
+        Fetch entities with a finite set of values defined at training time
+        Entities have to be defined the domain file, possible values are retrieved from
+        lookups and slots (if  `use_slots` is set to True) if the entity is found in both
+        an error is triggered.
+
+        :param training_data:
+        :param domain
+        :return:
+        """
+        lookup_tables = training_data.lookup_tables
+        slots = domain.slots
+        entities: List[FuzzyEntities] = []
+
+        for entity_name in domain.entities:
+            lookup_table = self._get_lookup_table(entity_name, lookup_tables) if lookup_tables is not None else None
+            slot = self._get_slot(entity_name, slots) if slots is not None else None
+
+            if lookup_table is None and slot is None:
+                continue
+
+            if lookup_table is not None and slot is not None:
+                logger.error(
+                    f"Both lookup table and categorical slot were found for {entity_name}"
+                    "Only one or the other is allowed by this component."
+                    "Falling back to lookup table."
+                )
+
+            entity_values = []
+            if lookup_table is not None:
+                entity_values = list(map(self._process_text, lookup_table.values()))
+            elif slot is not None:
+                entity_values = list(map(self._process_text, slot.values))
+
+            if len(entity_values) == 0:
+                logger.error(
+                    f"No values found for entity {entity_name}."
+                )
+
+            synonyms = {
+                self._process_text(synonym): self._process_text(entity)
+                for synonym, entity in training_data.entity_synonyms.items()
+            }
+            entities.append(FuzzyEntities(
+                entity_name,
+                entity_values,
+                synonyms
+            ))
+
+        return entities
+
+    def _get_lookup_table(self, entity_name: Text, lookup_tables: List[Dict[Text, Any]]) -> Optional[Dict[Text, Any]]:
+        for lookup_table in lookup_tables:
+            if lookup_table["name"] == entity_name:
+                return lookup_table
+
+        return None
+
+    def _get_slot(self, entity_name: Text, slots: List[Slot]) -> Optional[CategoricalSlot]:
+        if not self.use_slots:
+            return None
+
+        def filter_own_mappings(mapping: Dict[Text, Any]):
+            return mapping["type"] == "from_entity" and mapping["entity"] == entity_name
+
+        for slot in slots:
+            if slot.name != entity_name:
+                continue
+
+            if slot.type_name != CategoricalSlot.type_name and not isinstance(slot, CategoricalSlot):
+                return None
+
+            if not any(filter(filter_own_mappings, slot.mappings)):
+                logger.error(
+                    f"Categorical Slot found for entity {entity_name}"
+                    "but doesn't have any mapping `from_entity`."
+                    "Add at least a mapping with the following configuration:\n"
+                    f"mappings:\n  - type: from_entity\n  - entity: {entity_name}"
+                )
+
+            return slot
 
     @classmethod
     def validate_config(cls, config: Dict[Text, Any]) -> None:

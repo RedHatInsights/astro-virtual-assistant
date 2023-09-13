@@ -5,9 +5,9 @@ rules:
     steps:
       - intent: intent_create_action_single
         entities:
-          - component: cluster
-            service: openshift
-          - component: cluster
+          - console_component
+      - slot_was_set:
+          - console_component: cluster
       - action: utter_openshift_clusters_create-cluster
       - action: form_openshift_clusters_create-cluster
       - active_loop: form_openshift_clusters_create-cluster
