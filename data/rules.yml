@@ -1,13 +1,3 @@
 version: "3.1"
 
-rules:
-
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: intent_goodbye
-  - action: utter_goodbye
-
-- rule: Say hello anytime the user says hello
-  steps:
-  - intent: intent_greet
-  - action: utter_greet
+rules: []
