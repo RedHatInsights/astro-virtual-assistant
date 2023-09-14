@@ -1,7 +1,0 @@
-version: "3.1"
-
-stories:
-  - story: Recent runs
-    steps:
-      - intent: intent_insights_ansible_recent-run
-      - action: utter_insights_ansible_recent-run

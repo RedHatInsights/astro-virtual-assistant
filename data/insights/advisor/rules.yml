@@ -1,8 +1,0 @@
-version: "3.1"
-
-rules:
-  - rule: Advisor recommendation pathways
-    steps:
-      - intent: insights_advisor_recommendation-pathways
-      - action: utter_advisor_recommendation-pathways
-      - action: action_advisor_api-pathway

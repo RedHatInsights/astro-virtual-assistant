@@ -1,8 +1,0 @@
-version: "3.1"
-
-intents:
-  - intent_insights_ansible_recent-run
-
-responses:
-  utter_insights_ansible_recent-run:
-    - text: Okay, I can assist you checking your latest ansible playbooks...
