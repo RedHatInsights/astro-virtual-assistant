@@ -4,7 +4,7 @@ import logging
 import socket
 from logstash_formatter import LogstashFormatterV1
 
-import config
+import common.config as config
 
 def clowder_config():
     # Cloudwatch Configuration with Clowder

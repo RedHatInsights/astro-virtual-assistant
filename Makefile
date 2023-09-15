@@ -14,7 +14,7 @@ export DB_DATABASE ?=
 
 # install and train the project
 install:
-	pipenv install --dev
+	pipenv install --dev -r requirements.txt
 
 train:
 	pipenv run rasa train ${RASA_TRAIN_ARGS}

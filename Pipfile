@@ -9,11 +9,21 @@ rasa = "~=3.5.10"
 requests = "2.31.0"
 rapidfuzz = "*"
 jsonpickle = "*"
+app-common-python = "==0.2.3"
+boto3 = "==1.24.89"
+logstash-formatter = "==0.5.17"
+prometheus-client = "==0.14.1"
+watchtower = "==3.0.0"
 
 [dev-packages]
 pyopenssl = "23.2.0"
 pyjwt = "2.7.0"
 pytest = "*"
+app-common-python = "==0.2.3"
+boto3 = "==1.24.89"
+logstash-formatter = "==0.5.17"
+prometheus-client = "==0.14.1"
+watchtower = "==3.0.0"
 
 [requires]
 python_version = "3.10"
