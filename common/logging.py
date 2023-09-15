@@ -49,7 +49,6 @@ def initialize_logging():
         from boto3.session import Session
         import watchtower
 
-        # I'm not sure what this is for
         boto3_session = Session(aws_access_key_id=aws_access_key_id,
                                 aws_secret_access_key=aws_secret_access_key,
                                 region_name=aws_region_name)

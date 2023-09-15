@@ -15,7 +15,6 @@ from src.storage_broker.utils import broker_logging, config, metrics
 logger = broker_logging.initialize_logging()
 
 event = Event()
-producer = None
 
 
 def start_prometheus():
