@@ -1,6 +1,7 @@
 CONTAINER_EXEC ?= podman
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
+RASA_EXEC = python app.py
 RASA_TRAIN_ARGS = --domain data
 RASA_RUN_ARGS = --endpoints endpoints.yml
 
@@ -17,23 +18,23 @@ install:
 	pipenv install --dev
 
 train:
-	pipenv run rasa train ${RASA_TRAIN_ARGS}
+	pipenv run ${RASA_EXEC} train ${RASA_TRAIN_ARGS}
 
 finetune:
-	pipenv run rasa train ${RASA_TRAIN_ARGS} --finetune
+	pipenv run ${RASA_EXEC} train ${RASA_TRAIN_ARGS} --finetune
 
 # runs the assistant
 run:
-	pipenv run rasa run ${RASA_RUN_ARGS}
+	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS}
 
 run-interactive:
-	pipenv run rasa interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
+	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	pipenv run rasa run actions --auto-reload
+	pipenv run ${RASA_EXEC} run actions --auto-reload
 
 run-cli:
-	pipenv run rasa shell ${RASA_RUN_ARGS}
+	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
 run-db:
 	pipenv run make db
@@ -50,10 +51,10 @@ compose:
 
 # validate and test changes
 validate:
-	pipenv run rasa data validate --fail-on-warnings --domain data
+	pipenv run ${RASA_EXEC} data validate --fail-on-warnings --domain data
 
 test:
-	pipenv run rasa test --fail-on-prediction-errors ${RASA_TRAIN_ARGS}
+	pipenv run ${RASA_EXEC} test --fail-on-prediction-errors ${RASA_TRAIN_ARGS}
 
 test-python:
 	pipenv run pytest

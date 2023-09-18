@@ -6,12 +6,15 @@ from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
 
 from common import decode_identity
+from common import logging
 
 from rasa.core.channels.channel import (
     InputChannel,
     CollectingOutputChannel,
     UserMessage,
 )
+
+logger = logging.initialize_logging()
 
 # Custom channel for console.redhat.com traffic
 # to read the identity header provided
@@ -62,13 +65,16 @@ class ConsoleInput(InputChannel):
                     )
                 )
             except CancelledError:
-                print(
-                    f"Message handling timed out for user message."
+                logger.error(
+                    "Message handling timed out for user message."
                 )
             except Exception as e:
-                print(
-                    f"An exception occured while handling: {e}"
+                logger.error(
+                    "An exception occured while handling a message: %s",
+                    e,
                 )
+
+                logger.debug("Message: %s", message)
 
             return response.json(collector.messages)
 
