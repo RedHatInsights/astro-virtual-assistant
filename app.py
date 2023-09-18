@@ -4,6 +4,8 @@ from prometheus_client import start_http_server
 from threading import Event
 from common import logging, config
 
+from rasa.__main__ import main as rasa_main
+
 logger = logging.initialize_logging()
 
 event = Event()
@@ -24,6 +26,8 @@ def main():
 
     if config.PROMETHEUS == "True":
         start_prometheus()
+    
+    rasa_main()
 
 if __name__ == "__main__":
     main()

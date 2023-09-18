@@ -24,16 +24,16 @@ finetune:
 
 # runs the assistant
 run:
-	pipenv run rasa run ${RASA_RUN_ARGS}
+	pipenv run python app.py run ${RASA_RUN_ARGS}
 
 run-interactive:
-	pipenv run rasa interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
+	pipenv run python app.py interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	pipenv run rasa run actions --auto-reload
+	pipenv run python app.py run actions --auto-reload
 
 run-cli:
-	pipenv run rasa shell ${RASA_RUN_ARGS}
+	pipenv run python app.py shell ${RASA_RUN_ARGS}
 
 run-db:
 	pipenv run make db
