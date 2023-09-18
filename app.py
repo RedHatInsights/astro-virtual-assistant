@@ -6,7 +6,7 @@ from common import logging, config
 
 from rasa.__main__ import main as rasa_main
 
-logger = logging.initialize_logging()
+logger = None
 
 event = Event()
 
@@ -19,6 +19,10 @@ def handle_signal(signal, frame):
 signal.signal(signal.SIGTERM, handle_signal)
 
 def main():
+    global logger
+
+    config.initialize_clowdapp()
+    logger = logging.initialize_logging()
 
     logger.info("Starting Astro")
 

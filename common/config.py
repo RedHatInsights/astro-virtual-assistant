@@ -6,6 +6,31 @@ APP_NAME = os.getenv("APP_NAME", "astro-virtual-assistant")
 
 logger = logging.getLogger(APP_NAME)
 
+# define GROUP_ID, API_LISTEN_ADDRESS, API_URL_EXPIRY, AWS_REGION, LOG_LEVEL, NAMESPACE, HOSTNAME, PROMETHEUS
+GROUP_ID = None
+API_LISTEN_ADDRESS = None
+API_URL_EXPIRY = None
+AWS_REGION = None
+LOG_LEVEL = None
+NAMESPACE = None
+HOSTNAME = None
+PROMETHEUS = None
+
+def initialize_clowdapp():
+    global GROUP_ID, API_LISTEN_ADDRESS, API_URL_EXPIRY, AWS_REGION, LOG_LEVEL, NAMESPACE, HOSTNAME, PROMETHEUS
+    GROUP_ID = os.getenv("GROUP_ID", APP_NAME)
+
+    API_LISTEN_ADDRESS = os.getenv("API_LISTEN_ADDRESS", "0.0.0.0")
+    API_URL_EXPIRY = int(os.getenv("API_URL_EXPIRY", 30))
+
+    AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+
+    LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+    NAMESPACE = get_namespace()
+    HOSTNAME = os.environ.get("HOSTNAME")
+
+    PROMETHEUS = os.getenv("PROMETHEUS", "True")
+
 def log_config():
     import sys
 
@@ -46,16 +71,3 @@ else:
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 8080))
     API_PORT = int(os.getenv("API_PORT", 5000))
-
-GROUP_ID = os.getenv("GROUP_ID", APP_NAME)
-
-API_LISTEN_ADDRESS = os.getenv("API_LISTEN_ADDRESS", "0.0.0.0")
-API_URL_EXPIRY = int(os.getenv("API_URL_EXPIRY", 30))
-
-AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
-
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
-NAMESPACE = get_namespace()
-HOSTNAME = os.environ.get("HOSTNAME")
-
-PROMETHEUS = os.getenv("PROMETHEUS", "True")
