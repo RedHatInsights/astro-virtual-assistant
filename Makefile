@@ -17,10 +17,10 @@ install:
 	pipenv install --dev
 
 train:
-	pipenv run rasa train ${RASA_TRAIN_ARGS}
+	pipenv run python app.py train ${RASA_TRAIN_ARGS}
 
 finetune:
-	pipenv run rasa train ${RASA_TRAIN_ARGS} --finetune
+	pipenv run python app.py train ${RASA_TRAIN_ARGS} --finetune
 
 # runs the assistant
 run:
