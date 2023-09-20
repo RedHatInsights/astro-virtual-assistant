@@ -1,3 +1,9 @@
 version: "3.1"
 
-stories: []
+stories:
+  - story: User wants to know our capabilities
+    steps:
+      - intent: intent_core_capabilities
+      - action: utter_core_capabilities
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1

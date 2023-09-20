@@ -7,4 +7,23 @@ slots: {}
 
 actions: []
 
-responses: {}
+intent:
+  - intent_core_capabilities
+  - intent_core_more
+
+responses:
+  utter_core_capabilities_main:
+    - text: "Here are a few things I can help you with.\nYou can select any button below to start that conversation:"
+      buttons:
+        - title: Contact the Organization's admin
+          payload: Contact my org admin
+        - title: Request access to a specific page or service
+          payload: I would like access to...
+        - title: Tell me more about my subscriptions
+          payload: Can I have help with my subscriptions?
+        - title: See more
+          payload: More
+  utter_core_capabilities_more_1:
+    - buttons:
+        - title: Troubleshooting access
+          payload: I'm getting an access error...
