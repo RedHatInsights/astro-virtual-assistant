@@ -1,3 +1,18 @@
 version: "3.1"
 
-nlu: []
+nlu:
+  - intent: intent_core_capabilities
+    examples: |
+      - How can you help me?
+      - Help me
+      - I need help
+      - What can you do?
+      - What do you do?
+      - What kind of things can you do?
+      - What are some examples of things you can do?
+      - What services can you help me with?
+      - What products can you assist me with?
+  - intent: intent_core_more
+    examples: |
+      - More
+      - See more

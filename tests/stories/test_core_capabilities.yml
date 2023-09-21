@@ -1,0 +1,48 @@
+version: "3.1"
+
+stories:
+  - story: User asks about capabilities - 1
+    steps:
+      - user: |
+          What kind of things can you do?
+        intent: intent_core_capabilities
+      - action: utter_core_capabilities_main
+
+  - story: User asks about capabilities - 2
+    steps:
+      - user: |
+          What services can you help me with?
+        intent: intent_core_capabilities
+      - action: utter_core_capabilities_main
+
+  - story: User asks about capabilities - 3
+    steps:
+      - user: |
+          What products can you assist with?
+        intent: intent_core_capabilities
+      - action: utter_core_capabilities_main
+
+  - story: User asks for more capabilities
+    steps:
+      - user: |
+          What are some examples of things you can do?
+        intent: intent_core_capabilities
+      - action: utter_core_capabilities_main
+      - user: |
+          More
+        intent: intent_core_more
+      - action:
+          utter_core_capabilities_more_1
+      - user: |
+          See more
+        intent: intent_core_more
+      - action: utter_core_capabilities_more_no_more
+      - action: action_core_one_back
+
+  - story: User asks for more without asking for capabilities first
+    steps:
+      - user: |
+          More
+        intent: intent_core_more
+      - action: utter_core_rephrase
+      - action: action_core_one_back
