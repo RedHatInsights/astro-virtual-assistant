@@ -13,6 +13,8 @@ export DB_PASSWORD ?=
 export DB_LOGIN_DB ?=
 export DB_DATABASE ?=
 
+include make/Makefile.lint.mk
+
 # install and train the project
 install:
 	pipenv install --dev
