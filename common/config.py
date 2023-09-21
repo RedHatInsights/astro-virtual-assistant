@@ -29,7 +29,7 @@ def initialize_clowdapp():
     NAMESPACE = get_namespace()
     HOSTNAME = os.environ.get("HOSTNAME")
 
-    PROMETHEUS = os.getenv("PROMETHEUS", "True")
+    PROMETHEUS = os.getenv("PROMETHEUS", "false")
 
 def log_config():
     import sys
@@ -69,5 +69,5 @@ else:
     CW_AWS_SECRET_ACCESS_KEY = os.getenv("CW_AWS_SECRET_ACCESS_KEY", None)
     LOG_GROUP = os.getenv("LOG_GROUP", "platform-dev")
     # Metrics
-    PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 8080))
-    API_PORT = int(os.getenv("API_PORT", 5000))
+    PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
+    API_PORT = int(os.getenv("API_PORT", 5005))
