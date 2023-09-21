@@ -13,7 +13,7 @@ actions:
 
 responses:
   utter_core_capabilities_main:
-    - text: "Here are a few things I can help you with.\Select an option below or type in your questions:"
+    - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
         - title: Contact the Organization's admin
           payload: Contact my org admin
