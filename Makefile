@@ -31,7 +31,7 @@ run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	PROMETHEUS=False pipenv run ${RASA_EXEC} run actions --auto-reload
+	pipenv run ${RASA_EXEC} run actions --auto-reload
 
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
