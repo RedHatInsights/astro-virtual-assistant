@@ -1,15 +1,15 @@
 version: "3.1"
 
-intents: []
+intents:
+  - intent_core_capabilities
+  - intent_core_more
+
 entities: []
 
 slots: {}
 
-actions: []
-
-intent:
-  - intent_core_capabilities
-  - intent_core_more
+actions:
+  - action_core_one_back
 
 responses:
   utter_core_capabilities_main:
@@ -24,6 +24,11 @@ responses:
         - title: See more
           payload: More
   utter_core_capabilities_more_1:
-    - buttons:
+    - text: ""
+      buttons:
         - title: Troubleshooting access
           payload: I'm getting an access error...
+  utter_core_capabilities_more_no_more:
+    - text: "I'm sorry, at this point I don't have any other case I can help you with."
+  utter_core_rephrase:
+    - text: "I'm sorry. I don't understand you. Could you try to rephrase your question?"

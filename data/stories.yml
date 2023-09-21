@@ -4,6 +4,15 @@ stories:
   - story: User wants to know our capabilities
     steps:
       - intent: intent_core_capabilities
-      - action: utter_core_capabilities
+      - action: utter_core_capabilities_main
       - intent: intent_core_more
       - action: utter_core_capabilities_more_1
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_no_more
+      - action: action_core_one_back
+
+  - story: User asks about more without asking for capabilities
+    steps:
+      - intent: intent_core_more
+      - action: utter_core_rephrase
+      - action: action_core_one_back

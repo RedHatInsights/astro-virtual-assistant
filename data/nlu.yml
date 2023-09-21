@@ -2,7 +2,7 @@ version: "3.1"
 
 nlu:
   - intent: intent_core_capabilities
-    examples:
+    examples: |
       - How can you help me?
       - Help me
       - I need help
@@ -13,6 +13,6 @@ nlu:
       - What services can you help me with?
       - What products can you assist me with?
   - intent: intent_core_more
-    examples:
+    examples: |
       - More
       - See more

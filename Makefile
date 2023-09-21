@@ -31,7 +31,7 @@ run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	pipenv run ${RASA_EXEC} run actions --auto-reload
+	PROMETHEUS=False pipenv run ${RASA_EXEC} run actions --auto-reload
 
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
@@ -54,7 +54,7 @@ validate:
 	pipenv run ${RASA_EXEC} data validate --fail-on-warnings --domain data
 
 test:
-	pipenv run ${RASA_EXEC} test --fail-on-prediction-errors ${RASA_TRAIN_ARGS}
+	pipenv run ${RASA_EXEC} test --fail-on-prediction-errors --stories tests/stories ${RASA_TRAIN_ARGS}
 
 test-python:
 	pipenv run pytest
