@@ -45,11 +45,20 @@ class ConsoleInput(InputChannel):
         @custom_webhook.route("/talk", methods=["POST"])
         async def receive(request: Request) -> HTTPResponse:
             identity = self.extract_identity(request)
+            if not identity:
+                return response.json({"error": "No x-rh-identity header present"}, status=400)
+
             sender_id = self.get_sender(identity)
             if not sender_id:
-                return response.json({"error": "Invalid x-rh-identity header (no user_id found)"})
+                return response.json({"error": "Invalid x-rh-identity header (no user_id found)"}, status=400)
+
+            if not request.json:
+                return response.json({"error": "Invalid body"}, status=400)
 
             message = request.json.get("message")
+            if not message:
+                return response.json({"error": "Invalid json body"}, status=400)
+
             input_channel = self.name()
 
             collector = CollectingOutputChannel()
