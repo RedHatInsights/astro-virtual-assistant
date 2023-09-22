@@ -22,6 +22,6 @@ pytest = "*"
 black = "==23.9.1"
 
 [requires]
-python_version = "3.10"
+python_version = "3.9"
 
 [scripts]
