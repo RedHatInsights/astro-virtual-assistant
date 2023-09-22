@@ -17,4 +17,4 @@ lint-fix: --lint
 	npx prettier "data/**/**.yml" $(PRETTIER_ARGS)
 
 --lint-black:
-	black . $(BLACK_ARGS)
+	pipenv run black . $(BLACK_ARGS)
