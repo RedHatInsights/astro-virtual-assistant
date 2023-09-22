@@ -30,8 +30,10 @@ RUN python -m ensurepip --upgrade && \
 WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
+COPY api-requirements.txt .
 
 RUN pipenv install && \
+    pipenv run install-api && \
     pipenv --clear
 
 ENV VIRTUAL_ENV=${APP_ROOT}/.venv
@@ -49,6 +51,8 @@ COPY *.yml ./
 RUN rasa telemetry disable
 
 RUN rasa train --domain data
+
+RUN rm -r .rasa
 
 USER 1001
 

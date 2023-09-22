@@ -30,8 +30,10 @@ RUN python -m ensurepip --upgrade && \
 WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
+COPY actions-requirements.txt .
 
 RUN pipenv install && \
+    pipenv run install-actions && \
     pipenv --clear
 
 ENV VIRTUAL_ENV=${APP_ROOT}/.venv
@@ -43,10 +45,7 @@ COPY ./actions ./actions
 COPY ./common ./common
 COPY *.yml ./
 
-# Stop rasa from reporting anonymous usage telemetry
-RUN rasa telemetry disable
-
 USER 1001
 
-ENTRYPOINT ["rasa"]
-CMD ["run", "actions"]
+ENTRYPOINT ["python", "-m", "rasa_sdk"]
+CMD ["--actions", "actions"]
