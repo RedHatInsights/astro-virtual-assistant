@@ -10,12 +10,9 @@ class ActionBack(Action):
     """Revert the tracker state by one user utterances."""
 
     def name(self) -> Text:
-        return 'action_core_one_back'
+        return "action_core_one_back"
 
     async def run(
-            self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [UserUtteranceReverted()]

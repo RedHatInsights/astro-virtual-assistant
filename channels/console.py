@@ -16,6 +16,7 @@ from rasa.core.channels.channel import (
 
 logger = logging.initialize_logging()
 
+
 # Custom channel for console.redhat.com traffic
 # to read the identity header provided
 # and link it to the user session
@@ -25,32 +26,33 @@ class ConsoleInput(InputChannel):
         """Base of the API path"""
         return "/api/virtual-assistant"
 
-
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[None]]
     ) -> Blueprint:
-
-        custom_webhook = Blueprint(
-            "custom_webhook_{}".format(type(self).__name__)
-        )
+        custom_webhook = Blueprint("custom_webhook_{}".format(type(self).__name__))
 
         @custom_webhook.route("/", methods=["GET"])
         async def health(request: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
-        
+
         @custom_webhook.route("/openapi.json", methods=["GET"])
         async def openapi(request: Request) -> HTTPResponse:
-            return await response.file('openapi.json')
+            return await response.file("openapi.json")
 
         @custom_webhook.route("/talk", methods=["POST"])
         async def receive(request: Request) -> HTTPResponse:
             identity = self.extract_identity(request)
             if not identity:
-                return response.json({"error": "No x-rh-identity header present"}, status=400)
+                return response.json(
+                    {"error": "No x-rh-identity header present"}, status=400
+                )
 
             sender_id = self.get_sender(identity)
             if not sender_id:
-                return response.json({"error": "Invalid x-rh-identity header (no user_id found)"}, status=400)
+                return response.json(
+                    {"error": "Invalid x-rh-identity header (no user_id found)"},
+                    status=400,
+                )
 
             if not request.json:
                 return response.json({"error": "Invalid body"}, status=400)
@@ -74,9 +76,7 @@ class ConsoleInput(InputChannel):
                     )
                 )
             except CancelledError:
-                logger.error(
-                    "Message handling timed out for user message."
-                )
+                logger.error("Message handling timed out for user message.")
             except Exception as e:
                 logger.error(
                     "An exception occured while handling a message: %s",
@@ -97,9 +97,7 @@ class ConsoleInput(InputChannel):
     def get_sender(self, identity) -> Optional[Text]:
         # base64 decode the identity header
         identity_dict = decode_identity(identity)
-        return identity_dict['identity']['user']['user_id']
+        return identity_dict["identity"]["user"]["user_id"]
 
     def build_metadata(self, identity) -> Dict[Text, Any]:
-        return {
-            'identity': identity
-        }
+        return {"identity": identity}

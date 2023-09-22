@@ -15,8 +15,14 @@ from rasa.engine.storage.storage import ModelStorage
 from rasa.nlu.constants import TOKENS_NAMES
 from rasa.shared.core.domain import Domain
 from rasa.shared.core.slots import Slot, CategoricalSlot
-from rasa.shared.nlu.constants import TEXT, ENTITIES, ENTITY_ATTRIBUTE_TYPE, \
-    ENTITY_ATTRIBUTE_START, ENTITY_ATTRIBUTE_VALUE, ENTITY_ATTRIBUTE_END
+from rasa.shared.nlu.constants import (
+    TEXT,
+    ENTITIES,
+    ENTITY_ATTRIBUTE_TYPE,
+    ENTITY_ATTRIBUTE_START,
+    ENTITY_ATTRIBUTE_VALUE,
+    ENTITY_ATTRIBUTE_END,
+)
 from rasa.shared.nlu.training_data.training_data import TrainingData
 from rasa.shared.nlu.training_data.message import Message
 
@@ -26,10 +32,11 @@ logger = logging.getLogger(__name__)
 
 FUZZY_ENTITIES_FILENAME = "fuzzy_entities.pkl"
 
-CONFIG_SENTENCE_SCORE_CUTOFF = 'sentence_score_cutoff'
-CONFIG_WORD_SCORE_CUTOFF = 'word_score_cutoff'
-CONFIG_CASE_SENSITIVE = 'case_sensitive'
-CONFIG_USE_SLOTS = 'use_slots'
+CONFIG_SENTENCE_SCORE_CUTOFF = "sentence_score_cutoff"
+CONFIG_WORD_SCORE_CUTOFF = "word_score_cutoff"
+CONFIG_CASE_SENSITIVE = "case_sensitive"
+CONFIG_USE_SLOTS = "use_slots"
+
 
 class FuzzyEntities:
     name: Text
@@ -43,7 +50,11 @@ class FuzzyEntities:
             [synonym for synonym, entity in synonyms.items() if entity in entity_list]
         )
 
-        self.value_mapping = {entity: synonyms[entity] for entity in self.entity_list if entity in synonyms}
+        self.value_mapping = {
+            entity: synonyms[entity]
+            for entity in self.entity_list
+            if entity in synonyms
+        }
 
     def get_value_of(self, entity: Text) -> Text:
         if entity in self.value_mapping:
@@ -80,15 +91,15 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             # If the matching is case sensitive
             CONFIG_CASE_SENSITIVE: False,
             # Use slots
-            CONFIG_USE_SLOTS: False
+            CONFIG_USE_SLOTS: False,
         }
 
     def __init__(
-            self,
-            config: Dict[Text, Any],
-            model_storage: ModelStorage,
-            resource: Resource,
-            fuzzy_entities_list: Optional[List[FuzzyEntities]] = None
+        self,
+        config: Dict[Text, Any],
+        model_storage: ModelStorage,
+        resource: Resource,
+        fuzzy_entities_list: Optional[List[FuzzyEntities]] = None,
     ) -> None:
         """Fetches the lookup tables information"""
         super().__init__()
@@ -103,11 +114,11 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
 
     @classmethod
     def create(
-            cls,
-            config: Dict[Text, Any],
-            model_storage: ModelStorage,
-            resource: Resource,
-            execution_context: ExecutionContext,
+        cls,
+        config: Dict[Text, Any],
+        model_storage: ModelStorage,
+        resource: Resource,
+        execution_context: ExecutionContext,
     ) -> FuzzyEntityExtractor:
         """Creates a new untrained component"""
         return cls(config, model_storage, resource)
@@ -133,14 +144,10 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         extracted_entities = self.extract_entities(message)
         self.add_extractor_name(extracted_entities)
         message.set(
-            ENTITIES,
-            message.get(ENTITIES, []) + extracted_entities,
-            add_to_output=True
+            ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True
         )
 
-    def extract_entities(
-            self, message: Message
-    ) -> List[Dict[Text, Any]]:
+    def extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         """Process the message to find entities.
         The algorithm tries to find the matches from entities using fuzzy search
         It tries the whole message first and then it goes token by token to find the match location.
@@ -161,23 +168,26 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             fuzzy_result_list = process.extract(
                 self._process_text(message.get(TEXT)),
                 fuzzy_entity.entity_list,
-                score_cutoff=self.sentence_score_cutoff
+                score_cutoff=self.sentence_score_cutoff,
             )
 
             if len(fuzzy_result_list) > 0:
                 for token in tokens:
                     for fuzzy_result in fuzzy_result_list:
                         ratio = fuzz.QRatio(
-                            self._process_text(token.text),
-                            fuzzy_result[0]
+                            self._process_text(token.text), fuzzy_result[0]
                         )
                         if ratio >= self.word_score_cutoff:
-                            entities.append({
-                                ENTITY_ATTRIBUTE_TYPE: fuzzy_entity.name,
-                                ENTITY_ATTRIBUTE_START: token.start,
-                                ENTITY_ATTRIBUTE_END: token.end,
-                                ENTITY_ATTRIBUTE_VALUE: fuzzy_entity.get_value_of(fuzzy_result[0])
-                            })
+                            entities.append(
+                                {
+                                    ENTITY_ATTRIBUTE_TYPE: fuzzy_entity.name,
+                                    ENTITY_ATTRIBUTE_START: token.start,
+                                    ENTITY_ATTRIBUTE_END: token.end,
+                                    ENTITY_ATTRIBUTE_VALUE: fuzzy_entity.get_value_of(
+                                        fuzzy_result[0]
+                                    ),
+                                }
+                            )
 
         return entities
 
@@ -189,12 +199,12 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
 
     @classmethod
     def load(
-            cls,
-            config: Dict[Text, Any],
-            model_storage: ModelStorage,
-            resource: Resource,
-            execution_context: ExecutionContext,
-            **kwargs: Any,
+        cls,
+        config: Dict[Text, Any],
+        model_storage: ModelStorage,
+        resource: Resource,
+        execution_context: ExecutionContext,
+        **kwargs: Any,
     ) -> FuzzyEntityExtractor:
         """Loads trained component."""
         fuzzy_entities = None
@@ -202,7 +212,9 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         try:
             with model_storage.read_from(resource) as model_dir:
                 fuzzy_entities_file = model_dir / FUZZY_ENTITIES_FILENAME
-                fuzzy_entities = jsonpickle.decode(rasa.shared.utils.io.read_json_file(fuzzy_entities_file))
+                fuzzy_entities = jsonpickle.decode(
+                    rasa.shared.utils.io.read_json_file(fuzzy_entities_file)
+                )
         except (ValueError, FileNotFoundError):
             logger.warning(
                 f"Failed to load `{cls.__class__.__name__}` from model storage. "
@@ -222,10 +234,12 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
 
             rasa.shared.utils.io.dump_obj_as_json_to_file(
                 fuzzy_entities_file,
-                jsonpickle.encode(self.fuzzy_entities, unpicklable=True)
+                jsonpickle.encode(self.fuzzy_entities, unpicklable=True),
             )
 
-    def _get_entities(self, training_data: TrainingData, domain: Domain) -> List[FuzzyEntities]:
+    def _get_entities(
+        self, training_data: TrainingData, domain: Domain
+    ) -> List[FuzzyEntities]:
         """
         Fetch entities with a finite set of values defined at training time
         Entities have to be defined the domain file, possible values are retrieved from
@@ -241,7 +255,11 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         entities: List[FuzzyEntities] = []
 
         for entity_name in domain.entities:
-            lookup_table = self._get_lookup_table(entity_name, lookup_tables) if lookup_tables is not None else None
+            lookup_table = (
+                self._get_lookup_table(entity_name, lookup_tables)
+                if lookup_tables is not None
+                else None
+            )
             slot = self._get_slot(entity_name, slots) if slots is not None else None
 
             if lookup_table is None and slot is None:
@@ -261,30 +279,28 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
                 entity_values = list(map(self._process_text, slot.values))
 
             if len(entity_values) == 0:
-                logger.error(
-                    f"No values found for entity {entity_name}."
-                )
+                logger.error(f"No values found for entity {entity_name}.")
 
             synonyms = {
                 self._process_text(synonym): self._process_text(entity)
                 for synonym, entity in training_data.entity_synonyms.items()
             }
-            entities.append(FuzzyEntities(
-                entity_name,
-                entity_values,
-                synonyms
-            ))
+            entities.append(FuzzyEntities(entity_name, entity_values, synonyms))
 
         return entities
 
-    def _get_lookup_table(self, entity_name: Text, lookup_tables: List[Dict[Text, Any]]) -> Optional[Dict[Text, Any]]:
+    def _get_lookup_table(
+        self, entity_name: Text, lookup_tables: List[Dict[Text, Any]]
+    ) -> Optional[Dict[Text, Any]]:
         for lookup_table in lookup_tables:
             if lookup_table["name"] == entity_name:
                 return lookup_table
 
         return None
 
-    def _get_slot(self, entity_name: Text, slots: List[Slot]) -> Optional[CategoricalSlot]:
+    def _get_slot(
+        self, entity_name: Text, slots: List[Slot]
+    ) -> Optional[CategoricalSlot]:
         if not self.use_slots:
             return None
 
@@ -295,7 +311,9 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             if slot.name != entity_name:
                 continue
 
-            if slot.type_name != CategoricalSlot.type_name and not isinstance(slot, CategoricalSlot):
+            if slot.type_name != CategoricalSlot.type_name and not isinstance(
+                slot, CategoricalSlot
+            ):
                 return None
 
             if not any(filter(filter_own_mappings, slot.mappings)):
