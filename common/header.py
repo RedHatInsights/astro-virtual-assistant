@@ -7,7 +7,7 @@ class Header:
 
     def add_header(self, key, value):
         self.headers[key] = value
-    
+
     def add_dict(self, dict):
         self.headers.update(dict)
 

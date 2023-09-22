@@ -16,6 +16,7 @@ NAMESPACE = None
 HOSTNAME = None
 PROMETHEUS = None
 
+
 def initialize_clowdapp():
     global GROUP_ID, API_LISTEN_ADDRESS, API_URL_EXPIRY, AWS_REGION, LOG_LEVEL, NAMESPACE, HOSTNAME, PROMETHEUS
     GROUP_ID = os.getenv("GROUP_ID", APP_NAME)
@@ -31,6 +32,7 @@ def initialize_clowdapp():
 
     PROMETHEUS = os.getenv("PROMETHEUS", "false")
 
+
 def log_config():
     import sys
 
@@ -40,6 +42,7 @@ def log_config():
                 continue
             logger.info("Using %s: %s", k, v)
 
+
 def get_namespace():
     try:
         with open("/var/run/secrets/kubernetes.io/serviceaccount/namespace", "r") as f:
@@ -47,6 +50,7 @@ def get_namespace():
         return namespace
     except EnvironmentError:
         logger.info("Not running in openshift")
+
 
 if os.getenv("ACG_CONFIG"):
     from app_common_python import LoadedConfig

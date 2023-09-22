@@ -10,13 +10,17 @@ logger = None
 
 event = Event()
 
+
 def start_prometheus():
     start_http_server(config.PROMETHEUS_PORT)
+
 
 def handle_signal(signal, frame):
     event.set()
 
+
 signal.signal(signal.SIGTERM, handle_signal)
+
 
 def main():
     global logger
@@ -30,8 +34,9 @@ def main():
 
     if config.PROMETHEUS == "True":
         start_prometheus()
-    
+
     rasa_main()
+
 
 if __name__ == "__main__":
     main()
