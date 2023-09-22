@@ -16,6 +16,7 @@ from rasa.core.channels.channel import (
 
 logger = logging.initialize_logging()
 
+
 # Custom channel for console.redhat.com traffic
 # to read the identity header provided
 # and link it to the user session
@@ -28,7 +29,6 @@ class ConsoleInput(InputChannel):
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[None]]
     ) -> Blueprint:
-
         custom_webhook = Blueprint("custom_webhook_{}".format(type(self).__name__))
 
         @custom_webhook.route("/", methods=["GET"])

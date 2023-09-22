@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 # Helper class for building request headers
 class Header:
     def __init__(self) -> None:

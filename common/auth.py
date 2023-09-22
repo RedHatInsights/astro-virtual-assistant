@@ -14,6 +14,7 @@ SSO_REFRESH_TOKEN_URL = (
 
 local_dev_token: str | None = None
 
+
 # if local token specified, it defaults to it
 def get_auth_header(tracker: Tracker, header: Header) -> Header:
     global local_dev_token
