@@ -5,7 +5,7 @@
 PRETTIER_ARGS = -c
 BLACK_ARGS =
 
-lint: BLACK_ARGS += --check
+lint: BLACK_ARGS += --diff
 lint: --lint
 
 lint-fix: PRETTIER_ARGS +=  -w
