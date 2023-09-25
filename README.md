@@ -14,6 +14,7 @@ by running:
 
 ```bash
 pipenv install --dev
+pipenv run install-api
 ```
 
 This will install [rasa](https://rasa.com/docs/rasa/) inside the virtual environment created by
