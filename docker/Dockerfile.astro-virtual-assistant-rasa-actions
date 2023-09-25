@@ -1,21 +1,51 @@
-FROM rasa/rasa:3.5.10
-
-WORKDIR /app
-ENV HOME=/app
-COPY --chown=rasa ./actions ./actions
-COPY --chown=rasa ./common ./common
-COPY --chown=rasa *.yml .
-COPY --chown=rasa Pipfile* .
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
 USER root
-RUN pip install --upgrade pip && \
-    pip install pipenv && \
-    pipenv requirements > requirements.txt && \
-    pip install -r requirements.txt && \
-    rm requirements.txt Pipfile*
 
-USER rasa
+ENV PYTHON_VERSION=3.9 \
+    LANG=en_US.UTF-8 \
+    PIP_NO_CACHE_DIR=off \
+    PIPENV_VENV_IN_PROJECT=1 \
+    PIPENV_VERBOSITY=-1 \
+    APP_ROOT=/opt/virtual-assistant
 
-ENTRYPOINT ["rasa"]
+# Install Python 3.9
+RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils" && \
+    microdnf --nodocs -y upgrade && \
+    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    microdnf -y clean all --enablerepo='*'
 
-CMD ["run", "actions"]
+# Set the default Python version
+RUN alternatives --set python /usr/bin/python3.9
+RUN python --version
+
+RUN python -m venv /pipenv-venv
+ENV PATH="/pipenv-venv/bin:$PATH"
+
+RUN python -m ensurepip --upgrade && \
+    python -m pip install --upgrade pip && \
+    python -m pip install pipenv
+
+WORKDIR ${APP_ROOT}
+
+COPY Pipfile* ./
+COPY actions-requirements.txt .
+
+RUN pipenv install && \
+    pipenv run install-actions && \
+    pipenv --clear
+
+ENV VIRTUAL_ENV=${APP_ROOT}/.venv
+ENV \
+    PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Copy over required files
+COPY ./actions ./actions
+COPY ./common ./common
+COPY *.yml ./
+
+USER 1001
+
+ENTRYPOINT ["python", "-m", "rasa_sdk"]
+CMD ["--actions", "actions"]
