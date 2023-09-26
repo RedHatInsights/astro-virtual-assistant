@@ -45,7 +45,7 @@ COPY ./actions ./actions
 COPY ./common ./common
 COPY *.yml ./
 
-USER 1001
+COPY ./scripts/entrypoint.sh ./scripts/entrypoint.sh
+RUN chmod +x ./scripts/entrypoint.sh
 
-ENTRYPOINT ["python", "-m", "rasa_sdk"]
-CMD ["--actions", "actions"]
+USER 1001

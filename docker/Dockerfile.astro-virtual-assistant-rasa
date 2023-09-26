@@ -54,7 +54,7 @@ RUN rasa train --domain data
 
 RUN rm -r .rasa
 
-USER 1001
+COPY ./scripts/entrypoint.sh ./scripts/entrypoint.sh
+RUN chmod +x ./scripts/entrypoint.sh
 
-ENTRYPOINT ["rasa"]
-CMD ["run", "--endpoints", "endpoints.yml"]
+USER 1001
