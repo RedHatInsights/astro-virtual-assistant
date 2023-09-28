@@ -20,6 +20,7 @@ tracker_store:
     type: ${TRACKER_STORE_TYPE}
     dialect: "postgresql"  # the dialect used to interact with the db
     url: ${DB_HOST}  # (optional) host of the sql db, e.g. "localhost"
+    port: ${DB_PORT} # Port of the DB
     db: ${DB_NAME}  # path to your db
     username: ${DB_USER} # username used for authentication
     password:  ${DB_PASSWORD} # password used for authentication

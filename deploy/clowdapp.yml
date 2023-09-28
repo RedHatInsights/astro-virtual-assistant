@@ -50,11 +50,11 @@ objects:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: ${CPU_LIMIT}
-            memory: ${MEMORY_LIMIT}
+            cpu: ${API_CPU_LIMIT}
+            memory: ${API_MEMORY_LIMIT}
           requests:
-            cpu: ${CPU_REQUEST}
-            memory: ${MEMORY_REQUEST}
+            cpu: ${API_CPU_REQUEST}
+            memory: ${API_MEMORY_REQUEST}
         env:
           - name: CLOWDER_ENABLED
             value: ${CLOWDER_ENABLED}
@@ -99,11 +99,11 @@ objects:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: ${CPU_LIMIT}
-            memory: ${MEMORY_LIMIT}
+            cpu: ${ACTIONS_CPU_LIMIT}
+            memory: ${ACTIONS_MEMORY_LIMIT}
           requests:
-            cpu: ${CPU_REQUEST}
-            memory: ${MEMORY_REQUEST}
+            cpu: ${ACTIONS_CPU_REQUEST}
+            memory: ${ACTIONS_MEMORY_REQUEST}
         env:
           - name: CLOWDER_ENABLED
             value: ${CLOWDER_ENABLED}
@@ -121,16 +121,28 @@ parameters:
 - name: LOG_LEVEL
   value: INFO
 - description: Cpu limit of service
-  name: CPU_LIMIT
+  name: API_CPU_LIMIT
   value: 500m
 - description: memory limit of service
-  name: MEMORY_LIMIT
-  value: 512Mi
+  name: API_MEMORY_LIMIT
+  value: 2Gi
 - description: cpu request of service
-  name: CPU_REQUEST
+  name: API_CPU_REQUEST
   value: 250m
 - description: memory request of service
-  name: MEMORY_REQUEST
+  name: API_MEMORY_REQUEST
+  value: 512Mi
+- description: Cpu limit of service
+  name: ACTIONS_CPU_LIMIT
+  value: 500m
+- description: memory limit of service
+  name: ACTIONS_MEMORY_LIMIT
+  value: 512Mi
+- description: cpu request of service
+  name: ACTIONS_CPU_REQUEST
+  value: 250m
+- description: memory request of service
+  name: ACTIONS_MEMORY_REQUEST
   value: 256Mi
 - description: Determines Clowder deployment
   name: CLOWDER_ENABLED
