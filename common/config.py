@@ -1,6 +1,5 @@
 import os
 import logging
-import yaml
 
 APP_NAME = os.getenv("APP_NAME", "astro-virtual-assistant")
 

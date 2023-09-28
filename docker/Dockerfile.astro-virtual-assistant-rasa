@@ -46,6 +46,7 @@ COPY ./common ./common
 COPY ./pipeline ./pipeline
 COPY ./data ./data
 COPY *.yml ./
+COPY ./app.py ./app.py
 
 # Stop rasa from reporting anonymous usage telemetry
 RUN rasa telemetry disable

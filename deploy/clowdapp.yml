@@ -26,7 +26,8 @@ objects:
       podSpec:
         image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
         command:
-          - ./scripts/entrypoint.sh api
+          - ./scripts/entrypoint.sh
+          - api
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -74,7 +75,8 @@ objects:
       podSpec:
         image: ${ACTIONS_IMAGE_NAME}:${ACTIONS_IMAGE_TAG}
         command:
-          - ./scripts/entrypoint.sh actions
+          - ./scripts/entrypoint.sh
+          - actions
         livenessProbe:
           failureThreshold: 3
           httpGet:

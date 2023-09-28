@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <type>"
@@ -22,9 +22,9 @@ if [[ ! -z "${ACG_CONFIG}" ]]; then
 fi
 
 if [ "$type" = "api" ]; then
-  rasa run --endpoints endpoints.yml
+  python app.py run --endpoints endpoints.yml
 elif [ "$type" = "actions" ]; then
-  python -m rasa_sdk --actions actions
+  python run_actions.py --actions actions
 else
   echo "Unknown type: $type"
   exit 1

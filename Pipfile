@@ -12,11 +12,11 @@ app-common-python = "==0.2.3"
 boto3 = "==1.24.89"
 logstash-formatter = "==0.5.17"
 prometheus-client = "==0.14.1"
+pyjwt = "2.7.0"
 watchtower = "==3.0.0"
 
 [dev-packages]
 pyopenssl = "23.2.0"
-pyjwt = "2.7.0"
 pytest = "*"
 black = "==23.9.1"
 
