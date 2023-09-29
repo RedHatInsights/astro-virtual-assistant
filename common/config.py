@@ -66,6 +66,12 @@ if os.getenv("ACG_CONFIG"):
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", cfg.metricsPort))
     API_PORT = int(os.getenv("API_PORT", cfg.publicPort))
+    # Database
+    DB_HOST = os.getenv("DB_HOST", cfg.database.hostname)
+    DB_PORT = os.getenv("DB_PORT", cfg.database.port)
+    DB_USER = os.getenv("DB_USER", cfg.database.username)
+    DB_PASSWORD = os.getenv("DB_PASSWORD", cfg.database.password)
+    DB_NAME = os.getenv("DB_NAME", cfg.database.name)
 else:
     # Logging
     CW_AWS_ACCESS_KEY_ID = os.getenv("CW_AWS_ACCESS_KEY_ID", None)
