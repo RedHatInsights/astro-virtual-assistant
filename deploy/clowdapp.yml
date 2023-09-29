@@ -34,27 +34,20 @@ objects:
             path: /metrics
             port: 9000
             scheme: HTTP
-          initialDelaySeconds: 10
+          initialDelaySeconds: 240
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 27
+          timeoutSeconds: 15
         readinessProbe:
           failureThreshold: 3
           httpGet:
             path: /metrics
             port: 9000
             scheme: HTTP
-          initialDelaySeconds: 10
+          initialDelaySeconds: 240
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 30
-        resources:
-          limits:
-            cpu: ${API_CPU_LIMIT}
-            memory: ${API_MEMORY_LIMIT}
-          requests:
-            cpu: ${API_CPU_REQUEST}
-            memory: ${API_MEMORY_REQUEST}
+          timeoutSeconds: 15
         env:
           - name: CLOWDER_ENABLED
             value: ${CLOWDER_ENABLED}
@@ -64,6 +57,15 @@ objects:
             value: ${TRACKER_STORE_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
+          - name: ACTIONS_ENDPOINT_URL
+            value: ${ACTIONS_ENDPOINT_URL}
+        resources:
+          limits:
+            cpu: 500m
+            memory: 4Gi
+          requests:
+            cpu: 250m
+            memory: 2Gi
 
     - name: actions
       minReplicas: ${{MIN_REPLICAS}}
@@ -97,13 +99,6 @@ objects:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 30
-        resources:
-          limits:
-            cpu: ${ACTIONS_CPU_LIMIT}
-            memory: ${ACTIONS_MEMORY_LIMIT}
-          requests:
-            cpu: ${ACTIONS_CPU_REQUEST}
-            memory: ${ACTIONS_MEMORY_REQUEST}
         env:
           - name: CLOWDER_ENABLED
             value: ${CLOWDER_ENABLED}
@@ -113,6 +108,29 @@ objects:
             value: ${TRACKER_STORE_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: actions-server
+    labels:
+      app: virtual-assistant
+      component: virtual-assistant-actions
+  spec:
+    selector:
+      app: actions
+    ports:
+    - name: tcp-actions
+      protocol: TCP
+      port: 5055
+      targetPort: 5055
 
 parameters:
 - description: Minimum number of replicas required
@@ -120,30 +138,6 @@ parameters:
   value: "1"
 - name: LOG_LEVEL
   value: INFO
-- description: Cpu limit of service
-  name: API_CPU_LIMIT
-  value: 500m
-- description: memory limit of service
-  name: API_MEMORY_LIMIT
-  value: 2Gi
-- description: cpu request of service
-  name: API_CPU_REQUEST
-  value: 250m
-- description: memory request of service
-  name: API_MEMORY_REQUEST
-  value: 512Mi
-- description: Cpu limit of service
-  name: ACTIONS_CPU_LIMIT
-  value: 500m
-- description: memory limit of service
-  name: ACTIONS_MEMORY_LIMIT
-  value: 512Mi
-- description: cpu request of service
-  name: ACTIONS_CPU_REQUEST
-  value: 250m
-- description: memory request of service
-  name: ACTIONS_MEMORY_REQUEST
-  value: 256Mi
 - description: Determines Clowder deployment
   name: CLOWDER_ENABLED
   value: "true"
@@ -169,3 +163,6 @@ parameters:
 - description: Enable Prometheus
   name: PROMETHEUS
   value: "True"
+- description: Actions endpoint url
+  name: ACTIONS_ENDPOINT_URL
+  value: http://actions-server:5055/webhook
