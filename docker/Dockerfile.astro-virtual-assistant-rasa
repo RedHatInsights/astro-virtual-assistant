@@ -55,7 +55,6 @@ RUN rasa train --domain data
 
 RUN rm -r .rasa
 
-COPY ./scripts/entrypoint.sh ./scripts/entrypoint.sh
-RUN chmod +x ./scripts/entrypoint.sh
-
 USER 1001
+
+ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml"]

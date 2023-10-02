@@ -46,7 +46,6 @@ COPY ./common ./common
 COPY *.yml ./
 COPY ./run_actions.py ./run_actions.py
 
-COPY ./scripts/entrypoint.sh ./scripts/entrypoint.sh
-RUN chmod +x ./scripts/entrypoint.sh
-
 USER 1001
+
+ENTRYPOINT ["python", "run_actions.py", "--actions", "actions"]

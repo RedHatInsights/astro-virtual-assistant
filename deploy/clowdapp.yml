@@ -25,9 +25,6 @@ objects:
           enabled: true
       podSpec:
         image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
-        command:
-          - ./scripts/entrypoint.sh
-          - api
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -62,10 +59,10 @@ objects:
         resources:
           limits:
             cpu: 500m
-            memory: 4Gi
+            memory: 2Gi
           requests:
             cpu: 250m
-            memory: 2Gi
+            memory: 1Gi
 
     - name: actions
       minReplicas: ${{MIN_REPLICAS}}
@@ -76,9 +73,6 @@ objects:
           enabled: true
       podSpec:
         image: ${ACTIONS_IMAGE_NAME}:${ACTIONS_IMAGE_TAG}
-        command:
-          - ./scripts/entrypoint.sh
-          - actions
         livenessProbe:
           failureThreshold: 3
           httpGet:
