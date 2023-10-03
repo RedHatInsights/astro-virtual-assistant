@@ -10,7 +10,7 @@ ENV PYTHON_VERSION=3.9 \
     APP_ROOT=/opt/virtual-assistant
 
 # Install Python 3.9
-RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils" && \
+RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq" && \
     microdnf --nodocs -y upgrade && \
     microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -46,6 +46,7 @@ COPY ./common ./common
 COPY ./pipeline ./pipeline
 COPY ./data ./data
 COPY *.yml ./
+COPY ./app.py ./app.py
 
 # Stop rasa from reporting anonymous usage telemetry
 RUN rasa telemetry disable
@@ -56,5 +57,4 @@ RUN rm -r .rasa
 
 USER 1001
 
-ENTRYPOINT ["rasa"]
-CMD ["run", "--endpoints", "endpoints.yml"]
+ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml"]

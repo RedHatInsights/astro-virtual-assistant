@@ -10,7 +10,7 @@ ENV PYTHON_VERSION=3.9 \
     APP_ROOT=/opt/virtual-assistant
 
 # Install Python 3.9
-RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils" && \
+RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq" && \
     microdnf --nodocs -y upgrade && \
     microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -44,8 +44,8 @@ ENV \
 COPY ./actions ./actions
 COPY ./common ./common
 COPY *.yml ./
+COPY ./run_actions.py ./run_actions.py
 
 USER 1001
 
-ENTRYPOINT ["python", "-m", "rasa_sdk"]
-CMD ["--actions", "actions"]
+ENTRYPOINT ["python", "run_actions.py", "--actions", "actions"]

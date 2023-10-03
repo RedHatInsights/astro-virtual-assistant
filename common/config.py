@@ -1,6 +1,5 @@
 import os
 import logging
-import yaml
 
 APP_NAME = os.getenv("APP_NAME", "astro-virtual-assistant")
 
@@ -67,6 +66,13 @@ if os.getenv("ACG_CONFIG"):
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", cfg.metricsPort))
     API_PORT = int(os.getenv("API_PORT", cfg.publicPort))
+    # Database
+    os.environ["DB_HOST"] = cfg.database.hostname
+    os.environ["DB_PORT"] = str(cfg.database.port)
+    os.environ["DB_USER"] = cfg.database.username
+    os.environ["DB_PASSWORD"] = cfg.database.password
+    os.environ["DB_NAME"] = cfg.database.name
+    os.environ["DB_SSLMODE"] = cfg.database.sslMode
 else:
     # Logging
     CW_AWS_ACCESS_KEY_ID = os.getenv("CW_AWS_ACCESS_KEY_ID", None)

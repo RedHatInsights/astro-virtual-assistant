@@ -1,0 +1,162 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: virtual-assistant
+objects:
+- apiVersion: cloud.redhat.com/v1alpha1
+  kind: ClowdApp
+  metadata:
+    name: virtual-assistant
+  spec:
+    envName: ${ENV_NAME}
+
+    database:
+      name: virtual-assistant
+      version: 12
+
+    deployments:
+    - name: api
+      minReplicas: ${{MIN_REPLICAS}}
+      webServices:
+        public:
+          enabled: true
+        metrics:
+          enabled: true
+      podSpec:
+        image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /metrics
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 240
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /metrics
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 240
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        env:
+          - name: CLOWDER_ENABLED
+            value: ${CLOWDER_ENABLED}
+          - name: LOG_LEVEL
+            value: ${LOG_LEVEL}
+          - name: TRACKER_STORE_TYPE
+            value: ${TRACKER_STORE_TYPE}
+          - name: PROMETHEUS
+            value: ${PROMETHEUS}
+          - name: ACTIONS_ENDPOINT_URL
+            value: ${ACTIONS_ENDPOINT_URL}
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2Gi
+          requests:
+            cpu: 250m
+            memory: 1Gi
+
+    - name: actions
+      minReplicas: ${{MIN_REPLICAS}}
+      webServices:
+        public:
+          enabled: true
+        metrics:
+          enabled: true
+      podSpec:
+        image: ${ACTIONS_IMAGE_NAME}:${ACTIONS_IMAGE_TAG}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /metrics
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 27
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /metrics
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        env:
+          - name: CLOWDER_ENABLED
+            value: ${CLOWDER_ENABLED}
+          - name: LOG_LEVEL
+            value: ${LOG_LEVEL}
+          - name: TRACKER_STORE_TYPE
+            value: ${TRACKER_STORE_TYPE}
+          - name: PROMETHEUS
+            value: ${PROMETHEUS}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: actions-server
+    labels:
+      app: virtual-assistant
+      component: virtual-assistant-actions
+  spec:
+    selector:
+      app: actions
+    ports:
+    - name: tcp-actions
+      protocol: TCP
+      port: 5055
+      targetPort: 5055
+
+parameters:
+- description: Minimum number of replicas required
+  name: MIN_REPLICAS
+  value: "1"
+- name: LOG_LEVEL
+  value: INFO
+- description: Determines Clowder deployment
+  name: CLOWDER_ENABLED
+  value: "true"
+- description: ClowdEnv Name
+  name: ENV_NAME
+  value: "virtual-assistant"
+  required: true
+- descripton: Virtual Assistant API image name
+  name: API_IMAGE_NAME
+  value: "quay.io/cloudservices/virtual-assistant-api"
+- description: API Image tag
+  name: API_IMAGE_TAG
+  required: true
+- descripton: Virtual Assistant actions server image name
+  name: ACTIONS_IMAGE_NAME
+  value: "quay.io/cloudservices/virtual-assistant-actions"
+- description: Actions Image tag
+  name: ACTIONS_IMAGE_TAG
+  required: true
+- description: Tracker store type
+  name: TRACKER_STORE_TYPE
+  value: "SQL"
+- description: Enable Prometheus
+  name: PROMETHEUS
+  value: "True"
+- description: Actions endpoint url
+  name: ACTIONS_ENDPOINT_URL
+  value: http://actions-server:5055/webhook
