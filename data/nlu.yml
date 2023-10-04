@@ -16,3 +16,8 @@ nlu:
     examples: |
       - More
       - See more
+
+  - intent: intent_out_of_scope
+    examples:
+      - Who came up with the Red Hat?
+      - What are all the products Red Hat makes?

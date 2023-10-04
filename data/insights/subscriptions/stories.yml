@@ -1,0 +1,8 @@
+version: "3.1"
+
+stories:
+  - story: User wants out-of-scope cost information for subscriptions
+    steps:
+      - intent: intent_out_of_scope_subscriptions_costs
+      - action: utter_out_of_scope_subscriptions_costs
+      - action: utter_capabilities_subscriptions

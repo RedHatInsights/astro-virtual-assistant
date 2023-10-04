@@ -3,6 +3,7 @@ version: "3.1"
 intents:
   - intent_core_capabilities
   - intent_core_more
+  - intent_out_of_scope
 
 entities: []
 
@@ -32,3 +33,5 @@ responses:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
+  utter_out_of_scope:
+    - text: "I haven't been programmed to do that. Sorry!"
