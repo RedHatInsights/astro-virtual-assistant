@@ -17,8 +17,7 @@ include make/Makefile.lint.mk
 
 # install and train the project
 install:
-	pipenv install --dev
-	pipenv run install-api
+	pipenv install --categories "packages dev-packages api-packages"
 
 train:
 	pipenv run ${RASA_EXEC} train ${RASA_TRAIN_ARGS}
