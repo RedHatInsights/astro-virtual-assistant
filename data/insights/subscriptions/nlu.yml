@@ -2,7 +2,7 @@ version: "3.1"
 
 nlu:
   - intent: intent_out_of_scope_subscriptions_costs
-    examples:
+    examples: |
       - How much does a subscription cost?
       - What do my subscriptions cost?
       - How much do I pay for my subscriptions?

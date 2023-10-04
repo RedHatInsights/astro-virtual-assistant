@@ -17,7 +17,23 @@ nlu:
       - More
       - See more
 
+  - intent: intent_planned_features
+    examples: |
+      - What's my burndown?
+      - What's my committed spend?
+      - Have I met my commitment for this year?
+      - Whats my yearly spend?
+      - What's my Openshift cluster spend?
+      - How much am I spending on Openshift clusters?
+      - Show me how much I'm spending on Openshift?
+      - How much did my organization spend this month?
+      - Show this month's spending
+      - How much is my line of business spending?
+      - Show me spending by product
+      - Create a cost report
+      - Create a report about my spending
+
   - intent: intent_out_of_scope
-    examples:
+    examples: |
       - Who came up with the Red Hat?
       - What are all the products Red Hat makes?
