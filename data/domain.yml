@@ -6,10 +6,16 @@ intents:
 
 entities: []
 
-slots: {}
+slots:
+  current_url:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
 
 actions:
   - action_core_one_back
+  - action_extract_slots # overriden default action
 
 responses:
   utter_core_capabilities_main:
