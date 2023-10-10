@@ -1,0 +1,38 @@
+version: "3.1"
+
+stories:
+  - story: User has access issues - 1
+    steps:
+      - user: |
+          Can you help me get access?
+        intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
+  
+  - story: User has access issues - 2
+    steps:
+      - user: |
+          What do I do if I can't access something?
+        intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
+  
+  - story: User has access issues - 3
+    steps:
+      - user: |
+          I can't view this. I get an access error.
+        intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
+
+  - story: User has access issues - 4
+    steps:
+      - user: |
+          Access
+        intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
+  
+  
+  - story: User has access issues - 5
+    steps:
+      - user: |
+          Who do I ask for access?
+        intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
