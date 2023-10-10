@@ -2,7 +2,7 @@ CONTAINER_EXEC ?= podman
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
 RASA_EXEC = python app.py
-RASA_TRAIN_ARGS = --domain data --force
+RASA_TRAIN_ARGS = --domain data
 RASA_RUN_ARGS = --endpoints endpoints.yml
 
 export TRACKER_STORE_TYPE ?=

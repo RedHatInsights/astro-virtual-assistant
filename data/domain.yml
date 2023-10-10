@@ -11,11 +11,12 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
+      - type: custom
+        action: action_set_current_url
 
 actions:
   - action_core_one_back
-  - action_extract_slots # overriden default action
+  - action_set_current_url
 
 responses:
   utter_core_capabilities_main:

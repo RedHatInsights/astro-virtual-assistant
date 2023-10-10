@@ -49,9 +49,6 @@ class ConsoleInput(InputChannel):
             
             current_url = self.extract_current_url(request) # not a required field
 
-            logger.error("channel")
-            logger.error("current_url: " + str(current_url))
-
             sender_id = self.get_sender(identity)
             if not sender_id:
                 return response.json(
@@ -101,9 +98,6 @@ class ConsoleInput(InputChannel):
     
     def extract_current_url(self, request: Request) -> Optional[Dict[Text, Any]]:
         """Extracts the current url from the incoming request."""
-
-        logger.error("extract_current_url")
-        logger.error(request.json)
         if request.json.get("metadata"):
             return request.json.get("metadata").get("current_url")
         
