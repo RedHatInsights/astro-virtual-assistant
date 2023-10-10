@@ -1,0 +1,7 @@
+version: "3.1"
+
+stories:
+  - story: User is having access issues
+    steps:
+      - intent: intent_capabilities_user_access
+      - action: utter_capabilities_user_access
