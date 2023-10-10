@@ -1,0 +1,26 @@
+version: "3.1"
+
+stories:
+  - story: User asks for out-of-scope subscriptions feature - 1
+    steps:
+      - user: |
+          How much does a subscription cost?
+        intent: intent_out_of_scope_subscriptions_costs
+      - action: utter_out_of_scope_subscriptions_costs
+      - action: utter_capabilities_subscriptions
+
+  - story: User asks for out-of-scope subscriptions feature - 2
+    steps:
+      - user: |
+          What are my subscriptions costing me?
+        intent: intent_out_of_scope_subscriptions_costs
+      - action: utter_out_of_scope_subscriptions_costs
+      - action: utter_capabilities_subscriptions
+  
+  - story: User asks for out-of-scope subscriptions feature - 3
+    steps:
+      - user: |
+          How much am I paying for my subs?
+        intent: intent_out_of_scope_subscriptions_costs
+      - action: utter_out_of_scope_subscriptions_costs
+      - action: utter_capabilities_subscriptions
