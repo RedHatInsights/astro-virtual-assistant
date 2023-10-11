@@ -16,3 +16,16 @@ stories:
       - intent: intent_core_more
       - action: utter_core_rephrase
       - action: action_core_one_back
+
+  - story: User completes an action - just for testing
+    steps:
+      - intent: intent_complete
+      - action: form_feedback
+      - active_loop: form_feedback
+    
+  - story: User has asked all their questions
+    steps:
+      - intent: intent_cancelled_early
+      - action: action_cancelled_early
+      - action: form_feedback
+      - active_loop: form_feedback

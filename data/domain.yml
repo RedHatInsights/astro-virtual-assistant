@@ -3,13 +3,80 @@ version: "3.1"
 intents:
   - intent_core_capabilities
   - intent_core_more
+  - intent_complete
+  - intent_cancelled_early
+  - intent_affirm
+  - intent_deny
 
 entities: []
 
-slots: {}
+slots:
+  feedback_rating:
+    type: bool
+    mappings:
+      - type: from_intent
+        intent: intent_affirm
+        value: true
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_rating
+      - type: from_intent
+        intent: intent_deny
+        value: false
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_thumb_signal
+  feedback_anything_else:
+    type: bool
+    mappings:
+      - type: from_intent
+        intent: intent_affirm
+        value: true
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_anything_else
+      - type: from_intent
+        intent: intent_deny
+        value: false
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_anything_else
+  feedback_additional_comment_question:
+    type: bool
+    mappings:
+      - type: from_intent
+        intent: intent_affirm
+        value: true
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_additional_comment_question
+      - type: from_intent
+        intent: intent_deny
+        value: false
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_additional_comment_question
+  feedback_additional_comment:
+    type: text
+    mappings:
+      - type: from_text
+        value: true
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_additional_comment
 
 actions:
   - action_core_one_back
+  - action_cancelled_early
+  - validate_feedback_form
+
+forms:
+  form_feedback:
+    required_slots:
+      - feedback_rating
+      - feedback_anything_else
+      - feedback_additional_comment_question
+      - feedback_additional_comment
 
 responses:
   utter_core_capabilities_main:
@@ -32,3 +99,39 @@ responses:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
+  utter_anything_else:
+    - text: "Is there anything else I can help you with today?"
+      buttons:
+        - title: Yes
+          payload: Yes
+        - title: No
+          payload: No
+  utter_anything_else_yes:
+    - text: "Sure! Go ahead and ask your question."
+  utter_anything_else_no:
+    - text: "Ok. I'll be here if you need me."
+  utter_feedback_rating:
+    - text: "Were you able to get help with what you needed?"
+      buttons:
+        - title: Yes
+          payload: Yes
+        - title: No
+          payload: No
+  utter_feedback_rating_yes:
+    - text: "I'm glad I could help."
+  utter_feedback_rating_no:
+    - text: "I'm sorry I couldn't help you. I'll try to improve my capabilities."
+  utter_feedback_additional_comment_question:
+    - text: "Would you like to leave any additional feedback?"
+      buttons:
+        - title: Yes
+          payload: Yes
+        - title: No
+          payload: No
+  utter_feedback_additional_comment_submitted:
+    - text: "Thank you for your feedback!"
+    - text: "I appreciate your feedback!"
+    - text: "I'll share that with my team to review."
+    - text: "I'll share your comments with my team. Thank you."
+  utter_feedback_final:
+    - text: "My team is continually training me so I can help you better. Your interactions and feedback are key to my ability to grow and learn. You can start a new conversation with me anytime. Thanks for chatting with me today."

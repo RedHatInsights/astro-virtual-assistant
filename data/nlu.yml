@@ -16,3 +16,38 @@ nlu:
     examples: |
       - More
       - See more
+  
+  - intent: intent_affirm
+    examples: |
+      - Yes
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+  - intent: intent_deny
+    examples: |
+      - No
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+
+  - intent: intent_complete
+    examples: |
+      - We just went through a conversation
+      
+    
+  - intent: intent_cancelled_early
+    examples: |
+      - That's all
+      - I appreciate your help
+      - You can't do anything for me.
+      - You are no help at all
+      - I'm done
+      - I'm done with this
+      - I'm done with you
