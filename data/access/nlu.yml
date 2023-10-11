@@ -1,7 +1,7 @@
 version: "3.1"
 
 nlu:
-  - intent: intent_capabilities_user_access
+  - intent: intent_access_capabilities
     examples: |
       - Access issue
       - Access denied
