@@ -5,9 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet
 
-from common import logging
-
-logger = logging.initialize_logging()
+from .utils import is_user_event
 
 class ActionSetCurrentURL(Action):
     """Sets the user's current page URL to give us more context, 
@@ -22,14 +20,12 @@ class ActionSetCurrentURL(Action):
         current_url = None
 
         # find latest 'user' event
-        for i in range(len(tracker.events) - 1, -1, -1):
-            if tracker.events[i].get("event") == "user":
-                current_url = tracker.events[i].get("metadata").get("current_url")
-                break
+        latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
+
+        current_url = latest_user_event.get("metadata").get("current_url")
 
         if current_url:
             # overwrites the previous slot value
-            logger.info("setting current_url slot to " + current_url)
             return [SlotSet("current_url", current_url)]
         
-        return [...]
+        return []
