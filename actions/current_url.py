@@ -20,6 +20,9 @@ class ActionSetCurrentURL(Action):
         # find latest 'user' event
         latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
 
+        if latest_user_event is None:
+            return []
+
         current_url = latest_user_event.get("metadata").get("current_url")
 
         if current_url and current_url != tracker.get_slot("current_url"):
