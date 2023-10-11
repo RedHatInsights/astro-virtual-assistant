@@ -1,0 +1,27 @@
+version: "3.1"
+
+intents:
+  - intent_out_of_scope_subscriptions_costs
+
+entities: []
+
+slots: {}
+
+actions: []
+
+responses:
+  utter_capabilities_subscriptions:
+    - text: "Here's what I can help you do with your subscriptions."
+      buttons:
+        - title: See all of your subscriptions.
+          payload: List my subscriptions
+        - title: See your organization's expiring subscriptions.
+          payload: List expiring subscriptions
+        - title: Information on renewing subscriptions.
+          payload: Renew subscriptions
+        - title: Create a subscriptions report.
+          payload: Create a subscriptions report
+        - title: View documentation on the Red Hat Portal.
+          payload: View subscriptions documentation
+  utter_out_of_scope_subscriptions_costs:
+    - text: "I don't know anything about the finances around here."
