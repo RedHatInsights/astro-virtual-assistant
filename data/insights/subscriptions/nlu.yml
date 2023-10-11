@@ -1,8 +1,23 @@
 version: "3.1"
 
 nlu:
+  - synonym: subscription
+    examples: |
+      - Subscription Watch
+      - Sub Watch
+      - SubWatch
+      - the subscription service
+      - the subscriptions service
+      - Red Hat Subscription Management
+      - RHSM
+      - Subscription Management
+      - subscriptions
+      - subscription services
+      - subscriptions services
+    
   - intent: intent_out_of_scope_subscriptions_costs
     examples: |
       - How much does a subscription cost?
       - What do my subscriptions cost?
       - How much do I pay for my subscriptions?
+      - How much am I paying for my subscriptions?
