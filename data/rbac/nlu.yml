@@ -1,0 +1,9 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_rbac_request_access
+
+    examples: |
+      - I need access to
+      - Give me access to
+      - Requesting access to
