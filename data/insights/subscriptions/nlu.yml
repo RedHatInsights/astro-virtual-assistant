@@ -14,7 +14,7 @@ nlu:
       - subscriptions
       - subscription services
       - subscriptions services
-    
+
   - intent: intent_out_of_scope_subscriptions_costs
     examples: |
       - How much does a subscription cost?
