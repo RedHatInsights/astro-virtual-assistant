@@ -20,12 +20,12 @@ stories:
   - story: User completes an action - just for testing
     steps:
       - intent: intent_complete
-      - action: form_feedback
-      - active_loop: form_feedback
-    
+      - action: feedback_form
+      - active_loop: feedback_form
+
   - story: User has asked all their questions
     steps:
       - intent: intent_cancelled_early
       - action: action_cancelled_early
-      - action: form_feedback
-      - active_loop: form_feedback
+      - action: feedback_form
+      - active_loop: feedback_form

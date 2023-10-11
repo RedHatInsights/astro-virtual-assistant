@@ -4,8 +4,7 @@ from rasa_sdk import Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.types import DomainDict
-from rasa_sdk.events import SlotSet
-
+from rasa_sdk.events import SlotSet, EventType
 
 class CancelledEarly(Action):
     """User is done with their questions early."""
@@ -41,34 +40,49 @@ class ValidateFeedbackForm(FormValidationAction):
 
     async def process_slots(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> List[EventType]:
         # store the feedback in the database here
-        return []
-        
-            
-    async def validate_feedback_rating(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
+        #
+        # after storing the feedback, reset the slots
+        return [SlotSet(slot, None) for slot in self.base_slots()]
+
+    def validate_feedback_rating(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
-        if slot_value is False:
-            dispatcher.utter_message(template="utter_feedback_rating_yes")
+        if slot_value is True:
+            dispatcher.utter_message(response="utter_feedback_rating_yes")
         else:
-            dispatcher.utter_message(template="utter_feedback_rating_no")
+            dispatcher.utter_message(response="utter_feedback_rating_no")
 
         return {"feedback_rating": slot_value}
-    
-    async def validate_feedback_additional_comment_question(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
+
+    def validate_feedback_anything_else(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
+                                        domain: DomainDict) -> Dict[Text, Any]:
+        if slot_value is True:
+            dispatcher.utter_message(response="utter_feedback_anything_else_yes")
+        else:
+            dispatcher.utter_message(response="utter_feedback_anything_else_no")
+        
+        return {"feedback_anything_else": slot_value}
+
+    def validate_feedback_additional_comment_question(self, slot_value: bool, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
         if slot_value is False:
-            return {"feedback_additional_comment": None}
+            dispatcher.utter_message(response="utter_feedback_additional_comment_question_no")
+        else:
+            dispatcher.utter_message(response="utter_feedback_additional_comment_question_yes")
         
         return {"feedback_additional_comment_question": slot_value}
-        
+
     async def validate_feedback_additional_comment(self, slot_value: str, dispatcher: CollectingDispatcher, tracker: Tracker,
                                         domain: DomainDict) -> Dict[Text, Any]:
         if slot_value is None:
             # prompt user for additional comment again
-            dispatcher.utter_message(template="utter_feedback_additional_comment_question")
-        else:
-            dispatcher.utter_message(template="utter_feedback_additional_comment_submitted")
-            dispatcher.utter_message(template="utter_feedback_final")
+            dispatcher.utter_message(response="utter_feedback_additional_comment_not_received")
+
+            return {"feedback_additional_comment": None}
+
+        dispatcher.utter_message(response="utter_feedback_additional_comment_submitted")
+        dispatcher.utter_message(response="utter_feedback_final")
+
+        # call the process_slots function to store the feedback in the database
+        await self.process_slots(dispatcher, tracker, domain)
         
         return {"feedback_additional_comment": slot_value}
-    
-
