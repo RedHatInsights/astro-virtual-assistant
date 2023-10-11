@@ -16,3 +16,15 @@ stories:
       - intent: intent_core_more
       - action: utter_core_rephrase
       - action: action_core_one_back
+
+  - story: User asks for a planned but not implemented feature
+    steps:
+      - intent: intent_planned_features
+      - action: utter_planned_features
+      - action: utter_core_capabilities_main
+
+  - story: User asks for out-of-scope information
+    steps:
+      - intent: intent_out_of_scope
+      - action: utter_out_of_scope
+      - action: utter_core_capabilities_main
