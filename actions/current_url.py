@@ -17,8 +17,6 @@ class ActionSetCurrentURL(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        current_url = None
-
         # find latest 'user' event
         latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
 
