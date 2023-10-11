@@ -22,7 +22,7 @@ class ActionSetCurrentURL(Action):
 
         current_url = latest_user_event.get("metadata").get("current_url")
 
-        if current_url:
+        if current_url and current_url != tracker.get_slot("current_url"):
             # overwrites the previous slot value
             return [SlotSet("current_url", current_url)]
         
