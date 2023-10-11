@@ -5,6 +5,7 @@ intents:
   - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
+  - intent_core_session_start
 
 entities: []
 
@@ -15,12 +16,20 @@ slots:
     mappings:
       - type: custom
         action: action_set_current_url
+  first_time_greeting:
+    type: bool
+    mappings:
+      - type: custom
 
 actions:
+  - action_session_start
+  - action_core_first_session_start
   - action_core_one_back
   - action_set_current_url
 
 responses:
+  utter_core_first_time:
+    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:

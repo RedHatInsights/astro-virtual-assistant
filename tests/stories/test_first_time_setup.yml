@@ -1,18 +1,18 @@
 version: "3.1"
 
-rules:
-  - rule: First time greeting message
+stories:
+  - story: Session start intent is sent from a new user
     steps:
-      - intent: intent_core_session_start
       - slot_was_set:
           - first_time_greeting: True
+      - intent: intent_core_session_start
       - action: action_core_first_session_start
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
-  - rule: Not First time greeting message
+  - story: Session start intent is sent from a previous user
     steps:
-      - intent: intent_core_session_start
       - slot_was_set:
           - first_time_greeting: False
+      - intent: intent_core_session_start
       - action: action_listen
