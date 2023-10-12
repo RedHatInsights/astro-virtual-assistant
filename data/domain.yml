@@ -10,12 +10,17 @@ intents:
 entities: []
 
 slots:
+  _dummy:
+    type: any
+    influence_conversation: false
+    mappings:
+      - type: custom
+        action: action_core_pre_process
   current_url:
     type: text
     influence_conversation: true
     mappings:
       - type: custom
-        action: action_set_current_url
   first_time_greeting:
     type: bool
     mappings:
@@ -23,7 +28,6 @@ slots:
 
 actions:
   - action_session_start
-  - action_core_first_session_start
   - action_core_one_back
   - action_set_current_url
 
