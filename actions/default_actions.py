@@ -5,10 +5,8 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import ActionExecuted, EventType, SessionStarted, SlotSet
 
-SLOTS_TO_PERSIST = ['first_time_greeting']
-SLOT_DEFAULTS = {
-    "first_time_greeting": True
-}
+SLOTS_TO_PERSIST = ["first_time_greeting"]
+SLOT_DEFAULTS = {"first_time_greeting": True}
 
 
 class ActionSessionStarted(Action):
@@ -28,10 +26,10 @@ class ActionSessionStarted(Action):
         return slots
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [
             SessionStarted(),
             *self.fetch_slots(tracker),
-            ActionExecuted("action_listen")
+            ActionExecuted("action_listen"),
         ]

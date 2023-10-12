@@ -46,8 +46,8 @@ class ConsoleInput(InputChannel):
                 return response.json(
                     {"error": "No x-rh-identity header present"}, status=400
                 )
-            
-            current_url = self.extract_current_url(request) # not a required field
+
+            current_url = self.extract_current_url(request)  # not a required field
 
             sender_id = self.get_sender(identity)
             if not sender_id:
@@ -95,12 +95,12 @@ class ConsoleInput(InputChannel):
         """Extracts the identity from the incoming request."""
         identity = request.headers.get("x-rh-identity")
         return identity
-    
+
     def extract_current_url(self, request: Request) -> Optional[Dict[Text, Any]]:
         """Extracts the current url from the incoming request."""
         if request.json.get("metadata"):
             return request.json.get("metadata").get("current_url")
-        
+
         return None
 
     def get_sender(self, identity) -> Optional[Text]:

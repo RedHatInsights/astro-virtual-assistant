@@ -12,6 +12,7 @@ _SLOT_CURRENT_URL = "current_url"
 
 _INTENT_CORE_SESSION_START = "intent_core_session_start"
 
+
 class ActionBack(Action):
     """Revert the tracker state by one user utterances."""
 
@@ -19,7 +20,7 @@ class ActionBack(Action):
         return "action_core_one_back"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [UserUtteranceReverted()]
 
@@ -31,12 +32,15 @@ class ActionPreProcess(Action):
         return "action_core_pre_process"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         results = []
 
         # Set the first_time_greeting slot to False on a user interaction
-        if tracker.get_slot(_SLOT_FIRST_TIME_GREETING) and tracker.get_intent_of_latest_message(True) != _INTENT_CORE_SESSION_START:
+        if (
+            tracker.get_slot(_SLOT_FIRST_TIME_GREETING)
+            and tracker.get_intent_of_latest_message(True) != _INTENT_CORE_SESSION_START
+        ):
             results.append(SlotSet(_SLOT_FIRST_TIME_GREETING, False))
 
         # Fetch the current_url from the request and set its slot if it's different
