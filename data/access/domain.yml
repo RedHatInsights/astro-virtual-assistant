@@ -1,0 +1,21 @@
+version: "3.1"
+
+intents:
+  - intent_access_capabilities
+
+entities: []
+
+slots: {}
+
+actions: []
+
+responses:
+  utter_access_capabilities:
+    - text: "It sounds like you're having access issues. I can currently assist with:"
+      buttons:
+        - title: Requesting access for you
+          payload: Request access for me
+        - title: Troubleshooting your access
+          payload: Troubleshoot my access
+        - title: Contact your organization's administrator
+          payload: Contact my org admin

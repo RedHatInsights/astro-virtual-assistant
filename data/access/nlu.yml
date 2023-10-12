@@ -1,0 +1,14 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_access_capabilities
+    examples: |
+      - Access issue
+      - Access denied
+      - Can you help me get access?
+      - I am getting an access denied error...
+      - I can't view my data.
+      - I was able to view this page before, but now I can't.
+      - I can't access my data.
+      - Why can't I access my data?
+      - Why don't I have access to this?
