@@ -7,8 +7,9 @@ from rasa_sdk.events import SlotSet
 
 from .utils import is_user_event
 
+
 class ActionSetCurrentURL(Action):
-    """Sets the user's current page URL to give us more context, 
+    """Sets the user's current page URL to give us more context,
     specifically for user access flows."""
 
     def name(self) -> Text:
@@ -28,5 +29,5 @@ class ActionSetCurrentURL(Action):
         if current_url and current_url != tracker.get_slot("current_url"):
             # overwrites the previous slot value
             return [SlotSet("current_url", current_url)]
-        
+
         return []
