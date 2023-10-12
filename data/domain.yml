@@ -34,6 +34,10 @@ actions:
 responses:
   utter_core_first_time:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
+  utter_core_greeting:
+    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console."
+  utter_core_how_can_i_help:
+    - text: "How can I help you today?"
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:

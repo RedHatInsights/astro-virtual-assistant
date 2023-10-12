@@ -14,4 +14,5 @@ rules:
       - intent: intent_core_session_start
       - slot_was_set:
           - first_time_greeting: False
-      - action: action_listen
+      - action: utter_core_greeting
+      - action: utter_core_how_can_i_help
