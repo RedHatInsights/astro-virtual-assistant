@@ -28,4 +28,4 @@ jobs:
       - name: Train
         run: make train
       - name: Test
-        run: make test
+        run: make test-rasa
