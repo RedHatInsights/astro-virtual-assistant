@@ -1,0 +1,62 @@
+version: "3.1"
+
+intents:
+  - intent_closing_start
+
+actions:
+  - action_closing_got_help
+  - action_closing_share_feedback
+
+forms:
+  form_closing_feedback:
+    required_slots:
+      - closing_feedback
+
+slots:
+  closing_got_help:
+    type: bool
+    mappings:
+      - type: custom
+  closing_feedback:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_closing_feedback
+            requested_slot: closing_feedback
+
+responses:
+  utter_closing_got_help:
+    - text: Were you able to get help with what you needed?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_closing_additional_feedback:
+    - text: Got it. Would you like to leave any additional feedback?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_closing_type_below:
+    - text: Great. You can type in your feedback below and I'll share it with my team.
+  utter_closing_share_feedback:
+    - text: I'll share that with my team to review.
+  utter_closing_finally:
+    - text: >
+        My team is continually training me so that I'm able to expand the ways I can help you. Your interactions and
+        feedback are key to my ability to grow and learn.
+  utter_closing_anything_else:
+    - text: Is there anything else I can help you with today?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_closing_bye:
+    - text: Great. You can start a new conversation with me anytime. Thanks for chatting with me today.
+      custom:
+        type: command
+        command: core_finish_conversation

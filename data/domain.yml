@@ -6,6 +6,8 @@ intents:
   - intent_planned_features
   - intent_out_of_scope
   - intent_core_session_start
+  - intent_core_yes
+  - intent_core_no
 
 entities: []
 
