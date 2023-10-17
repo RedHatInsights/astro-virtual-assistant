@@ -30,5 +30,5 @@ class ActionShareFeedback(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        print("Sharing feedback:" + tracker.get_slot("closing_feedback"))
+        # Todo: Insert logic to send feedback to the platform
         return [SlotSet("closing_feedback", None)]
