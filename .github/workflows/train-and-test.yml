@@ -29,3 +29,13 @@ jobs:
         run: make train
       - name: Test
         run: make test-rasa
+      - name: Update results
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-files
+          path: |
+            models
+            results
+            train_test_split
+          retention-days: 7
