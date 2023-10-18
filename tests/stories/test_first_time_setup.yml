@@ -9,6 +9,16 @@ stories:
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
+  - story: Session start intent is sent from a new user and wants to see more options
+    steps:
+      - slot_was_set:
+          - first_time_greeting: True
+      - intent: intent_core_session_start
+      - action: utter_core_first_time
+      - action: utter_core_capabilities_main
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1
+
   - story: Session start intent is sent from a previous user
     steps:
       - slot_was_set:
