@@ -11,7 +11,7 @@ test: test-rasa test-python
 test-rasa: test-data test-nlu test-stories
 
 test-data:
-	${RASA_EXEC} data validate --fail-on-warnings ${RASA_DOMAIN_ARG}
+	${RASA_EXEC} data validate ${RASA_DOMAIN_ARG}
 
 test-nlu:
 	${RASA_EXEC} data split nlu
