@@ -30,6 +30,12 @@ stories:
       - action: utter_out_of_scope
       - action: utter_core_capabilities_main
 
+  - story: Data privacy policy
+    steps:
+      - intent: intent_data_privacy_policy
+      - action: utter_privacy_info_1
+      - action: utter_privacy_info_2
+
 rules:
   - rule: User wants to know more
     steps:

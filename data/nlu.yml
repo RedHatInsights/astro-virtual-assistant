@@ -48,3 +48,19 @@ nlu:
     examples: |
       - Who came up with the Red Hat?
       - What are all the products Red Hat makes?
+
+  - intent: intent_data_privacy_policy
+    examples: |
+      - Are you watching my conversations?
+      - How are you using my data?
+      - Who is getting my data?
+      - What is your privacy policy?
+      - How is my privacy protected?
+      - Are you collecting PII (Personally Identifiable Information)?
+      - Is my data being protected?
+      - What are you doing with this conversation?
+      - Is this conversation being monitored?
+      - Is a person watching this conversation?
+      - Will this conversation be reviewed?
+      - Is someone going to read this
+      - Are you learning from this conversation
