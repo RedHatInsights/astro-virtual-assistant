@@ -35,7 +35,7 @@ stories:
       - intent: intent_live_chat
       - action: utter_live_chat
       - action: utter_live_chat_feedback
-  
+
   - story: User wants to leave feedback about not speaking to an agent
     steps:
       - action: utter_live_chat_feedback
@@ -49,6 +49,7 @@ stories:
       - action: utter_live_chat_feedback
       - intent: intent_core_no
       - action: utter_closing_anything_else
+
   - story: Data privacy policy
     steps:
       - intent: intent_data_privacy_policy
