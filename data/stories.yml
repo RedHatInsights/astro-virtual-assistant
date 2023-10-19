@@ -36,7 +36,6 @@ stories:
       - action: utter_privacy_info_1
       - action: utter_privacy_info_2
 
-
 rules:
   - rule: User wants to know more
     steps:
