@@ -48,3 +48,27 @@ nlu:
     examples: |
       - Who came up with the Red Hat?
       - What are all the products Red Hat makes?
+
+  - synonym: agent
+    examples: |
+      - human
+      - person
+      - support
+      - IT support
+
+  - intent: intent_live_chat
+    examples: |
+      - speak to agent
+      - agent
+      - human
+      - person
+      - support agent
+      - support tech
+      - support engineer
+      - I want to talk to a human
+      - I need an agent
+      - Can you take me to a person?
+      - Do you offer live chat?
+      - Do you support live chat?
+      - Can I speak to an agent?
+      - Where can I find an agent?

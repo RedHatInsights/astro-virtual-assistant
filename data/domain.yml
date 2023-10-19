@@ -5,6 +5,7 @@ intents:
   - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
+  - intent_live_chat
   - intent_core_session_start
   - intent_core_yes
   - intent_core_no
@@ -67,3 +68,12 @@ responses:
     - text: "I'm working on that feature. Check for it again later."
   utter_out_of_scope:
     - text: "I haven't been programmed to do that. Sorry!"
+  utter_live_chat:
+    - text: "I don't support live chat, but you can leave feedback for my team to review."
+  utter_live_chat_feedback:
+    - text: "Would you like to submit any feedback?"
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
