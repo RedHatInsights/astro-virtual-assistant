@@ -88,3 +88,42 @@ nlu:
       - Will this conversation be reviewed?
       - Is someone going to read this
       - Are you learning from this conversation
+
+  - intent: intent_give_feedback
+    examples: |
+      - I want to submit feedback
+      - Can I give you some feedback
+      - I want to tell you something.
+      - Do you take feedback?
+      - I have an idea
+      - Where can I give input
+      - I want to leave a recommendation
+      - Where can I submit a thought
+
+  - intent: intent_send_complaint
+    examples: |
+      - This sucks.
+      - You suck.
+      - This is garbage
+      - This is trash
+      - I really hate this experience
+      - I'm not happy with this
+      - You're not helping me!
+      - I'm not getting what I need from this
+
+  - intent: intent_are_you_ai
+    examples: |
+      - What are you running on?
+      - How do you work?
+      - Do you use AI?
+      - Are you a robot?
+      - Is this a chatbot?
+      - Is this artificial intelligence
+      - What system are you running on
+      - Are you chatgpt
+      - Are you built using Watson?
+      - What backend are you running on?
+      - Is this machine learning
+      - Are you ai/ml
+      - Is this artificial intelligence (AI) or Machine Learning (ML)?
+      - Can you explain how you work?
