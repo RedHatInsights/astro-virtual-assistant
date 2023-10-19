@@ -1,0 +1,26 @@
+version: "3.1"
+
+stories:
+  - story: User wants to know about data privacy - 1
+    steps:
+      - user: |
+          How is my data being used?
+        intent: intent_data_privacy_policy
+      - action: utter_privacy_info_1
+      - action: utter_privacy_info_2
+
+  - story: User wants to know about data privacy - 2
+    steps:
+      - user: |
+          Are people watching my conversation?
+        intent: intent_data_privacy_policy
+      - action: utter_privacy_info_1
+      - action: utter_privacy_info_2
+
+  - story: User wants to know about data privacy - 3
+    steps:
+      - user: |
+          How are you ensuring my privacy?
+        intent: intent_data_privacy_policy
+      - action: utter_privacy_info_1
+      - action: utter_privacy_info_2
