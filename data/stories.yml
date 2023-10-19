@@ -5,17 +5,18 @@ stories:
     steps:
       - intent: intent_core_capabilities
       - action: utter_core_capabilities_main
-      - intent: intent_core_more
+
+  - story: User wants to know even more (and we don't have anything else)!
+    steps:
       - action: utter_core_capabilities_more_1
       - intent: intent_core_more
       - action: utter_core_capabilities_more_no_more
-      - action: action_core_one_back
 
   - story: User asks about more without asking for capabilities
     steps:
       - intent: intent_core_more
+      - action: action_unlikely_intent
       - action: utter_core_rephrase
-      - action: action_core_one_back
 
   - story: User asks for a planned but not implemented feature
     steps:
@@ -28,3 +29,10 @@ stories:
       - intent: intent_out_of_scope
       - action: utter_out_of_scope
       - action: utter_core_capabilities_main
+
+rules:
+  - rule: User wants to know more
+    steps:
+      - action: utter_core_capabilities_main
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1
