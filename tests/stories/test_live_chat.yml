@@ -1,0 +1,70 @@
+version: "3.1"
+
+stories:
+  - story: User wants to talk to live chat - leaving feedback 1
+    steps:
+      - user: |
+          I want to talk to a live agent
+        intent: intent_live_chat
+      - action: utter_live_chat
+      - action: utter_live_chat_feedback
+      - intent: intent_core_yes
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+      - user: |
+          How can you help me?
+        intent: intent_core_capabilities # Test stories requires a known intent
+      - slot_was_set:
+          - closing_feedback: "How can you help me?"
+      - action: form_closing_feedback
+      - active_loop: null
+      - action: utter_closing_share_feedback
+      - action: action_closing_share_feedback
+      - action: utter_closing_finally
+      - action: utter_closing_anything_else
+      - user: |
+          Yes
+        intent: intent_core_yes
+      - action: utter_core_how_can_i_help
+
+  - story: User wants to talk to live chat - leaving feedback 2
+    steps:
+      - user: |
+          Give me a damn human being!!
+        intent: intent_live_chat
+      - action: utter_live_chat
+      - action: utter_live_chat_feedback
+      - intent: intent_core_yes
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+      - user: |
+          How can you help me?
+        intent: intent_core_capabilities # Test stories requires a known intent
+      - slot_was_set:
+          - closing_feedback: "How can you help me?"
+      - action: form_closing_feedback
+      - active_loop: null
+      - action: utter_closing_share_feedback
+      - action: action_closing_share_feedback
+      - action: utter_closing_finally
+      - action: utter_closing_anything_else
+      - user: |
+          No
+        intent: intent_core_no
+      - action: utter_closing_bye
+
+  - story: User wants to talk to live chat - not leaving feedback
+    steps:
+      - user: |
+          Do you support live chat?
+        intent: intent_live_chat
+      - action: utter_live_chat
+      - action: utter_live_chat_feedback
+      - intent: intent_core_no
+      - action: utter_closing_anything_else
+      - user: |
+          No
+        intent: intent_core_no
+      - action: utter_closing_bye

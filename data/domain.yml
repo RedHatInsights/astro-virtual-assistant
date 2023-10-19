@@ -5,6 +5,7 @@ intents:
   - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
+  - intent_live_chat
   - intent_core_session_start
   - intent_core_yes
   - intent_core_no
@@ -72,3 +73,13 @@ responses:
     - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)"
   utter_privacy_info_2:
     - text: "My team will manually review your messages to identify new use cases and add data to our natural language understanding (NLU) models."
+
+  utter_live_chat:
+    - text: "I don't support live chat, but you can leave feedback for my team to review."
+  utter_live_chat_feedback:
+    - text: "Would you like to submit any feedback?"
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
