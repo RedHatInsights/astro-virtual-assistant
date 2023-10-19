@@ -19,6 +19,15 @@ stories:
       - action: form_closing_feedback
       - active_loop: form_closing_feedback
 
+  - story: Send Complaint - 1
+    steps:
+      - user: |
+          I hate this thing!
+        intent: intent_send_complaint
+      - action: utter_user_complaint
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+
   - story: Send Complaint - 2
     steps:
       - user: |
