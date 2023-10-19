@@ -18,6 +18,16 @@ nlu:
       - More
       - See more
 
+  - intent: intent_core_yes
+    examples: |
+      - Yes
+      - y
+
+  - intent: intent_core_no
+    examples: |
+      - No
+      - n
+
   - intent: intent_planned_features
     examples: |
       - What's my burndown?

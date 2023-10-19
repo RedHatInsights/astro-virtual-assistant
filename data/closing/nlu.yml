@@ -1,0 +1,6 @@
+version: "3.1"
+
+nlu:
+  # Intent used for testing purposes - could be removed once we have
+  # additional paths to test
+  - intent: intent_closing_start
