@@ -7,7 +7,6 @@ from rasa_sdk.events import SlotSet
 
 
 class ActionGotHelp(Action):
-
     def name(self) -> Text:
         return "action_closing_got_help"
 

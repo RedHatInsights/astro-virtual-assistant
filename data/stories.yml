@@ -5,17 +5,18 @@ stories:
     steps:
       - intent: intent_core_capabilities
       - action: utter_core_capabilities_main
-      - intent: intent_core_more
+
+  - story: User wants to know even more (and we don't have anything else)!
+    steps:
       - action: utter_core_capabilities_more_1
       - intent: intent_core_more
       - action: utter_core_capabilities_more_no_more
-      - action: action_core_one_back
 
   - story: User asks about more without asking for capabilities
     steps:
       - intent: intent_core_more
+      - action: action_unlikely_intent
       - action: utter_core_rephrase
-      - action: action_core_one_back
 
   - story: User asks for a planned but not implemented feature
     steps:
@@ -48,3 +49,15 @@ stories:
       - action: utter_live_chat_feedback
       - intent: intent_core_no
       - action: utter_closing_anything_else
+  - story: Data privacy policy
+    steps:
+      - intent: intent_data_privacy_policy
+      - action: utter_privacy_info_1
+      - action: utter_privacy_info_2
+
+rules:
+  - rule: User wants to know more
+    steps:
+      - action: utter_core_capabilities_main
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1
