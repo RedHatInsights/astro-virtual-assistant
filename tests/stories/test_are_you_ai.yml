@@ -1,0 +1,34 @@
+version: "3.1"
+
+stories:
+  - story: Are you an AI - 1
+    steps:
+      - user: |
+          Are you using artificial intelligence?
+        intent: intent_are_you_ai
+      - action: utter_are_you_ai_1
+      - action: utter_are_you_ai_2
+      - action: utter_are_you_ai_3
+      - action: utter_are_you_ai_4
+      - action: utter_are_you_ai_handoff
+      - user: |
+          Send Feedback
+        intent: intent_give_feedback
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+
+  - story: Are you an AI - 2
+    steps:
+      - user: |
+          What are you using to run this?
+        intent: intent_are_you_ai
+      - action: utter_are_you_ai_1
+      - action: utter_are_you_ai_2
+      - action: utter_are_you_ai_3
+      - action: utter_are_you_ai_4
+      - action: utter_are_you_ai_handoff
+      - user: |
+          Show me what you can do
+        intent: intent_core_capabilities
+      - action: utter_core_capabilities_main
