@@ -79,6 +79,12 @@ stories:
       - action: utter_are_you_ai_4
       - action: utter_are_you_ai_handoff
 
+  - story: User wants to know about offline services
+    steps:
+      - intent: intent_services_offline
+      - action: action_services_offline
+      - checkpoint: check_closing
+
 rules:
   - rule: User wants to know more
     steps:
