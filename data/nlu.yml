@@ -73,6 +73,19 @@ nlu:
       - Can I speak to an agent?
       - Where can I find an agent?
 
+  - intent: intent_services_offline
+    examples: |
+      - Are there any outages?
+      - Are any services down?
+      - Are there any products down?
+      - What services are offline?
+      - Is service [access.redhat.com](product) down?
+      - Is [console.redhat.com](product) down?
+      - Is something wrong with [cloud.redhat.com](product)?
+      - Is [developers.redhat.com](product) having issues?
+      - Is [insights](product) having issues?
+      - Is [inventory](product) having an outage?
+
   - intent: intent_data_privacy_policy
     examples: |
       - Are you watching my conversations?

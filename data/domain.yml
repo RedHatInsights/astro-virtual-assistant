@@ -6,6 +6,7 @@ intents:
   - intent_planned_features
   - intent_out_of_scope
   - intent_live_chat
+  - intent_services_offline
   - intent_core_session_start
   - intent_core_yes
   - intent_core_no
@@ -37,6 +38,7 @@ actions:
   - action_session_start
   - action_core_one_back
   - action_set_current_url
+  - action_services_offline
 
 responses:
   utter_core_first_time:
