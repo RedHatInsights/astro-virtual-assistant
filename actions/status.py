@@ -36,6 +36,6 @@ class ActionServicesOffline(Action):
             dispatcher.utter_message("Visit [status.redhat.com](status.redhat.com) for further outage information.")
         else:
             dispatcher.utter_message(text="All services seem to be operating normally.")
-            dispatcher.utter_message(text="Visit [status.redhat.com](status.redhat.com) for more information on Red Hat outages and maintenance.")
+            dispatcher.utter_message(text="Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance.")
         
         return []
