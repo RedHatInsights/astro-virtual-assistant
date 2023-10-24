@@ -5,26 +5,26 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
-requests = "2.31.0"
+requests = ">=2.31.0"
 rapidfuzz = "*"
 jsonpickle = "*"
 app-common-python = "==0.2.3"
-boto3 = "==1.24.89"
-logstash-formatter = "==0.5.17"
-prometheus-client = "==0.14.1"
-pyjwt = "2.7.0"
-watchtower = "==3.0.0"
+boto3 = ">=1.24.89"
+logstash-formatter = ">=0.5.17"
+prometheus-client = ">=0.14.1"
+pyjwt = ">=2.7.0"
+watchtower = ">=3.0.0"
 
 [dev-packages]
-pyopenssl = "23.2.0"
+pyopenssl = ">=23.2.0"
 pytest = "*"
-black = "==23.9.1"
+black = ">=23.9.1"
 
 [api-packages]
-rasa = "3.6.12"
+rasa = "==3.6.13"
 
 [action-packages]
-rasa-sdk = "3.6.2"
+rasa-sdk = "==3.6.2"
 
 [requires]
 python_version = "3.9"
