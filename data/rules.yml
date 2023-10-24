@@ -16,3 +16,36 @@ rules:
           - first_time_greeting: False
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
+
+  - rule: User wants to know more
+    steps:
+      - action: utter_core_capabilities_main
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1
+
+  - rule: Unlikely intents are asked for rephrase
+    steps:
+      - action: action_unlikely_intent
+      - action: utter_core_rephrase
+
+  - rule: User wants to leave feedback about not speaking to an agent
+    steps:
+      - action: utter_live_chat_feedback
+      - intent: intent_core_yes
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+
+  - rule: Give feedback
+    steps:
+      - intent: intent_give_feedback
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+
+  - rule: Send Complaint
+    steps:
+      - intent: intent_send_complaint
+      - action: utter_user_complaint
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
