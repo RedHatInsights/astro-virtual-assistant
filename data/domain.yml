@@ -75,7 +75,7 @@ responses:
   utter_out_of_scope:
     - text: "I haven't been programmed to do that. Sorry!"
   utter_privacy_info_1:
-    - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)"
+    - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)."
   utter_privacy_info_2:
     - text: "My team will manually review your messages to identify new use cases and add data to our natural language understanding (NLU) models."
   utter_live_chat:

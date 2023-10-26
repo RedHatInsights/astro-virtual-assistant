@@ -55,6 +55,7 @@ stories:
       - intent: intent_data_privacy_policy
       - action: utter_privacy_info_1
       - action: utter_privacy_info_2
+      - action: utter_core_how_can_i_help
 
   - story: Give feedback
     steps:

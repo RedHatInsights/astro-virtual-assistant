@@ -19,7 +19,7 @@ responses:
         - title: "I want to know how you can help."
           payload: "/intent_core_capabilities"
   utter_tour:
-    - text: "Follow along with our tour and to this chat window with any questions you may have."
+    - text: "Follow along with our tour and return to this chat window with any questions you may have."
       custom:
         type: command
         command: tour_start
