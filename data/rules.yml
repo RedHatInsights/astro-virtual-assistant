@@ -16,7 +16,7 @@ rules:
           - first_time_greeting: False
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
-  
+
   - rule: Ask the user to rephrase
     steps:
       - intent: nlu_fallback
