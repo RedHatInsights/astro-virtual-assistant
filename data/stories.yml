@@ -85,6 +85,35 @@ stories:
       - action: action_services_offline
       - checkpoint: check_closing
 
+  - story: User wants to change their user preferences
+    steps:
+      - intent: intent_user_preferences
+      - action: action_user_preferences
+
+  - story: User wants to change their password
+    steps:
+      - intent: intent_user_preferences_password
+      - action: utter_user_preferences_password_redirect
+      - checkpoint: check_closing
+
+  - story: User wants to change other personal information
+    steps:
+      - intent: intent_user_preferences_all
+      - action: utter_user_preferences_all_redirect
+      - checkpoint: check_closing
+
+  - story: User does not want to change their personal information
+    steps:
+      - intent: intent_user_preferences_no_action
+      - action: utter_user_preferences_no_action
+      - checkpoint: check_closing
+    
+  - story: User wants to contact customer support
+    steps:
+      - intent: intent_customer_support
+      - action: utter_planned_features
+      - checkpoint: check_closing
+
 rules:
   - rule: User wants to know more
     steps:

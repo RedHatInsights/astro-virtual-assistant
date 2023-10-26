@@ -14,8 +14,14 @@ intents:
   - intent_give_feedback
   - intent_send_complaint
   - intent_are_you_ai
+  - intent_user_preferences
+  - intent_user_preferences_all
+  - intent_user_preferences_password
+  - intent_user_preferences_no_action
+  - intent_customer_support # TODO: S9
 
-entities: []
+entities:
+  - preference
 
 slots:
   _dummy:
@@ -39,6 +45,7 @@ actions:
   - action_core_one_back
   - action_set_current_url
   - action_services_offline
+  - action_user_preferences
 
 responses:
   utter_core_first_time:
@@ -104,3 +111,42 @@ responses:
           payload: /intent_core_capabilities
   utter_user_complaint:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
+  utter_user_preferences_all:
+    - text: You can change your personal information on redhat.com.
+  utter_user_preferences_password:
+    - text: You can change your password and other personal information on redhat.com.
+  utter_user_preferences_login:
+    - text: Unfortunately, once you've created an account, you can't change your login. 
+  utter_user_preferences_contact_support:
+    - text: Would you like to contact Customer Support for more information?
+      buttons:
+        - title: Yes
+          payload: /intent_customer_support
+        - title: No
+          payload: /intent_user_preferences_no_action
+  utter_user_preferences_change_all:
+    - text: Would you like to do this now?
+      buttons:
+        - title: Yes
+          payload: /intent_user_preferences_all
+        - title: No
+          payload: /intent_user_preferences_no_action
+  utter_user_preferences_change_password:
+    - text: Would you like to do this now?
+      buttons:
+        - title: Yes
+          payload: /intent_user_preferences_password
+        - title: No
+          payload: /intent_user_preferences_no_action
+  utter_user_preferences_all_redirect:
+    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+      custom:
+        type: command
+        command: personal_information_redirect
+  utter_user_preferences_password_redirect:
+    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+      custom:
+        type: command
+        command: password_redirect
+  utter_user_preferences_no_action:
+    - text: "Okay, let me know if you change your mind."

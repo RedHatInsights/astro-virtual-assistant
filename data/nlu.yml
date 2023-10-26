@@ -140,3 +140,20 @@ nlu:
       - Are you ai/ml
       - Is this artificial intelligence (AI) or Machine Learning (ML)?
       - Can you explain how you work?
+  
+  - intent: intent_user_preferences
+    examples: |
+      - How do I change my [email address](preference)?
+      - How do I change my [name](preference)?
+      - Change my [phone number](preference)
+      - Update my [login](preference)
+      - Reset my [password](preference).
+      - Change my [password](preference).
+      - Change my [username](preference)
+      - Update my [email](preference).
+      - Rename my [display name](preference)
+      - Where do I change my [email](preference)?
+      - Where can I reset my [password](preference)?
+      - Where can I change my [username](preference)?
+      - Where can I change my [preferences](preference)?
+      - Where can I edit all of my [preferences](preference)?
