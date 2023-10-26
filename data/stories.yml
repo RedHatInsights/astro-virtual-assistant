@@ -12,12 +12,6 @@ stories:
       - intent: intent_core_more
       - action: utter_core_capabilities_more_no_more
 
-  - story: User asks about more without asking for capabilities
-    steps:
-      - intent: intent_core_more
-      - action: action_unlikely_intent
-      - action: utter_core_rephrase
-
   - story: User asks for a planned but not implemented feature
     steps:
       - intent: intent_planned_features
@@ -36,14 +30,6 @@ stories:
       - action: utter_live_chat
       - action: utter_live_chat_feedback
 
-  - story: User wants to leave feedback about not speaking to an agent
-    steps:
-      - action: utter_live_chat_feedback
-      - intent: intent_core_yes
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-
   - story: User doesn't want to leave feedback after not speaking to an agent
     steps:
       - action: utter_live_chat_feedback
@@ -55,20 +41,6 @@ stories:
       - intent: intent_data_privacy_policy
       - action: utter_privacy_info_1
       - action: utter_privacy_info_2
-
-  - story: Give feedback
-    steps:
-      - intent: intent_give_feedback
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-
-  - story: Send Complaint
-    steps:
-      - intent: intent_send_complaint
-      - action: utter_user_complaint
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
 
   - story: Are you an AI?
     steps:
