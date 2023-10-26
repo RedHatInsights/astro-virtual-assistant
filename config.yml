@@ -44,9 +44,12 @@ policies:
    - name: UnexpecTEDIntentPolicy
      max_history: 17
      epochs: 100
+     tolerance: 0.2
      ignore_intents_list:
-       - intent_core_capabilities
-       - intent_give_feedback
+       - intent_core_yes
+       - intent_core_no
+#       - intent_core_capabilities
+#       - intent_give_feedback
    - name: TEDPolicy
      max_history: 17
      epochs: 100
