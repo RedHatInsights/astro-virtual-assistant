@@ -72,6 +72,7 @@ nlu:
       - Do you support live chat?
       - Can I speak to an agent?
       - Where can I find an agent?
+      - Give me a damn human being!!
 
   - intent: intent_services_offline
     examples: |
