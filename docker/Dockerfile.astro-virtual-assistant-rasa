@@ -30,7 +30,6 @@ RUN python -m ensurepip --upgrade && \
 WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
-COPY api-requirements.txt .
 
 RUN pipenv install --categories "packages api-packages" && \
     pipenv --clear
