@@ -21,6 +21,7 @@ objects:
       webServices:
         public:
           enabled: true
+          apiPath: virtual-assistant
         metrics:
           enabled: true
       podSpec:
