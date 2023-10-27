@@ -30,7 +30,6 @@ RUN python -m ensurepip --upgrade && \
 WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
-COPY actions-requirements.txt .
 
 RUN pipenv install --categories "packages action-packages" && \
     pipenv --clear
