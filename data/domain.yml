@@ -113,8 +113,8 @@ responses:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
   utter_user_preferences_all:
     - text: You can change your personal information on redhat.com.
-  utter_user_preferences_password:
-    - text: You can change your password and other personal information on redhat.com.
+  utter_user_preferences_specific:
+    - text: "You can change your {preference} and other personal information on redhat.com."
   utter_user_preferences_login:
     - text: Unfortunately, once you've created an account, you can't change your login. 
   utter_user_preferences_contact_support:
