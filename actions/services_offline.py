@@ -5,6 +5,8 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 import requests
 
+from common import metrics
+
 class ActionServicesOffline(Action):
 
     def name(self) -> Text:
@@ -13,8 +15,10 @@ class ActionServicesOffline(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
+
         result = None
+
         try:
             result = requests.get(
                 "https://status.redhat.com/api/v2/incidents/unresolved.json"
