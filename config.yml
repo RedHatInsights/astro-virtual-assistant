@@ -41,13 +41,6 @@ policies:
    - name: MemoizationPolicy
      max_history: 10
    - name: RulePolicy
-   - name: UnexpecTEDIntentPolicy
-     max_history: 17
-     epochs: 100
-     tolerance: 0
-     ignore_intents_list:
-       - intent_core_yes
-       - intent_core_no
    - name: TEDPolicy
      max_history: 17
      epochs: 100

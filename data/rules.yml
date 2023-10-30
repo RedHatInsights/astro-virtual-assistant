@@ -22,11 +22,11 @@ rules:
       - action: utter_core_capabilities_main
       - intent: intent_core_more
       - action: utter_core_capabilities_more_1
-
-  - rule: Unlikely intents are asked for rephrase
-    steps:
-      - action: action_unlikely_intent
-      - action: utter_core_rephrase
+  
+  # TODO: Unexpected intents
+  # - rule: User says more without wanting more
+  # - rule: User says yes for no reason
+  # - rule: User says no for no reason
 
   - rule: User wants to leave feedback about not speaking to an agent
     steps:
