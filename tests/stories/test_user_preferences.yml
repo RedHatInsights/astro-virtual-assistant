@@ -1,0 +1,41 @@
+version: "3.1"
+
+stories:
+  - story: User wants to change their personal information.
+    steps:
+      - user: |
+          I want to change my personal information.
+        intent: intent_user_preferences
+      - action: action_user_preferences
+    
+  - story: User wants to change their password
+    steps:
+      - user: |
+          Where can I change my password?
+        intent: intent_user_preferences
+      - action: action_user_preferences
+  
+  - story: User wants to change their login
+    steps:
+      - user: |
+          I want to change my login.
+        intent: intent_user_preferences
+      - action: action_user_preferences
+  
+  - story: User triggered the user_preferences_all intent
+    steps:
+      - intent: intent_user_preferences_all
+      - action: utter_user_preferences_all_redirect
+      - action: utter_closing_got_help
+  
+  - story: User triggered the user_preferences_password intent
+    steps:
+      - intent: intent_user_preferences_password
+      - action: utter_user_preferences_password_redirect
+      - action: utter_closing_got_help
+
+  - story: User triggered the no_action intent
+    steps:
+      - intent: intent_user_preferences_no_action
+      - action: utter_user_preferences_no_action
+      - action: utter_closing_got_help

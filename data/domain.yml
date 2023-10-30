@@ -116,7 +116,7 @@ responses:
   utter_user_preferences_specific:
     - text: "You can change your {preference} and other personal information on redhat.com."
   utter_user_preferences_login:
-    - text: Unfortunately, once you've created an account, you can't change your login. 
+    - text: Unfortunately, once you've created an account, you can't change your login.
   utter_user_preferences_contact_support:
     - text: Would you like to contact Customer Support for more information?
       buttons:

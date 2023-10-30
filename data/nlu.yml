@@ -74,7 +74,6 @@ nlu:
       - Where can I find an agent?
       - Give me a damn human being!!
   - intent: intent_customer_support
-
   - intent: intent_services_offline
     examples: |
       - Are there any outages?
@@ -142,7 +141,7 @@ nlu:
       - Are you ai/ml
       - Is this artificial intelligence (AI) or Machine Learning (ML)?
       - Can you explain how you work?
-  
+
   - intent: intent_user_preferences
     examples: |
       - How do I change my [email address](preference)?

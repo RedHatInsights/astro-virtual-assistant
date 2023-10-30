@@ -79,7 +79,7 @@ stories:
       - intent: intent_user_preferences_no_action
       - action: utter_user_preferences_no_action
       - checkpoint: check_closing
-    
+
   - story: User wants to contact customer support
     steps:
       - intent: intent_customer_support
