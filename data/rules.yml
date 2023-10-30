@@ -22,7 +22,7 @@ rules:
       - action: utter_core_capabilities_main
       - intent: intent_core_more
       - action: utter_core_capabilities_more_1
-  
+
   # TODO: Unexpected intents
   # - rule: User says more without wanting more
   # - rule: User says yes for no reason
