@@ -11,14 +11,21 @@ stories:
   - story: User wants to change their password
     steps:
       - user: |
-          Where can I change my password?
+          Where can I reset my [password]{"entity": "preference"}?
         intent: intent_user_preferences
       - action: action_user_preferences
   
   - story: User wants to change their login
     steps:
       - user: |
-          I want to change my login.
+          I want to change my [login]{"entity": "preference"}.
+        intent: intent_user_preferences
+      - action: action_user_preferences
+
+  - story: User wants to change their email
+    steps:
+      - user: |
+          Change my [email address]{"entity": "preference"}?
         intent: intent_user_preferences
       - action: action_user_preferences
   
