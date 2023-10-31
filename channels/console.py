@@ -24,7 +24,7 @@ class ConsoleInput(InputChannel):
     @classmethod
     def name(cls) -> Text:
         """Base of the API path"""
-        return "/api/virtual-assistant"
+        return "/api/virtual-assistant/v1"
 
     def blueprint(
         self, on_new_message: Callable[[UserMessage], Awaitable[None]]
