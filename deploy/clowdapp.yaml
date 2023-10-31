@@ -25,7 +25,7 @@ objects:
         metrics:
           enabled: true
       podSpec:
-        image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
+        image: ${API_IMAGE_NAME}:${IMAGE_TAG}
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -73,7 +73,7 @@ objects:
         metrics:
           enabled: true
       podSpec:
-        image: ${ACTIONS_IMAGE_NAME}:${ACTIONS_IMAGE_TAG}
+        image: ${ACTIONS_IMAGE_NAME}:${IMAGE_TAG}
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -143,15 +143,12 @@ parameters:
 - descripton: Virtual Assistant API image name
   name: API_IMAGE_NAME
   value: "quay.io/cloudservices/virtual-assistant-api"
-- description: API Image tag
-  name: API_IMAGE_TAG
-  required: true
 - descripton: Virtual Assistant actions server image name
   name: ACTIONS_IMAGE_NAME
   value: "quay.io/cloudservices/virtual-assistant-actions"
-- description: Actions Image tag
-  name: ACTIONS_IMAGE_TAG
-  required: true
+- description: The Image tag
+  name: IMAGE_TAG
+  value: "latest"
 - description: Tracker store type
   name: TRACKER_STORE_TYPE
   value: "SQL"
