@@ -5,6 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet
 
+from common import metrics
 from .utils import is_user_event
 
 
@@ -18,6 +19,8 @@ class ActionSetCurrentURL(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
+
         # find latest 'user' event
         latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
 

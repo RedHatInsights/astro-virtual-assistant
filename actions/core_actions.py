@@ -5,6 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
+from common import metrics
 from actions.utils import get_current_url
 
 _SLOT_FIRST_TIME_GREETING = "first_time_greeting"
@@ -22,6 +23,7 @@ class ActionBack(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
         return [UserUtteranceReverted()]
 
 
@@ -34,6 +36,8 @@ class ActionPreProcess(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
+
         results = []
 
         # Set the first_time_greeting slot to False on a user interaction

@@ -30,7 +30,7 @@ class ActionSessionStarted(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        metrics.action_session_start.inc()
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
         return [
             SessionStarted(),
             *self.fetch_slots(tracker),
