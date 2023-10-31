@@ -75,7 +75,7 @@ responses:
   utter_out_of_scope:
     - text: "I haven't been programmed to do that. Sorry!"
   utter_privacy_info_1:
-    - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)"
+    - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)."
   utter_privacy_info_2:
     - text: "My team will manually review your messages to identify new use cases and add data to our natural language understanding (NLU) models."
   utter_live_chat:
@@ -104,3 +104,15 @@ responses:
           payload: /intent_core_capabilities
   utter_user_complaint:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
+  utter_services_offline_no_incidents:
+    - text: "All services seem to be operating normally."
+  utter_services_offline_error:
+    - text: "I was unable to talk with [status.redhat.com](https://status.redhat.com) to fulfill your request."
+  utter_services_offline_incidents:
+    - text: "I'm sorry, but we are experiencing {count} incident(s)."
+  utter_services_offline_info:
+    - text: "{name} is currently {status}."
+  utter_services_offline_more_info:
+    - text: "Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance."
+  utter_services_offline_further_info:
+    - text: "Visit [status.redhat.com](https://status.redhat.com) for further outage information."

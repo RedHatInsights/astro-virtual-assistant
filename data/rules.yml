@@ -17,6 +17,11 @@ rules:
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
 
+  - rule: Ask the user to rephrase
+    steps:
+      - intent: nlu_fallback
+      - action: utter_core_rephrase
+
   - rule: User wants to know more
     steps:
       - action: utter_core_capabilities_main
