@@ -147,6 +147,8 @@ nlu:
     examples: |
       - How do I change my [email address](preference)?
       - How do I change my [name](preference)?
+      - I want to change my [personal information](preference).
+      - I want to update my [password](preference)
       - Change my [phone number](preference)
       - Update my [login](preference)
       - Reset my [password](preference).
