@@ -41,7 +41,7 @@ responses:
         - title: No
           payload: /intent_core_no
   utter_closing_type_below:
-    - text: Great. You can type in your feedback below and I'll share it with my team.
+    - text: Okay. You can type in your feedback below and I'll share it with my team.
   utter_closing_share_feedback:
     - text: I'll share that with my team to review.
   utter_closing_finally:

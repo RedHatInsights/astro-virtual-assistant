@@ -13,7 +13,8 @@ class ActionServicesOffline(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-
+        
+        result = None
         try:
             result = requests.get(
                 "https://status.redhat.com/api/v2/incidents/unresolved.json"
@@ -21,21 +22,21 @@ class ActionServicesOffline(Action):
         except Exception as e:
             print(f"An Exception occured while handling response from status.redhat.com: {e}")
 
-        if not result or not result['incidents']:
-            dispatcher.utter_message(text="I was unable to talk with status.redhat.com to fulfill your request.")
+        if not (result and "incidents" in result):
+            dispatcher.utter_message(response="utter_services_offline_error")
             return []
         
         incidents = result['incidents']
         count = str(len(incidents))
         if incidents and count != "0":
-            dispatcher.utter_message(text="I'm sorry, but we are experiencing " + count + " incident(s).")
+            dispatcher.utter_message(response="utter_services_offline_incidents", count=count)
 
             for incident in incidents:
-                dispatcher.utter_message(text=incident['name'] + " is currently " + incident['status'] + ".")
+                dispatcher.utter_message(response="utter_services_offline_info", name=incident['name'], status=incident['status'])
 
-            dispatcher.utter_message("Visit [status.redhat.com](https://status.redhat.com) for further outage information.")
+            dispatcher.utter_message(response="utter_services_offline_further_info")
         else:
-            dispatcher.utter_message(text="All services seem to be operating normally.")
-            dispatcher.utter_message(text="Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance.")
+            dispatcher.utter_message(response="utter_services_offline_no_incidents")
+            dispatcher.utter_message(response="utter_services_offline_more_info")
         
         return []
