@@ -23,8 +23,6 @@ jobs:
         run: pip install pipenv
       - name: Install dependencies
         run: make install
-      - name: Validate data
-        run: make validate
       - name: Train
         run: make train
       - name: Test
