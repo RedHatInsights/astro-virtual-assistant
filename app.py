@@ -1,5 +1,5 @@
 import signal
-import sys
+
 
 from prometheus_client import start_http_server
 from threading import Event
@@ -35,9 +35,6 @@ def main():
 
     if config.PROMETHEUS == "True":
         start_prometheus()
-
-    if 'validate' not in sys.argv:
-        sys.argv.extend(["--port", str(config.API_PORT)])
 
     rasa_main()
 
