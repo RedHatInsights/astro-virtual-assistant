@@ -36,7 +36,9 @@ def main():
     if config.PROMETHEUS == "True":
         start_prometheus()
 
-    sys.argv.extend(["--port", config.API_PORT])
+    if 'validate' not in sys.argv:
+        sys.argv.extend(["--port", str(config.API_PORT)])
+
     rasa_main()
 
 

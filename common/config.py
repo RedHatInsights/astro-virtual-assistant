@@ -65,7 +65,7 @@ if os.getenv("ACG_CONFIG"):
     LOG_GROUP = os.getenv("LOG_GROUP", cfg.logging.cloudwatch.logGroup)
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", cfg.metricsPort))
-    API_PORT = os.getenv("API_PORT", cfg.publicPort)
+    API_PORT = int(os.getenv("API_PORT", cfg.publicPort))
     # Database
     os.environ["DB_HOST"] = cfg.database.hostname
     os.environ["DB_PORT"] = str(cfg.database.port)
@@ -80,4 +80,4 @@ else:
     LOG_GROUP = os.getenv("LOG_GROUP", "platform-dev")
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
-    API_PORT = os.getenv("API_PORT", 5005)
+    API_PORT = int(os.getenv("API_PORT", 5005))
