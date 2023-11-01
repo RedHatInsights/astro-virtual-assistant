@@ -1,4 +1,5 @@
 import signal
+import sys
 
 
 from prometheus_client import start_http_server
@@ -35,6 +36,10 @@ def main():
 
     if config.PROMETHEUS == "True":
         start_prometheus()
+
+    # Use API_PORT when set
+    if config.API_PORT:
+        sys.argv.extend(["--port", str(config.API_PORT)])
 
     rasa_main()
 
