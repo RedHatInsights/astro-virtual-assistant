@@ -1,5 +1,6 @@
 import signal
 
+
 from prometheus_client import start_http_server
 from threading import Event
 from common import logging, config
