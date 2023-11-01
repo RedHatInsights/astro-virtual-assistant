@@ -120,7 +120,7 @@ objects:
       component: virtual-assistant-actions
   spec:
     selector:
-      app: actions
+      pod: virtual-assistant-actions
     ports:
     - name: tcp-actions
       protocol: TCP
