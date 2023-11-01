@@ -80,4 +80,5 @@ else:
     LOG_GROUP = os.getenv("LOG_GROUP", "platform-dev")
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
-    API_PORT = int(os.getenv("API_PORT", 5005))
+
+    API_PORT = int(os.getenv("API_PORT")) if os.getenv("API_PORT") else None
