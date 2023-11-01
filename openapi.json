@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/api/virtual-assistant/": {
+        "/api/virtual-assistant/v1": {
             "get": {
                 "operationId": "health",
                 "responses": {
@@ -36,7 +36,7 @@
                 }
             }
         },
-        "/api/virtual-assistant/talk": {
+        "/api/virtual-assistant/v1/talk": {
             "post": {
                 "operationId": "talkWithAssistant",
                 "requestBody": {

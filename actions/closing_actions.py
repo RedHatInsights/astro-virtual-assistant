@@ -5,6 +5,8 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet
 
+from common import metrics
+
 
 class ActionGotHelp(Action):
     def name(self) -> Text:
@@ -13,6 +15,8 @@ class ActionGotHelp(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
+
         last_intent = tracker.get_intent_of_latest_message(True)
         if last_intent == "intent_core_yes":
             return [SlotSet("closing_got_help", True)]
@@ -29,5 +33,6 @@ class ActionShareFeedback(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        metrics.action_custom_action_count.labels(action_type=self.name()).inc()
         # Todo: Insert logic to send feedback to the platform
         return [SlotSet("closing_feedback", None)]
