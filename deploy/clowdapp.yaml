@@ -68,7 +68,7 @@ objects:
     - name: actions
       minReplicas: ${{MIN_REPLICAS}}
       webServices:
-        public:
+        private:
           enabled: true
         metrics:
           enabled: true
@@ -111,22 +111,6 @@ objects:
             cpu: 100m
             memory: 128Mi
 
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: actions-server
-    labels:
-      app: virtual-assistant
-      component: virtual-assistant-actions
-  spec:
-    selector:
-      app: actions
-    ports:
-    - name: tcp-actions
-      protocol: TCP
-      port: 5055
-      targetPort: 5055
-
 parameters:
 - description: Minimum number of replicas required
   name: MIN_REPLICAS
@@ -157,4 +141,4 @@ parameters:
   value: "True"
 - description: Actions endpoint url
   name: ACTIONS_ENDPOINT_URL
-  value: http://actions-server:5055/webhook
+  value: http://virtual-assistant-actions:10000/webhook

@@ -66,6 +66,7 @@ if os.getenv("ACG_CONFIG"):
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", cfg.metricsPort))
     API_PORT = int(os.getenv("API_PORT", cfg.publicPort))
+    ACTIONS_PORT = int(os.getenv("ACTIONS_PORT", cfg.privatePort))
     # Database
     os.environ["DB_HOST"] = cfg.database.hostname
     os.environ["DB_PORT"] = str(cfg.database.port)
@@ -82,3 +83,4 @@ else:
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
 
     API_PORT = int(os.getenv("API_PORT")) if os.getenv("API_PORT") else None
+    ACTIONS_PORT = int(os.getenv("ACTIONS_PORT")) if os.getenv("ACTIONS_PORT") else None
