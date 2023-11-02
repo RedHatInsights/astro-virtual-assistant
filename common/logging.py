@@ -64,16 +64,19 @@ def initialize_logging():
         from boto3.session import Session
         import watchtower
 
+        aws_log_stream = os.getenv("AWS_LOG_STREAM", os.uname().nodename)
+
         boto3_session = Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
             region_name=aws_region_name,
         )
+        boto3_client = boto3_session.client("logs")
 
         cw_handler = watchtower.CloudWatchLogHandler(
-            boto3_session=boto3_session,
-            log_group=aws_log_group,
-            stream_name=socket.gethostname(),
+            boto3_client=boto3_client,
+            log_group_name=aws_log_group,
+            log_stream_name=aws_log_stream,
             create_log_group=create_log_group,
         )
 
