@@ -34,6 +34,15 @@ stories:
       - intent: intent_core_no
       - action: utter_closing_bye
 
+  # No real explanation yet of why we need to repeat this story
+  # My best guess is that we're giving a bigger weight/importance to this story
+  # Probably we need to modify some of our training parameters like learning rate or epochs
+  - story: Closing - finally - no more
+    steps:
+      - action: utter_closing_anything_else
+      - intent: intent_core_no
+      - action: utter_closing_bye
+
   - story: Closing - finally - more help
     steps:
       - action: utter_closing_anything_else

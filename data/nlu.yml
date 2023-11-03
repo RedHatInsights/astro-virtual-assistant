@@ -48,6 +48,7 @@ nlu:
     examples: |
       - Who came up with the Red Hat?
       - What are all the products Red Hat makes?
+      - What products do you make?
 
   - synonym: agent
     examples: |
