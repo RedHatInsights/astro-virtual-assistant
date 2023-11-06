@@ -35,7 +35,7 @@ class AdvisorAPIPathway(Action):
             get_auth_header(tracker, header)
         except Exception as e:
             print(f"An Exception occured while handling retrieving auth credentials: {e}")
-            dispatcher.utter_message(response="utter_fallback_message")
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
             return []
 
         result = None
@@ -48,14 +48,9 @@ class AdvisorAPIPathway(Action):
             print(f"An Exception occured while handling response from the Advisor API: {e}")
 
         if not result or not result['meta']:
-            dispatcher.utter_message(text="I was unable to talk with Advisor to fulfill your request. :(")
-
-        rec_count = result['meta']['count']
-        message_string = "You have {} recommended pathways from Advisor.".format(rec_count)
-        if rec_count > 3:
-            message_string += " Here are the first 3."
-
-        dispatcher.utter_message(text=message_string)
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+        
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_total", total=result['meta']['count'], displayed=len(result['data']))
 
         for i, rec in enumerate(result['data']):
             bot_response = "{}. {}\n Impacted Systems:{}\n {}".format(i+1, rec['name'], rec['impacted_systems_count'], rec['description'])
@@ -65,7 +60,7 @@ class AdvisorAPIPathway(Action):
 
             dispatcher.utter_message(text=bot_response)
 
-        dispatcher.utter_message(json_data = show_more(name="Advisor", url_prefix="/insights/advisor/recommendations"))
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_closing", link=base_url+"/openshift/insights/advisor/recommendations")
 
         events = [ActionExecuted(self.name())]
         return events
