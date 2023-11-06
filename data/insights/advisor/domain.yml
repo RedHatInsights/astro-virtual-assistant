@@ -1,0 +1,13 @@
+version: "3.1"
+
+intents:
+  - insights_advisor_recommendation_pathways
+
+actions:
+  - action_advisor_api_pathway
+
+responses:
+  utter_advisor_recommendation_pathways:
+    - text: "I am contacting Advisor to find your recommendations."
+  utter_advisor_recommendation_pathways_error:
+    - text: "I am sorry, I am having trouble contacting Advisor. Try visiting Advisor's UI [here](https://console.redhat.com/openshift/insights/advisor/recommendations)."

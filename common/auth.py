@@ -34,14 +34,14 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
             header.add_header("Authorization", "Bearer " + local_dev_token)
             return header
 
-        raise "No offline token found"
+        raise ValueError("No offline token found")
 
     session_metadata = tracker.get_slot("session_started_metadata")
     if session_metadata and "identity" in session_metadata:
         header.add_header("x-rh-identity", session_metadata["identity"])
         return header
 
-    raise "No authentication found"
+    raise ValueError("No authentication found")
 
 
 def _get_is_running_locally() -> bool:
