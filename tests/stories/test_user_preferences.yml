@@ -4,7 +4,7 @@ stories:
   - story: User wants to change their personal information.
     steps:
       - user: |
-          I want to change my personal information.
+          I want to change my [personal information]{"entity": "preference"}.
         intent: intent_user_preferences
       - action: action_user_preferences
     
