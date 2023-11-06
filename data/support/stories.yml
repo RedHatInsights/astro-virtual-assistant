@@ -1,0 +1,41 @@
+version: "3.1"
+
+stories:
+  - story: User wants to file a support case
+    steps:
+      - intent: intent_report_a_bug
+      - action: utter_report_a_bug
+
+  - story: User wants to leave feedback on the platform.
+    steps:
+      - intent: intent_platform_feedback
+      - action: utter_platform_feedback_is_it_a_bug
+  
+  - story: User wants to submit a bug to customer support
+    steps:
+      - action: utter_platform_feedback_is_it_a_bug
+      - intent: intent_core_yes
+      - action: utter_report_a_bug
+
+  - story: User wants to leave feedback on the platform (not a bug).
+    steps:
+      - action: utter_platform_feedback_is_it_a_bug
+      - intent: intent_core_no
+      - action: utter_platform_feedback_like_us_to_know
+      - action: action_platform_feedback
+      - action: utter_platform_feedback_user_interest
+
+  - story: User wants to be a part of usability studies.
+    steps:
+      - action: utter_platform_feedback_user_interest
+      - intent: intent_core_yes
+      - action: utter_platform_feedback_email
+      - action: action_platform_feedback_email
+      - action: utter_platform_feedback_thanks
+      - checkpoint: check_closing
+
+  - story: User doesn't want to be a part of usability studies.
+    steps:
+      - action: utter_platform_feedback_user_interest
+      - intent: intent_core_no
+      - checkpoint: check_closing

@@ -1,0 +1,17 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_report_a_bug
+    examples: |
+      - Open a support case.
+      - File a bug.
+      - File a support case.
+      - file an issue
+      - open a support case for me
+
+  - intent: intent_platform_feedback
+    examples: |
+      - I want to leave feedback on the platform.
+      - I need to leave feedback for console.redhat.com.
+      - Where can I submit feedback for console.redhat.com API?
+      - Submit feedback for console.redhat.com

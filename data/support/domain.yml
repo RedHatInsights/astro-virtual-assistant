@@ -1,0 +1,38 @@
+version: "3.1"
+
+intents:
+  - intent_report_a_bug
+  - intent_platform_feedback
+
+entities: []
+
+slots: {}
+
+actions: []
+
+responses:
+  utter_report_a_bug:
+    - text: "Let me direct you to our support page. If you want to continue our conversation, I'll be here!"
+      custom:
+        type: command
+        command: "customer_support_redirect"
+  utter_platform_feedback_is_it_a_bug:
+    - text: "Is your feedback about an error or bug you've experienced?"
+      buttons:
+        - title: "Yes"
+          payload: "/intent_core_yes"
+        - title: "No"
+          payload: "/intent_core_no"
+  utter_platform_feedback_like_us_to_know:
+    - text: "What would you like us to know about your experience with any of the services on Console.redhat.com?"
+  utter_platform_feedback_user_interest:
+    - text: "We'll forward that feedback to our teams.  Are you interested in participating in any interviews or usability studies that our User Experience Design group facilitates?"
+      buttons:
+        - title: "Yes"
+          payload: "/intent_core_yes"
+        - title: "No"
+          payload: "/intent_core_no"
+  utter_platform_feedback_email:
+    - text: "At what email address may we contact you? We never share your personal information, and you can opt out at any time."
+  utter_platform_feedback_thanks:
+    - text: "Thanks! Have a great day."
