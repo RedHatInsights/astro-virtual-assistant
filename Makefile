@@ -17,6 +17,9 @@ include make/Makefile.lint.mk
 install:
 	pipenv install --categories "packages dev-packages api-packages"
 
+clean:
+	rm -rf results .rasa models/* train_test_split
+
 train:
 	${RASA_EXEC} train ${RASA_TRAIN_ARGS}
 
