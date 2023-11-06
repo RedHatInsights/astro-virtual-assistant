@@ -43,5 +43,6 @@ policies:
      core_fallback_threshold: 0.4
    - name: TEDPolicy
      max_history: 5
-     epochs: 100
+     epochs: 200
+     learning_rate: 0.005
      constrain_similarities: true
