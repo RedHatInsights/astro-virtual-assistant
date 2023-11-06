@@ -6,15 +6,13 @@ include make/Makefile.variables.mk
 
 RASA_TEST_STORIES_PARAMS = --stories tests/stories ${RASA_DOMAIN_ARG}
 
-ifndef TEST_ALLOW_ERRORS
-	RASA_TEST_STORIES_PARAMS += --fail-on-prediction-errors
-endif
+__FAILED_TEST_STORIES = results/failed_test_stories.yml
 
 validate: test-data
 
 test: test-rasa test-python
 
-test-rasa: test-data test-nlu test-stories
+test-rasa: test-stories test-data test-nlu
 
 test-data:
 	${RASA_EXEC} data validate ${RASA_DOMAIN_ARG}
@@ -25,6 +23,7 @@ test-nlu:
 
 test-stories:
 	${RASA_EXEC} test ${RASA_TEST_STORIES_PARAMS}
+	@(head -n 1 ${__FAILED_TEST_STORIES} | grep -q '# None of the test stories failed - all good!') || (cat ${__FAILED_TEST_STORIES} && false)
 
 test-python:
 	pipenv run pytest

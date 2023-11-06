@@ -44,4 +44,5 @@ policies:
    - name: TEDPolicy
      max_history: 5
      epochs: 100
+     learning_rate: 0.005
      constrain_similarities: true
