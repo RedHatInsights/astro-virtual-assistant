@@ -106,6 +106,11 @@ class ConsoleInput(InputChannel):
     def get_sender(self, identity) -> Optional[Text]:
         # base64 decode the identity header
         identity_dict = decode_identity(identity)
+
+        if not ("internal" in identity_dict["identity"] and "org_id" in identity_dict["identity"]["internal"]):
+            return None
+        if not ("user" in identity_dict["identity"] and "username" in identity_dict["identity"]["user"]):
+            return None
         
         org_id = identity_dict["identity"]["internal"]["org_id"]
         username = identity_dict["identity"]["user"]["username"]
