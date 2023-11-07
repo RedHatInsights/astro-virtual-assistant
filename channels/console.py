@@ -52,7 +52,7 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity)
             if not sender_id:
                 return response.json(
-                    {"error": "Invalid x-rh-identity header (no user_id found)"},
+                    {"error": "Invalid x-rh-identity header (org_id and username not found)"},
                     status=400,
                 )
 
