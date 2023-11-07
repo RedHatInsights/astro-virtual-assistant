@@ -107,13 +107,11 @@ class ConsoleInput(InputChannel):
         # base64 decode the identity header
         identity_dict = decode_identity(identity)
 
-        if not ("internal" in identity_dict["identity"] and "org_id" in identity_dict["identity"]["internal"]):
+        try:
+            org_id = identity_dict["identity"]["internal"]["org_id"]
+            username = identity_dict["identity"]["user"]["username"]
+        except KeyError:
             return None
-        if not ("user" in identity_dict["identity"] and "username" in identity_dict["identity"]["user"]):
-            return None
-        
-        org_id = identity_dict["identity"]["internal"]["org_id"]
-        username = identity_dict["identity"]["user"]["username"]
         if org_id and username:
             return "{org_id}-{username}".format(org_id=org_id, username=username)
         return None
