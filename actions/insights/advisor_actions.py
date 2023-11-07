@@ -5,18 +5,12 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 from typing import Any, Text, Dict, List
-from os import getenv
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
-import requests
 
-from common import Header, get_auth_header
-from ..utils import show_more
-
-
-CONSOLEDOT_BASE_URL = "https://console.redhat.com"
+from common import send_console_request, base_url
 
 class AdvisorAPIPathway(Action):
 
@@ -28,25 +22,8 @@ class AdvisorAPIPathway(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        base_url = getenv("CONSOLEDOT_BASE_URL", CONSOLEDOT_BASE_URL)
-
-        header = Header()
-        try:
-            get_auth_header(tracker, header)
-        except Exception as e:
-            print(f"An Exception occured while handling retrieving auth credentials: {e}")
-            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
-            return []
-
-        result = None
-        try:
-            result = requests.get(
-                base_url+"/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3",
-                headers=header.build_headers()
-            ).json()
-        except Exception as e:
-            print(f"An Exception occured while handling response from the Advisor API: {e}")
-
+        result = send_console_request("/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
+        
         if not result or not result['meta']:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
         
