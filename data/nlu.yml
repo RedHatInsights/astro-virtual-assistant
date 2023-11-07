@@ -74,7 +74,7 @@ nlu:
       - Can I speak to an agent?
       - Where can I find an agent?
       - Give me a damn human being!!
-  - intent: intent_customer_support
+
   - intent: intent_services_offline
     examples: |
       - Are there any outages?
@@ -162,8 +162,3 @@ nlu:
       - Where can I change my [username](preference)?
       - Where can I change my [preferences](preference)?
       - Where can I edit all of my [preferences](preference)?
-  - intent: intent_user_preferences_all
-    examples: []
-  - intent: intent_user_preferences_password
-    examples: []
-  - intent: intent_user_preferences_no_action

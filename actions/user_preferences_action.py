@@ -25,7 +25,7 @@ class ActionUserPreferences(Action):
             dispatcher.utter_message(response="utter_user_preferences_specific", preference=preference)
         elif preference == 'password':
             dispatcher.utter_message(response="utter_user_preferences_specific", preference="password")
-            dispatcher.utter_message(response="utter_user_preferences_change_password")
+            dispatcher.utter_message(response="utter_user_preferences_password_redirect")
             return []
         elif preference == 'login':
             dispatcher.utter_message(response="utter_user_preferences_login")
@@ -34,6 +34,6 @@ class ActionUserPreferences(Action):
         else:
             dispatcher.utter_message(response="utter_user_preferences_all")
 
-        dispatcher.utter_message(response="utter_user_preferences_change_all")
+        dispatcher.utter_message(response="utter_user_preferences_all_redirect")
 
         return []
