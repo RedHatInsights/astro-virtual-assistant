@@ -106,7 +106,12 @@ class ConsoleInput(InputChannel):
     def get_sender(self, identity) -> Optional[Text]:
         # base64 decode the identity header
         identity_dict = decode_identity(identity)
-        return identity_dict["identity"]["user"]["user_id"]
+        
+        org_id = identity_dict["identity"]["internal"]["org_id"]
+        username = identity_dict["identity"]["user"]["username"]
+        if org_id and username:
+            return "{org_id}-{username}".format(org_id=org_id, username=username)
+        return None
 
     def build_metadata(self, identity, current_url) -> Dict[Text, Any]:
         return {"identity": identity, "current_url": current_url}
