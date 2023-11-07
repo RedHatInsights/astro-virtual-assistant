@@ -90,12 +90,53 @@
                 }
             },
             "Response": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Messages"
+                }
+            },
+            "Messages": {
                 "type": "object",
                 "properties": {
                     "recipient_id": {
-                        "type": "integer"
+                        "type": "string"
                     },
                     "text": {
+                        "type": "string"
+                    },
+                    "buttons": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Buttons"
+                        },
+                        "optional": true
+                    },
+                    "customJSON": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomJSON"
+                        }
+                    }
+                }
+            },
+            "Buttons": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "payload": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CustomJSON": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "command": {
                         "type": "string"
                     }
                 }
