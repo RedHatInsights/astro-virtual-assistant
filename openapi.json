@@ -108,8 +108,7 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Buttons"
-                        },
-                        "optional": true
+                        }
                     },
                     "customJSON": {
                         "type": "object",
