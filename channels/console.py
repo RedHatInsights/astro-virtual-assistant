@@ -46,12 +46,14 @@ class ConsoleInput(InputChannel):
                 return response.json(
                     {"error": "No x-rh-identity header present"}, status=400
                 )
+            # base64 decode the identity header
+            identity_dict = decode_identity(identity)
             
-            is_org_admin = self.extract_is_org_admin(identity, request)
+            is_org_admin = self.extract_is_org_admin(identity_dict)
 
             current_url = self.extract_current_url(request)  # not a required field
 
-            sender_id = self.get_sender(identity)
+            sender_id = self.get_sender(identity_dict)
             if not sender_id:
                 return response.json(
                     {"error": "Invalid x-rh-identity header (org_id and username not found)"},
@@ -98,10 +100,7 @@ class ConsoleInput(InputChannel):
         identity = request.headers.get("x-rh-identity")
         return identity
     
-    def extract_is_org_admin(self, identity, request: Request):
-        # base64 decode the identity header
-        identity_dict = decode_identity(identity)
-
+    def extract_is_org_admin(self, identity_dict):
         is_org_admin = False
         try:
             is_org_admin = identity_dict["identity"]["user"]["is_org_admin"]
@@ -117,10 +116,7 @@ class ConsoleInput(InputChannel):
 
         return None
 
-    def get_sender(self, identity) -> Optional[Text]:
-        # base64 decode the identity header
-        identity_dict = decode_identity(identity)
-
+    def get_sender(self, identity_dict) -> Optional[Text]:
         org_id = None
         username = None
         try:
