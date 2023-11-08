@@ -52,7 +52,7 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity)
             if not sender_id:
                 return response.json(
-                    {"error": "Invalid x-rh-identity header (no user_id found)"},
+                    {"error": "Invalid x-rh-identity header (org_id and username not found)"},
                     status=400,
                 )
 
@@ -106,7 +106,15 @@ class ConsoleInput(InputChannel):
     def get_sender(self, identity) -> Optional[Text]:
         # base64 decode the identity header
         identity_dict = decode_identity(identity)
-        return identity_dict["identity"]["user"]["user_id"]
+
+        try:
+            org_id = identity_dict["identity"]["internal"]["org_id"]
+            username = identity_dict["identity"]["user"]["username"]
+        except KeyError:
+            return None
+        if org_id and username:
+            return "{org_id}-{username}".format(org_id=org_id, username=username)
+        return None
 
     def build_metadata(self, identity, current_url) -> Dict[Text, Any]:
         return {"identity": identity, "current_url": current_url}
