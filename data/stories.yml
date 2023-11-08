@@ -58,6 +58,12 @@ stories:
       - action: action_services_offline
       - checkpoint: check_closing
 
+  - story: User wants to change their user preferences
+    steps:
+      - intent: intent_user_preferences
+      - action: action_user_preferences
+      - checkpoint: check_closing
+
 rules:
   - rule: User wants to know more
     steps:
