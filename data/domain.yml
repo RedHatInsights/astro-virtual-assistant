@@ -33,11 +33,18 @@ slots:
     type: bool
     mappings:
       - type: custom
+  is_org_admin:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+        action: action_set_is_org_admin
 
 actions:
   - action_session_start
   - action_core_one_back
   - action_set_current_url
+  - action_set_is_org_admin
   - action_services_offline
 
 responses:
