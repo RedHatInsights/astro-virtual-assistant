@@ -30,8 +30,6 @@ class ActionSetIsOrgAdmin(Action):
             print(f"An Exception occured while handling retrieving is_org_admin: {e}")
             is_org_admin = False
 
-        print(f"is_org_admin from setisorgadmin: {is_org_admin}")
-
         return [SlotSet("is_org_admin", is_org_admin)]
 
 
