@@ -61,19 +61,19 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Contact the Organization's admin
-          payload: Contact my org admin
-        - title: Request access to a specific page or service
-          payload: I would like access to...
-        - title: Tell me more about my subscriptions
-          payload: Can I have help with my subscriptions?
+        - title: Touring the console
+          payload: Tour the console
+        - title: Changing my personal information
+          payload: Change my personal information
+        - title: Show my systems with vulnerabilities
+          payload: Show my systems with vulnerabilities
         - title: See more
           payload: More
   utter_core_capabilities_more_1:
     - text: ""
       buttons:
-        - title: Troubleshooting access
-          payload: I'm getting an access error...
+        - title: Get recommendations from Advisor
+          payload: Recommendations from Advisor
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
