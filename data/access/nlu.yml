@@ -12,3 +12,26 @@ nlu:
       - I can't access my data.
       - Why can't I access my data?
       - Why don't I have access to this?
+      - What do I do if I can't access something?
+
+  - intent: intent_access_request
+    examples: |
+      - I need access to the console.
+      - Requesting access for me
+      - Give me access
+
+  - intent: intent_access_troubleshooting
+    examples: |
+      - I'm getting an access error.
+      - I can't access the console.
+      - Why can't I view this?
+      - I can't view this page.
+      - I can't view this. I get an access error.
+
+  - intent: intent_access_contact_admin
+    examples: |
+      - Contact my org admin
+      - Contact your organization's administrator
+      - Who is my org admin?
+      - Who is my organization's administrator?
+      - Who do I ask for access?
