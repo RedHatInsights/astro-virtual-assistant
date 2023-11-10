@@ -25,6 +25,12 @@ tracker_store:
     username: ${DB_USER} # username used for authentication
     password:  ${DB_PASSWORD} # password used for authentication
 
+lock_store:
+    type: ${LOCK_STORE_TYPE}
+    url: ${REDIS_URL}
+    port: ${REDIS_PORT}
+    db: ${REDIS_DB}
+
 # Event broker which all conversation events should be streamed to.
 # https://rasa.com/docs/rasa/event-brokers
 
