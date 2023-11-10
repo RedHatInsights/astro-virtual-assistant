@@ -12,7 +12,7 @@ from rasa_sdk.events import ActionExecuted
 
 from common import send_console_request, base_url, logging
 
-logger = logging.getLogger(__name__)
+logger = logging.initialize_logging()
 
 class AdvisorAPIPathway(Action):
 
