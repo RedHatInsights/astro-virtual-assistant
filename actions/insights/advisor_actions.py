@@ -10,7 +10,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 
-from common import send_console_request, base_url
+from common import send_console_request, base_url, logging
+
+logger = logging.getLogger(__name__)
 
 class AdvisorAPIPathway(Action):
 
@@ -27,7 +29,21 @@ class AdvisorAPIPathway(Action):
         if not result or not result['meta']:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
         
-        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_total", total=result['meta']['count'], displayed=len(result['data']))
+        total = None
+        displayed = None
+        try:
+            total = result['meta']['count']
+            displayed = len(result['data'])
+        except KeyError:
+            logger.error("Failed to parse the response from the advisor API - KeyError: {}".format(result))
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+            return []
+        except Exception as e:
+            logger.error("Failed to parse the response from the advisor API: {}".format(e))
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+            return []
+
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_total", total=total, displayed=displayed)
 
         for i, rec in enumerate(result['data']):
             bot_response = "{}. {}\n Impacted Systems:{}\n {}".format(i+1, rec['name'], rec['impacted_systems_count'], rec['description'])
