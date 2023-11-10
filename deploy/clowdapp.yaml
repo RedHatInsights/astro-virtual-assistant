@@ -53,6 +53,18 @@ objects:
             value: ${LOG_LEVEL}
           - name: TRACKER_STORE_TYPE
             value: ${TRACKER_STORE_TYPE}
+          - name: LOCK_STORE_TYPE
+            value: ${LOCK_STORE_TYPE}
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                key: url
+                name: virtual-assistant-redis
+          - name: REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                key: port
+                name: virtual-assistant-redis
           - name: PROMETHEUS
             value: ${PROMETHEUS}
           - name: ACTIONS_ENDPOINT_URL
@@ -136,6 +148,15 @@ parameters:
 - description: Tracker store type
   name: TRACKER_STORE_TYPE
   value: "SQL"
+- description: Lock store type
+  name: LOCK_STORE_TYPE
+  value: "redis"
+- description: Redis URL
+  name: REDIS_URL
+  value: ""
+- description: Redis port
+  name: REDIS_PORT
+  value: "6379"
 - description: Enable Prometheus
   name: PROMETHEUS
   value: "True"
