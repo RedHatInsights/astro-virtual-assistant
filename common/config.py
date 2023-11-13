@@ -51,8 +51,12 @@ def get_namespace():
         logger.info("Not running in openshift")
 
 
+def get_endpoint_url(endpoint):
+    return "%s:%s" % (endpoint.hostname, endpoint.port)
+
+
 if os.getenv("ACG_CONFIG"):
-    from app_common_python import LoadedConfig
+    from app_common_python import LoadedConfig, DependencyEndpoints
 
     cfg = LoadedConfig
     # Logging
@@ -74,6 +78,11 @@ if os.getenv("ACG_CONFIG"):
     os.environ["DB_PASSWORD"] = cfg.database.password
     os.environ["DB_NAME"] = cfg.database.name
     os.environ["DB_SSLMODE"] = cfg.database.sslMode
+
+    os.environ["ENDPOINT_NOTIFICATIONS_GW"] = get_endpoint_url(
+        DependencyEndpoints.get("notifications-gw").get("service")
+    )
+
 else:
     # Logging
     CW_AWS_ACCESS_KEY_ID = os.getenv("CW_AWS_ACCESS_KEY_ID", None)
