@@ -11,7 +11,9 @@ objects:
   spec:
     envName: ${ENV_NAME}
     dependencies:
+      - advisor-backend
       - notifications-gw
+      - vulnerability-engine
 
     database:
       name: virtual-assistant
