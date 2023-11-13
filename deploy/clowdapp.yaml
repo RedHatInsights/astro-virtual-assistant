@@ -10,6 +10,8 @@ objects:
     name: virtual-assistant
   spec:
     envName: ${ENV_NAME}
+    dependencies:
+      - notifications-gw
 
     database:
       name: virtual-assistant
