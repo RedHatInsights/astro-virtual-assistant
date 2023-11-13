@@ -26,11 +26,11 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
         return None
 
     endpoint = None
-    if app is "advisor":
+    if app == "advisor":
         endpoint = ENDPOINT_ADVISOR_BACKEND
-    elif app is "notifications":
+    elif app == "notifications":
         endpoint = ENDPOINT_NOTIFICATIONS_GW
-    elif app is "vulnerability":
+    elif app == "vulnerability":
         endpoint = ENDPOINT_VULNERABILITY_ENGINE
     else:
         print(f"Invalid app: {app}")
