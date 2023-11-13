@@ -79,8 +79,14 @@ if os.getenv("ACG_CONFIG"):
     os.environ["DB_NAME"] = cfg.database.name
     os.environ["DB_SSLMODE"] = cfg.database.sslMode
 
+    os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
+        DependencyEndpoints.get("advisor-backend").get("service")
+    )
     os.environ["ENDPOINT_NOTIFICATIONS_GW"] = get_endpoint_url(
         DependencyEndpoints.get("notifications-gw").get("service")
+    )
+    os.environ["ENDPOINT_VULNERABILITY_ENGINE"] = get_endpoint_url(
+        DependencyEndpoints.get("vulnerability-engine").get("service")
     )
 
 else:
