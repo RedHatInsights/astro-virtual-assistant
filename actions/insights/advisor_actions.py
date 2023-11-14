@@ -10,7 +10,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 
-from common import send_console_request, base_url, logging
+from common import CONSOLEDOT_BASE_URL, send_console_request, logging
 
 logger = logging.initialize_logging()
 
@@ -24,7 +24,7 @@ class AdvisorAPIPathway(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        result = send_console_request("/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
+        result = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
         
         if not result or not result['meta']:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
@@ -53,7 +53,7 @@ class AdvisorAPIPathway(Action):
 
             dispatcher.utter_message(text=bot_response)
 
-        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_closing", link=base_url+"/openshift/insights/advisor/recommendations")
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_closing", link=CONSOLEDOT_BASE_URL+"/openshift/insights/advisor/recommendations")
 
         events = [ActionExecuted(self.name())]
         return events
