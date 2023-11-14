@@ -44,7 +44,8 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
     latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
 
     if latest_user_event is not None:
-        return latest_user_event.get("metadata").get("identity")
+        header.add_header("x-rh-identity", latest_user_event.get("metadata").get("identity"))
+        return header
 
     raise ValueError("No authentication found")
 
