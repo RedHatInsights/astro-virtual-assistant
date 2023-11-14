@@ -52,7 +52,8 @@ def get_namespace():
 
 
 def get_endpoint_url(endpoint):
-    return "%s:%s" % (endpoint.hostname, endpoint.port)
+    # TODO: need to check if tlsPort is present, if so use https (and configure certs)
+    return "http://%s:%s" % (endpoint.hostname, endpoint.port)
 
 
 if os.getenv("ACG_CONFIG"):
