@@ -41,6 +41,9 @@ def log_config():
                 continue
             logger.info("Using %s: %s", k, v)
 
+    for k in ["ENDPOINT_ADVISOR_BACKEND", "ENDPOINT_NOTIFICATIONS_GW", "ENDPOINT_VULNERABILITY_ENGINE"]:
+        logger.info("Using %s: %s", k, os.environ.get(k, "--not-set--"))
+
 
 def get_namespace():
     try:
