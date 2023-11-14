@@ -1,0 +1,13 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_api_availability
+    examples: |
+      - What APIs do you have available
+      - Where is your API documentation
+      - API catalog
+      - Can you show me your api docs
+      - I want to see more about APIs
+      - does advisor have an api doc
+      - give me the api doc for the vulnerability api
+      - I want to see the API doc for playbook dispatcher
