@@ -31,7 +31,7 @@ class ConsoleInput(InputChannel):
     ) -> Blueprint:
         custom_webhook = Blueprint("custom_webhook_{}".format(type(self).__name__))
 
-        @custom_webhook.route("/", methods=["GET"])
+        @custom_webhook.route("/health", methods=["GET"])
         async def health(request: Request) -> HTTPResponse:
             return response.json({"status": "ok"})
 
