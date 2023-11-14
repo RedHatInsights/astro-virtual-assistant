@@ -51,7 +51,8 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
     result = None
 
-    logger.info("Calling GET %s with headers: [%s]", url, json.dumps(header.build_headers()))
+    logger.info("Calling GET %s", url)
+    logger.info("With headers %s", json.dumps(header.build_headers()))
 
     try:
         result = requests.get(
