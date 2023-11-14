@@ -85,4 +85,11 @@ def initialize_logging():
 
     logger = logging.getLogger(config.APP_NAME)
 
+    # Enable full debug mode for our requests
+    from http.client import HTTPConnection
+    HTTPConnection.debuglevel = 1
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
     return logger
