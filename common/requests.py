@@ -2,19 +2,21 @@
 from __future__ import annotations
 
 import json
-import logging
 from typing import Any
 from os import getenv
 
 from rasa_sdk import Tracker
 
 import requests
+from common import logging
 
 from .header import Header
 from .auth import get_auth_header
 
 IS_RUNNING_LOCALLY = getenv("IS_RUNNING_LOCALLY", "false") == "true"
 CONSOLEDOT_BASE_URL = getenv("CONSOLEDOT_BASE_URL", "https://console.redhat.com")
+
+logger = logging.initialize_logging()
 
 def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
@@ -49,7 +51,7 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
     result = None
 
-    logging.info("Calling GET %s with headers: [%s]", url, json.dumps(header.build_headers()))
+    logger.info("Calling GET %s with headers: [%s]", url, json.dumps(header.build_headers()))
 
     try:
         result = requests.get(
