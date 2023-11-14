@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import socket
 from logstash_formatter import LogstashFormatterV1
 
 import common.config as config
@@ -84,12 +83,5 @@ def initialize_logging():
         logging.root.addHandler(cw_handler)
 
     logger = logging.getLogger(config.APP_NAME)
-
-    # Enable full debug mode for our requests
-    from http.client import HTTPConnection
-    HTTPConnection.debuglevel = 1
-    requests_log = logging.getLogger("requests.packages.urllib3")
-    requests_log.setLevel(logging.DEBUG)
-    requests_log.propagate = True
 
     return logger
