@@ -43,8 +43,8 @@ objects:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /metrics
-            port: 9000
+            path: /api/virtual-assistant/v1
+            port: 8000
             scheme: HTTP
           initialDelaySeconds: 240
           periodSeconds: 10
