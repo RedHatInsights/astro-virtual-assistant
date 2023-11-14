@@ -24,11 +24,13 @@ class AdvisorAPIPathway(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        result = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
+        result, status = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
         
-        if not result or not result['meta']:
+        if not result or not result['meta'] or status != 200:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
-        
+            logger.error("Failed to get a response from the advisor API: status {}; result {}".format(status, result))
+            return []
+
         total = None
         displayed = None
         try:
@@ -39,7 +41,7 @@ class AdvisorAPIPathway(Action):
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
             return []
         except Exception as e:
-            logger.error("Failed to parse the response from the advisor API: {}".format(e))
+            logger.error("Failed to parse the response from the advisor API: error {}; status {}; result {}".format(e, status, result))
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
             return []
 
