@@ -47,7 +47,7 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
         result = requests.get(
             url,
             headers=header.build_headers()
-        ).json()
+        )
     except Exception as e:
         print(f"An Exception occured while handling response from the Advisor API: {e}")
         return None
