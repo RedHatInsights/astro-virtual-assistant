@@ -10,6 +10,10 @@ objects:
     name: virtual-assistant
   spec:
     envName: ${ENV_NAME}
+    dependencies:
+      - advisor-backend
+      - notifications-gw
+      - vulnerability-engine
 
     database:
       name: virtual-assistant
@@ -115,6 +119,8 @@ objects:
             value: ${TRACKER_STORE_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
+          - name: CONSOLEDOT_BASE_URL
+            value: ${CONSOLEDOT_BASE_URL}
         resources:
           limits:
             cpu: 250m
@@ -163,3 +169,7 @@ parameters:
 - description: Actions endpoint url
   name: ACTIONS_ENDPOINT_URL
   value: http://virtual-assistant-actions:10000/webhook
+- description: ConsoleDot base url
+  name: CONSOLEDOT_BASE_URL
+  value: https://console.redhat.com
+

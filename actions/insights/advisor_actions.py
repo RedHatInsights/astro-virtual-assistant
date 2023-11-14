@@ -10,7 +10,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import ActionExecuted
 
-from common import send_console_request, base_url
+from common import CONSOLEDOT_BASE_URL, send_console_request, logging
+
+logger = logging.initialize_logging()
 
 class AdvisorAPIPathway(Action):
 
@@ -22,12 +24,29 @@ class AdvisorAPIPathway(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        result = send_console_request("/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
-        
-        if not result or not result['meta']:
+        result = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
+        status = result.status_code
+        result = result.json()
+        if not result or not result['meta'] or status != 200:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
-        
-        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_total", total=result['meta']['count'], displayed=len(result['data']))
+            logger.error("Failed to get a response from the advisor API: status {}; result {}".format(status, result))
+            return []
+
+        total = None
+        displayed = None
+        try:
+            total = result['meta']['count']
+            displayed = len(result['data'])
+        except KeyError:
+            logger.error("Failed to parse the response from the advisor API - KeyError: {}".format(result))
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+            return []
+        except Exception as e:
+            logger.error("Failed to parse the response from the advisor API: error {}; status {}; result {}".format(e, status, result))
+            dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+            return []
+
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_total", total=total, displayed=displayed)
 
         for i, rec in enumerate(result['data']):
             bot_response = "{}. {}\n Impacted Systems:{}\n {}".format(i+1, rec['name'], rec['impacted_systems_count'], rec['description'])
@@ -37,7 +56,7 @@ class AdvisorAPIPathway(Action):
 
             dispatcher.utter_message(text=bot_response)
 
-        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_closing", link=base_url+"/openshift/insights/advisor/recommendations")
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_closing", link=CONSOLEDOT_BASE_URL+"/openshift/insights/advisor/recommendations")
 
         events = [ActionExecuted(self.name())]
         return events
