@@ -1,5 +1,8 @@
 # can I import just match and case from future python versions?
 from __future__ import annotations
+
+import json
+import logging
 from typing import Any
 from os import getenv
 
@@ -45,6 +48,9 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
         url = "{}{}".format(endpoint, path)
 
     result = None
+
+    logging.info("Calling GET %s with headers: [%s]", url, json.dumps(header.build_headers()))
+
     try:
         result = requests.get(
             url,
