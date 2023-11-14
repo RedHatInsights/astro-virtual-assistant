@@ -24,8 +24,9 @@ class AdvisorAPIPathway(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        result, status = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
-        
+        result = send_console_request("advisor", "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3", tracker)
+        status = result.status_code
+        result = result.json()
         if not result or not result['meta'] or status != 200:
             dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
             logger.error("Failed to get a response from the advisor API: status {}; result {}".format(status, result))
