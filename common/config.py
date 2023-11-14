@@ -41,6 +41,9 @@ def log_config():
                 continue
             logger.info("Using %s: %s", k, v)
 
+    for k in ["ENDPOINT_ADVISOR_BACKEND", "ENDPOINT_NOTIFICATIONS_GW", "ENDPOINT_VULNERABILITY_ENGINE"]:
+        logger.info("Using %s: %s", k, os.environ.get(k, "--not-set--"))
+
 
 def get_namespace():
     try:
@@ -52,7 +55,8 @@ def get_namespace():
 
 
 def get_endpoint_url(endpoint):
-    return "%s:%s" % (endpoint.hostname, endpoint.port)
+    # TODO: need to check if tlsPort is present, if so use https (and configure certs)
+    return "http://%s:%s" % (endpoint.hostname, endpoint.port)
 
 
 if os.getenv("ACG_CONFIG"):
