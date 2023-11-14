@@ -111,10 +111,3 @@ else:
 
     API_PORT = int(os.getenv("API_PORT")) if os.getenv("API_PORT") else None
     ACTIONS_PORT = int(os.getenv("ACTIONS_PORT")) if os.getenv("ACTIONS_PORT") else None
-
-# Enable full debug mode for our requests
-import http.client as http_client
-http_client.HTTPConnection.debuglevel = 1
-requests_log = logging.getLogger("requests.packages.urllib3")
-requests_log.setLevel(logging.DEBUG)
-requests_log.propagate = True

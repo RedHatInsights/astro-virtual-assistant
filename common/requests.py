@@ -1,11 +1,14 @@
 # can I import just match and case from future python versions?
 from __future__ import annotations
+
+import json
 from typing import Any
 from os import getenv
 
 from rasa_sdk import Tracker
 
 import requests
+from common import logging
 
 from .header import Header
 from .auth import get_auth_header
@@ -13,11 +16,15 @@ from .auth import get_auth_header
 IS_RUNNING_LOCALLY = getenv("IS_RUNNING_LOCALLY", "false") == "true"
 CONSOLEDOT_BASE_URL = getenv("CONSOLEDOT_BASE_URL", "https://console.redhat.com")
 
-ENDPOINT_ADVISOR_BACKEND = getenv("ENDPOINT_ADVISOR_BACKEND", "http://advisor-backend:8080")
-ENDPOINT_NOTIFICATIONS_GW = getenv("ENDPOINT_NOTIFICATIONS_GW", "http://notifications-gw:8080")
-ENDPOINT_VULNERABILITY_ENGINE = getenv("ENDPOINT_VULNERABILITY_ENGINE", "http://vulnerability-engine:8080")
+logger = logging.initialize_logging()
 
 def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
+
+    # Todo: Move this to a class that can load these values after the initializing phase
+    ENDPOINT_ADVISOR_BACKEND = getenv("ENDPOINT_ADVISOR_BACKEND", "http://advisor-backend:8080")
+    ENDPOINT_NOTIFICATIONS_GW = getenv("ENDPOINT_NOTIFICATIONS_GW", "http://notifications-gw:8080")
+    ENDPOINT_VULNERABILITY_ENGINE = getenv("ENDPOINT_VULNERABILITY_ENGINE", "http://vulnerability-engine:8080")
+
     header = Header()
     try:
         get_auth_header(tracker, header)
@@ -43,6 +50,9 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
         url = "{}{}".format(endpoint, path)
 
     result = None
+
+    logger.info("Calling GET %s with headers: [%s]", url, json.dumps(header.build_headers()))
+
     try:
         result = requests.get(
             url,
