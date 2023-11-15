@@ -126,6 +126,11 @@ nlu:
       - I'm not happy with this
       - You're not helping me!
       - I'm not getting what I need from this
+      - I hate this
+      - I want to talk with your manager
+      - I don't like this
+      - I do not like this
+      - This is crap
 
   - intent: intent_are_you_ai
     examples: |
