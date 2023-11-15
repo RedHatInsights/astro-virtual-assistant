@@ -19,6 +19,7 @@ TIMEOUT = getenv("TIMEOUT", "5")
 
 logger = logging.initialize_logging()
 
+
 def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
     # Todo: Move this to a class that can load these values after the initializing phase
     ENDPOINT_ADVISOR_BACKEND = getenv(

@@ -109,7 +109,7 @@ else:
     CW_AWS_ACCESS_KEY_ID = os.getenv("CW_AWS_ACCESS_KEY_ID", None)
     CW_AWS_SECRET_ACCESS_KEY = os.getenv("CW_AWS_SECRET_ACCESS_KEY", None)
     LOG_GROUP = os.getenv("LOG_GROUP", "platform-dev")
-    
+
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
 
