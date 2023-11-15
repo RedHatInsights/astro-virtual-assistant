@@ -15,6 +15,8 @@ NAMESPACE = None
 HOSTNAME = None
 PROMETHEUS = None
 
+LOCK_STORE_TYPE = os.getenv("LOCK_STORE_TYPE", "redis")
+
 
 def initialize_clowdapp():
     global GROUP_ID, API_LISTEN_ADDRESS, API_URL_EXPIRY, AWS_REGION, LOG_LEVEL, NAMESPACE, HOSTNAME, PROMETHEUS
@@ -90,8 +92,12 @@ if os.getenv("ACG_CONFIG"):
     os.environ["DB_SSLMODE"] = cfg.database.sslMode
 
     # Redis
-    os.environ["REDIS_URL"] = cfg.InMemoryDb.Hostname
-    os.environ["REDIS_PORT"] = cfg.InMemoryDb.Port
+    try:
+        os.environ["REDIS_URL"] = cfg.InMemoryDb.Hostname
+        os.environ["REDIS_PORT"] = cfg.InMemoryDb.Port
+    except Exception:
+        logger.info("No redis config found")
+        os.environ["LOCK_STORE_TYPE"] = "in_memory"
 
     # Endpoints
     os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
