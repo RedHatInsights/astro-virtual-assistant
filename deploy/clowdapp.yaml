@@ -18,6 +18,8 @@ objects:
     database:
       name: virtual-assistant
       version: 12
+    
+    inMemoryDb: true
 
     deployments:
     - name: api
@@ -57,6 +59,8 @@ objects:
             value: ${LOG_LEVEL}
           - name: TRACKER_STORE_TYPE
             value: ${TRACKER_STORE_TYPE}
+          - name: LOCK_STORE_TYPE
+            value: ${LOCK_STORE_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
           - name: ACTIONS_ENDPOINT_URL
@@ -142,6 +146,9 @@ parameters:
 - description: Tracker store type
   name: TRACKER_STORE_TYPE
   value: "SQL"
+- description: Lock store type
+  name: LOCK_STORE_TYPE
+  value: "redis"
 - description: Enable Prometheus
   name: PROMETHEUS
   value: "True"

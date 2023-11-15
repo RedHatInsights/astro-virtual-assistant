@@ -71,11 +71,13 @@ if os.getenv("ACG_CONFIG"):
         "CW_AWS_SECRET_ACCESS_KEY", cfg.logging.cloudwatch.secretAccessKey
     )
     LOG_GROUP = os.getenv("LOG_GROUP", cfg.logging.cloudwatch.logGroup)
+
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", cfg.metricsPort))
     API_PORT = int(os.getenv("API_PORT", cfg.publicPort))
     ACTIONS_PORT = int(os.getenv("ACTIONS_PORT", cfg.privatePort))
-    # Database
+
+    # Postgres Database
     os.environ["DB_HOST"] = cfg.database.hostname
     os.environ["DB_PORT"] = str(cfg.database.port)
     os.environ["DB_USER"] = cfg.database.username
@@ -83,6 +85,11 @@ if os.getenv("ACG_CONFIG"):
     os.environ["DB_NAME"] = cfg.database.name
     os.environ["DB_SSLMODE"] = cfg.database.sslMode
 
+    # Redis
+    os.environ["REDIS_URL"] = cfg.InMemoryDb.Hostname
+    os.environ["REDIS_PORT"] = cfg.InMemoryDb.Port
+
+    # Endpoints
     os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
         DependencyEndpoints.get("advisor-backend").get("api")
     )
@@ -98,6 +105,7 @@ else:
     CW_AWS_ACCESS_KEY_ID = os.getenv("CW_AWS_ACCESS_KEY_ID", None)
     CW_AWS_SECRET_ACCESS_KEY = os.getenv("CW_AWS_SECRET_ACCESS_KEY", None)
     LOG_GROUP = os.getenv("LOG_GROUP", "platform-dev")
+    
     # Metrics
     PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", 9000))
 
