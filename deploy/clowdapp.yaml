@@ -18,8 +18,6 @@ objects:
     database:
       name: virtual-assistant
       version: 12
-    
-    inMemoryDb: true
 
     deployments:
     - name: api
