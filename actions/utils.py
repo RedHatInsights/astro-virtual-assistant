@@ -18,6 +18,7 @@ def get_current_url(tracker: Tracker) -> Optional[Text]:
 
     return None
 
+
 def get_is_org_admin(tracker: Tracker) -> Optional[bool]:
     is_org_admin = False
     try:
