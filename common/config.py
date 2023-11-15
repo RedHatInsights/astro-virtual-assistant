@@ -98,6 +98,8 @@ if os.getenv("ACG_CONFIG"):
     except Exception:
         logger.info("No redis config found")
         os.environ["LOCK_STORE_TYPE"] = "in_memory"
+        os.environ["REDIS_URL"] = ""
+        os.environ["REDIS_PORT"] = ""
 
     # Endpoints
     os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
