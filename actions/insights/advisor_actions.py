@@ -30,13 +30,26 @@ class AdvisorAPIPathway(Action):
             "/api/insights/v1/pathway/?&sort=-recommendation_level&limit=3",
             tracker,
         )
-        status = result.status_code
+        status = None
+        try:
+            status = result.status_code
+        except Exception as e:
+            dispatcher.utter_message(
+                response="utter_advisor_recommendation_pathways_error"
+            )
+            logger.debug(
+                "Failed to get a response from the advisor API: status {}; result {}".format(
+                    status, result
+                )
+            )
+            return []
+
         result = result.json()
         if not result or not result["meta"] or status != 200:
             dispatcher.utter_message(
                 response="utter_advisor_recommendation_pathways_error"
             )
-            logger.error(
+            logger.debug(
                 "Failed to get a response from the advisor API: status {}; result {}".format(
                     status, result
                 )
@@ -49,7 +62,7 @@ class AdvisorAPIPathway(Action):
             total = result["meta"]["count"]
             displayed = len(result["data"])
         except KeyError:
-            logger.error(
+            logger.debug(
                 "Failed to parse the response from the advisor API - KeyError: {}".format(
                     result
                 )
@@ -59,7 +72,7 @@ class AdvisorAPIPathway(Action):
             )
             return []
         except Exception as e:
-            logger.error(
+            logger.debug(
                 "Failed to parse the response from the advisor API: error {}; status {}; result {}".format(
                     e, status, result
                 )
