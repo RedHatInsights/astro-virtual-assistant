@@ -90,8 +90,8 @@ if os.getenv("ACG_CONFIG"):
     os.environ["DB_SSLMODE"] = cfg.database.sslMode
 
     # Redis
-    os.environ["REDIS_URL"] = cfg.InMemoryDb.Hostname
-    os.environ["REDIS_PORT"] = cfg.InMemoryDb.Port
+    # os.environ["REDIS_URL"] = cfg.InMemoryDb.Hostname
+    # os.environ["REDIS_PORT"] = cfg.InMemoryDb.Port
 
     # Endpoints
     os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
