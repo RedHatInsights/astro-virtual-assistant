@@ -100,6 +100,7 @@ if os.getenv("ACG_CONFIG"):
         os.environ["LOCK_STORE_TYPE"] = "in_memory"
         os.environ["REDIS_URL"] = ""
         os.environ["REDIS_PORT"] = ""
+        os.environ["REDIS_DB"] = ""
 
     # Endpoints
     os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
