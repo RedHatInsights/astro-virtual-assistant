@@ -15,9 +15,9 @@ from .auth import get_auth_header
 
 IS_RUNNING_LOCALLY = getenv("IS_RUNNING_LOCALLY", "false") == "true"
 CONSOLEDOT_BASE_URL = getenv("CONSOLEDOT_BASE_URL", "https://console.redhat.com")
+TIMEOUT = getenv("TIMEOUT", "5")
 
 logger = logging.initialize_logging()
-
 
 def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
     # Todo: Move this to a class that can load these values after the initializing phase
@@ -59,7 +59,7 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
     try:
         logger.info("Calling console service GET %s", url)
-        result = requests.get(url, headers=header.build_headers())
+        result = requests.get(url, headers=header.build_headers(), timeout=TIMEOUT)
     except Exception as e:
         print(f"An Exception occured while handling response from the Advisor API: {e}")
         return None
