@@ -60,7 +60,7 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
     try:
         logger.info("Calling console service GET %s", url)
-        result = requests.get(url, headers=header.build_headers(), timeout=TIMEOUT)
+        result = requests.get(url, headers=header.build_headers(), timeout=int(TIMEOUT))
     except Exception as e:
         print(f"An Exception occured while handling response from the Advisor API: {e}")
         return None
