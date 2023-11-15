@@ -48,7 +48,7 @@ class ConsoleInput(InputChannel):
                 )
             # base64 decode the identity header
             identity_dict = decode_identity(identity)
-            
+
             is_org_admin = self.extract_is_org_admin(identity_dict)
 
             current_url = self.extract_current_url(request)  # not a required field
@@ -56,7 +56,9 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity_dict)
             if not sender_id:
                 return response.json(
-                    {"error": "Invalid x-rh-identity header (org_id and username not found)"},
+                    {
+                        "error": "Invalid x-rh-identity header (org_id and username not found)"
+                    },
                     status=400,
                 )
 
@@ -78,7 +80,9 @@ class ConsoleInput(InputChannel):
                         collector,
                         sender_id,
                         input_channel=input_channel,
-                        metadata=self.build_metadata(identity, is_org_admin, current_url),
+                        metadata=self.build_metadata(
+                            identity, is_org_admin, current_url
+                        ),
                     )
                 )
             except CancelledError:
@@ -99,14 +103,14 @@ class ConsoleInput(InputChannel):
         """Extracts the identity from the incoming request."""
         identity = request.headers.get("x-rh-identity")
         return identity
-    
+
     def extract_is_org_admin(self, identity_dict):
         is_org_admin = False
         try:
             is_org_admin = identity_dict["identity"]["user"]["is_org_admin"]
         except KeyError:
             return False
-        
+
         return is_org_admin
 
     def extract_current_url(self, request: Request) -> Optional[Dict[Text, Any]]:
@@ -120,7 +124,7 @@ class ConsoleInput(InputChannel):
         org_id = None
         username = None
         try:
-            org_id = identity_dict["identity"]["org_id"] # should use top level org_id
+            org_id = identity_dict["identity"]["org_id"]  # should use top level org_id
             username = identity_dict["identity"]["user"]["username"]
         except KeyError:
             return None
@@ -130,4 +134,8 @@ class ConsoleInput(InputChannel):
         return None
 
     def build_metadata(self, identity, is_org_admin, current_url) -> Dict[Text, Any]:
-        return {"identity": identity, "is_org_admin": is_org_admin, "current_url": current_url}
+        return {
+            "identity": identity,
+            "is_org_admin": is_org_admin,
+            "current_url": current_url,
+        }

@@ -18,12 +18,18 @@ CONSOLEDOT_BASE_URL = getenv("CONSOLEDOT_BASE_URL", "https://console.redhat.com"
 
 logger = logging.initialize_logging()
 
-def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
+def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
     # Todo: Move this to a class that can load these values after the initializing phase
-    ENDPOINT_ADVISOR_BACKEND = getenv("ENDPOINT_ADVISOR_BACKEND", "http://advisor-backend:8080")
-    ENDPOINT_NOTIFICATIONS_GW = getenv("ENDPOINT_NOTIFICATIONS_GW", "http://notifications-gw:8080")
-    ENDPOINT_VULNERABILITY_ENGINE = getenv("ENDPOINT_VULNERABILITY_ENGINE", "http://vulnerability-engine:8080")
+    ENDPOINT_ADVISOR_BACKEND = getenv(
+        "ENDPOINT_ADVISOR_BACKEND", "http://advisor-backend:8080"
+    )
+    ENDPOINT_NOTIFICATIONS_GW = getenv(
+        "ENDPOINT_NOTIFICATIONS_GW", "http://notifications-gw:8080"
+    )
+    ENDPOINT_VULNERABILITY_ENGINE = getenv(
+        "ENDPOINT_VULNERABILITY_ENGINE", "http://vulnerability-engine:8080"
+    )
 
     header = Header()
     try:
@@ -53,10 +59,7 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
 
     try:
         logger.info("Calling console service GET %s", url)
-        result = requests.get(
-            url,
-            headers=header.build_headers()
-        )
+        result = requests.get(url, headers=header.build_headers())
     except Exception as e:
         print(f"An Exception occured while handling response from the Advisor API: {e}")
         return None
