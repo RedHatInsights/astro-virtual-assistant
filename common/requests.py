@@ -1,7 +1,6 @@
 # can I import just match and case from future python versions?
 from __future__ import annotations
 
-import json
 from typing import Any
 from os import getenv
 
@@ -20,7 +19,9 @@ TIMEOUT = getenv("TIMEOUT", "5")
 logger = logging.initialize_logging()
 
 
-def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
+def send_console_request(
+    app: str, path: str, tracker: Tracker, method: str = "get", **kwargs
+) -> Any:
     # Todo: Move this to a class that can load these values after the initializing phase
     ENDPOINT_ADVISOR_BACKEND = getenv(
         "ENDPOINT_ADVISOR_BACKEND", "http://advisor-backend:8080"
@@ -59,8 +60,10 @@ def send_console_request(app: str, path: str, tracker: Tracker) -> Any:
     result = None
 
     try:
-        logger.info("Calling console service GET %s", url)
-        result = requests.get(url, headers=header.build_headers(), timeout=int(TIMEOUT))
+        logger.info("Calling console service %s %s", method.upper(), url)
+        result = requests.request(
+            method, url, headers=header.build_headers(), timeout=int(TIMEOUT), **kwargs
+        )
     except Exception as e:
         print(f"An Exception occured while handling response from the Advisor API: {e}")
         return None
