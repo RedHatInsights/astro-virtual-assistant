@@ -13,6 +13,10 @@ nlu:
       - What are some examples of things you can do?
       - What services can you help me with?
       - What products can you assist me with?
+      - Show me what kind of things can you do
+      - Show me what do you do
+      - Show me what can you help me with
+      - Show me what you can do
   - intent: intent_core_more
     examples: |
       - More
@@ -126,6 +130,11 @@ nlu:
       - I'm not happy with this
       - You're not helping me!
       - I'm not getting what I need from this
+      - I hate this
+      - I want to talk with your manager
+      - I don't like this
+      - I do not like this
+      - This is crap
 
   - intent: intent_are_you_ai
     examples: |
