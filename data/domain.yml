@@ -147,3 +147,5 @@ responses:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance."
   utter_services_offline_further_info:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for further outage information."
+  utter_unknown_topic:
+    - text: "I am not able to assist with that topic."

@@ -1,0 +1,26 @@
+version: "3.1"
+
+stories:
+  - story: User asks for out-of-scope features - 1
+    steps:
+      - user: |
+          dogs
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for out-of-scope features - 2
+    steps:
+      - user: |
+          what's the weather?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for out-of-scope features - 3
+    steps:
+      - user: |
+          Who is the president?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
