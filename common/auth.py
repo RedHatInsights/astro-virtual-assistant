@@ -1,11 +1,12 @@
 from __future__ import annotations
 import requests
-from typing import Text, Dict, Any
 
 from os import getenv
 import jwt
 
 from rasa_sdk import Tracker
+
+from common.rasa.tracker import get_user_identity
 
 OFFLINE_REFRESH_TOKEN = "OFFLINE_REFRESH_TOKEN"
 SSO_REFRESH_TOKEN_URL_PARAM = "SSO_REFRESH_TOKEN_URL"
@@ -14,10 +15,6 @@ SSO_REFRESH_TOKEN_URL = (
 )
 
 local_dev_token: str | None = None
-
-
-def is_user_event(event: Dict[Text, Any]):
-    return event.get("event") == "user"
 
 
 # if local token specified, it defaults to it
@@ -41,12 +38,9 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
 
         raise ValueError("No offline token found")
 
-    latest_user_event = next(filter(is_user_event, reversed(tracker.events)), None)
-
-    if latest_user_event is not None:
-        header.add_header(
-            "x-rh-identity", latest_user_event.get("metadata").get("identity")
-        )
+    identity = get_user_identity(tracker)
+    if identity is not None:
+        header.add_header("x-rh-identity", identity)
         return header
 
     raise ValueError("No authentication found")
