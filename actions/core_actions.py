@@ -6,7 +6,7 @@ from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
 from common import metrics
-from actions.utils import get_current_url, get_is_org_admin
+from common.rasa.tracker import get_current_url, get_is_org_admin
 
 _SLOT_FIRST_TIME_GREETING = "first_time_greeting"
 _SLOT_CURRENT_URL = "current_url"
