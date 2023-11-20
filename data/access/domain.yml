@@ -2,6 +2,9 @@ version: "3.1"
 
 intents:
   - intent_access_capabilities
+  - intent_access_request
+  - intent_access_troubleshooting
+  - intent_access_contact_admin
 
 entities: []
 
