@@ -8,9 +8,45 @@ intents:
 
 entities: []
 
-slots: {}
+slots:
+  access_request_url:
+    type: text
+    mappings:
+      - type: from_text
+        conditions: &access_request_url_condition
+          - active_loop: form_access_request
+            requested_slot: access_request_url
+  access_leave_request_message:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &access_leave_request_message_condition
+          - <<: *access_request_url_condition
+            requested_slot: access_leave_request_message
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *access_leave_request_message_condition
+  access_request_message:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - <<: *access_request_url_condition
+            requested_slot: access_request_message
 
-actions: []
+actions:
+  - validate_access_form_access_request
+  - execute_access_form_access_request
+
+forms:
+  form_access_request:
+    required_slots:
+      - access_request_url
+      - access_leave_request_message
+      - access_request_message
 
 responses:
   utter_access_capabilities:
@@ -22,3 +58,28 @@ responses:
           payload: Troubleshoot my access
         - title: Contact your organization's administrator
           payload: Contact my org admin
+  utter_access_request:
+    - text: >
+        To access you'll need an org admin for your account to grant you permission.
+        You can contact them directly, or we can do it for you.
+        Would you like me to request access to your Organization Administrators?
+      buttons: &buttons_yes_no
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_ask_access_request_url:
+    - text: What URL or service would you like to request access to?
+  utter_ask_access_leave_request_message:
+    - text: >
+        We'll send your org admin(s) your request to access "{access_request_url}". 
+        Would you like to add a message to your request to help provide context?
+      buttons: *buttons_yes_no
+  utter_ask_access_request_message:
+    - text: >
+        Ok, please type your message below. To help your org admin, provide the reason why you need access 
+        (e.g. thought you already had it, need to perform a task, etc.)
+
+  utter_access_request_access_submitted:
+    - text: >
+        Great, we've submitted your request.

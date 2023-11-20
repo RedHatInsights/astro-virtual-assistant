@@ -6,6 +6,7 @@ import jwt
 
 from rasa_sdk import Tracker
 
+from actions.utils import get_is_running_locally
 from common.rasa.tracker import get_user_identity
 
 OFFLINE_REFRESH_TOKEN = "OFFLINE_REFRESH_TOKEN"
@@ -21,7 +22,7 @@ local_dev_token: str | None = None
 def get_auth_header(tracker: Tracker, header: Header) -> Header:
     global local_dev_token
 
-    if _get_is_running_locally():
+    if get_is_running_locally():
         # if its already saved, use it
         if local_dev_token is not None and _is_jwt_valid(local_dev_token):
             header.add_header("Authorization", "Bearer " + local_dev_token)
@@ -44,10 +45,6 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
         return header
 
     raise ValueError("No authentication found")
-
-
-def _get_is_running_locally() -> bool:
-    return getenv("IS_RUNNING_LOCALLY", "false").lower() == "true"
 
 
 def _get_offline_token() -> str:
