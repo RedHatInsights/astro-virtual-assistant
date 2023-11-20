@@ -61,7 +61,8 @@ stories:
       - active_loop: form_access_request
         # The form can't be tested (it uses actions). Simplifying the test.
       - user: |
-          Bla bla
+          yes
+        intent: intent_core_yes
       - action: form_access_request
       - active_loop: null
       - action: execute_access_form_access_request
