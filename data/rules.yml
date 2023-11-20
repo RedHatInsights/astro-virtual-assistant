@@ -22,6 +22,12 @@ rules:
       - intent: nlu_fallback
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
+  
+  - rule: User asks about a (predicted but) unknown topic
+    steps:
+      - intent: intent_unknown_topic
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
 
   - rule: User wants to know more
     steps:

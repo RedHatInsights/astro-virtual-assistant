@@ -54,6 +54,17 @@ nlu:
       - What are all the products Red Hat makes?
       - What products do you make?
       - Who started Red Hat?
+      - Tell me a joke
+      - Do you like fish?
+      - What headphones do you recommend?
+  
+  - intent: intent_unknown_topic
+    examples: |
+      - Tell me a joke
+      - Do you like fish?
+      - What headphones do you recommend?
+      - How good are you at math?
+      - Can you do math for me?
 
   - synonym: agent
     examples: |
@@ -114,6 +125,8 @@ nlu:
       - I want to submit feedback
       - Can I give you some feedback
       - I want to tell you something.
+      - Let me tell you some feedback
+      - I'LL TELL YOU WHAT I THINK
       - Do you take feedback?
       - I have an idea
       - Where can I give input
