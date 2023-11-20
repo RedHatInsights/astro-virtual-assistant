@@ -25,7 +25,7 @@ stories:
   - story: User has access issues - 4
     steps:
       - user: |
-          Access
+          How do i get access?
         intent: intent_access_capabilities
       - action: utter_access_capabilities
   

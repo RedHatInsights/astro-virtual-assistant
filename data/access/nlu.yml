@@ -16,6 +16,7 @@ nlu:
 
   - intent: intent_access_request
     examples: |
+      - I want access to
       - I need access to the console.
       - Requesting access for me
       - Give me access
