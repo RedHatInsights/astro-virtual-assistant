@@ -57,7 +57,7 @@ nlu:
       - Tell me a joke
       - Do you like fish?
       - What headphones do you recommend?
-  
+
   - intent: intent_unknown_topic
     examples: |
       - Tell me a joke
