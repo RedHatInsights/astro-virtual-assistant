@@ -21,6 +21,8 @@ jobs:
           cache: 'pipenv'
       - name: Install pipenv
         run: pip install pipenv
+      - name: Verify Pipfile and Pipfile.lock are in sync
+        run: pipenv verify
       - name: Install dependencies
         run: make install
       - name: Python test
