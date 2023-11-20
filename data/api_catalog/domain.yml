@@ -10,5 +10,5 @@ slots: {}
 actions: []
 
 responses:
-  utter_access_capabilities:
+  utter_api_capabilities:
     - text: "You can view information about Red Hat APIs on our [API Catalog](https://developers.redhat.com/api-catalog)"

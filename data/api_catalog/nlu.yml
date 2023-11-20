@@ -11,3 +11,4 @@ nlu:
       - does advisor have an api doc
       - give me the api doc for the vulnerability api
       - I want to see the API doc for playbook dispatcher
+      - Can you provide me the api docs
