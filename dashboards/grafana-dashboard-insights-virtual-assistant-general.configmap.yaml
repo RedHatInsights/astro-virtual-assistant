@@ -558,8 +558,8 @@ data:
       }
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
+  name: grafana-dashboard-insights-virtual-assistant-general
   labels:
     grafana_dashboard: "true"
   annotations:
-    grafana-folder: /grafana-dashboard-definitions/virtual-assistant
+    grafana-folder: /grafana-dashboard-definitions/Insights
