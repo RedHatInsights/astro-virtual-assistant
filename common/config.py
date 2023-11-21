@@ -103,15 +103,15 @@ if os.getenv("ACG_CONFIG"):
         os.environ["REDIS_DB"] = ""
 
     # Endpoints
-    os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
-        DependencyEndpoints.get("advisor-backend").get("api")
-    )
-    os.environ["ENDPOINT_NOTIFICATIONS_GW"] = get_endpoint_url(
-        DependencyEndpoints.get("notifications-gw").get("service")
-    )
-    os.environ["ENDPOINT_VULNERABILITY_ENGINE"] = get_endpoint_url(
-        DependencyEndpoints.get("vulnerability-engine").get("manager-service")
-    )
+    # os.environ["ENDPOINT_ADVISOR_BACKEND"] = get_endpoint_url(
+    #     DependencyEndpoints.get("advisor-backend").get("api")
+    # )
+    # os.environ["ENDPOINT_NOTIFICATIONS_GW"] = get_endpoint_url(
+    #     DependencyEndpoints.get("notifications-gw").get("service")
+    # )
+    # os.environ["ENDPOINT_VULNERABILITY_ENGINE"] = get_endpoint_url(
+    #     DependencyEndpoints.get("vulnerability-engine").get("manager-service")
+    # )
 
 else:
     # Logging

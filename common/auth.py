@@ -1,18 +1,14 @@
 from __future__ import annotations
 import requests
 
-from os import getenv
+import common.app_config.dev as dev
+from .header import Header
+
 import jwt
 
 from rasa_sdk import Tracker
 
 from common.rasa.tracker import get_user_identity
-
-OFFLINE_REFRESH_TOKEN = "OFFLINE_REFRESH_TOKEN"
-SSO_REFRESH_TOKEN_URL_PARAM = "SSO_REFRESH_TOKEN_URL"
-SSO_REFRESH_TOKEN_URL = (
-    "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
-)
 
 local_dev_token: str | None = None
 
@@ -47,16 +43,16 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
 
 
 def _get_is_running_locally() -> bool:
-    return getenv("IS_RUNNING_LOCALLY", "false").lower() == "true"
+    return dev.is_running_locally
 
 
 def _get_offline_token() -> str:
-    return getenv(OFFLINE_REFRESH_TOKEN)
+    return dev.offline_refresh_token
 
 
 def _with_refresh_token(refresh_token: str) -> str:
     result = requests.post(
-        getenv(SSO_REFRESH_TOKEN_URL_PARAM, SSO_REFRESH_TOKEN_URL),
+        dev.sso_refresh_token_url,
         data={
             "grant_type": "refresh_token",
             "client_id": "rhsm-api",
