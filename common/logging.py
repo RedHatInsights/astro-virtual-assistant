@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import socket
 from logstash_formatter import LogstashFormatterV1
 
 import common.config as config

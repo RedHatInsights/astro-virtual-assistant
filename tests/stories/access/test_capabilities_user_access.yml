@@ -19,13 +19,13 @@ stories:
     steps:
       - user: |
           I can't view this. I get an access error.
-        intent: intent_access_capabilities
-      - action: utter_access_capabilities
+        intent: intent_access_troubleshooting
+      - action: utter_planned_features
 
   - story: User has access issues - 4
     steps:
       - user: |
-          Access
+          How do i get access?
         intent: intent_access_capabilities
       - action: utter_access_capabilities
   
@@ -34,5 +34,5 @@ stories:
     steps:
       - user: |
           Who do I ask for access?
-        intent: intent_access_capabilities
-      - action: utter_access_capabilities
+        intent: intent_access_contact_admin
+      - action: utter_planned_features

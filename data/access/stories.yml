@@ -5,3 +5,18 @@ stories:
     steps:
       - intent: intent_access_capabilities
       - action: utter_access_capabilities
+
+  - story: User wants to request access
+    steps:
+      - intent: intent_access_request
+      - action: utter_planned_features
+
+  - story: User is having access issues
+    steps:
+      - intent: intent_access_troubleshooting
+      - action: utter_planned_features
+
+  - story: User wants to contact their org admin
+    steps:
+      - intent: intent_access_contact_admin
+      - action: utter_planned_features

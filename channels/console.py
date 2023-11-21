@@ -46,13 +46,19 @@ class ConsoleInput(InputChannel):
                 return response.json(
                     {"error": "No x-rh-identity header present"}, status=400
                 )
+            # base64 decode the identity header
+            identity_dict = decode_identity(identity)
+
+            is_org_admin = self.extract_is_org_admin(identity_dict)
 
             current_url = self.extract_current_url(request)  # not a required field
 
-            sender_id = self.get_sender(identity)
+            sender_id = self.get_sender(identity_dict)
             if not sender_id:
                 return response.json(
-                    {"error": "Invalid x-rh-identity header (no user_id found)"},
+                    {
+                        "error": "Invalid x-rh-identity header (org_id and username not found)"
+                    },
                     status=400,
                 )
 
@@ -74,7 +80,9 @@ class ConsoleInput(InputChannel):
                         collector,
                         sender_id,
                         input_channel=input_channel,
-                        metadata=self.build_metadata(identity, current_url),
+                        metadata=self.build_metadata(
+                            identity, is_org_admin, current_url
+                        ),
                     )
                 )
             except CancelledError:
@@ -96,6 +104,15 @@ class ConsoleInput(InputChannel):
         identity = request.headers.get("x-rh-identity")
         return identity
 
+    def extract_is_org_admin(self, identity_dict):
+        is_org_admin = False
+        try:
+            is_org_admin = identity_dict["identity"]["user"]["is_org_admin"]
+        except KeyError:
+            return False
+
+        return is_org_admin
+
     def extract_current_url(self, request: Request) -> Optional[Dict[Text, Any]]:
         """Extracts the current url from the incoming request."""
         if request.json.get("metadata"):
@@ -103,10 +120,22 @@ class ConsoleInput(InputChannel):
 
         return None
 
-    def get_sender(self, identity) -> Optional[Text]:
-        # base64 decode the identity header
-        identity_dict = decode_identity(identity)
-        return identity_dict["identity"]["user"]["user_id"]
+    def get_sender(self, identity_dict) -> Optional[Text]:
+        org_id = None
+        username = None
+        try:
+            org_id = identity_dict["identity"]["org_id"]  # should use top level org_id
+            username = identity_dict["identity"]["user"]["username"]
+        except KeyError:
+            return None
+        if org_id and username:
+            return "{org_id}-{username}".format(org_id=org_id, username=username)
 
-    def build_metadata(self, identity, current_url) -> Dict[Text, Any]:
-        return {"identity": identity, "current_url": current_url}
+        return None
+
+    def build_metadata(self, identity, is_org_admin, current_url) -> Dict[Text, Any]:
+        return {
+            "identity": identity,
+            "is_org_admin": is_org_admin,
+            "current_url": current_url,
+        }

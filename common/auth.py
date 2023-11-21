@@ -6,6 +6,8 @@ import jwt
 
 from rasa_sdk import Tracker
 
+from common.rasa.tracker import get_user_identity
+
 OFFLINE_REFRESH_TOKEN = "OFFLINE_REFRESH_TOKEN"
 SSO_REFRESH_TOKEN_URL_PARAM = "SSO_REFRESH_TOKEN_URL"
 SSO_REFRESH_TOKEN_URL = (
@@ -34,14 +36,14 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
             header.add_header("Authorization", "Bearer " + local_dev_token)
             return header
 
-        raise "No offline token found"
+        raise ValueError("No offline token found")
 
-    session_metadata = tracker.get_slot("session_started_metadata")
-    if session_metadata and "identity" in session_metadata:
-        header.add_header("x-rh-identity", session_metadata["identity"])
+    identity = get_user_identity(tracker)
+    if identity is not None:
+        header.add_header("x-rh-identity", identity)
         return header
 
-    raise "No authentication found"
+    raise ValueError("No authentication found")
 
 
 def _get_is_running_locally() -> bool:

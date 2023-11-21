@@ -13,6 +13,10 @@ nlu:
       - What are some examples of things you can do?
       - What services can you help me with?
       - What products can you assist me with?
+      - Show me what kind of things can you do
+      - Show me what do you do
+      - Show me what can you help me with
+      - Show me what you can do
   - intent: intent_core_more
     examples: |
       - More
@@ -49,6 +53,7 @@ nlu:
       - Who came up with the Red Hat?
       - What are all the products Red Hat makes?
       - What products do you make?
+      - Who started Red Hat?
 
   - synonym: agent
     examples: |
@@ -125,6 +130,11 @@ nlu:
       - I'm not happy with this
       - You're not helping me!
       - I'm not getting what I need from this
+      - I hate this
+      - I want to talk with your manager
+      - I don't like this
+      - I do not like this
+      - This is crap
 
   - intent: intent_are_you_ai
     examples: |
@@ -143,3 +153,22 @@ nlu:
       - Are you ai/ml
       - Is this artificial intelligence (AI) or Machine Learning (ML)?
       - Can you explain how you work?
+
+  - intent: intent_user_preferences
+    examples: |
+      - How do I change my [email address](preference)?
+      - How do I change my [name](preference)?
+      - I want to change my [personal information](preference).
+      - I want to update my [password](preference)
+      - Change my [phone number](preference)
+      - Update my [login](preference)
+      - Reset my [password](preference).
+      - Change my [password](preference).
+      - Change my [username](preference)
+      - Update my [email](preference).
+      - Rename my [display name](preference)
+      - Where do I change my [email](preference)?
+      - Where can I reset my [password](preference)?
+      - Where can I change my [username](preference)?
+      - Where can I change my [preferences](preference)?
+      - Where can I edit all of my [preferences](preference)?

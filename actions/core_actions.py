@@ -6,10 +6,11 @@ from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
 from common import metrics
-from actions.utils import get_current_url
+from common.rasa.tracker import get_current_url, get_is_org_admin
 
 _SLOT_FIRST_TIME_GREETING = "first_time_greeting"
 _SLOT_CURRENT_URL = "current_url"
+_SLOT_IS_ORG_ADMIN = "is_org_admin"
 
 _INTENT_CORE_SESSION_START = "intent_core_session_start"
 
@@ -46,6 +47,10 @@ class ActionPreProcess(Action):
             and tracker.get_intent_of_latest_message(True) != _INTENT_CORE_SESSION_START
         ):
             results.append(SlotSet(_SLOT_FIRST_TIME_GREETING, False))
+
+        is_org_admin = get_is_org_admin(tracker)
+        if is_org_admin != tracker.get_slot(_SLOT_IS_ORG_ADMIN):
+            results.append(SlotSet(_SLOT_IS_ORG_ADMIN, is_org_admin))
 
         # Fetch the current_url from the request and set its slot if it's different
         current_url = get_current_url(tracker)

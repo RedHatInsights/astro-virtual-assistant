@@ -14,8 +14,14 @@ intents:
   - intent_give_feedback
   - intent_send_complaint
   - intent_are_you_ai
+  - intent_user_preferences
+  - intent_user_preferences_all
+  - intent_user_preferences_password
+  - intent_user_preferences_no_action
+  - intent_customer_support # TODO: S9
 
-entities: []
+entities:
+  - preference
 
 slots:
   _dummy:
@@ -33,12 +39,17 @@ slots:
     type: bool
     mappings:
       - type: custom
+  is_org_admin:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
 
 actions:
   - action_session_start
   - action_core_one_back
-  - action_set_current_url
   - action_services_offline
+  - action_user_preferences
 
 responses:
   utter_core_first_time:
@@ -50,19 +61,19 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Contact the Organization's admin
-          payload: Contact my org admin
-        - title: Request access to a specific page or service
-          payload: I would like access to...
-        - title: Tell me more about my subscriptions
-          payload: Can I have help with my subscriptions?
+        - title: Touring the console
+          payload: Tour the console
+        - title: Changing my personal information
+          payload: Change my personal information
+        - title: Show my systems with vulnerabilities
+          payload: Show my systems with vulnerabilities
         - title: See more
           payload: More
   utter_core_capabilities_more_1:
     - text: ""
       buttons:
-        - title: Troubleshooting access
-          payload: I'm getting an access error...
+        - title: Get recommendations from Advisor
+          payload: Recommendations from Advisor
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
@@ -104,6 +115,26 @@ responses:
           payload: /intent_core_capabilities
   utter_user_complaint:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
+  utter_user_preferences_all:
+    - text: You can change your personal information on redhat.com.
+  utter_user_preferences_specific:
+    - text: "You can change your {preference} and other personal information on redhat.com."
+  utter_user_preferences_login:
+    - text: Unfortunately, once you've created an account, you can't change your login.
+  utter_user_preferences_contact_support:
+    - text: "Contact Red Hat Support at [access.redhat.com](https://access.redhat.com) for more information."
+  utter_user_preferences_all_redirect:
+    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+      custom:
+        type: command
+        command: personal_information_redirect
+  utter_user_preferences_password_redirect:
+    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+      custom:
+        type: command
+        command: password_redirect
+  utter_user_preferences_no_action:
+    - text: "Okay, let me know if you change your mind."
   utter_services_offline_no_incidents:
     - text: "All services seem to be operating normally."
   utter_services_offline_error:
@@ -116,3 +147,5 @@ responses:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance."
   utter_services_offline_further_info:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for further outage information."
+  utter_unknown_topic:
+    - text: "I am not able to assist with that topic."
