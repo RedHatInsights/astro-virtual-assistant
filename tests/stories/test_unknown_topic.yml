@@ -1,7 +1,7 @@
 version: "3.1"
 
 stories:
-  - story: User asks for out-of-scope features - 1
+  - story: User asks for unknown features - 1
     steps:
       - user: |
           dogs
@@ -9,7 +9,7 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for out-of-scope features - 2
+  - story: User asks for unknown features - 2
     steps:
       - user: |
           what's the weather?
@@ -17,10 +17,139 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for out-of-scope features - 3
+  - story: User asks for unknown features - 3
     steps:
       - user: |
           Who is the president?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 4
+    steps:
+      - user: |
+          do you like fish?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+
+  - story: User asks for unknown features - 5
+    steps:
+      - user: |
+          Who is my mom?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 6
+    steps:
+      - user: |
+          politics
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 7
+    steps:
+      - user: |
+          what is the meaning of life?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 8
+    steps:
+      - user: |
+          what do you think about the president?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 9
+    steps:
+      - user: |
+          cats
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 10
+    steps:
+      - user: |
+          what headphones do you recommend?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 11
+    steps:
+      - user: |
+          do you like pina coladas?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 12
+    steps:
+      - user: |
+          Tommy Dorsey
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 13
+    steps:
+      - user: |
+          Can you commit murder?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          Tell me a joke
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          Do you like fish
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          What pair of shoes do you recommend?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          What headphones do you recommend?
+        intent: nlu_fallback
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          Can you math?
+        intent: intent_unknown_topic
+      - action: utter_unknown_topic
+      - action: utter_core_capabilities_main
+
+  - story: User asks for unknown features - 14
+    steps:
+      - user: |
+          How good are you in bed?
         intent: nlu_fallback
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
