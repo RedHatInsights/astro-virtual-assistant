@@ -8,6 +8,8 @@ nlu:
       - File a support case.
       - file an issue
       - open a support case for me
+      - Report a bug
+      - Report a bug to customer support
 
   - intent: intent_platform_feedback
     examples: |
@@ -15,3 +17,62 @@ nlu:
       - I need to leave feedback for console.redhat.com.
       - Where can I submit feedback for console.redhat.com API?
       - Submit feedback for console.redhat.com
+      - I want to submit feedback
+      - Can I give you some feedback
+      - I want to tell you something.
+      - Let me tell you some feedback
+      - I'LL TELL YOU WHAT I THINK
+      - Do you take feedback?
+      - I have an idea
+      - Where can I give input
+      - I want to leave a recommendation
+      - Where can I submit a thought
+
+  - intent: intent_report_a_bug_conversation
+    examples: |
+      - A bug in our conversation.
+      - Our chats messed up.
+      - I found a bug in our conversation.
+
+  - intent: intent_report_a_bug_console
+    examples: |
+      - A bug in the console.
+      - Your product is messed up.
+      - I found a bug in the console.
+
+  - intent: intent_platform_feedback_console
+    examples: |
+      - The console
+      - In the console
+
+  - intent: intent_platform_feedback_conversation
+    examples: |
+      - Our conversation
+      - The conversation
+      - This chat
+
+  - intent: intent_platform_feedback_bug
+    examples: |
+      - Yes, it's about a bug.
+      - A bug
+      - It's a bug
+
+  - intent: intent_platform_feedback_something_else
+    examples: |
+      - No, it's about something else.
+      - Something else
+      - It's something else
+
+  - intent: intent_platform_feedback_here
+    examples: |
+      - I'll let you collect the details.
+      - Collect the details
+      - Here is fine.
+      - Here
+
+  - intent: intent_platform_feedback_form
+    examples: |
+      - I'd prefer to use the form.
+      - I'd prefer to use a form.
+      - I'd prefer to use the feedback form.
+      - I'd prefer to use a feedback form.

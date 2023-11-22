@@ -12,14 +12,12 @@ intents:
   - intent_core_yes
   - intent_core_no
   - intent_data_privacy_policy
-  - intent_give_feedback
   - intent_send_complaint
   - intent_are_you_ai
   - intent_user_preferences
   - intent_user_preferences_all
   - intent_user_preferences_password
   - intent_user_preferences_no_action
-  - intent_customer_support # TODO: S9
 
 entities:
   - preference
@@ -81,6 +79,8 @@ responses:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
     - text: "Sorry I didn't get that. Can you rephrase?"
     - text: 'I don''t understand. Say "I need help" for information on what I can do.'
+  utter_sorry:
+    - text: "I'm sorry about that."
   utter_planned_features:
     - text: "I haven't been programmed to do that yet. I'm still learning!"
     - text: "I'm working on that feature. Check for it again later."

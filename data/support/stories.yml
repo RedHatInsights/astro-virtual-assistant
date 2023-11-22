@@ -1,12 +1,28 @@
 version: "3.1"
 
 stories:
-  - story: User wants to file a support case
+  - story: User wants to file a bug
     steps:
       - intent: intent_report_a_bug
-      - action: utter_report_a_bug
+      - action: utter_sorry
+      - action: utter_report_a_bug_where
+  
+  - story: User wants to file a bug (in conversation)
+    steps:
+      - action: utter_report_a_bug_where
+      - intent: intent_report_a_bug_conversation
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
 
-  - story: User wants to leave feedback on the platform.
+  - story: User wants to file a bug (in console)
+    steps: 
+      - action: utter_report_a_bug_where
+      - intent: intent_report_a_bug_console
+      - action: utter_report_a_bug
+      - checkpoint: check_closing
+
+  - story: User wants to leave feedback.
     steps:
       - intent: intent_platform_feedback
       - action: utter_platform_feedback_is_it_a_bug
@@ -14,28 +30,84 @@ stories:
   - story: User wants to submit a bug to customer support
     steps:
       - action: utter_platform_feedback_is_it_a_bug
-      - intent: intent_core_yes
-      - action: utter_report_a_bug
+      - intent: intent_platform_feedback_bug
+      - action: utter_sorry
+      - action: utter_report_a_bug_where
 
-  - story: User wants to leave feedback on the platform (not a bug).
+  - story: User wants to leave feedback (not a bug).
     steps:
       - action: utter_platform_feedback_is_it_a_bug
-      - intent: intent_core_no
+      - intent: intent_platform_feedback_something_else
+      - action: utter_platform_feedback_where
+
+  - story: User wants to leave feedback (conversation).
+    steps:
+      - action: utter_platform_feedback_where
+      - intent: intent_platform_feedback_conversation
+      - action: utter_closing_type_below
+      - action: form_closing_feedback
+      - active_loop: form_closing_feedback
+
+  - story: User wants to leave feedback (console).
+    steps:
+      - action: utter_platform_feedback_where
+      - intent: intent_platform_feedback_console
+      - action: utter_platform_feedback_form_or_no
+  
+  - story: User wants to leave feedback (console using form).
+    steps:
+      - action: utter_platform_feedback_form_or_no
+      - intent: intent_platform_feedback_form
+      - action: utter_platform_feedback_form_ui
+      - checkpoint: check_closing
+  
+  - story: User wants to leave feedback (console using chat).
+    steps:
+      - action: utter_platform_feedback_form_or_no
+      - intent: intent_platform_feedback_here
       - action: utter_platform_feedback_like_us_to_know
-      - action: action_platform_feedback
-      - action: utter_platform_feedback_user_interest
+      - action: form_platform_feedback
+      - active_loop: form_platform_feedback
 
   - story: User wants to be a part of usability studies.
     steps:
       - action: utter_platform_feedback_user_interest
       - intent: intent_core_yes
-      - action: utter_platform_feedback_email
-      - action: action_platform_feedback_email
-      - action: utter_platform_feedback_thanks
-      - checkpoint: check_closing
+      - action: utter_platform_feedback_user_interest_email
+      - action: form_user_interest
+      - active_loop: form_user_interest
 
   - story: User doesn't want to be a part of usability studies.
     steps:
       - action: utter_platform_feedback_user_interest
       - intent: intent_core_no
       - checkpoint: check_closing
+  
+  - story: User left platform feedback
+    steps:
+      - action: utter_platform_feedback_thanks
+      - action: action_user_interest_share_email
+      - checkpoint: check_closing
+
+rules:
+  - rule: Finished platform feedback
+    condition:
+      - active_loop: form_platform_feedback
+    steps:
+      - action: form_platform_feedback
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_platform_feedback_to_our_team
+      - action: action_platform_share_feedback
+      - action: utter_platform_feedback_user_interest
+  
+  - rule: Finished user interest question
+    condition:
+      - active_loop: form_user_interest
+    steps:
+      - action: form_user_interest
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_platform_feedback_thanks

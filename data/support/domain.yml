@@ -3,36 +3,96 @@ version: "3.1"
 intents:
   - intent_report_a_bug
   - intent_platform_feedback
+  - intent_report_a_bug_conversation
+  - intent_report_a_bug_console
+  - intent_platform_feedback_console
+  - intent_platform_feedback_conversation
+  - intent_platform_feedback_bug
+  - intent_platform_feedback_something_else
+  - intent_platform_feedback_here
+  - intent_platform_feedback_form
 
 entities: []
 
-slots: {}
+forms:
+  form_platform_feedback:
+    required_slots:
+      - platform_feedback
+  form_user_interest:
+    required_slots:
+      - user_interest_email
 
-actions: []
+slots:
+  platform_feedback:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_platform_feedback
+            requested_slot: platform_feedback
+  user_interest_email:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_user_interest
+            requested_slot: user_interest_email
+
+actions:
+  - action_platform_share_feedback
+  - action_user_interest_share_email
 
 responses:
   utter_report_a_bug:
-    - text: "Let me direct you to our support page. If you want to continue our conversation, I'll be here!"
+    - text: "For urgent issues, I'll direct you to our support page. If you want to continue our conversation, I'll be here!"
       custom:
         type: command
         command: "customer_support_redirect"
+  utter_report_a_bug_where:
+    - text: "Did you encounter this bug during our conversation or while using the console?"
+      buttons:
+        - title: "During our conversation"
+          payload: "/intent_report_a_bug_conversation"
+        - title: "While using the console"
+          payload: "/intent_report_a_bug_console"
+  utter_platform_feedback_where:
+    - text: "Got it. Is it about the console or about this conversation."
+      buttons:
+        - title: "The console"
+          payload: "/intent_platform_feedback_console"
+        - title: "Our conversation"
+          payload: "/intent_platform_feedback_conversation"
   utter_platform_feedback_is_it_a_bug:
     - text: "Is your feedback about an error or bug you've experienced?"
       buttons:
-        - title: "Yes"
-          payload: "/intent_core_yes"
-        - title: "No"
-          payload: "/intent_core_no"
+        - title: "Yes, it's about a bug."
+          payload: "/intent_platform_feedback_bug"
+        - title: "No, it's about something else."
+          payload: "/intent_platform_feedback_something_else"
+  utter_platform_feedback_form_or_no:
+    - text: "Okay. Would you like me to collect the details here or would you prefer to fill out our form instead?"
+      buttons:
+        - title: "I'll let you collect the details."
+          payload: "/intent_platform_feedback_here"
+        - title: "I'd prefer to use the form."
+          payload: "/intent_platform_feedback_form"
+  utter_platform_feedback_form_ui:
+    - text: "Great! I'll open that form for you. You can return to this conversation anytime for additional assistance."
+      custom:
+        type: command
+        command: "feedback_form"
   utter_platform_feedback_like_us_to_know:
-    - text: "What would you like us to know about your experience with any of the services on Console.redhat.com?"
+    - text: "What would you like us to know about your experience with any of the services on console.redhat.com?"
+  utter_platform_feedback_to_our_team:
+    - text: "We'll forward that feedback to our teams."
   utter_platform_feedback_user_interest:
-    - text: "We'll forward that feedback to our teams.  Are you interested in participating in any interviews or usability studies that our User Experience Design group facilitates?"
+    - text: "Are you interested in participating in any interviews or usability studies that our User Experience Design group facilitates?"
       buttons:
         - title: "Yes"
           payload: "/intent_core_yes"
         - title: "No"
           payload: "/intent_core_no"
-  utter_platform_feedback_email:
-    - text: "At what email address may we contact you? We never share your personal information, and you can opt out at any time."
+  utter_platform_feedback_user_interest_email:
+    - text: "Please enter the email address you would like us to contact. We never share your personal information, and you can opt out at any time."
   utter_platform_feedback_thanks:
-    - text: "Thanks! Have a great day."
+    - text: "Thanks!"
