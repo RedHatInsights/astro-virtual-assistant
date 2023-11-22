@@ -1,3 +1,4 @@
+import builtins
 import sys
 import os
 from unittest import mock
@@ -8,10 +9,10 @@ from decouple import UndefinedValueError
 
 
 __config_modules = [
-    'app_common_python',
-    'common.app_config',
-    'common.app_config.app',
-    'common.app_config.dev'
+    "app_common_python",
+    "common.app_config",
+    "common.app_config.app",
+    "common.app_config.dev",
 ]
 
 
@@ -26,11 +27,19 @@ def clear_app_config():
             del sys.modules[module]
 
 
-@mock.patch.dict(os.environ, {"ACG_CONFIG": "./tests/resources/clowdapp.json", "__DOT_ENV_FILE": ".i-dont-exist"}, clear=True)
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": "./tests/resources/clowdapp.json",
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
 def test_clowdapp():
     try:
         import_app_config()
         from common.app_config import app
+
         assert app.is_running_locally is False
 
         assert app.advisor_url == "http://n-api.svc:8000"
@@ -45,11 +54,20 @@ def test_clowdapp():
         assert app.database_ssl_mode == "require"
 
         assert app.lock_store_type == "in_memory"
+
+        assert app.namespace is None
     finally:
         clear_app_config()
 
 
-@mock.patch.dict(os.environ, {"ACG_CONFIG": "./tests/resources/clowdapp-missing-vulnerability-endpoint.json", "__DOT_ENV_FILE": ".i-dont-exist"}, clear=True)
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": "./tests/resources/clowdapp-missing-vulnerability-endpoint.json",
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
 def test_clowdapp_missing_required_endpoint():
     try:
         with pytest.raises(UndefinedValueError):
@@ -57,3 +75,56 @@ def test_clowdapp_missing_required_endpoint():
             from common.app_config import app
     finally:
         clear_app_config()
+
+
+@mock.patch.dict(
+    os.environ,
+    {"IS_RUNNING_LOCALLY": "1", "__DOT_ENV_FILE": ".i-dont-exist"},
+    clear=True,
+)
+def test_loads_file_when_running_locally():
+    try:
+        import_app_config()
+        from common.app_config import app
+
+        assert app.is_running_locally is True
+
+        assert app.console_dot_base_url == "https://console.redhat.com"
+
+        assert app.advisor_url == app.console_dot_base_url
+        assert app.notifications_url == app.console_dot_base_url
+        assert app.vulnerability_url == app.console_dot_base_url
+
+        assert app.database_host is None
+        assert app.database_port == 0
+        assert app.database_user is None
+        assert app.database_password is None
+        assert app.database_name is None
+        assert app.database_ssl_mode is None
+
+        assert app.lock_store_type == "in_memory"
+        assert app.namespace is None
+    finally:
+        clear_app_config()
+
+
+@mock.patch.dict(
+    os.environ,
+    {"IS_RUNNING_LOCALLY": "1", "__DOT_ENV_FILE": ".i-dont-exist"},
+    clear=True,
+)
+def test_loads_namespace():
+    def openshift_mock_open(*args, **kwargs):
+        if args[0] == "/var/run/secrets/kubernetes.io/serviceaccount/namespace":
+            return mock.mock_open(read_data="my-cool-namespace")(*args, **kwargs)
+
+        return builtins.open(*args, **kwargs)
+
+    with mock.patch("builtins.open", openshift_mock_open):
+        try:
+            import_app_config()
+            from common.app_config import app
+
+            assert app.namespace == "my-cool-namespace"
+        finally:
+            clear_app_config()

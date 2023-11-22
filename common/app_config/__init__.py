@@ -4,6 +4,7 @@ from collections import ChainMap
 from decouple import Config, RepositoryEnv
 
 from common.app_config.repository_clowdapp import RepositoryClowdapp
+from common.app_config.repository_openshift import RepositoryOpenshift
 
 __repository_chain = [os.environ]
 
@@ -16,8 +17,10 @@ if os.path.exists(__DOT_ENV_FILE):
 if os.getenv("ACG_CONFIG"):
     print("Loading clowdapp config from %s" % os.getenv("ACG_CONFIG"))
     from app_common_python import LoadedConfig
+
     __repository_chain.append(RepositoryClowdapp(LoadedConfig))
 
+__repository_chain.append(RepositoryOpenshift())
 
 config = Config(ChainMap(*__repository_chain))
 

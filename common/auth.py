@@ -1,7 +1,7 @@
 from __future__ import annotations
 import requests
 
-import common.app_config.dev as dev
+from common.app_config import app
 from .header import Header
 
 import jwt
@@ -17,7 +17,7 @@ local_dev_token: str | None = None
 def get_auth_header(tracker: Tracker, header: Header) -> Header:
     global local_dev_token
 
-    if _get_is_running_locally():
+    if app.is_running_locally:
         # if its already saved, use it
         if local_dev_token is not None and _is_jwt_valid(local_dev_token):
             header.add_header("Authorization", "Bearer " + local_dev_token)
@@ -26,7 +26,7 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
             local_dev_token = None
 
         # need to set the offline token
-        offline_token = _get_offline_token()
+        offline_token = app.offline_refresh_token
         if offline_token is not None:
             local_dev_token = _with_refresh_token(offline_token)
             header.add_header("Authorization", "Bearer " + local_dev_token)
@@ -42,17 +42,9 @@ def get_auth_header(tracker: Tracker, header: Header) -> Header:
     raise ValueError("No authentication found")
 
 
-def _get_is_running_locally() -> bool:
-    return dev.is_running_locally
-
-
-def _get_offline_token() -> str:
-    return dev.offline_refresh_token
-
-
 def _with_refresh_token(refresh_token: str) -> str:
     result = requests.post(
-        dev.sso_refresh_token_url,
+        app.sso_refresh_token_url,
         data={
             "grant_type": "refresh_token",
             "client_id": "rhsm-api",

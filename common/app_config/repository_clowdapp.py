@@ -11,6 +11,17 @@ class RepositoryClowdapp(RepositoryEmpty):
     - Endpoint format is:
         ENDPOINT__${APP_NAME}__${SERVICE_NAME}__${PARAM}
         e.g. ENDPOINT__ADVISOR_BACKEND__API
+    - DB format is
+        DB_${PROP}
+    - REDIS format is
+        REDIS_${PROP}
+    - Logging cloud watch format is:
+        LOGGING_CLOUDWATCH_${PROP}
+    - All other properties are:
+        ${PROP]
+
+    All the PROPs are converted to camel case by replacing underscores. All except the last will
+    fail if the PROP is not found in the object.
     """
 
     __ENDPOINT_PREFIX = "ENDPOINT__"
@@ -51,23 +62,34 @@ class RepositoryClowdapp(RepositoryEmpty):
                     else:
                         raise ValueError("Invalid configuration %s" % item)
         elif item.startswith(self.__DATABASE_PREFIX):
-            return _get_item_with_param(self.__DATABASE_PREFIX, item, self.config.database)
+            return _get_item_with_param(
+                self.__DATABASE_PREFIX, item, self.config.database
+            )
         elif item.startswith(self.__INMEMORY_PREFIX):
-            return _get_item_with_param(self.__INMEMORY_PREFIX, item, self.config.inMemoryDb)
-        elif item.startswith(self.__LOGGING_PREFIX) and self.config.logging.type == "cloudwatch":
-            return _get_item_with_param(self.__LOGGING_PREFIX, item, self.config.logging.cloudwatch)
+            return _get_item_with_param(
+                self.__INMEMORY_PREFIX, item, self.config.inMemoryDb
+            )
+        elif (
+            item.startswith(self.__LOGGING_PREFIX)
+            and self.config.logging.type == "cloudwatch"
+        ):
+            return _get_item_with_param(
+                self.__LOGGING_PREFIX, item, self.config.logging.cloudwatch
+            )
+        else:
+            return _get_item_with_param("", item, self.config, fail_if_not_found=False)
 
         return None
 
     def __get_endpoint(self, app, service):
         for endpoint in self.config.endpoints:
-            if endpoint.app == app and  endpoint.name == service:
+            if endpoint.app == app and endpoint.name == service:
                 return endpoint
 
         return None
 
 
-def _get_item_with_param(prefix: Text, item: Text, config):
+def _get_item_with_param(prefix: Text, item: Text, config, fail_if_not_found=True):
     if config is None:
         return None
 
@@ -76,8 +98,11 @@ def _get_item_with_param(prefix: Text, item: Text, config):
         what = _camel_case(element)
         if hasattr(config, what):
             return getattr(config, what)
-        else:
-            raise ValueError("Invalid configuration attribute %s for %s. Valid attributes: %s" % (what, item, config.__dict__.keys()))
+        elif fail_if_not_found:
+            raise ValueError(
+                "Invalid configuration attribute %s for %s. Valid attributes: %s"
+                % (what, item, config.__dict__.keys())
+            )
 
     return None
 
