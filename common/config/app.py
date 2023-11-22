@@ -70,11 +70,10 @@ vulnerability_url = _config(
     "ENDPOINT__VULNERABILITY_ENGINE__MANAGER_SERVICE__URL", default=__endpoint_default
 )
 
-__actions_endpoint_default = (
-    "http://localhost:5055/webhook" if is_running_locally else __undefined
-)
+
+# Todo we probably need some way to check if we are running actions OR the rasa
 actions_url = _config(
-    "ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default=__actions_endpoint_default
+    "ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default="http://localhost:5055/webhook"
 )
 
 tracker_store_type = _config("TRACKER_STORE_TYPE", default="InMemoryTrackerStore")
