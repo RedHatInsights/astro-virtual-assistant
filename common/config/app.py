@@ -70,7 +70,9 @@ vulnerability_url = _config(
     "ENDPOINT__VULNERABILITY_ENGINE__MANAGER_SERVICE__URL", default=__endpoint_default
 )
 
-__actions_endpoint_default = "http://localhost:5055/webhook" if is_running_locally else __undefined
+__actions_endpoint_default = (
+    "http://localhost:5055/webhook" if is_running_locally else __undefined
+)
 actions_url = _config(
     "ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default=__actions_endpoint_default
 )
@@ -119,11 +121,15 @@ def log_config():
         return True
 
     def get_value(key: str, value) -> str:
-        if value is None or (isinstance(value, int) and not isinstance(value, bool) and value == 0):
+        if value is None or (
+            isinstance(value, int) and not isinstance(value, bool) and value == 0
+        ):
             return f"--not-set-- ({value})"
 
         upper_key = key.upper()
-        if any(banned in upper_key for banned in ['PASSWORD', 'TOKEN', 'SECRET', 'KEY']):
+        if any(
+            banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
+        ):
             return "*********"
 
         return value

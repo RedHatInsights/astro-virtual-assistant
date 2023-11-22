@@ -102,7 +102,8 @@ class AdvisorAPIPathway(Action):
 
         dispatcher.utter_message(
             response="utter_advisor_recommendation_pathways_closing",
-            link=app.console_dot_base_url + "/openshift/insights/advisor/recommendations",
+            link=app.console_dot_base_url
+            + "/openshift/insights/advisor/recommendations",
         )
 
         events = [ActionExecuted(self.name())]
