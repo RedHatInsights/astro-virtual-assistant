@@ -1,0 +1,19 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to request access - Yes
+    steps:
+      - action: utter_access_request
+      - intent: intent_core_yes
+      - action: form_access_request
+      - active_loop: form_access_request
+
+  - rule: User requested access
+    condition:
+      - active_loop: form_access_request
+    steps:
+      - action: form_access_request
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: execute_access_form_access_request
