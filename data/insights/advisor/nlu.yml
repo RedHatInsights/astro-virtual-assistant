@@ -1,0 +1,23 @@
+version: "3.1"
+
+nlu:
+  - intent: insights_advisor_recommendation_pathways
+    examples: |
+      - Are there any recommendations from Advisor?
+      - Recommendations from Advisor
+      - Advisor recommendations
+      - Is advisor providing any recommendations
+      - anything Advisor is suggesting me to do?
+      - what suggestions is advisor giving me?
+      - Is advisor recommending me to do something?
+      - Advisor pathways
+      - Is Advisor suggesting me any pathways
+      - What does Advisor recommend that I do?
+      - Advisor recommendations for my RHEL systems
+      - Does advisor have any recommendations for me?
+      - What are actions recommended?
+      - What are the recommendations?
+      - What are the recommendations from Advisor?
+      - What is the most important recommendation?
+      - What is advisor telling me today?
+      - What is advisor telling me to do?

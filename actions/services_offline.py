@@ -7,8 +7,8 @@ import requests
 
 from common import metrics
 
-class ActionServicesOffline(Action):
 
+class ActionServicesOffline(Action):
     def name(self) -> Text:
         return "action_services_offline"
 
@@ -24,23 +24,31 @@ class ActionServicesOffline(Action):
                 "https://status.redhat.com/api/v2/incidents/unresolved.json"
             ).json()
         except Exception as e:
-            print(f"An Exception occured while handling response from status.redhat.com: {e}")
+            print(
+                f"An Exception occured while handling response from status.redhat.com: {e}"
+            )
 
         if not (result and "incidents" in result):
             dispatcher.utter_message(response="utter_services_offline_error")
             return []
-        
-        incidents = result['incidents']
+
+        incidents = result["incidents"]
         count = str(len(incidents))
         if incidents and count != "0":
-            dispatcher.utter_message(response="utter_services_offline_incidents", count=count)
+            dispatcher.utter_message(
+                response="utter_services_offline_incidents", count=count
+            )
 
             for incident in incidents:
-                dispatcher.utter_message(response="utter_services_offline_info", name=incident['name'], status=incident['status'])
+                dispatcher.utter_message(
+                    response="utter_services_offline_info",
+                    name=incident["name"],
+                    status=incident["status"],
+                )
 
             dispatcher.utter_message(response="utter_services_offline_further_info")
         else:
             dispatcher.utter_message(response="utter_services_offline_no_incidents")
             dispatcher.utter_message(response="utter_services_offline_more_info")
-        
+
         return []

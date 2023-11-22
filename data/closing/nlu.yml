@@ -1,6 +1,13 @@
 version: "3.1"
 
 nlu:
-  # Intent used for testing purposes - could be removed once we have
-  # additional paths to test
   - intent: intent_closing_start
+    examples: |
+      - bye
+      - I'm done.
+      - ok im done
+      - ok im finished
+      - end conversation
+      - end chat
+      - end our conversation
+      - I don't want to talk to you anymore

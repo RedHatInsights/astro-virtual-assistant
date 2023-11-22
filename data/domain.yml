@@ -5,6 +5,7 @@ intents:
   - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
+  - intent_unknown_topic
   - intent_live_chat
   - intent_services_offline
   - intent_core_session_start
@@ -39,11 +40,15 @@ slots:
     type: bool
     mappings:
       - type: custom
+  is_org_admin:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
 
 actions:
   - action_session_start
   - action_core_one_back
-  - action_set_current_url
   - action_services_offline
   - action_user_preferences
 
@@ -57,19 +62,19 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Contact the Organization's admin
-          payload: Contact my org admin
-        - title: Request access to a specific page or service
-          payload: I would like access to...
-        - title: Tell me more about my subscriptions
-          payload: Can I have help with my subscriptions?
+        - title: Touring the console
+          payload: Tour the console
+        - title: Changing my personal information
+          payload: Change my personal information
+        - title: Show my systems with vulnerabilities
+          payload: Show my systems with vulnerabilities
         - title: See more
           payload: More
   utter_core_capabilities_more_1:
     - text: ""
       buttons:
-        - title: Troubleshooting access
-          payload: I'm getting an access error...
+        - title: Get recommendations from Advisor
+          payload: Recommendations from Advisor
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
@@ -143,3 +148,5 @@ responses:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance."
   utter_services_offline_further_info:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for further outage information."
+  utter_unknown_topic:
+    - text: "I am not able to assist with that topic."

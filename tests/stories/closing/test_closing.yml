@@ -66,3 +66,24 @@ stories:
           Yes
         intent: intent_core_yes
       - action: utter_core_how_can_i_help
+
+  - story: User asks for the closing flow - 1
+    steps:
+      - user: |
+          end conversation
+        intent: intent_closing_start
+      - action: utter_closing_got_help
+  
+  - story: User asks for the closing flow - 2
+    steps:
+      - user: |
+          OK I'm finished
+        intent: intent_closing_start
+      - action: utter_closing_got_help
+  
+  - story: User asks for the closing flow - 3
+    steps:
+      - user: |
+          I'm done
+        intent: intent_closing_start
+      - action: utter_closing_got_help
