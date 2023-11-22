@@ -3,8 +3,8 @@ import os
 from collections import ChainMap
 from decouple import Config, RepositoryEnv
 
-from common.app_config.repository_clowdapp import RepositoryClowdapp
-from common.app_config.repository_openshift import RepositoryOpenshift
+from common.config.repository_clowdapp import RepositoryClowdapp
+from common.config.repository_openshift import RepositoryOpenshift
 
 __repository_chain = [os.environ]
 

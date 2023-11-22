@@ -1,7 +1,7 @@
 import sys
 import logging
 from logstash_formatter import LogstashFormatterV1
-from .app_config import app
+from .config import app
 
 
 def initialize_logging():

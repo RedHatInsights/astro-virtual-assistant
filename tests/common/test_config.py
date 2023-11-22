@@ -10,9 +10,8 @@ from decouple import UndefinedValueError
 
 __config_modules = [
     "app_common_python",
-    "common.app_config",
-    "common.app_config.app",
-    "common.app_config.dev",
+    "common.config",
+    "common.config.app",
 ]
 
 
@@ -38,7 +37,7 @@ def clear_app_config():
 def test_clowdapp():
     try:
         import_app_config()
-        from common.app_config import app
+        from common.config import app
 
         assert app.is_running_locally is False
 
@@ -72,7 +71,7 @@ def test_clowdapp_missing_required_endpoint():
     try:
         with pytest.raises(UndefinedValueError):
             import_app_config()
-            from common.app_config import app
+            from common.config import app
     finally:
         clear_app_config()
 
@@ -85,7 +84,7 @@ def test_clowdapp_missing_required_endpoint():
 def test_loads_file_when_running_locally():
     try:
         import_app_config()
-        from common.app_config import app
+        from common.config import app
 
         assert app.is_running_locally is True
 
@@ -123,7 +122,7 @@ def test_loads_namespace():
     with mock.patch("builtins.open", openshift_mock_open):
         try:
             import_app_config()
-            from common.app_config import app
+            from common.config import app
 
             assert app.namespace == "my-cool-namespace"
         finally:

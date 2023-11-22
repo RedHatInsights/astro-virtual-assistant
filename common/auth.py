@@ -1,7 +1,7 @@
 from __future__ import annotations
 import requests
 
-from common.app_config import app
+from common.config import app
 from .header import Header
 
 import jwt

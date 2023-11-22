@@ -7,7 +7,7 @@ from rasa_sdk import Tracker
 
 import requests
 from common import logging
-from common.app_config import app
+from common.config import app
 
 from .header import Header
 from .auth import get_auth_header
