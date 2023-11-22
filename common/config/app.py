@@ -5,8 +5,8 @@ from . import config as _config
 
 name = _config("APP_NAME", default="astro-virtual-assistant")
 
-offline_refresh_token = _config("OFFLINE_REFRESH_TOKEN", default=None)
-sso_refresh_token_url = _config(
+dev_offline_refresh_token = _config("OFFLINE_REFRESH_TOKEN", default=None)
+dev_sso_refresh_token_url = _config(
     "SSO_REFRESH_TOKEN_URL",
     default="https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
 )
@@ -38,16 +38,12 @@ actions_port = _config(
     "ACTIONS_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
 )
 
-# aws_access_key = config("AWS_ACCESS_KEY_ID", default=None)
-# aws_secret_access_key = config()
-
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
 __optional_when_locally = __undefined if is_running_locally is False else None
 __endpoint_default = (
     __undefined if is_running_locally is False else console_dot_base_url
 )
 
-# TODO: Changed all of this block
 logging_cloudwatch_access_key_id = _config(
     "LOGGING_CLOUDWATCH_ACCESS_KEY_ID", default=__optional_when_locally
 )
@@ -74,6 +70,12 @@ vulnerability_url = _config(
     "ENDPOINT__VULNERABILITY_ENGINE__MANAGER_SERVICE__URL", default=__endpoint_default
 )
 
+__actions_endpoint_default = "http://localhost:5055/webhook" if is_running_locally else __undefined
+actions_url = _config(
+    "ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default=__actions_endpoint_default
+)
+
+tracker_store_type = _config("TRACKER_STORE_TYPE", default="InMemoryTrackerStore")
 # Todo: Changed from DB_HOST
 database_host = _config("DB_HOSTNAME", default=None)
 database_port = _config("DB_PORT", default=0, cast=int)
@@ -94,4 +96,38 @@ redis_url = _config("REDIS_HOSTNAME", default=__redis_config_default)
 redis_port = _config("REDIS_PORT", default=__redis_config_default)
 redis_username = _config("REDIS_USERNAME", default=__redis_config_default)
 redis_password = _config("REDIS_PASSWORD", default=__redis_config_default)
+redis_db = _config("REDIS_DB", default=__redis_config_default)
 # Todo: Check if we need REDIS_DB
+
+
+def log_config():
+    import logging
+    import sys
+
+    primitives = (bool, str, int, float, type(None))
+
+    def is_primitive(obj):
+        return isinstance(obj, primitives)
+
+    def should_log(key, value) -> bool:
+        if not is_primitive(value):
+            return False
+
+        if key.startswith("_"):
+            return False
+
+        return True
+
+    def get_value(key: str, value) -> str:
+        if value is None or (isinstance(value, int) and not isinstance(value, bool) and value == 0):
+            return f"--not-set-- ({value})"
+
+        upper_key = key.upper()
+        if any(banned in upper_key for banned in ['PASSWORD', 'TOKEN', 'SECRET', 'KEY']):
+            return "*********"
+
+        return value
+
+    for k, v in sys.modules[__name__].__dict__.items():
+        if should_log(k, v):
+            logging.info(f"Using {k}: {get_value(k, v)}")

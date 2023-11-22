@@ -1,11 +1,10 @@
-import inspect
 from sanic import Blueprint, response
 from asyncio import CancelledError
 from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
 
-from common import decode_identity
+from common.identity import decode_identity
 from common import logging
 
 from rasa.core.channels.channel import (

@@ -1,7 +1,7 @@
 from rasa_sdk import Tracker
 from typing import Text, Dict, Any, Optional
 
-from common import decode_identity
+from common.identity import decode_identity
 
 
 def _is_user_event(event: Dict[Text, Any]) -> bool:

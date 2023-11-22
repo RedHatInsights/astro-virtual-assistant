@@ -1,13 +1,7 @@
 CONTAINER_EXEC ?= podman
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
-export TRACKER_STORE_TYPE ?=
-export DB_HOST ?=
-export DB_PORT ?=
-export DB_USER ?=
-export DB_PASSWORD ?=
-export DB_LOGIN_DB ?=
-export DB_NAME ?=
+export IS_RUNNING_LOCALLY=1
 
 include make/Makefile.variables.mk
 include make/Makefile.test.mk
