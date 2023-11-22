@@ -6,7 +6,7 @@ import jwt
 
 from rasa_sdk import Tracker
 
-from actions.utils import get_is_running_locally
+from common.utils import get_is_running_locally
 from common.rasa.tracker import get_user_identity
 
 OFFLINE_REFRESH_TOKEN = "OFFLINE_REFRESH_TOKEN"

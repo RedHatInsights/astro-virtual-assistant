@@ -1,7 +1,7 @@
 from rasa_sdk import Tracker
 from typing import Text, Dict, Any, Optional
 
-from actions.utils import get_is_running_locally
+from common.utils import get_is_running_locally
 from common import decode_identity
 
 
