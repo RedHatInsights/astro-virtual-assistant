@@ -71,34 +71,28 @@ vulnerability_url = _config(
 )
 
 
-# Todo we probably need some way to check if we are running actions OR the rasa
+# Todo we probably need some way to check if we are running actions OR rasa
 actions_url = _config(
     "ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default="http://localhost:5055/webhook"
 )
 
 tracker_store_type = _config("TRACKER_STORE_TYPE", default="InMemoryTrackerStore")
-# Todo: Changed from DB_HOST
 database_host = _config("DB_HOSTNAME", default=None)
 database_port = _config("DB_PORT", default=0, cast=int)
-# Todo: Changed from DB_USER
 database_user = _config("DB_USERNAME", default=None)
 database_password = _config("DB_PASSWORD", default=None)
 database_name = _config("DB_NAME", default=None)
-
-# Todo: Update changed from DB_SSLMODE
 database_ssl_mode = _config("DB_SSL_MODE", default=None)
 
 lock_store_type = _config("LOCK_STORE_TYPE", default="in_memory")
 
 __redis_config_default = None if lock_store_type == "in_memory" else __undefined
 
-# Todo: Changed from REDIS_URL
-redis_url = _config("REDIS_HOSTNAME", default=__redis_config_default)
+redis_hostname = _config("REDIS_HOSTNAME", default=__redis_config_default)
 redis_port = _config("REDIS_PORT", default=__redis_config_default)
 redis_username = _config("REDIS_USERNAME", default=__redis_config_default)
 redis_password = _config("REDIS_PASSWORD", default=__redis_config_default)
 redis_db = _config("REDIS_DB", default=__redis_config_default)
-# Todo: Check if we need REDIS_DB
 
 
 def log_config():
@@ -126,12 +120,16 @@ def log_config():
             return f"--not-set-- ({value})"
 
         upper_key = key.upper()
-        if any(
-            banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
+        accepted_variables = ["dev_sso_refresh_token_url"]
+        if (
+            any(
+                banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
+            )
+            and key not in accepted_variables
         ):
             return "*********"
 
-        return value
+        return str(value)
 
     for k, v in sys.modules[__name__].__dict__.items():
         if should_log(k, v):
