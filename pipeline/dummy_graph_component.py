@@ -14,6 +14,7 @@ from rasa.shared.nlu.training_data.message import Message
 
 logger = logging.getLogger(__name__)
 
+
 @DefaultV1Recipe.register(
     DefaultV1Recipe.ComponentType.ENTITY_EXTRACTOR, is_trainable=True
 )

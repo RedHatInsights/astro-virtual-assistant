@@ -12,6 +12,7 @@ def allow_disable(real_class):
     component with a dummy one.
     """
     import os
+
     if os.getenv(f"DISABLE_{real_class.__name__.upper()}") is None:
         return real_class
 
