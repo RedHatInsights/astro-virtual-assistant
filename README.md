@@ -111,15 +111,23 @@ Has general targets for installing dependencies, cleaning and running the projec
 - `run-interactive`: Runs rasa in interactive mode
 - `run-actions`: Runs actions server
 - `run-cli`: Runs rasa and shows the CLI/shell mode
-- `run-db`
-- `db`
-- `drop-db`
-- `compose`
+- `run-db`:
+- `db`:
+- `drop-db`:
+- `compose`:
 
 ### make/Makefile.variables.mk
 
 Contains global variables used in all the other Makefiles to execute rasa and python in a common way. Also checks for a
 `DEBUG` or `VERBOSE` environment to include the respective flags into the train and run arguments.
+
+### make/Makefile.train.mk
+
+Contains targets to train the models
+
+- `train`: Full train, intents and stories
+- `train-finetune`: Incremental training
+- `train-nlu`: Only trains the NLU components
 
 ### make/Makefile.lint.mk
 
@@ -129,3 +137,14 @@ General purpose linting for our project. Inspects yml and python files.
 - `lint-fix`: Runs the linter and attempts to fix the lint errors
 
 ### make/Makefile.test.mk
+
+- `test`: Alias for `test-rata` and `test-python`
+- `test-rasa`: Alias for `test-stories`, `test-data` and `test-nlu`
+- `test-data` (alias: `validate`): Checks for inconsistencies in rasa's files.
+- `test-nlu`: Runs a data split and nlu tests in the results. Split files are written under `.astro/train_test_split` 
+- `test-stories-nlu`: Extracts user utterances and intents from the test stores and runs the nlu test on these. Files are written under `.astro/nlu-from-stories`
+- `test-stories`: Run stories tests
+- `test-python`: Run python tests
+- `test-identity`: Convenience method to call the API
+- `test-is-org-admin`: Convenience method to call the API as an org admin
+- `test-is-not-org-admin`: Convenience method to call the API as a non org admin
