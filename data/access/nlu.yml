@@ -13,6 +13,7 @@ nlu:
       - Why can't I access my data?
       - Why don't I have access to this?
       - What do I do if I can't access something?
+      - how do I get access?
 
   - intent: intent_access_request
     examples: |

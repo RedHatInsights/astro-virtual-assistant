@@ -36,3 +36,35 @@ stories:
           Who do I ask for access?
         intent: intent_access_contact_admin
       - action: utter_planned_features
+
+  - story: User wants access - does not want to contact admin
+    steps:
+      - user: |
+          I want access to foobar
+        intent: intent_access_request
+      - action: utter_access_request
+      - user: |
+          No
+        intent: intent_core_no
+      - action: utter_closing_got_help
+
+  - story: User wants access - contacts admin
+    steps:
+      - user: |
+          I want access to foobar
+        intent: intent_access_request
+      - action: utter_access_request
+      - user: |
+          Yes
+        intent: intent_core_yes
+      - action: form_access_request
+      - active_loop: form_access_request
+        # The form can't be tested (it uses actions). Simplifying the test.
+      - user: |
+          yes
+        intent: intent_core_yes
+      - action: form_access_request
+      - active_loop: null
+      - action: execute_access_form_access_request
+      # Todo: For some reason the following doesn't work
+      # - action: utter_closing_got_help

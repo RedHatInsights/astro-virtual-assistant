@@ -2,6 +2,7 @@ from rasa_sdk import Tracker
 from typing import Text, Dict, Any, Optional
 
 from common.identity import decode_identity
+from common.config import app
 
 
 def _is_user_event(event: Dict[Text, Any]) -> bool:
@@ -13,12 +14,19 @@ def get_last_user_message(tracker: Tracker) -> Optional[Dict[Text, Any]]:
 
 
 def get_user_identity(tracker: Tracker) -> Optional[Text]:
+    if app.is_running_locally:
+        return __get_mocked_user_identity()
+
     latest_user_event = get_last_user_message(tracker)
 
     if latest_user_event is not None:
         return latest_user_event.get("metadata").get("identity")
 
     return None
+
+
+def __get_mocked_user_identity() -> Text:
+    return "eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiJhY2NvdW50MTIzIiwib3JnX2lkIjoib3JnMTIzIiwidHlwZSI6IlVzZXIiLCJ1c2VyIjp7ImlzX29yZ19hZG1pbiI6dHJ1ZSwgImVtYWlsIjoidXNlckBzb21ld2hlcmUiLCAidXNlcl9pZCI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImFzdHJvIn0sImludGVybmFsIjp7Im9yZ19pZCI6Im9yZzEyMyJ9fX0="
 
 
 def get_decoded_user_identity(tracker: Tracker) -> Optional[Dict[Text, Any]]:
