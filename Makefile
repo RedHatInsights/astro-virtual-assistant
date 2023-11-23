@@ -19,7 +19,7 @@ install:
 	pipenv install --categories "packages dev-packages api-packages"
 
 clean:
-	rm -rf results .rasa models/* train_test_split
+	rm -rf results .rasa models/* .astro
 
 # runs the assistant
 run:
