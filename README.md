@@ -28,11 +28,11 @@ To access it you can run `pipenv run rasa` to execute any
 
 ### File structure
 
-The training files are inside [data](./data) directory. The common files are on the root of this directory and specific
+The training files are inside [data](./data-foo) directory. The common files are on the root of this directory and specific
 files are in the subfolders. The current approach is to have a directory for the namespace/bundle and a sub-directory 
 for the application. Each application can write its own `nlu`, `domain`, `stories` and `rules` file depending on its needs.
 
-For example, [data/console/rbac/stories.yml](./data/console/rbac/nlu.yml) holds the `nlu` info for `RBAC`.
+For example, [data/console/rbac/stories.yml](data-foo/console/rbac/nlu.yml) holds the `nlu` info for `RBAC`.
 
 Intents and responses are spread throughout the data directory in `domain.yml` files. This allows us to make changes to one bundle without affecting the other.
 
@@ -44,7 +44,7 @@ Test files are found in the [tests](./tests) folders.
 ### Training the model
 
 You can run `make train` to start a full training session, or
-you can do an incremental training of your previous model with `make finetune`. 
+you can do an incremental training of your previous model with `make train-finetune`. 
 
 Note that incremental training doesn't work if you added any new intents or actions.
 
@@ -93,3 +93,39 @@ Running the following should make the error evident or at least give more inform
 ```bash
 python -c "import channels.console"
 ```
+
+## Makefile targets
+
+We use a custom makefile with some useful targets. The main Makefile is located on the root of the project at:
+[Makefile](./Makefile). We have submodules stored in [make](./make) folder
+
+Each module has its own targets to help us with the development.
+
+### Makefile
+
+Has general targets for installing dependencies, cleaning and running the project.
+
+- `install`: Installs the dependencies and dev-dependencies of both rasa and actions server
+- `clean`: Cleans any know temporal file, model, cache, results or reports from rasa.
+- `run`: Runs rasa
+- `run-interactive`: Runs rasa in interactive mode
+- `run-actions`: Runs actions server
+- `run-cli`: Runs rasa and shows the CLI/shell mode
+- `run-db`
+- `db`
+- `drop-db`
+- `compose`
+
+### make/Makefile.variables.mk
+
+Contains global variables used in all the other Makefiles to execute rasa and python in a common way. Also checks for a
+`DEBUG` or `VERBOSE` environment to include the respective flags into the train and run arguments.
+
+### make/Makefile.lint.mk
+
+General purpose linting for our project. Inspects yml and python files.
+
+- `lint`: Runs the linter in read only mode. Outputs the error but does not fix them.
+- `lint-fix`: Runs the linter and attempts to fix the lint errors
+
+### make/Makefile.test.mk

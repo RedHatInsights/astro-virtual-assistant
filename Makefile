@@ -12,6 +12,7 @@ export DB_NAME ?=
 include make/Makefile.variables.mk
 include make/Makefile.test.mk
 include make/Makefile.lint.mk
+include make/Makefile.train.mk
 
 # install and train the project
 install:
@@ -19,12 +20,6 @@ install:
 
 clean:
 	rm -rf results .rasa models/* train_test_split
-
-train:
-	${RASA_EXEC} train ${RASA_TRAIN_ARGS}
-
-finetune:
-	pipenv run ${RASA_EXEC} train ${RASA_TRAIN_ARGS} --finetune
 
 # runs the assistant
 run:

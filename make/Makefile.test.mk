@@ -21,6 +21,10 @@ test-nlu:
 	${RASA_EXEC} data split nlu
 	${RASA_EXEC} test nlu --nlu train_test_split/test_data.yml ${RASA_DOMAIN_ARG}
 
+test-stories-nlu:
+	${PYTHON_EXEC} tests/extract_stories_nlu.py
+	${RASA_EXEC} test nlu --nlu ./nlu-from-stories/test_data.yml ${RASA_DOMAIN_ARG}
+
 test-stories:
 	${RASA_EXEC} test ${RASA_TEST_STORIES_PARAMS}
 	@(head -n 1 ${__FAILED_TEST_STORIES} | grep -q '# None of the test stories failed - all good!') || (cat ${__FAILED_TEST_STORIES} && false)
