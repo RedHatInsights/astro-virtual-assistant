@@ -28,11 +28,11 @@ To access it you can run `pipenv run rasa` to execute any
 
 ### File structure
 
-The training files are inside [data](./data-foo) directory. The common files are on the root of this directory and specific
+The training files are inside [data](./data) directory. The common files are on the root of this directory and specific
 files are in the subfolders. The current approach is to have a directory for the namespace/bundle and a sub-directory 
 for the application. Each application can write its own `nlu`, `domain`, `stories` and `rules` file depending on its needs.
 
-For example, [data/console/rbac/stories.yml](data-foo/console/rbac/nlu.yml) holds the `nlu` info for `RBAC`.
+For example, [data/console/rbac/stories.yml](data/console/rbac/nlu.yml) holds the `nlu` info for `RBAC`.
 
 Intents and responses are spread throughout the data directory in `domain.yml` files. This allows us to make changes to one bundle without affecting the other.
 
