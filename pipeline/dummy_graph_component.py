@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
     DefaultV1Recipe.ComponentType.ENTITY_EXTRACTOR, is_trainable=True
 )
 class DummyGraphComponent(EntityExtractorMixin, GraphComponent):
-    """Adds message features based on look up tables using fuzzy matching"""
+    """Dummy graph component that does nothing. Used by allow_disable when replacing a disabled graph component"""
 
     @classmethod
     def create(
