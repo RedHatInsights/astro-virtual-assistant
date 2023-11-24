@@ -29,6 +29,15 @@
       "port": 1234
     }
   ],
+  "privateEndpoints": [
+    {
+      "app":"virtual-assistant",
+      "hostname":"my-virtual-assistant-actions",
+      "name":"actions",
+      "port":10000,
+      "tlsPort":0
+    }
+  ],
   "kafka": {
     "brokers": [
       {

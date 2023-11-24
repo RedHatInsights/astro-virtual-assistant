@@ -11,6 +11,9 @@ class RepositoryClowdapp(RepositoryEmpty):
     - Endpoint format is:
         ENDPOINT__${APP_NAME}__${SERVICE_NAME}__${PARAM}
         e.g. ENDPOINT__ADVISOR_BACKEND__API
+    - Private endpoint format is:
+        PRIVATE_ENDPOINT__${APP_NAME}__${SERVICE_NAME}__${PARAM}
+        e.g. PRIVATE_ENDPOINT__ADVISOR_BACKEND__API
     - DB format is
         DB_${PROP}
     - REDIS format is
@@ -25,6 +28,7 @@ class RepositoryClowdapp(RepositoryEmpty):
     """
 
     __ENDPOINT_PREFIX = "ENDPOINT__"
+    __PRIVATE_ENDPOINT_PREFIX = "PRIVATE_ENDPOINT__"
     __DATABASE_PREFIX = "DB_"
     __INMEMORY_PREFIX = "REDIS_"
     __LOGGING_PREFIX = "LOGGING_CLOUDWATCH_"
@@ -48,14 +52,20 @@ class RepositoryClowdapp(RepositoryEmpty):
         if os.getenv(item, None) is not None:
             return os.getenv(item)
 
-        if item.startswith(self.__ENDPOINT_PREFIX):
+        if item.startswith(self.__ENDPOINT_PREFIX) or item.startswith(
+            self.__PRIVATE_ENDPOINT_PREFIX
+        ):
             elements = item.split("__")
             if len(elements) == 4:
                 app = _kebab_case(elements[1].lower())
                 service = _kebab_case(elements[2].lower())
                 what = _kebab_case(elements[3].lower())
 
-                endpoint = self.__get_endpoint(app, service)
+                if item.startswith(self.__ENDPOINT_PREFIX):
+                    endpoint = self.__get_endpoint(app, service)
+                else:
+                    endpoint = self.__get_private_endpoint(app, service)
+
                 if endpoint is not None:
                     if what == "url":
                         return _get_endpoint_url(endpoint)
@@ -80,6 +90,13 @@ class RepositoryClowdapp(RepositoryEmpty):
 
     def __get_endpoint(self, app, service):
         for endpoint in self.config.endpoints:
+            if endpoint.app == app and endpoint.name == service:
+                return endpoint
+
+        return None
+
+    def __get_private_endpoint(self, app, service):
+        for endpoint in self.config.privateEndpoints:
             if endpoint.app == app and endpoint.name == service:
                 return endpoint
 
