@@ -31,7 +31,7 @@ def main():
     logger.info("Starting Astro")
     app.log_config()
 
-    if app.prometheus.PROMETHEUS is True:
+    if app.prometheus is True:
         start_prometheus()
 
     # Use ACTIONS_PORT when set

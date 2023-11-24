@@ -23,7 +23,7 @@ run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	pipenv run ${RASA_EXEC} run actions --auto-reload
+	pipenv run ${RASA_ACTIONS_EXEC} --actions actions
 
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
