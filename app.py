@@ -36,8 +36,8 @@ def set_endpoints_config_variables():
     os.environ["DB_PASSWORD"] = app.database_password or ""
     os.environ["LOCK_STORE_TYPE"] = app.lock_store_type
     os.environ["REDIS_HOSTNAME"] = app.redis_hostname or ""
-    os.environ["REDIS_PORT"] = app.redis_port or ""
-    os.environ["REDIS_DB"] = 1
+    os.environ["REDIS_PORT"] = str(app.redis_port) if app.redis_port is not None else ""
+    os.environ["REDIS_DB"] = "1"
 
 
 def main():
