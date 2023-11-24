@@ -28,6 +28,8 @@ from rasa.shared.nlu.training_data.message import Message
 
 from rapidfuzz import process, fuzz
 
+from pipeline.allow_disable import allow_disable
+
 logger = logging.getLogger(__name__)
 
 FUZZY_ENTITIES_FILENAME = "fuzzy_entities.pkl"
@@ -66,6 +68,7 @@ class FuzzyEntities:
 @DefaultV1Recipe.register(
     DefaultV1Recipe.ComponentType.ENTITY_EXTRACTOR, is_trainable=True
 )
+@allow_disable
 class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
     """Adds message features based on look up tables using fuzzy matching"""
 

@@ -37,5 +37,5 @@ jobs:
           path: |
             models
             results
-            train_test_split
+            .astro
           retention-days: 7
