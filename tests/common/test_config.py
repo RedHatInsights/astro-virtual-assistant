@@ -88,7 +88,6 @@ def test_clowdapp():
         assert app.redis_password is None
         assert app.redis_db is None
 
-
     finally:
         clear_app_config()
 

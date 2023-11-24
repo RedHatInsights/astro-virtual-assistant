@@ -69,9 +69,7 @@ class RepositoryClowdapp(RepositoryEmpty):
             return _get_item_with_param(
                 self.__INMEMORY_PREFIX, item, self.config.inMemoryDb
             )
-        elif (
-            item.startswith(self.__LOGGING_PREFIX)
-        ):
+        elif item.startswith(self.__LOGGING_PREFIX):
             return _get_item_with_param(
                 self.__LOGGING_PREFIX, item, self.config.logging.cloudwatch
             )
