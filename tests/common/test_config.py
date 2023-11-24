@@ -71,7 +71,7 @@ def test_clowdapp():
         assert app.advisor_url == "http://n-api.svc:8000"
         assert app.notifications_url == "http://n-gw.svc:1337"
         assert app.vulnerability_url == "http://v-engine.svc:1234"
-        assert app.actions_url == "http://localhost:5055/webhook"
+        assert app.actions_url == "http://my-virtual-assistant-actions:10000"
 
         assert app.tracker_store_type == "InMemoryTrackerStore"
         assert app.database_host == "some.host"

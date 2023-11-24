@@ -27,10 +27,12 @@ signal.signal(signal.SIGTERM, handle_signal)
 
 
 def set_endpoints_config_variables():
-    os.environ["ACTIONS_ENDPOINT_URL"] = app.actions_url
+    os.environ["ACTIONS_ENDPOINT_URL"] = app.actions_url + "/webhook"
     os.environ["TRACKER_STORE_TYPE"] = app.tracker_store_type
     os.environ["DB_HOSTNAME"] = app.database_host or ""
-    os.environ["DB_PORT"] = app.database_port or ""
+    os.environ["DB_PORT"] = (
+        str(app.database_port) if app.database_port is not None else ""
+    )
     os.environ["DB_NAME"] = app.database_name or ""
     os.environ["DB_USERNAME"] = app.database_user or ""
     os.environ["DB_PASSWORD"] = app.database_password or ""
