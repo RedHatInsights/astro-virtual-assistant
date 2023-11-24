@@ -37,7 +37,7 @@ def set_endpoints_config_variables():
     os.environ["LOCK_STORE_TYPE"] = app.lock_store_type
     os.environ["REDIS_HOSTNAME"] = app.redis_hostname or ""
     os.environ["REDIS_PORT"] = app.redis_port or ""
-    os.environ["REDIS_DB"] = app.redis_db or ""
+    os.environ["REDIS_DB"] = 1
 
 
 def main():

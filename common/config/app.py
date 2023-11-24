@@ -86,13 +86,10 @@ database_ssl_mode = _config("DB_SSL_MODE", default=None)
 
 lock_store_type = _config("LOCK_STORE_TYPE", default="in_memory")
 
-__redis_config_default = None if lock_store_type == "in_memory" else __undefined
-
-redis_hostname = _config("REDIS_HOSTNAME", default=__redis_config_default)
-redis_port = _config("REDIS_PORT", default=__redis_config_default)
-redis_username = _config("REDIS_USERNAME", default=__redis_config_default)
-redis_password = _config("REDIS_PASSWORD", default=__redis_config_default)
-redis_db = _config("REDIS_DB", default=__redis_config_default)
+redis_hostname = _config("REDIS_HOSTNAME", default=None)
+redis_port = _config("REDIS_PORT", default=None)
+redis_username = _config("REDIS_USERNAME", default=None)
+redis_password = _config("REDIS_PASSWORD", default=None)
 
 
 def log_config():

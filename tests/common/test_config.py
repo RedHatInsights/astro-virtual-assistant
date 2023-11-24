@@ -86,7 +86,31 @@ def test_clowdapp():
         assert app.redis_port is None
         assert app.redis_username is None
         assert app.redis_password is None
-        assert app.redis_db is None
+
+    finally:
+        clear_app_config()
+
+
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": "./tests/resources/clowdapp-redis.json",
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_clowdapp_with_redis():
+    try:
+        import_app_config()
+        from common.config import app
+
+        assert app.is_running_locally is False
+
+        assert app.lock_store_type == "in_memory"
+        assert app.redis_hostname == "my-hostname"
+        assert app.redis_port == 99137
+        assert app.redis_username == "my-username"
+        assert app.redis_password == "my-s3cret"
 
     finally:
         clear_app_config()
