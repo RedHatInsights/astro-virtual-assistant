@@ -10,6 +10,9 @@ assistant_id: 20230531-105026-ivory-volt
 # https://rasa.com/docs/rasa/nlu/components/
 language: en
 
+importers:
+  - name: "pipeline.astro_data_importer.AstroDataImporter"
+
 # # See https://rasa.com/docs/rasa/tuning-your-model for more information.
 pipeline:
    - name: WhitespaceTokenizer
