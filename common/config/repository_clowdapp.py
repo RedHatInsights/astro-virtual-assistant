@@ -71,7 +71,6 @@ class RepositoryClowdapp(RepositoryEmpty):
             )
         elif (
             item.startswith(self.__LOGGING_PREFIX)
-            and self.config.logging.type == "cloudwatch"
         ):
             return _get_item_with_param(
                 self.__LOGGING_PREFIX, item, self.config.logging.cloudwatch

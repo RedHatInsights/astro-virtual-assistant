@@ -41,10 +41,39 @@ def test_clowdapp():
 
         assert app.is_running_locally is False
 
+        assert app.dev_offline_refresh_token is None
+        assert app.dev_sso_refresh_token_url is None
+
+        assert app.console_dot_base_url == "https://console.redhat.com"
+        assert app.requests_timeout == 5
+        assert app.app_name == "astro-virtual-assistant"
+        assert app.group_id == app.app_name
+        assert app.api_listen_address == "0.0.0.0"
+        assert app.api_url_expiry == 30
+        assert app.aws_region == "us-east-1"
+        assert app.log_level == "INFO"
+
+        assert app.namespace is None
+        assert app.hostname is None
+        assert app.prometheus is False
+
+        assert app.prometheus_port == 9000
+        assert app.api_port == 8000
+        assert app.actions_port == 10000
+
+        assert app.logging_cloudwatch_access_key_id == "my-key-id"
+        assert app.logging_cloudwatch_secret_access_key == "very-secret"
+        assert app.logging_cloudwatch_region == "eu-central-1"
+        assert app.logging_cloudwatch_log_group == "my-log-group"
+        assert app.logging_cloudwatch_create_log_group is True
+        assert app.logging_cloudwatch_log_stream == os.uname().nodename
+
         assert app.advisor_url == "http://n-api.svc:8000"
         assert app.notifications_url == "http://n-gw.svc:1337"
         assert app.vulnerability_url == "http://v-engine.svc:1234"
+        assert app.actions_url == "http://localhost:5055/webhook"
 
+        assert app.tracker_store_type == "InMemoryTrackerStore"
         assert app.database_host == "some.host"
         assert app.database_port == 15432
         assert app.database_user == "aUser"
@@ -53,8 +82,13 @@ def test_clowdapp():
         assert app.database_ssl_mode == "require"
 
         assert app.lock_store_type == "in_memory"
+        assert app.redis_hostname is None
+        assert app.redis_port is None
+        assert app.redis_username is None
+        assert app.redis_password is None
+        assert app.redis_db is None
 
-        assert app.namespace is None
+
     finally:
         clear_app_config()
 
