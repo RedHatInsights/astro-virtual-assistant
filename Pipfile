@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
+python-decouple = "*"
 requests = ">=2.31.0"
 rapidfuzz = "*"
 jsonpickle = "*"

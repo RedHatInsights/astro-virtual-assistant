@@ -3,7 +3,7 @@ from datetime import datetime
 
 from rasa_sdk import Tracker
 
-from common import send_console_request
+from common.requests import send_console_request
 
 
 def send_notification(tracker: Tracker, event: dict):

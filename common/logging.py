@@ -1,87 +1,49 @@
-import os
 import sys
 import logging
 from logstash_formatter import LogstashFormatterV1
-
-import common.config as config
-
-
-def clowder_config():
-    # Cloudwatch Configuration with Clowder
-    if os.environ.get("ACG_CONFIG"):
-        import app_common_python
-
-        cfg = app_common_python.LoadedConfig
-        if cfg.logging:
-            cw = cfg.logging.cloudwatch
-            return cw.accessKeyId, cw.secretAccessKey, cw.region, cw.logGroup, False
-        else:
-            return None, None, None, None, None
-
-
-def non_clowder_config():
-    aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID", None)
-    aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY", None)
-    aws_region_name = os.getenv("AWS_REGION_NAME", None)
-    aws_log_group = os.getenv("AWS_LOG_GROUP", "platform")
-    create_log_group = str(os.getenv("AWS_CREATE_LOG_GROUP")).lower() == "true"
-    return (
-        aws_access_key_id,
-        aws_secret_access_key,
-        aws_region_name,
-        aws_log_group,
-        create_log_group,
-    )
+from .config import app
 
 
 def initialize_logging():
-    if any("OPENSHIFT" in k for k in os.environ):
+    if app.namespace is not None:
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(LogstashFormatterV1())
-        logging.root.setLevel(os.getenv("LOG_LEVEL", "INFO"))
+        logging.root.setLevel(app.log_level)
         logging.root.addHandler(handler)
     else:
         logging.basicConfig(
-            level=config.LOG_LEVEL,
+            level=app.log_level,
             format="%(threadName)s %(levelname)s %(name)s - %(message)s",
         )
 
-    if os.environ.get("ACG_CONFIG"):
-        f = clowder_config
-    else:
-        f = non_clowder_config
-
-    (
-        aws_access_key_id,
-        aws_secret_access_key,
-        aws_region_name,
-        aws_log_group,
-        create_log_group,
-    ) = f()
-
-    if all((aws_access_key_id, aws_secret_access_key, aws_region_name, aws_log_group)):
+    if all(
+        (
+            app.logging_cloudwatch_access_key_id,
+            app.logging_cloudwatch_secret_access_key,
+            app.logging_cloudwatch_region,
+            app.logging_cloudwatch_log_group,
+        )
+    ):
         from boto3.session import Session
         import watchtower
 
-        aws_log_stream = os.getenv("AWS_LOG_STREAM", os.uname().nodename)
-
         boto3_session = Session(
-            aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key,
-            region_name=aws_region_name,
+            aws_access_key_id=app.logging_cloudwatch_access_key_id,
+            aws_secret_access_key=app.logging_cloudwatch_secret_access_key,
+            region_name=app.logging_cloudwatch_region,
         )
         boto3_client = boto3_session.client("logs")
 
         cw_handler = watchtower.CloudWatchLogHandler(
             boto3_client=boto3_client,
-            log_group_name=aws_log_group,
-            log_stream_name=aws_log_stream,
-            create_log_group=create_log_group,
+            log_group_name=app.logging_cloudwatch_log_group,
+            log_stream_name=app.logging_cloudwatch_log_stream,
+            create_log_group=app.logging_cloudwatch_create_log_group,
         )
 
         cw_handler.setFormatter(LogstashFormatterV1())
         logging.root.addHandler(cw_handler)
 
-    logger = logging.getLogger(config.APP_NAME)
+    logger = logging.getLogger(app.name)
 
     return logger
