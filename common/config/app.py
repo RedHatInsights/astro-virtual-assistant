@@ -8,7 +8,7 @@ name = _config("APP_NAME", default="astro-virtual-assistant")
 dev_offline_refresh_token = _config("OFFLINE_REFRESH_TOKEN", default=None)
 dev_sso_refresh_token_url = _config(
     "SSO_REFRESH_TOKEN_URL",
-    default="https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
+    default=None,
 )
 
 console_dot_base_url = _config(
@@ -48,7 +48,7 @@ logging_cloudwatch_access_key_id = _config(
     "LOGGING_CLOUDWATCH_ACCESS_KEY_ID", default=__optional_when_locally
 )
 logging_cloudwatch_secret_access_key = _config(
-    "LOGGING_CLOUDWATCH_ACCESS_KEY_ID", default=__optional_when_locally
+    "LOGGING_CLOUDWATCH_SECRET_ACCESS_KEY", default=__optional_when_locally
 )
 logging_cloudwatch_region = _config(
     "LOGGING_CLOUDWATCH_REGION", default=__optional_when_locally
