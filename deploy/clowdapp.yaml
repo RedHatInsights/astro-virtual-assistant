@@ -14,7 +14,8 @@ objects:
       - advisor-backend
       - notifications-gw
       - vulnerability-engine
-
+    
+    inMemoryDb: true
     database:
       name: virtual-assistant
       version: 12
