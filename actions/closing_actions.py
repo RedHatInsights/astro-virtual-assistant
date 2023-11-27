@@ -14,17 +14,25 @@ class ValidateFormClosing(FormValidationAction):
     async def should_ask_closing_feedback(self, dispatcher, tracker, domain):
         requested_slot = tracker.get_slot("requested_slot")
 
-        if requested_slot == "closing_leave_feedback" and tracker.get_slot("closing_leave_feedback") is True:
+        if (
+            requested_slot == "closing_leave_feedback"
+            and tracker.get_slot("closing_leave_feedback") is True
+        ):
             return True
 
-        next_requested_slot = await self.next_requested_slot(dispatcher, tracker, domain)
-        if next_requested_slot is not None and next_requested_slot.get("value") == "closing_feedback":
+        next_requested_slot = await self.next_requested_slot(
+            dispatcher, tracker, domain
+        )
+        if (
+            next_requested_slot is not None
+            and next_requested_slot.get("value") == "closing_feedback"
+        ):
             return True
 
         return False
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -40,7 +48,9 @@ class ValidateFormClosing(FormValidationAction):
             if closing_feedback_type == "general":
                 dispatcher.utter_message(response="utter_closing_feedback_general")
             elif closing_feedback_type == "bad_experience":
-                dispatcher.utter_message(response="utter_closing_feedback_bad_experience")
+                dispatcher.utter_message(
+                    response="utter_closing_feedback_bad_experience"
+                )
             else:
                 dispatcher.utter_message(response="utter_closing_feedback_general")
 
@@ -72,15 +82,26 @@ class ExecuteFormClosing(Action):
         return "execute_form_closing"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         # Todo: Insert logic to send feedback
         if tracker.get_slot("closing_leave_feedback") is True:
             dispatcher.utter_message(response="utter_closing_share_feedback")
-            print(f"Should send the following feedback:{tracker.get_slot('closing_feedback')}")
+            print(
+                f"Should send the following feedback:{tracker.get_slot('closing_feedback')}"
+            )
 
         dispatcher.utter_message(response="utter_closing_finally")
-        return [SlotSet(key, None) for key in ["closing_got_help", "closing_leave_feedback", "closing_feedback", "closing_skip_got_help", "closing_feedback_type"]]
+        return [
+            SlotSet(key, None)
+            for key in [
+                "closing_got_help",
+                "closing_leave_feedback",
+                "closing_feedback",
+                "closing_skip_got_help",
+                "closing_feedback_type",
+            ]
+        ]
 
 
 class ExecuteFormClosingAnythingElse(Action):
@@ -88,7 +109,7 @@ class ExecuteFormClosingAnythingElse(Action):
         return "execute_form_closing_anything_else"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         closing_anything_else = tracker.get_slot("closing_anything_else")
         if closing_anything_else is True:
@@ -108,7 +129,7 @@ class ActionSkipGotHelp(Action):
         return "action_skip_got_help"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [SlotSet("closing_skip_got_help", True)]
 
@@ -118,7 +139,7 @@ class ActionClosingFeedbackTypeBadExperience(Action):
         return "action_closing_feedback_type_bad_experience"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [SlotSet("closing_feedback_type", "bad_experience")]
 
@@ -128,6 +149,6 @@ class ActionClosingFeedbackTypeGeneral(Action):
         return "action_closing_feedback_type_general"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [SlotSet("closing_feedback_type", "general")]
