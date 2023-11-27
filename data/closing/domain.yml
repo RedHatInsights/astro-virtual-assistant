@@ -33,8 +33,12 @@ responses:
           payload: /intent_core_yes
         - title: No
           payload: /intent_core_no
+  utter_closing_got_help_yes:
+    - text: Great!
+  utter_closing_got_help_no:
+    - text: Thanks for sharing.
   utter_closing_additional_feedback:
-    - text: Got it. Would you like to leave any additional feedback?
+    - text: Would you like to leave any additional feedback?
       buttons:
         - title: Yes
           payload: /intent_core_yes
