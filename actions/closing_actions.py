@@ -19,14 +19,10 @@ class ActionGotHelp(Action):
 
         last_intent = tracker.get_intent_of_latest_message(True)
         if last_intent == "intent_core_yes":
-            dispatcher.utter_message(
-                response="utter_closing_got_help_yes"
-            )
+            dispatcher.utter_message(response="utter_closing_got_help_yes")
             return [SlotSet("closing_got_help", True)]
         elif last_intent == "intent_core_no":
-            dispatcher.utter_message(
-                response="utter_closing_got_help_no"
-            )
+            dispatcher.utter_message(response="utter_closing_got_help_no")
             return [SlotSet("closing_got_help", False)]
 
         return []
