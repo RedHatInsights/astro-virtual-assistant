@@ -27,4 +27,3 @@ rules:
       - slot_was_set:
           - requested_slot: null
       - action: execute_form_closing_anything_else
-      - action: session_start

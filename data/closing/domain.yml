@@ -7,6 +7,9 @@ actions:
   - validate_form_closing
   - execute_form_closing
   - execute_form_closing_anything_else
+  - action_skip_got_help
+  - action_closing_feedback_type_bad_experience
+  - action_closing_feedback_type_general
 
 forms:
   form_closing:
@@ -19,6 +22,17 @@ forms:
       - closing_anything_else
 
 slots:
+  closing_skip_got_help:
+    type: bool
+    mappings:
+      - type: custom
+  closing_feedback_type:
+    type: categorical
+    values:
+      - general
+      - bad_experience
+    mappings:
+      - type: custom
   closing_got_help:
     type: bool
     mappings:
@@ -81,8 +95,14 @@ responses:
   utter_ask_closing_leave_feedback:
     - text: Would you like to leave any additional feedback?
       buttons: *buttons_yes_no
-  utter_ask_closing_feedback:
+    - text: Would you like to submit any feedback?
+      buttons: *buttons_yes_no
+  utter_closing_feedback_general:
     - text: Okay. You can type in your feedback below and I'll share it with my team.
+  utter_closing_feedback_bad_experience:
+    - text: >
+        I'm sorry that you had a bad experience.
+        You can type in your feedback below and I'll share it with my team.
   utter_closing_share_feedback:
     - text: I'll share that with my team to review.
   utter_closing_finally:
