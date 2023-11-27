@@ -54,9 +54,6 @@ nlu:
       - What are all the products Red Hat makes?
       - What products do you make?
       - Who started Red Hat?
-      - Tell me a joke
-      - Do you like fish?
-      - What headphones do you recommend?
 
   - intent: intent_unknown_topic
     examples: |
