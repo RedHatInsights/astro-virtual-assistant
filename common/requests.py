@@ -48,6 +48,11 @@ def send_console_request(
             **kwargs,
         )
 
+        if not result.ok:
+            logger.error(
+                f"Received non OK~sh response from call {method.upper()} {url}: ({result.status_code}) - {result.content}"
+            )
+
         return result
     except Exception as e:
         print(f"An Exception occured while handling response from {app_name}: {e}")
