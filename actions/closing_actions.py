@@ -91,7 +91,6 @@ class ExecuteFormClosing(Action):
                 f"Should send the following feedback:{tracker.get_slot('closing_feedback')}"
             )
 
-
         dispatcher.utter_message(response="utter_closing_finally")
         return [
             SlotSet(key, None)
