@@ -11,11 +11,6 @@ stories:
       - intent: intent_access_request
       - action: utter_access_request
 
-  - story: User requested access - closing
-    steps:
-      - action: execute_access_form_access_request
-      - checkpoint: check_closing
-
   - story: User wants to request access - No
     steps:
       - action: utter_access_request
