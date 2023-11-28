@@ -66,8 +66,8 @@ responses:
           payload: Tour the console
         - title: Change my personal information
           payload: Change my personal information
-        - title: Show my systems with vulnerabilities
-          payload: Show my systems with vulnerabilities
+        - title: Show my critical vulnerabilities
+          payload: Show my critical vulnerabilities
         - title: See more
           payload: More
   utter_core_capabilities_more_1:
@@ -92,13 +92,6 @@ responses:
     - text: "My team will manually review your messages to identify new use cases and add data to our natural language understanding (NLU) models."
   utter_live_chat:
     - text: "I don't support live chat, but you can leave feedback for my team to review."
-  utter_live_chat_feedback:
-    - text: "Would you like to submit any feedback?"
-      buttons:
-        - title: Yes
-          payload: /intent_core_yes
-        - title: No
-          payload: /intent_core_no
   utter_are_you_ai_1:
     - text: "I won't get too far into the technical details. As a virtual assistant, I use supervised learning to understand your queries."
   utter_are_you_ai_2:

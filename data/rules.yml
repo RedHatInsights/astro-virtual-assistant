@@ -40,24 +40,16 @@ rules:
   # - rule: User says yes for no reason
   # - rule: User says no for no reason
 
-  - rule: User wants to leave feedback about not speaking to an agent
-    steps:
-      - action: utter_live_chat_feedback
-      - intent: intent_core_yes
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-
   - rule: Give feedback
     steps:
       - intent: intent_give_feedback
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-
+      - action: action_skip_got_help
+      - action: form_closing
+      - active_loop: form_closing
   - rule: Send Complaint
     steps:
       - intent: intent_send_complaint
-      - action: utter_user_complaint
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
+      - action: action_skip_got_help
+      - action: action_closing_feedback_type_bad_experience
+      - action: form_closing
+      - active_loop: form_closing

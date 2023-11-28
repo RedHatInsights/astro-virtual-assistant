@@ -1,63 +1,8 @@
 version: "3.1"
 
 stories:
-  - story: remove-me
-    steps:
-      - intent: intent_closing_start
-      - checkpoint: check_closing
-
-  - story: Closing story
+  - story: Starts closing flow with checkpoint
     steps:
       - checkpoint: check_closing
-      - action: utter_closing_got_help
-      - or:
-          - intent: intent_core_yes
-          - intent: intent_core_no
-      - action: action_closing_got_help
-      - or:
-          - slot_was_set:
-              - closing_got_help: true
-          - slot_was_set:
-              - closing_got_help: false
-      - action: utter_closing_additional_feedback
-
-  - story: Would you like to give feedback - No
-    steps:
-      - action: utter_closing_additional_feedback
-      - intent: intent_core_no
-      - action: utter_closing_finally
-      - action: utter_closing_anything_else
-
-  - story: Closing - finally - no more
-    steps:
-      - action: utter_closing_anything_else
-      - intent: intent_core_no
-      - action: utter_closing_bye
-
-  - story: Closing - finally - more help
-    steps:
-      - action: utter_closing_anything_else
-      - intent: intent_core_yes
-      - action: utter_core_how_can_i_help
-
-rules:
-  - rule: Would you like to give feedback - Yes
-    steps:
-      - action: utter_closing_additional_feedback
-      - intent: intent_core_yes
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-
-  - rule: Finished feedback
-    condition:
-      - active_loop: form_closing_feedback
-    steps:
-      - action: form_closing_feedback
-      - active_loop: null
-      - slot_was_set:
-          - requested_slot: null
-      - action: utter_closing_share_feedback
-      - action: action_closing_share_feedback
-      - action: utter_closing_finally
-      - action: utter_closing_anything_else
+      - action: form_closing
+      - active_loop: form_closing
