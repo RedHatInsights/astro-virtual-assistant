@@ -6,6 +6,7 @@ rules:
       - intent: intent_closing_start
       - action: form_closing
       - active_loop: form_closing
+
   - rule: Finished feedback
     condition:
       - active_loop: form_closing
