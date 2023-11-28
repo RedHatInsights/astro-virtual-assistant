@@ -23,7 +23,7 @@ def send_rbac_request_admin(
 ):
     event = dict(
         {
-            "id": uuid.uuid4(),
+            "id": str(uuid.uuid4()),
             "bundle": "console",
             "application": "rbac",
             "event_type": "request-access",
