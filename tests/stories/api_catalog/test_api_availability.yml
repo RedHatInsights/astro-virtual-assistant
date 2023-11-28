@@ -7,7 +7,8 @@ stories:
           Where can I find documentations around your API?
         intent: intent_api_availability
       - action: utter_api_capabilities
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User checks API availability - 2
     steps:
@@ -15,7 +16,8 @@ stories:
           API documentations
         intent: intent_api_availability
       - action: utter_api_capabilities
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
   
   - story: User checks API availability - 3
     steps:
@@ -23,7 +25,8 @@ stories:
           Can you provide me the api docs for the advisor service?
         intent: intent_api_availability
       - action: utter_api_capabilities
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
   
   - story: User checks API availability - 4
     steps:
@@ -31,4 +34,5 @@ stories:
           api docs
         intent: intent_api_availability
       - action: utter_api_capabilities
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing

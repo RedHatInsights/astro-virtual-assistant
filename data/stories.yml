@@ -28,13 +28,9 @@ stories:
     steps:
       - intent: intent_live_chat
       - action: utter_live_chat
-      - action: utter_live_chat_feedback
-
-  - story: User doesn't want to leave feedback after not speaking to an agent
-    steps:
-      - action: utter_live_chat_feedback
-      - intent: intent_core_no
-      - action: utter_closing_anything_else
+      - action: action_skip_got_help
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: Data privacy policy
     steps:

@@ -4,86 +4,47 @@ stories:
   - story: Closing session  yes to all
     steps:
       - intent: intent_closing_start
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
       - user: |
           Yes
-        intent: intent_core_yes
-      - action: action_closing_got_help
-      - slot_was_set:
-          - closing_got_help: True
-      - action: utter_closing_additional_feedback
-      - user: |
-          Yes
-        intent: intent_core_yes
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-      - user: |
-          How can you help me?
-        intent: intent_core_capabilities # Test stories requires a know intent
-      - slot_was_set:
-          - closing_feedback: "How can you help me?"
-      - action: form_closing_feedback
+        intent: intent_core_yes # Test stories require a know intent
+      - action: form_closing
       - active_loop: null
-      - action: utter_closing_share_feedback
-      - action: action_closing_share_feedback
-      - action: utter_closing_finally
-      - action: utter_closing_anything_else
+      - slot_was_set:
+          - requested_slot: null
+      - action: execute_form_closing
+      - action: form_closing_anything_else
+      - active_loop: form_closing_anything_else
       - user: |
           Yes
-        intent: intent_core_yes
-      - action: utter_core_how_can_i_help
-
-  - story: Interaction wasn't helpful
-    steps:
-      - intent: intent_closing_start
-      - action: utter_closing_got_help
-      - user: |
-          No
-        intent: intent_core_no
-      - action: action_closing_got_help
-      - slot_was_set:
-          - closing_got_help: False
-      - action: utter_closing_additional_feedback
-      - user: |
-          Yes
-        intent: intent_core_yes
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
-      - user: |
-          How can you help me?
-        intent: intent_core_capabilities # Test stories requires a know intent
-      - slot_was_set:
-          - closing_feedback: "How can you help me?"
-      - action: form_closing_feedback
+        intent: intent_core_yes # Test stories require a know intent
+      - action: form_closing_anything_else
       - active_loop: null
-      - action: utter_closing_share_feedback
-      - action: action_closing_share_feedback
-      - action: utter_closing_finally
-      - action: utter_closing_anything_else
-      - user: |
-          Yes
-        intent: intent_core_yes
-      - action: utter_core_how_can_i_help
+      - slot_was_set:
+          - requested_slot: null
+      - action: execute_form_closing_anything_else
 
   - story: User asks for the closing flow - 1
     steps:
       - user: |
           end conversation
         intent: intent_closing_start
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
   
   - story: User asks for the closing flow - 2
     steps:
       - user: |
           OK I'm finished
         intent: intent_closing_start
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
   
   - story: User asks for the closing flow - 3
     steps:
       - user: |
           I'm done
         intent: intent_closing_start
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing

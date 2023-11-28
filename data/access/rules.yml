@@ -17,3 +17,5 @@ rules:
       - slot_was_set:
           - requested_slot: null
       - action: execute_access_form_access_request
+      - action: form_closing
+      - active_loop: form_closing

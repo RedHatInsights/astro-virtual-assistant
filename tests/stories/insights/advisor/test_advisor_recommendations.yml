@@ -8,4 +8,5 @@ stories:
         intent: insights_advisor_recommendation_pathways
       - action: utter_advisor_recommendation_pathways
       - action: action_advisor_api_pathway
-      - action: utter_closing_got_help # closing
+      - action: form_closing
+      - active_loop: form_closing
