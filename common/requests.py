@@ -16,7 +16,12 @@ logger = logging.initialize_logging()
 
 
 def send_console_request(
-    app_name: str, path: str, tracker: Tracker, method: str = "get", headers: Optional[Header] = None, **kwargs
+    app_name: str,
+    path: str,
+    tracker: Tracker,
+    method: str = "get",
+    headers: Optional[Header] = None,
+    **kwargs,
 ) -> Any:
     if headers is None:
         headers = Header()
