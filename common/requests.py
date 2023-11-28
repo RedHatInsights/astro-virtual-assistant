@@ -55,5 +55,7 @@ def send_console_request(
 
         return result
     except Exception as e:
-        print(f"An Exception occured while handling response from {app_name}: {e}")
+        logger.error(
+            f"Exception while handling request: {method.upper()} {url}", exc_info=True
+        )
         return None
