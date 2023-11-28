@@ -1,7 +1,7 @@
 # can I import just match and case from future python versions?
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 from rasa_sdk import Tracker
 
@@ -16,11 +16,13 @@ logger = logging.initialize_logging()
 
 
 def send_console_request(
-    app_name: str, path: str, tracker: Tracker, method: str = "get", **kwargs
+    app_name: str, path: str, tracker: Tracker, method: str = "get", headers: Optional[Header] = None, **kwargs
 ) -> Any:
-    header = Header()
+    if headers is None:
+        headers = Header()
+
     try:
-        get_auth_header(tracker, header)
+        get_auth_header(tracker, headers)
     except Exception as e:
         print(f"An Exception occured while handling retrieving auth credentials: {e}")
         return None
@@ -43,7 +45,7 @@ def send_console_request(
         result = requests.request(
             method,
             url,
-            headers=header.build_headers(),
+            headers=headers.build_headers(),
             timeout=app.requests_timeout,
             **kwargs,
         )
