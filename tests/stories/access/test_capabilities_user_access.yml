@@ -66,7 +66,6 @@ stories:
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
-      - action: execute_access_form_access_request
-      # - intent: intent_core_yes
+      - action: execute_form_access_request
       - action: form_closing
       - active_loop: form_closing

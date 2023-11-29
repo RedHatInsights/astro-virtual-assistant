@@ -18,7 +18,7 @@ _SLOT_REQUEST_MESSAGE = "access_request_message"
 
 class ExecuteFormAccessRequestAccess(Action):
     def name(self) -> Text:
-        return "execute_access_form_access_request"
+        return "execute_form_access_request"
 
     async def run(
         self,
@@ -55,7 +55,7 @@ class ExecuteFormAccessRequestAccess(Action):
 
 class ValidateFormAccessRequestAccess(FormValidationAction):
     def name(self) -> Text:
-        return "validate_access_form_access_request"
+        return "validate_form_access_request"
 
     async def required_slots(
         self,
