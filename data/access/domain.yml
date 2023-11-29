@@ -38,8 +38,8 @@ slots:
             requested_slot: access_request_message
 
 actions:
-  - validate_access_form_access_request
-  - execute_access_form_access_request
+  - validate_form_access_request
+  - execute_form_access_request
 
 forms:
   form_access_request:
