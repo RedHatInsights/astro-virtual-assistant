@@ -1,8 +1,8 @@
 from rasa_sdk import Tracker
 from typing import Text, Dict, Any, Optional
 
-from common.utils import get_is_running_locally
-from common import decode_identity
+from common.identity import decode_identity
+from common.config import app
 
 
 def _is_user_event(event: Dict[Text, Any]) -> bool:
@@ -14,7 +14,7 @@ def get_last_user_message(tracker: Tracker) -> Optional[Dict[Text, Any]]:
 
 
 def get_user_identity(tracker: Tracker) -> Optional[Text]:
-    if get_is_running_locally():
+    if app.is_running_locally:
         return __get_mocked_user_identity()
 
     latest_user_event = get_last_user_message(tracker)

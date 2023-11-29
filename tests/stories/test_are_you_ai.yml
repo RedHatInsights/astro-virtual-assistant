@@ -14,9 +14,9 @@ stories:
       - user: |
           Send Feedback
         intent: intent_give_feedback
-      - action: utter_closing_type_below
-      - action: form_closing_feedback
-      - active_loop: form_closing_feedback
+      - action: action_skip_got_help
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: Are you an AI - 2
     steps:

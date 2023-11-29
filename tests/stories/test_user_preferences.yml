@@ -7,7 +7,8 @@ stories:
           I want to change my [personal information]{"entity": "preference"}.
         intent: intent_user_preferences
       - action: action_user_preferences
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
     
   - story: User wants to change their password
     steps:
@@ -15,7 +16,8 @@ stories:
           Where can I reset my [password]{"entity": "preference"}?
         intent: intent_user_preferences
       - action: action_user_preferences
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
   
   - story: User wants to change their login
     steps:
@@ -23,7 +25,8 @@ stories:
           I want to change my [login]{"entity": "preference"}.
         intent: intent_user_preferences
       - action: action_user_preferences
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User wants to change their email
     steps:
@@ -31,4 +34,5 @@ stories:
           Change my [email address]{"entity": "preference"}?
         intent: intent_user_preferences
       - action: action_user_preferences
-      - action: utter_closing_got_help
+      - action: form_closing
+      - active_loop: form_closing

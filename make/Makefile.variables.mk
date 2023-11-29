@@ -1,6 +1,8 @@
 # Variables shared across the Makefiles
 
-RASA_EXEC = pipenv run python app.py
+PYTHON_EXEC = pipenv run python
+RASA_EXEC = ${PYTHON_EXEC} app.py
+RASA_ACTIONS_EXEC = ${PYTHON_EXEC} run_actions.py
 RASA_DOMAIN_ARG = --domain data
 RASA_ENDPOINTS_ARG = --endpoints endpoints.yml
 

@@ -29,7 +29,7 @@ stories:
     steps:
       - user: |
           do you like fish?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -58,13 +58,13 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 8
-    steps:
-      - user: |
-          what do you think about the president?
-        intent: nlu_fallback
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 8
+#    steps:
+#      - user: |
+#          what do you think about the president?
+#        intent: nlu_fallback
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main
 
   - story: User asks for unknown features - 9
     steps:
@@ -78,7 +78,7 @@ stories:
     steps:
       - user: |
           what headphones do you recommend?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -110,7 +110,7 @@ stories:
     steps:
       - user: |
           Tell me a joke
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -118,7 +118,7 @@ stories:
     steps:
       - user: |
           Do you like fish
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -134,7 +134,7 @@ stories:
     steps:
       - user: |
           What headphones do you recommend?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 

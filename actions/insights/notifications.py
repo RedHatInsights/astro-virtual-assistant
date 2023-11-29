@@ -3,13 +3,16 @@ from datetime import datetime
 
 from rasa_sdk import Tracker
 
-from common import send_console_request
+from common.header import Header
+from common.requests import send_console_request
 
 
 def send_notification(tracker: Tracker, event: dict):
     """Send a notification using the notifications-gateway"""
+    headers = Header()
+    headers.add_header("Content-Type", "application/json")
     return send_console_request(
-        "notifications", "/notifications", tracker, "post", json=event
+        "notifications", "/notifications", tracker, "post", json=event, headers=headers
     )
 
 
@@ -23,7 +26,7 @@ def send_rbac_request_admin(
 ):
     event = dict(
         {
-            "id": uuid.uuid4(),
+            "id": str(uuid.uuid4()),
             "bundle": "console",
             "application": "rbac",
             "event_type": "request-access",

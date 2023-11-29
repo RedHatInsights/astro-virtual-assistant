@@ -1,30 +1,19 @@
 CONTAINER_EXEC ?= podman
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
-export TRACKER_STORE_TYPE ?=
-export DB_HOST ?=
-export DB_PORT ?=
-export DB_USER ?=
-export DB_PASSWORD ?=
-export DB_LOGIN_DB ?=
-export DB_NAME ?=
+export IS_RUNNING_LOCALLY=1
 
 include make/Makefile.variables.mk
 include make/Makefile.test.mk
 include make/Makefile.lint.mk
+include make/Makefile.train.mk
 
 # install and train the project
 install:
 	pipenv install --categories "packages dev-packages api-packages"
 
 clean:
-	rm -rf results .rasa models/* train_test_split
-
-train:
-	${RASA_EXEC} train ${RASA_TRAIN_ARGS}
-
-finetune:
-	pipenv run ${RASA_EXEC} train ${RASA_TRAIN_ARGS} --finetune
+	rm -rf results .rasa models/* .astro
 
 # runs the assistant
 run:
@@ -34,7 +23,7 @@ run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
 run-actions:
-	pipenv run ${RASA_EXEC} run actions --auto-reload
+	pipenv run ${RASA_ACTIONS_EXEC} --actions actions
 
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
