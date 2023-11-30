@@ -6,6 +6,7 @@ rules:
       - intent: intent_core_session_start
       - slot_was_set:
           - first_time_greeting: True
+      - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
