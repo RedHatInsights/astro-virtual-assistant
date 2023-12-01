@@ -1,25 +1,25 @@
-version: "3.1"
+# version: "3.1"
 
-intents:
-  - intent_tour_capabilities
-  - intent_tour
+# intents:
+#   - intent_tour_capabilities
+#   - intent_tour
 
-entities: []
+# entities: []
 
-slots: {}
+# slots: {}
 
-actions: []
+# actions: []
 
-responses:
-  utter_tour_capabilities:
-    - text: "Would you like to learn more about my abilities as a virtual assistant or more information about how to use the console?"
-      buttons:
-        - title: "I would like to take a tour of the console."
-          payload: "/intent_tour"
-        - title: "I want to know how you can help."
-          payload: "/intent_core_capabilities"
-  utter_tour:
-    - text: "Follow along with our tour and return to this chat window with any questions you may have."
-      custom:
-        type: command
-        command: tour_start
+# responses:
+#   utter_tour_capabilities:
+#     - text: "Would you like to learn more about my abilities as a virtual assistant or more information about how to use the console?"
+#       buttons:
+#         - title: "I would like to take a tour of the console."
+#           payload: "/intent_tour"
+#         - title: "I want to know how you can help."
+#           payload: "/intent_core_capabilities"
+#   utter_tour:
+#     - text: "Follow along with our tour and return to this chat window with any questions you may have."
+#       custom:
+#         type: command
+#         command: tour_start

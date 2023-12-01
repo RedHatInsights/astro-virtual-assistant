@@ -64,19 +64,18 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Tour the console
-          payload: Tour the console
         - title: Change my personal information
           payload: Change my personal information
+        - title: Request access from my administrator
+          payload: Request access from your administrator
         - title: Show my critical vulnerabilities
           payload: Show my critical vulnerabilities
-        - title: See more
-          payload: More
-  utter_core_capabilities_more_1:
-    - text: ""
-      buttons:
         - title: Get recommendations from Advisor
           payload: Recommendations from Advisor
+        # - title: See more
+        #   payload: More
+  utter_core_capabilities_more_1:
+    - text: "That's all I can do for now. Sorry!"
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
@@ -132,6 +131,8 @@ responses:
       custom:
         type: command
         command: password_redirect
+  utter_user_preferences_pop_ups:
+    - text: "Your browser may be blocking pop-ups. Please allow pop-ups for the platform or click [here]({url}) to access the page."
   utter_user_preferences_no_action:
     - text: "Okay, let me know if you change your mind."
   utter_services_offline_no_incidents:
