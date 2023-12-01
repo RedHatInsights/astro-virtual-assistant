@@ -3,6 +3,7 @@ from asyncio import CancelledError
 from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
+import hashlib
 
 from common.identity import decode_identity
 from common import logging
@@ -128,7 +129,9 @@ class ConsoleInput(InputChannel):
         except KeyError:
             return None
         if org_id and username:
-            return "{org_id}-{username}".format(org_id=org_id, username=username)
+            return hashlib.sha256(
+                "{org_id}-{username}".format(org_id=org_id, username=username).encode()
+            ).hexdigest()
 
         return None
 
