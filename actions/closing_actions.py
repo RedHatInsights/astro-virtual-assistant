@@ -12,18 +12,34 @@ class ValidateFormClosing(FormValidationAction):
         return "validate_form_closing"
 
     @staticmethod
+    def utter_unknown_input_if_failed_to_fill_slot(
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+        slot: Text,
+    ):
+        if (
+            tracker.slots.get("requested_slot") == slot
+            and tracker.slots.get(slot) is None
+        ):
+            dispatcher.utter_message(response="utter_core_unknown_input")
+        return {slot: tracker.slots.get(slot)}
+
+    @staticmethod
     def extract_closing_got_help(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        dispatcher.utter_message(response="utter_core_unknown_input")
-        return {"closing_got_help": tracker.slots.get("closing_got_help")}
+        return ValidateFormClosing.utter_unknown_input_if_failed_to_fill_slot(
+            dispatcher, tracker, domain, "closing_got_help"
+        )
 
     @staticmethod
     def extract_closing_leave_feedback(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        dispatcher.utter_message(response="utter_core_unknown_input")
-        return {"closing_leave_feedback": tracker.slots.get("closing_leave_feedback")}
+        return ValidateFormClosing.utter_unknown_input_if_failed_to_fill_slot(
+            dispatcher, tracker, domain, "closing_leave_feedback"
+        )
 
     async def should_ask_closing_feedback(self, dispatcher, tracker, domain):
         requested_slot = tracker.get_slot("requested_slot")
