@@ -75,10 +75,7 @@ responses:
         # - title: See more
         #   payload: More
   utter_core_capabilities_more_1:
-    - text: ""
-      buttons:
-        - title: Get recommendations from Advisor
-          payload: Recommendations from Advisor
+    - text: "That's all I can do for now. Sorry!"
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
