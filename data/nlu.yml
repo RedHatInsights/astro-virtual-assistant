@@ -64,13 +64,21 @@ nlu:
     examples: |
       - Tell me a joke
       - Do you like fish?
+      - do you like pina coladas?
+      - do you like iphones?
+      - do you like pinball?
+      - do you like pizza?
+      - do you like union oil?
+      - do you like the color blue?
       - What headphones do you recommend?
+      - What pair of shoes do you recommend?
+      - what iphone do you recommend?
+      - what wedding planners do you recommend?
       - How good are you at math?
       - Can you do math for me?
-      - What's my dogs name
+      - What's my name
       - are you a replicant
       - where is my protected
-      - where is my dog
       - are we in matrix
       - do you hate anyone
       - are you single

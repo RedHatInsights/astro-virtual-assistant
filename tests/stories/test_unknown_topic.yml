@@ -86,7 +86,7 @@ stories:
     steps:
       - user: |
           do you like pina coladas?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -126,7 +126,7 @@ stories:
     steps:
       - user: |
           What pair of shoes do you recommend?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
