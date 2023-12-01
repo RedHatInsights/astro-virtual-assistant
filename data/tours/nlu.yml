@@ -1,33 +1,33 @@
-version: "3.1"
+# version: "3.1"
 
-nlu:
-  - synonym: console
-    examples: |
-      - HCC
-      - RHHCC
-      - hybrid cloud console
-      - platform
-      - consoledot
-      - clouddot
+# nlu:
+#   - synonym: console
+#     examples: |
+#       - HCC
+#       - RHHCC
+#       - hybrid cloud console
+#       - platform
+#       - consoledot
+#       - clouddot
 
-  - intent: intent_tour_capabilities
-    examples: |
-      - What services do you offer?
-      - What services are available?
-      - What can I do?
-      - What products do you have?
-      - What am I able to do here?
+#   - intent: intent_tour_capabilities
+#     examples: |
+#       - What services do you offer?
+#       - What services are available?
+#       - What can I do?
+#       - What products do you have?
+#       - What am I able to do here?
 
-  - intent: intent_tour
-    examples: |
-      - What can I do in the console?
-      - Is there a tour of this website?
-      - Is there a UI tour?
-      - What services are in the console?
-      - Can you show me around the console?
-      - What is available in HCC?
-      - What is the hybrid cloud console?
-      - Give me an example of what I could do in the console?
-      - Show me around
-      - show me around this
-      - Show me around this thing
+#   - intent: intent_tour
+#     examples: |
+#       - What can I do in the console?
+#       - Is there a tour of this website?
+#       - Is there a UI tour?
+#       - What services are in the console?
+#       - Can you show me around the console?
+#       - What is available in HCC?
+#       - What is the hybrid cloud console?
+#       - Give me an example of what I could do in the console?
+#       - Show me around
+#       - show me around this
+#       - Show me around this thing

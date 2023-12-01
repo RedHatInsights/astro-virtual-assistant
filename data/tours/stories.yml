@@ -1,12 +1,12 @@
-version: "3.1"
+# version: "3.1"
 
-stories:
-  - story: User wants to know about either the console or the assistant
-    steps:
-      - intent: intent_tour_capabilities
-      - action: utter_tour_capabilities
+# stories:
+#   - story: User wants to know about either the console or the assistant
+#     steps:
+#       - intent: intent_tour_capabilities
+#       - action: utter_tour_capabilities
 
-  - story: User wants to tour the console
-    steps:
-      - intent: intent_tour
-      - action: utter_tour
+#   - story: User wants to tour the console
+#     steps:
+#       - intent: intent_tour
+#       - action: utter_tour
