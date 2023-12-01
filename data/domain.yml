@@ -132,6 +132,8 @@ responses:
       custom:
         type: command
         command: password_redirect
+  utter_user_preferences_pop_ups:
+    - text: "Your browser may be blocking pop-ups. Please allow pop-ups for the platform or click [here]({url}) to access the page."
   utter_user_preferences_no_action:
     - text: "Okay, let me know if you change your mind."
   utter_services_offline_no_incidents:
