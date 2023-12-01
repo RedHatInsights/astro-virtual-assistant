@@ -17,6 +17,11 @@
 #       - What can I do?
 #       - What products do you have?
 #       - What am I able to do here?
+#       - What kind of things can I do here?
+#       - Onboard me
+#       - What's available to me?
+#       - How do I get started?
+#       - What can the console do for me?
 
 #   - intent: intent_tour
 #     examples: |
