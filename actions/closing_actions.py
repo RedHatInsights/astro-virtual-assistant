@@ -3,7 +3,12 @@ from typing import Text, Dict, List, Any
 from rasa_sdk import Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
-from rasa_sdk.events import SlotSet, SessionStarted
+from rasa_sdk.events import (
+    SlotSet,
+    SessionStarted,
+    UserUtteranceReverted,
+    ActionReverted,
+)
 from rasa_sdk.types import DomainDict
 
 
@@ -12,7 +17,7 @@ class ValidateFormClosing(FormValidationAction):
         return "validate_form_closing"
 
     @staticmethod
-    def utter_unknown_input_if_failed_to_fill_slot(
+    def break_form_if_not_extracted_requested_slot(
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: DomainDict,
@@ -22,14 +27,15 @@ class ValidateFormClosing(FormValidationAction):
             tracker.slots.get("requested_slot") == slot
             and tracker.slots.get(slot) is None
         ):
-            dispatcher.utter_message(response="utter_core_unknown_input")
+            return {"core_break_form": True}
+
         return {slot: tracker.slots.get(slot)}
 
     @staticmethod
     def extract_closing_got_help(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormClosing.utter_unknown_input_if_failed_to_fill_slot(
+        return ValidateFormClosing.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, "closing_got_help"
         )
 
@@ -37,7 +43,7 @@ class ValidateFormClosing(FormValidationAction):
     def extract_closing_leave_feedback(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormClosing.utter_unknown_input_if_failed_to_fill_slot(
+        return ValidateFormClosing.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, "closing_leave_feedback"
         )
 
@@ -84,7 +90,24 @@ class ValidateFormClosing(FormValidationAction):
             else:
                 dispatcher.utter_message(response="utter_closing_feedback_general")
 
-        return await super().run(dispatcher, tracker, domain)
+        form_result = await super().run(dispatcher, tracker, domain)
+
+        core_break_form = tracker.get_slot("core_break_form")
+
+        if core_break_form is True:
+            form_start = tracker.get_last_event_for("active_loop")
+            form_start_index = tracker.events.index(form_start)
+            user_utterances_count = 1
+            for event in tracker.events[form_start_index:]:
+                if event["event"] == "user":
+                    user_utterances_count += 1
+
+            return [UserUtteranceReverted()] * user_utterances_count + [
+                SlotSet("requested_slot", None),
+                ActionReverted(),
+            ]
+
+        return form_result
 
     async def required_slots(
         self,
