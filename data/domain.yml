@@ -51,6 +51,8 @@ actions:
   - action_user_preferences
 
 responses:
+  utter_pii_warning:
+    - text: "*You are about to utilize Red Hat's Hybrid Cloud Console virtual assistant chat tool. Please do not include any personal information or confidential information in your interaction with the virtual assistant. The tool is intended to assist with general queries. Please see [Red Hat Terms of use](https://www.redhat.com/en/about/terms-use) and [Privacy Statement](https://www.redhat.com/en/about/privacy-policy).*"
   utter_core_first_time:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
   utter_core_greeting:
@@ -60,19 +62,18 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Tour the console
-          payload: Tour the console
         - title: Change my personal information
           payload: Change my personal information
+        - title: Request access from my administrator
+          payload: /intent_access_request
         - title: Show my critical vulnerabilities
           payload: Show my critical vulnerabilities
-        - title: See more
-          payload: More
-  utter_core_capabilities_more_1:
-    - text: ""
-      buttons:
         - title: Get recommendations from Advisor
           payload: Recommendations from Advisor
+        # - title: See more
+        #   payload: More
+  utter_core_capabilities_more_1:
+    - text: "That's all I can do for now. Sorry!"
   utter_core_capabilities_more_no_more:
     - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
@@ -81,6 +82,9 @@ responses:
     - text: 'I don''t understand. Say "I need help" for information on what I can do.'
   utter_sorry:
     - text: "I'm sorry about that."
+  utter_core_unknown_input:
+    - text: >
+        I'm sorry. I did not understand that answer. Could you try again?
   utter_planned_features:
     - text: "I haven't been programmed to do that yet. I'm still learning!"
     - text: "I'm working on that feature. Check for it again later."
@@ -127,6 +131,8 @@ responses:
       custom:
         type: command
         command: password_redirect
+  utter_user_preferences_pop_ups:
+    - text: "Your browser may be blocking pop-ups. Please allow pop-ups for the platform or click [here]({url}) to access the page."
   utter_user_preferences_no_action:
     - text: "Okay, let me know if you change your mind."
   utter_services_offline_no_incidents:

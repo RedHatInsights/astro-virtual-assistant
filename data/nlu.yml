@@ -17,6 +17,10 @@ nlu:
       - Show me what do you do
       - Show me what can you help me with
       - Show me what you can do
+      - What are you able to do?
+      - What are you capable of doing?
+      - How can you help?
+      - What do I do?
   - intent: intent_core_more
     examples: |
       - More
@@ -54,14 +58,31 @@ nlu:
       - What are all the products Red Hat makes?
       - What products do you make?
       - Who started Red Hat?
+      - when was red hat founded?
 
   - intent: intent_unknown_topic
     examples: |
       - Tell me a joke
       - Do you like fish?
+      - do you like pina coladas?
+      - do you like iphones?
+      - do you like pinball?
+      - do you like pizza?
+      - do you like union oil?
+      - do you like the color blue?
       - What headphones do you recommend?
+      - What pair of shoes do you recommend?
+      - what iphone do you recommend?
+      - what wedding planners do you recommend?
       - How good are you at math?
       - Can you do math for me?
+      - What's my name
+      - are you a replicant
+      - where is my protected
+      - are we in matrix
+      - do you hate anyone
+      - are you single
+      - am I annoying you
 
   - synonym: agent
     examples: |
@@ -87,6 +108,8 @@ nlu:
       - Can I speak to an agent?
       - Where can I find an agent?
       - Give me a damn human being!!
+      - is this chat live?
+      - customer support
 
   - intent: intent_services_offline
     examples: |
@@ -116,6 +139,16 @@ nlu:
       - Will this conversation be reviewed?
       - Is someone going to read this
       - Are you learning from this conversation
+      - I don't feel safe talking to you
+      - Are you storing this conversation?
+      - Are we being watched?
+      - Is this being recorded?
+      - I feel spied on
+      - Is our conversation tracked
+      - Is this chat private?
+      - How can I trust the security of this?
+      - is this private?
+      - are we being monitored?
 
   - intent: intent_send_complaint
     examples: |
@@ -132,6 +165,13 @@ nlu:
       - I don't like this
       - I do not like this
       - This is crap
+      - you didnt help me with
+      - why are you bad
+      - you aren't helping me
+      - garbage
+      - I hate talking to bots
+      - this is sad
+      - bad bot
 
   - intent: intent_are_you_ai
     examples: |
@@ -150,6 +190,12 @@ nlu:
       - Are you ai/ml
       - Is this artificial intelligence (AI) or Machine Learning (ML)?
       - Can you explain how you work?
+      - Who programmed you?
+      - chat gpt
+      - what type of program are you?
+      - what is supervised learning?
+      - ai test
+      - are you real?
 
   - intent: intent_user_preferences
     examples: |
