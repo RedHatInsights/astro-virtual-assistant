@@ -21,6 +21,7 @@ nlu:
       - I need access to the console.
       - Requesting access for me
       - Give me access
+      - Request access from my administrator
 
   - intent: intent_access_troubleshooting
     examples: |

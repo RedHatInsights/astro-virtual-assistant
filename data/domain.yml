@@ -67,7 +67,7 @@ responses:
         - title: Change my personal information
           payload: Change my personal information
         - title: Request access from my administrator
-          payload: Request access from your administrator
+          payload: /intent_access_request
         - title: Show my critical vulnerabilities
           payload: Show my critical vulnerabilities
         - title: Get recommendations from Advisor
