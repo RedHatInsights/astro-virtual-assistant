@@ -153,7 +153,7 @@ class ExecuteFormClosing(Action):
             user_got_help_section = "* Because of the feedback flow, the user was not asked if the conversation was helpful."
             if closing_skip_got_help is False:
                 user_got_help_section = (
-                    f"User's got help from the assistant? {closing_got_help}"
+                    f"Did the user get help from the assistant? {closing_got_help}"
                 )
 
             dispatcher.utter_message(
