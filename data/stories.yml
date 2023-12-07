@@ -17,7 +17,6 @@ stories:
           - first_time_greeting: False
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
-      - checkpoint: check_core_capabilities
 
   - story: User asks about an unknown topic
     steps:
