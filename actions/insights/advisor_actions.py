@@ -103,7 +103,9 @@ class AdvisorAPIPathway(Action):
 
         dispatcher.utter_message(
             response="utter_advisor_recommendation_pathways_closing",
-            link=create_console_link("/openshift/insights/advisor/recommendations", get_preview(tracker)),
+            link=create_console_link(
+                "/openshift/insights/advisor/recommendations", get_preview(tracker)
+            ),
         )
 
         events = [ActionExecuted(self.name())]

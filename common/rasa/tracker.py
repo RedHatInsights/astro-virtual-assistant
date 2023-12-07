@@ -46,6 +46,7 @@ def get_current_url(tracker: Tracker) -> Optional[Text]:
 
     return None
 
+
 def get_preview(tracker: Tracker) -> Optional[Text]:
     latest_user_event = get_last_user_message(tracker)
 
