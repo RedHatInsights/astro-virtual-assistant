@@ -1,10 +1,36 @@
 version: "3.1"
 
 stories:
+  - story: First time greeting message
+    steps:
+      - intent: intent_core_session_start
+      - slot_was_set:
+        - first_time_greeting: True
+      - action: utter_pii_warning
+      - action: utter_core_first_time
+      - checkpoint: check_core_capabilities
+
+  - story: Not First time greeting message
+    steps:
+      - intent: intent_core_session_start
+      - slot_was_set:
+        - first_time_greeting: False
+      - action: utter_core_greeting
+      - action: utter_core_how_can_i_help
+      - checkpoint: check_core_capabilities
+
+  - story: User asks about an unknown topic
+    steps:
+      - or:
+        - intent: nlu_fallback
+        - intent: intent_unknown_topic
+      - action: utter_unknown_topic
+      - checkpoint: check_core_capabilities
+
   - story: User wants to know our capabilities
     steps:
       - intent: intent_core_capabilities
-      - action: utter_core_capabilities_main
+      - checkpoint: check_core_capabilities
 
   - story: User wants to know even more (and we don't have anything else)!
     steps:
@@ -16,12 +42,26 @@ stories:
     steps:
       - intent: intent_planned_features
       - action: utter_planned_features
-      - action: utter_core_capabilities_main
+      - checkpoint: check_core_capabilities
 
   - story: User asks for out-of-scope information
     steps:
       - intent: intent_out_of_scope
       - action: utter_out_of_scope
+      - checkpoint: check_core_capabilities
+  
+  - story: Utters core capabilities for org admins
+    steps:
+      - checkpoint: check_core_capabilities
+      - slot_was_set:
+          - is_org_admin: True
+      - action: utter_core_capabilities_main_org_admin
+
+  - story: Utters core capabilities for non org admins
+    steps:
+      - checkpoint: check_core_capabilities
+      - slot_was_set:
+          - is_org_admin: False
       - action: utter_core_capabilities_main
 
   - story: User wants to speak with an agent
@@ -61,6 +101,12 @@ stories:
       - checkpoint: check_closing
 
 rules:
+  - rule: Org admin wants to know more
+    steps:
+      - action: utter_core_capabilities_main_org_admin
+      - intent: intent_core_more
+      - action: utter_core_capabilities_more_1
+
   - rule: User wants to know more
     steps:
       - action: utter_core_capabilities_main

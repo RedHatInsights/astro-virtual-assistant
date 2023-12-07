@@ -38,9 +38,10 @@ slots:
       - type: custom
   first_time_greeting:
     type: bool
+    influence_conversation: true
     mappings:
       - type: custom
-  is_org_admin:
+  is_org_admin: 
     type: bool
     influence_conversation: true
     mappings:
@@ -74,6 +75,15 @@ responses:
           payload: Recommendations from Advisor
         # - title: See more
         #   payload: More
+  utter_core_capabilities_main_org_admin:
+    - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
+      buttons:
+        - title: Change my personal information
+          payload: Change my personal information
+        - title: Show my critical vulnerabilities
+          payload: Show my critical vulnerabilities
+        - title: Get recommendations from Advisor
+          payload: Recommendations from Advisor
   utter_core_capabilities_more_1:
     - text: "That's all I can do for now. Sorry!"
   utter_core_capabilities_more_no_more:

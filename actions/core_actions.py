@@ -50,6 +50,7 @@ class ActionPreProcess(Action):
 
         is_org_admin = get_is_org_admin(tracker)
         if is_org_admin != tracker.get_slot(_SLOT_IS_ORG_ADMIN):
+            print("Setting is_org_admin to {}".format(is_org_admin))
             results.append(SlotSet(_SLOT_IS_ORG_ADMIN, is_org_admin))
 
         # Fetch the current_url from the request and set its slot if it's different
