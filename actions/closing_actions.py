@@ -137,12 +137,42 @@ class ExecuteFormClosing(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        # Todo: Insert logic to send feedback
         if tracker.get_slot("closing_leave_feedback") is True:
-            dispatcher.utter_message(response="utter_closing_share_feedback")
-            print(
-                f"Should send the following feedback:{tracker.get_slot('closing_feedback')}"
+            closing_feedback_type = (
+                tracker.get_slot("closing_feedback_type") or "general"
             )
+            closing_skip_got_help = tracker.get_slot("closing_skip_got_help") or False
+            closing_feedback = tracker.get_slot("closing_feedback")
+            closing_got_help = tracker.get_slot("closing_got_help")
+
+            feedback_type_label = (
+                "-".join(closing_feedback_type.split("_")) + "-feedback"
+            )
+            feedback_type = " ".join(closing_feedback_type.split("_")).capitalize()
+
+            user_got_help_section = "* Because of the feedback flow, the user was not asked if the conversation was helpful."
+            if closing_skip_got_help is False:
+                user_got_help_section = (
+                    f"Did the user get help from the assistant? {closing_got_help}"
+                )
+
+            dispatcher.utter_message(
+                json_message={
+                    "type": "command",
+                    "command": "feedback",
+                    "params": {
+                        "summary": f"Virtual assistant feedback",
+                        "description": f"""
+                        Feedback type: {feedback_type}
+                        Feedback: {closing_feedback}
+                        
+                        {user_got_help_section}
+                        """,
+                        "labels": ["virtual-assistant", feedback_type_label],
+                    },
+                },
+            )
+            dispatcher.utter_message(response="utter_closing_share_feedback")
 
         dispatcher.utter_message(response="utter_closing_finally")
         dispatcher.utter_message(response="utter_closing_transparency")

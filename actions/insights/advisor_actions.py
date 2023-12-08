@@ -12,7 +12,6 @@ from rasa_sdk.events import ActionExecuted
 
 from common import logging
 from common.requests import send_console_request
-from common.config import app
 
 logger = logging.initialize_logging()
 
@@ -102,8 +101,7 @@ class AdvisorAPIPathway(Action):
 
         dispatcher.utter_message(
             response="utter_advisor_recommendation_pathways_closing",
-            link=app.console_dot_base_url
-            + "/openshift/insights/advisor/recommendations",
+            link="/openshift/insights/advisor/recommendations",
         )
 
         events = [ActionExecuted(self.name())]
