@@ -135,9 +135,7 @@ class ConsoleInput(InputChannel):
 
         return None
 
-    def build_metadata(
-        self, identity, is_org_admin, current_url
-    ) -> Dict[Text, Any]:
+    def build_metadata(self, identity, is_org_admin, current_url) -> Dict[Text, Any]:
         return {
             "identity": identity,
             "is_org_admin": is_org_admin,
