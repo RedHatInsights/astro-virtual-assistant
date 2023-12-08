@@ -137,6 +137,9 @@
                     },
                     "command": {
                         "type": "string"
+                    },
+                    "params": {
+                        "type": "object"
                     }
                 }
             }
