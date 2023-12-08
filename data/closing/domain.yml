@@ -103,11 +103,11 @@ responses:
     - text: >
         I'm sorry that you had a bad experience.
         You can type in your feedback below and I'll share it with my team.
-  utter_closing_share_feedback:
-    - text: I'll share that with my team to review.
+  utter_closing_transparency:
+    - text: Thank you for providing feedback. Red Hat will use your feedback to assess and improve its products, services and offerings.
   utter_closing_finally:
     - text: >
-        My team is continually training me so that I'm able to expand the ways I can help you. Your interactions and
+        My team is training me so that I'm able to expand the ways I can help you. Your interactions and
         feedback are key to my ability to grow and learn.
   utter_ask_closing_anything_else:
     - text: Is there anything else I can help you with today?
