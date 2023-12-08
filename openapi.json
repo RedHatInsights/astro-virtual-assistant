@@ -137,6 +137,23 @@
                     },
                     "command": {
                         "type": "string"
+                    },
+                    "params": {
+                        "type": "object",
+                        "properties": {
+                            "summary": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 }
             }
