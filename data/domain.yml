@@ -66,24 +66,24 @@ responses:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
         - title: Change my personal information
-          payload: Change my personal information
+          payload: /intent_user_preferences
         - title: Request access from my administrator
           payload: /intent_access_request
         - title: Show my critical vulnerabilities
-          payload: Show my critical vulnerabilities
+          payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
-          payload: Recommendations from Advisor
+          payload: /insights_advisor_recommendation_pathways
         # - title: See more
-        #   payload: More
+        #   payload: /intent_core_more
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
         - title: Change my personal information
-          payload: Change my personal information
+          payload: /intent_user_preferences
         - title: Show my critical vulnerabilities
-          payload: Show my critical vulnerabilities
+          payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
-          payload: Recommendations from Advisor
+          payload: /insights_advisor_recommendation_pathways
   utter_core_capabilities_more_1:
     - text: "That's all I can do for now. Sorry!"
   utter_core_capabilities_more_no_more:
