@@ -6,6 +6,8 @@ stories:
       - user: |
           Who started Red Hat?
         intent: intent_out_of_scope
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_out_of_scope
       - action: utter_core_capabilities_main
 
@@ -14,5 +16,7 @@ stories:
       - user: |
           What products does Red Hat make?
         intent: intent_out_of_scope
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_out_of_scope
       - action: utter_core_capabilities_main

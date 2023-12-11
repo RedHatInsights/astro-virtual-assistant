@@ -23,6 +23,8 @@ stories:
       - user: |
           What are you using to run this?
         intent: intent_are_you_ai
+      - slot_was_set:
+        - is_org_admin: false
       - action: utter_are_you_ai_1
       - action: utter_are_you_ai_2
       - action: utter_are_you_ai_3
