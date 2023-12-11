@@ -64,6 +64,8 @@ objects:
             value: ${PROMETHEUS}
           - name: ACTIONS_ENDPOINT_URL
             value: ${ACTIONS_ENDPOINT_URL}
+          - name: SANIC_REQUEST_MAX_HEADER_SIZE
+            value: ${SERVER_REQUEST_MAX_HEADER_SIZE}
         resources:
           limits:
             cpu: 500m
@@ -157,4 +159,6 @@ parameters:
 - description: ConsoleDot base url
   name: CONSOLEDOT_BASE_URL
   value: https://console.redhat.com
-
+- description: Server's max allowed header size
+  name: SERVER_REQUEST_MAX_HEADER_SIZE
+  value: "20000"
