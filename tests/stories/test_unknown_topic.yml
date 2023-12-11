@@ -6,6 +6,8 @@ stories:
       - user: |
           dogs
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -14,6 +16,8 @@ stories:
       - user: |
           what's the weather?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -22,6 +26,8 @@ stories:
       - user: |
           Who is the president?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -30,6 +36,8 @@ stories:
       - user: |
           do you like fish?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -39,6 +47,8 @@ stories:
       - user: |
           Who is my mom?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -47,6 +57,8 @@ stories:
       - user: |
           politics
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -55,6 +67,8 @@ stories:
       - user: |
           what is the meaning of life?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -71,6 +85,8 @@ stories:
       - user: |
           cats
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -79,6 +95,8 @@ stories:
       - user: |
           what headphones do you recommend?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -87,6 +105,8 @@ stories:
       - user: |
           do you like pina coladas?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -95,6 +115,8 @@ stories:
       - user: |
           Tommy Dorsey
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -103,6 +125,8 @@ stories:
       - user: |
           Can you commit murder?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -111,6 +135,8 @@ stories:
       - user: |
           Tell me a joke
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -119,6 +145,8 @@ stories:
       - user: |
           Do you like fish
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -127,6 +155,8 @@ stories:
       - user: |
           What pair of shoes do you recommend?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -135,6 +165,8 @@ stories:
       - user: |
           What headphones do you recommend?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -143,6 +175,8 @@ stories:
       - user: |
           Can you math?
         intent: intent_unknown_topic
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
@@ -151,5 +185,7 @@ stories:
       - user: |
           How good are you in bed?
         intent: nlu_fallback
+      - slot_was_set:
+        - is_org_admin: False
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
