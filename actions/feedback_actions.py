@@ -28,6 +28,7 @@ FEEDBACK_SLOTS = [
     EMAIL_ADDRESS,
 ]
 
+
 class ValidateFormFeedback(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_feedback"
@@ -54,7 +55,7 @@ class ValidateFormFeedback(FormValidationAction):
         return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, TYPE
         )
-    
+
     @staticmethod
     def extract_feedback_where(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -62,7 +63,7 @@ class ValidateFormFeedback(FormValidationAction):
         return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, WHERE
         )
-    
+
     @staticmethod
     def validate_feedback_type(
         value: Text,
@@ -73,7 +74,7 @@ class ValidateFormFeedback(FormValidationAction):
         if value in ["bug", "general"]:
             return {TYPE: value}
         return {TYPE: None}
-    
+
     @staticmethod
     def validate_feedback_where(
         value: Text,
@@ -84,7 +85,7 @@ class ValidateFormFeedback(FormValidationAction):
         if value in ["conversation", "console"]:
             return {WHERE: value}
         return {WHERE: None}
-    
+
     @staticmethod
     def validate_feedback_email_address(
         value: Text,
@@ -109,24 +110,26 @@ class ValidateFormFeedback(FormValidationAction):
                 dispatcher.utter_message(response="utter_bug_where")
             if feedback_type == "general":
                 dispatcher.utter_message(response="utter_ask_feedback_where_general")
-        
+
         if requested_slot == WHERE:
             feedback_where = tracker.get_slot(WHERE)
             if feedback_where == "console" and feedback_type == "bug":
                 dispatcher.utter_message(response="utter_bug_redirect")
-            
+
             if feedback_where == "conversation":
                 dispatcher.utter_message(response="utter_feedback_to_closing_form")
                 slots_to_set = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
-                
-                return slots_to_set + [SlotSet("requested_slot", None), 
-                                       SlotSet("feedback_form_to_closing_form", True)]
+
+                return slots_to_set + [
+                    SlotSet("requested_slot", None),
+                    SlotSet("feedback_form_to_closing_form", True),
+                ]
 
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
             if feedback_collection == "pendo":
-                dispatcher.utter_message(response="utter_feedback_collection_pendo")        
-        
+                dispatcher.utter_message(response="utter_feedback_collection_pendo")
+
         if requested_slot == RESPONSE:
             dispatcher.utter_message(response="utter_feedback_transparency")
 
@@ -164,12 +167,15 @@ class ValidateFormFeedback(FormValidationAction):
             updated_slots.remove(USABILITY_STUDY)
             updated_slots.remove(EMAIL_ADDRESS)
 
-        if tracker.get_slot(TYPE) == "general" and tracker.get_slot("feedback_where") == "conversation":
-                updated_slots.remove(COLLECTION)
-                updated_slots.remove(RESPONSE)
-                updated_slots.remove(USABILITY_STUDY)
-                updated_slots.remove(EMAIL_ADDRESS)
-        
+        if (
+            tracker.get_slot(TYPE) == "general"
+            and tracker.get_slot("feedback_where") == "conversation"
+        ):
+            updated_slots.remove(COLLECTION)
+            updated_slots.remove(RESPONSE)
+            updated_slots.remove(USABILITY_STUDY)
+            updated_slots.remove(EMAIL_ADDRESS)
+
         if tracker.get_slot(COLLECTION) == "pendo":
             updated_slots.remove(RESPONSE)
             updated_slots.remove(USABILITY_STUDY)
@@ -191,27 +197,25 @@ class ExecuteFormFeedback(Action):
         feedback_where = tracker.get_slot(WHERE)
         if feedback_where == "conversation":
             # Don't submit to the platform_feedback tool
-            return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [SlotSet("requested_slot", None)]
-        
-        if tracker.get_slot(COLLECTION) == "assistant":
-            feedback_type = (
-                tracker.get_slot(TYPE) or "general"
-            )
+            return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [
+                SlotSet("requested_slot", None)
+            ]
 
-            feedback_type_label = (
-                "-".join(feedback_type.split("_")) + "-feedback"
-            )
+        if tracker.get_slot(COLLECTION) == "assistant":
+            feedback_type = tracker.get_slot(TYPE) or "general"
+
+            feedback_type_label = "-".join(feedback_type.split("_")) + "-feedback"
 
             feedback_response = tracker.get_slot(RESPONSE)
-            feedback_usability_study = "The user DOES NOT want to participate in our usability studies."
+            feedback_usability_study = (
+                "The user DOES NOT want to participate in our usability studies."
+            )
             if tracker.get_slot(USABILITY_STUDY) is True:
                 feedback_usability_study = "The user wants to participate in a usability study. Provided email: {}".format(
                     tracker.get_slot(EMAIL_ADDRESS)
                 )
 
-            feedback_type_label = (
-                "-".join(feedback_type.split("_")) + "-feedback"
-            )
+            feedback_type_label = "-".join(feedback_type.split("_")) + "-feedback"
 
             dispatcher.utter_message(
                 json_message={
@@ -232,8 +236,9 @@ class ExecuteFormFeedback(Action):
 
             dispatcher.utter_message(response="utter_feedback_thanks")
 
-        return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [SlotSet("requested_slot", None)]
-
+        return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [
+            SlotSet("requested_slot", None)
+        ]
 
 
 class ActionFeedbackFormToClosingForm(Action):
@@ -243,4 +248,7 @@ class ActionFeedbackFormToClosingForm(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        return [FollowupAction("form_closing"), SlotSet("feedback_form_to_closing_form", None)]
+        return [
+            FollowupAction("form_closing"),
+            SlotSet("feedback_form_to_closing_form", None),
+        ]

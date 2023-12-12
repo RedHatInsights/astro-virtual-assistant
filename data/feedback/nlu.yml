@@ -16,7 +16,7 @@ nlu:
       - I want to make a suggestion
       - Where can I leave a comment
       - I want to leave a comment
-  
+
   - intent: intent_bug
     examples: |
       - Open a support case
@@ -28,7 +28,7 @@ nlu:
       - Report a bug
       - bug
       - This shit is buggyyyy
-  
+
   - intent: intent_feedback_is_it_a_bug
     examples: |
       - It's a bug
@@ -42,7 +42,7 @@ nlu:
       - it's about something else
       - it's about a bug
       - it's about something else
-  
+
   - intent: intent_feedback_where_console
     examples: |
       - The console

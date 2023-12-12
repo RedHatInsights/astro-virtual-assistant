@@ -6,11 +6,11 @@ stories:
       - intent: intent_feedback
       - action: form_feedback
       - active_loop: form_feedback
-  
+
   - story: User wants to report a bug
     steps:
       - intent: intent_bug
       - slot_was_set:
-        - feedback_type: bug
+          - feedback_type: bug
       - action: form_feedback
       - active_loop: form_feedback
