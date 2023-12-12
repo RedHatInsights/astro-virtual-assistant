@@ -150,19 +150,6 @@ nlu:
       - is this private?
       - are we being monitored?
 
-  - intent: intent_give_feedback
-    examples: |
-      - I want to submit feedback
-      - Can I give you some feedback
-      - I want to tell you something.
-      - Let me tell you some feedback
-      - I'LL TELL YOU WHAT I THINK
-      - Do you take feedback?
-      - I have an idea
-      - Where can I give input
-      - I want to leave a recommendation
-      - Where can I submit a thought
-
   - intent: intent_send_complaint
     examples: |
       - This sucks.

@@ -1,0 +1,72 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_feedback
+    examples: |
+      - I want to submit feedback
+      - Can I give you some feedback
+      - I want to tell you something.
+      - Let me tell you some feedback
+      - I'LL TELL YOU WHAT I THINK
+      - Do you take feedback?
+      - I have an idea
+      - Where can I give input
+      - I want to leave a recommendation
+      - Where can I submit a thought
+      - I want to make a suggestion
+      - Where can I leave a comment
+      - I want to leave a comment
+  
+  - intent: intent_bug
+    examples: |
+      - Open a support case
+      - I want to open a support case
+      - File a bug
+      - Where do I file a bug?
+      - I want to file a bug
+      - I want to report a bug
+      - Report a bug
+      - bug
+      - This shit is buggyyyy
+  
+  - intent: intent_feedback_is_it_a_bug
+    examples: |
+      - It's a bug
+      - it's about something else
+      - yes, it's about a bug
+      - no, it's about something else
+
+  - intent: intent_feedback_is_it_general
+    examples: |
+      - It's a bug
+      - it's about something else
+      - yes, it's about a bug
+      - no, it's about something else
+  
+  - intent: intent_feedback_where_console
+    examples: |
+      - The console
+      - It's with the console
+      - The platform
+      - platform
+      - console
+
+  - intent: intent_feedback_where_conversation
+    examples: |
+      - This conversation
+      - Our conversation
+      - conversation
+      - This assistant
+
+  - intent: intent_feedback_collect_with_assistant
+    examples: |
+      - I'll let you collect the details.
+      - I'd prefer to use the assistant
+      - This chat is fine
+      - Right here
+
+  - intent: intent_feedback_collect_with_pendo
+    examples: |
+      - I'd prefer to use a form
+      - Form please
+      - pendo

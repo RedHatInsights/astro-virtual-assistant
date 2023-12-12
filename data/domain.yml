@@ -12,7 +12,6 @@ intents:
   - intent_core_yes
   - intent_core_no
   - intent_data_privacy_policy
-  - intent_give_feedback
   - intent_send_complaint
   - intent_are_you_ai
   - intent_user_preferences
@@ -62,6 +61,7 @@ responses:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console."
   utter_core_how_can_i_help:
     - text: "How can I help you today?"
+    - text: "How can I help you?"
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
@@ -118,7 +118,7 @@ responses:
     - text: "Would you like to leave a feature request or see how I can help?"
       buttons:
         - title: I want to submit feedback
-          payload: /intent_give_feedback
+          payload: /intent_feedback
         - title: Show me what you can do
           payload: /intent_core_capabilities
   utter_user_complaint:
