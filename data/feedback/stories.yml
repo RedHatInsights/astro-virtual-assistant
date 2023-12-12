@@ -3,7 +3,7 @@ version: "3.1"
 stories:
   - story: User wants to leave feedback
     steps:
-      - intent: intent_feedback
+      - intent: intent_feedback_any
       - action: form_feedback
       - active_loop: form_feedback
 

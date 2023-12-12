@@ -1,7 +1,7 @@
 version: "3.1"
 
 intents:
-  - intent_feedback
+  - intent_feedback_any
   - intent_feedback_bug
   - intent_feedback_is_it_general
   - intent_feedback_is_it_a_bug

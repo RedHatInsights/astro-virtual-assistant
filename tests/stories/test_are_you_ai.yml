@@ -13,7 +13,7 @@ stories:
       - action: utter_are_you_ai_handoff
       - user: |
           Send Feedback
-        intent: intent_feedback
+        intent: intent_feedback_any
       - action: form_feedback
       - active_loop: form_feedback
 

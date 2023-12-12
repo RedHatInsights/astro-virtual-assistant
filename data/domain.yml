@@ -118,7 +118,7 @@ responses:
     - text: "Would you like to leave a feature request or see how I can help?"
       buttons:
         - title: I want to submit feedback
-          payload: /intent_feedback
+          payload: /intent_feedback_any
         - title: Show me what you can do
           payload: /intent_core_capabilities
   utter_user_complaint:

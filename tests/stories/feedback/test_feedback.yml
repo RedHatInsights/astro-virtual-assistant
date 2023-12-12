@@ -5,7 +5,7 @@ stories:
     steps:
       - user: |
           I want to share feedback
-        intent: intent_feedback
+        intent: intent_feedback_any
       - action: form_feedback
       - active_loop: form_feedback
       - user: |
@@ -47,7 +47,7 @@ stories:
     steps:
       - user: |
           Where can I leave some feedback?
-        intent: intent_feedback
+        intent: intent_feedback_any
       - action: form_feedback
       - active_loop: form_feedback
 
@@ -55,7 +55,7 @@ stories:
     steps:
       - user: |
           Where can I leave some feedback?
-        intent: intent_feedback
+        intent: intent_feedback_any
       - action: form_feedback
       - active_loop: form_feedback
   
