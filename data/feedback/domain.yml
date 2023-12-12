@@ -46,6 +46,18 @@ slots:
         conditions:
           - active_loop: form_feedback
             requested_slot: feedback_type
+      - type: from_intent
+        value: general
+        intent: intent_core_yes
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_type
+      - type: from_intent
+        value: general
+        intent: intent_core_no
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_type
   feedback_where:
     type: categorical
     values:

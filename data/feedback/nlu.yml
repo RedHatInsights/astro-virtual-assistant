@@ -32,16 +32,16 @@ nlu:
   - intent: intent_feedback_is_it_a_bug
     examples: |
       - It's a bug
-      - it's about something else
-      - yes, it's about a bug
-      - no, it's about something else
+      - bug
+      - it's about a bug
 
   - intent: intent_feedback_is_it_general
     examples: |
-      - It's a bug
+      - it's a feature
+      - its a suggestion
       - it's about something else
-      - yes, it's about a bug
-      - no, it's about something else
+      - it's about a bug
+      - it's about something else
   
   - intent: intent_feedback_where_console
     examples: |
@@ -64,6 +64,7 @@ nlu:
       - I'd prefer to use the assistant
       - This chat is fine
       - Right here
+      - Here with you
 
   - intent: intent_feedback_collect_with_pendo
     examples: |

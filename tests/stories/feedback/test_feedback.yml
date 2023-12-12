@@ -1,0 +1,77 @@
+version: "3.1"
+
+stories:
+  - story: User wants to share feedback (full)
+    steps:
+      - user: |
+          I want to share feedback
+        intent: intent_feedback
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          Its a suggestion
+        intent: intent_feedback_is_it_general
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          In the console
+        intent: intent_feedback_where_console
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          I'll let you collect the details
+        intent: intent_feedback_collect_with_assistant
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          Yes
+        intent: intent_core_yes # Test stories require a know intent
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          Yes
+        intent: intent_core_yes
+      - action: form_feedback
+      - active_loop: form_feedback
+      - user: |
+          Yes
+        intent: intent_core_yes # Test stories require a know intent
+      - action: form_feedback
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: execute_form_feedback
+      - action: utter_core_how_can_i_help
+
+  - story: User wants to share feedback - 1
+    steps:
+      - user: |
+          Where can I leave some feedback?
+        intent: intent_feedback
+      - action: form_feedback
+      - active_loop: form_feedback
+
+  - story: User wants to share feedback - 2
+    steps:
+      - user: |
+          Where can I leave some feedback?
+        intent: intent_feedback
+      - action: form_feedback
+      - active_loop: form_feedback
+  
+  - story: User wants to share a bug - 1
+    steps:
+      - user: |
+          I want to share a bug
+        intent: intent_bug
+      - action: form_feedback
+      - active_loop: form_feedback
+  
+  - story: User wants to share a bug - 2
+    steps:
+      - user: |
+          Open a support case
+        intent: intent_bug
+      - action: form_feedback
+      - active_loop: form_feedback
+

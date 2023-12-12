@@ -29,12 +29,16 @@ nlu:
   - intent: intent_core_yes
     examples: |
       - Yes
+      - yup
+      - yeah
       - y
 
   - intent: intent_core_no
     examples: |
       - No
       - n
+      - nope
+      - nah
 
   - intent: intent_planned_features
     examples: |
