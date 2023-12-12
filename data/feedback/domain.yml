@@ -2,7 +2,7 @@ version: "3.1"
 
 intents:
   - intent_feedback
-  - intent_bug
+  - intent_feedback_bug
   - intent_feedback_is_it_general
   - intent_feedback_is_it_a_bug
   - intent_feedback_where_console
@@ -13,6 +13,7 @@ intents:
 actions:
   - validate_form_feedback
   - execute_form_feedback
+  - action_feedback_type_bug
   - action_feedback_form_to_closing_form
 
 forms:

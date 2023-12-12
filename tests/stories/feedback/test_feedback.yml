@@ -63,7 +63,8 @@ stories:
     steps:
       - user: |
           I want to share a bug
-        intent: intent_bug
+        intent: intent_feedback_bug
+      - action: action_feedback_type_bug
       - action: form_feedback
       - active_loop: form_feedback
   
@@ -71,7 +72,8 @@ stories:
     steps:
       - user: |
           Open a support case
-        intent: intent_bug
+        intent: intent_feedback_bug
+      - action: action_feedback_type_bug
       - action: form_feedback
       - active_loop: form_feedback
 

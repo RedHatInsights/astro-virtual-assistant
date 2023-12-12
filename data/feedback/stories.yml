@@ -9,8 +9,7 @@ stories:
 
   - story: User wants to report a bug
     steps:
-      - intent: intent_bug
-      - slot_was_set:
-          - feedback_type: bug
+      - intent: intent_feedback_bug
+      - action: action_feedback_type_bug
       - action: form_feedback
       - active_loop: form_feedback

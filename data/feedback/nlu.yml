@@ -17,7 +17,7 @@ nlu:
       - Where can I leave a comment
       - I want to leave a comment
 
-  - intent: intent_bug
+  - intent: intent_feedback_bug
     examples: |
       - Open a support case
       - I want to open a support case
