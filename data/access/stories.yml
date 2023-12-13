@@ -32,4 +32,3 @@ stories:
       - action: utter_access_contact_admin
       - intent: intent_core_no
       - checkpoint: check_closing
-

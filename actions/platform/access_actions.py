@@ -77,6 +77,9 @@ class ActionAccessRequestSendMessage(Action):
         return "action_access_request_send_message"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        return [SlotSet(_SLOT_ACCESS_REQUEST_URL, "N/A"), SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE, True)]
+        return [
+            SlotSet(_SLOT_ACCESS_REQUEST_URL, "N/A"),
+            SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE, True),
+        ]
