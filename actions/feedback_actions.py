@@ -65,6 +65,38 @@ class ValidateFormFeedback(FormValidationAction):
         )
 
     @staticmethod
+    def extract_feedback_collection(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
+            dispatcher, tracker, domain, COLLECTION
+        )
+
+    @staticmethod
+    def extract_feedback_response(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
+            dispatcher, tracker, domain, RESPONSE
+        )
+    
+    @staticmethod
+    def extract_feedback_usability_study(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
+            dispatcher, tracker, domain, USABILITY_STUDY
+        )
+    
+    @staticmethod
+    def extract_feedback_email_address(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
+            dispatcher, tracker, domain, EMAIL_ADDRESS
+        )
+
+    @staticmethod
     def validate_feedback_type(
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -93,10 +125,33 @@ class ValidateFormFeedback(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
+        if value is None:
+            return {EMAIL_ADDRESS: None}
+        
         if "@" not in value:
             dispatcher.utter_message(response="utter_invalid_email")
             return {EMAIL_ADDRESS: None}
         return {EMAIL_ADDRESS: value}
+
+    async def should_ask_for_collection(self, dispatcher, tracker, domain):
+        requested_slot = tracker.get_slot("requested_slot")
+
+        if (
+            requested_slot == WHERE
+            and tracker.get_slot(WHERE) is True
+        ):
+            return True
+
+        next_requested_slot = await self.next_requested_slot(
+            dispatcher, tracker, domain
+        )
+        if (
+            next_requested_slot is not None
+            and next_requested_slot.get("value") == COLLECTION
+        ):
+            return True
+
+        return False
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
@@ -113,22 +168,28 @@ class ValidateFormFeedback(FormValidationAction):
 
         if requested_slot == WHERE:
             feedback_where = tracker.get_slot(WHERE)
+            reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
             if feedback_where == "console" and feedback_type == "bug":
                 dispatcher.utter_message(response="utter_bug_redirect")
+                return [SlotSet("requested_slot", None)] + reset_slots
 
             if feedback_where == "conversation":
                 dispatcher.utter_message(response="utter_feedback_to_closing_form")
-                slots_to_set = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
 
-                return slots_to_set + [
+                return reset_slots + [
                     SlotSet("requested_slot", None),
                     SlotSet("feedback_form_to_closing_form", True),
                 ]
+            
+            if await self.should_ask_for_collection(dispatcher, tracker, domain) == False:
+                print("should not ask for collection")
+                return reset_slots + [SlotSet("requested_slot", None)]
 
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
             if feedback_collection == "pendo":
                 dispatcher.utter_message(response="utter_feedback_collection_pendo")
+                return [SlotSet("requested_slot", None)] + reset_slots
 
         if requested_slot == RESPONSE:
             dispatcher.utter_message(response="utter_feedback_transparency")
@@ -235,6 +296,8 @@ class ExecuteFormFeedback(Action):
             )
 
             dispatcher.utter_message(response="utter_feedback_thanks")
+        
+        dispatcher.utter_message(response="utter_core_how_can_i_help")
 
         return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [
             SlotSet("requested_slot", None)

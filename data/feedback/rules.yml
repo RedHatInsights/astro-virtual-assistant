@@ -10,7 +10,6 @@ rules:
       - slot_was_set:
           - requested_slot: null
       - action: execute_form_feedback
-      - action: utter_core_how_can_i_help
 
   - rule: Feedback form needs to switch to closing form
     condition:
