@@ -79,7 +79,7 @@ class ValidateFormFeedback(FormValidationAction):
         return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, RESPONSE
         )
-    
+
     @staticmethod
     def extract_feedback_usability_study(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -87,7 +87,7 @@ class ValidateFormFeedback(FormValidationAction):
         return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
             dispatcher, tracker, domain, USABILITY_STUDY
         )
-    
+
     @staticmethod
     def extract_feedback_email_address(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -127,7 +127,7 @@ class ValidateFormFeedback(FormValidationAction):
     ) -> Dict[Text, Any]:
         if value is None:
             return {EMAIL_ADDRESS: None}
-        
+
         if "@" not in value:
             dispatcher.utter_message(response="utter_invalid_email")
             return {EMAIL_ADDRESS: None}
@@ -136,10 +136,7 @@ class ValidateFormFeedback(FormValidationAction):
     async def should_ask_for_collection(self, dispatcher, tracker, domain):
         requested_slot = tracker.get_slot("requested_slot")
 
-        if (
-            requested_slot == WHERE
-            and tracker.get_slot(WHERE) is True
-        ):
+        if requested_slot == WHERE and tracker.get_slot(WHERE) is True:
             return True
 
         next_requested_slot = await self.next_requested_slot(
@@ -180,9 +177,11 @@ class ValidateFormFeedback(FormValidationAction):
                     SlotSet("requested_slot", None),
                     SlotSet("feedback_form_to_closing_form", True),
                 ]
-            
-            if await self.should_ask_for_collection(dispatcher, tracker, domain) == False:
-                print("should not ask for collection")
+
+            if (
+                await self.should_ask_for_collection(dispatcher, tracker, domain)
+                == False
+            ):
                 return reset_slots + [SlotSet("requested_slot", None)]
 
         if requested_slot == COLLECTION:
@@ -296,7 +295,7 @@ class ExecuteFormFeedback(Action):
             )
 
             dispatcher.utter_message(response="utter_feedback_thanks")
-        
+
         dispatcher.utter_message(response="utter_core_how_can_i_help")
 
         return [SlotSet(key, None) for key in FEEDBACK_SLOTS] + [
