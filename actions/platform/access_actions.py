@@ -1,4 +1,4 @@
-from typing import Text, List
+from typing import Text, List, Dict, Any
 
 from rasa_sdk import Tracker, FormValidationAction, Action
 from rasa_sdk.executor import CollectingDispatcher
@@ -70,3 +70,16 @@ class ValidateFormAccessRequestAccess(FormValidationAction):
             return updated_slots
 
         return domain_slots
+
+
+class ActionAccessRequestSendMessage(Action):
+    def name(self) -> Text:
+        return "action_access_request_send_message"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        return [
+            SlotSet(_SLOT_ACCESS_REQUEST_URL, "N/A"),
+            SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE, True),
+        ]
