@@ -161,7 +161,7 @@ responses:
     - text: "Great! I'll open that form up for you. You can return to this conversation if you need any additional assistance."
       custom:
         type: command
-        command: open_pendo_feedback
+        command: feedback_modal
   utter_ask_feedback_response:
     - text: What would you like us to know about your experience?
   utter_feedback_transparency:
@@ -189,5 +189,5 @@ responses:
   utter_bug_redirect:
     - text: For urgent issues, I'll direct you to our support page for further assistance. If you want to continue our conversation, I'll be here!
       custom:
-        type: redirect
-        url: https://access.redhat.com/support/cases/#/case/new/get-support?seSessionId=54f5e479-9bcd-4186-be3b-701fe7f900f1&product=Other&version=Unknown&caseCreate=true
+        type: command
+        command: support_redirect
