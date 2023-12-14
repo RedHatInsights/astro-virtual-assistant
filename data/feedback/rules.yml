@@ -1,6 +1,19 @@
 version: "3.1"
 
 rules:
+  - rule: User wants to leave feedback
+    steps:
+      - intent: intent_feedback_any
+      - action: form_feedback
+      - active_loop: form_feedback
+
+  - rule: User wants to report a bug
+    steps:
+      - intent: intent_feedback_bug
+      - action: action_feedback_type_bug
+      - action: form_feedback
+      - active_loop: form_feedback
+
   - rule: Finished general feedback
     condition:
       - active_loop: form_feedback

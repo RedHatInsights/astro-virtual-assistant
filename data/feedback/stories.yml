@@ -1,15 +1,3 @@
 version: "3.1"
 
-stories:
-  - story: User wants to leave feedback
-    steps:
-      - intent: intent_feedback_any
-      - action: form_feedback
-      - active_loop: form_feedback
-
-  - story: User wants to report a bug
-    steps:
-      - intent: intent_feedback_bug
-      - action: action_feedback_type_bug
-      - action: form_feedback
-      - active_loop: form_feedback
+stories: []

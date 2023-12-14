@@ -41,7 +41,12 @@ stories:
       - slot_was_set:
           - requested_slot: null
       - action: execute_form_feedback
-      - action: utter_core_how_can_i_help
+      - user: |
+          What can you do?
+        intent: intent_core_capabilities
+      - slot_was_set:
+          - is_org_admin: False
+      - action: utter_core_capabilities_main
 
   - story: User wants to share feedback - 1
     steps:

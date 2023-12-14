@@ -133,23 +133,6 @@ class ValidateFormFeedback(FormValidationAction):
             return {EMAIL_ADDRESS: None}
         return {EMAIL_ADDRESS: value}
 
-    async def should_ask_for_collection(self, dispatcher, tracker, domain):
-        requested_slot = tracker.get_slot("requested_slot")
-
-        if requested_slot == WHERE and tracker.get_slot(WHERE) is True:
-            return True
-
-        next_requested_slot = await self.next_requested_slot(
-            dispatcher, tracker, domain
-        )
-        if (
-            next_requested_slot is not None
-            and next_requested_slot.get("value") == COLLECTION
-        ):
-            return True
-
-        return False
-
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
@@ -177,12 +160,6 @@ class ValidateFormFeedback(FormValidationAction):
                     SlotSet("requested_slot", None),
                     SlotSet("feedback_form_to_closing_form", True),
                 ]
-
-            if (
-                await self.should_ask_for_collection(dispatcher, tracker, domain)
-                == False
-            ):
-                return reset_slots + [SlotSet("requested_slot", None)]
 
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
