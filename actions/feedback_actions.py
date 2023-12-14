@@ -143,7 +143,7 @@ class ValidateFormFeedback(FormValidationAction):
             if feedback_type == "bug":
                 dispatcher.utter_message(response="utter_feedback_type_bug")
                 dispatcher.utter_message(response="utter_bug_where")
-            if feedback_type == "general":
+            elif feedback_type == "general":
                 dispatcher.utter_message(response="utter_ask_feedback_where_general")
 
         if requested_slot == WHERE:
