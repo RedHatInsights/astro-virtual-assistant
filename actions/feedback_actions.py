@@ -153,7 +153,7 @@ class ValidateFormFeedback(FormValidationAction):
                 dispatcher.utter_message(response="utter_bug_redirect")
                 return [SlotSet("requested_slot", None)] + reset_slots
 
-            if feedback_where == "conversation":
+            elif feedback_where == "conversation":
                 dispatcher.utter_message(response="utter_feedback_to_closing_form")
 
                 return reset_slots + [
