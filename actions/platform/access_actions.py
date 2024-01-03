@@ -35,7 +35,7 @@ class ExecuteFormAccessRequestAccess(Action):
                 SlotSet(_SLOT_REQUEST_MESSAGE),
                 SlotSet(_SLOT_REQUEST_CONFIRMATION),
             ]
-        
+
         try:
             identity = get_decoded_user_identity(tracker)
             email = identity["identity"]["user"]["email"]
@@ -90,9 +90,15 @@ class ValidateFormAccessRequestAccess(FormValidationAction):
     ) -> List[EventType]:
         requested_slot = tracker.get_slot("requested_slot")
         if requested_slot == _SLOT_REQUEST_MESSAGE:
-            dispatcher.utter_message(response="utter_ask_access_request_confirmation_repeat")
-            dispatcher.utter_message(response="utter_ask_access_request_confirmation_note")
-            dispatcher.utter_message(response="utter_ask_access_request_confirmation_proceed")
+            dispatcher.utter_message(
+                response="utter_ask_access_request_confirmation_repeat"
+            )
+            dispatcher.utter_message(
+                response="utter_ask_access_request_confirmation_note"
+            )
+            dispatcher.utter_message(
+                response="utter_ask_access_request_confirmation_proceed"
+            )
 
 
 class ActionAccessRequestSendMessage(Action):
