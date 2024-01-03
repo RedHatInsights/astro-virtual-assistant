@@ -5,6 +5,7 @@ from rasa_sdk import Tracker
 
 from common.header import Header
 from common.requests import send_console_request
+from common.config import app
 
 
 def send_notification(tracker: Tracker, event: dict):
@@ -24,6 +25,10 @@ def send_rbac_request_admin(
     user_email: str,
     user_message: str,
 ):
+    if app.is_running_locally:
+        print("called send_rbac_request_admin in local envionment")
+        return
+
     event = dict(
         {
             "id": str(uuid.uuid4()),
