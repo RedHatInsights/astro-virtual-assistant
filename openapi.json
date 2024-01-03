@@ -102,16 +102,19 @@
                         "type": "string"
                     },
                     "text": {
-                        "type": ["string", "null"]
+                        "type": "string",
+                        "nullable": true
                     },
                     "buttons": {
-                        "type": ["array", "null"],
+                        "type": "array",
+                        "nullable": true,
                         "items": {
                             "$ref": "#/components/schemas/Buttons"
                         }
                     },
                     "customJSON": {
-                        "type": ["object", "null"],
+                        "type": "object",
+                        "nullable": true,
                         "items": {
                             "$ref": "#/components/schemas/CustomJSON"
                         }
