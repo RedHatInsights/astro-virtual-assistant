@@ -14,6 +14,7 @@ logger = logging.initialize_logging()
 _SLOT_ACCESS_REQUEST_URL = "access_request_url"
 _SLOT_LEAVE_REQUEST_MESSAGE = "access_leave_request_message"
 _SLOT_REQUEST_MESSAGE = "access_request_message"
+_SLOT_REQUEST_CONFIRMATION = "access_request_confirmation"
 
 
 class ExecuteFormAccessRequestAccess(Action):
@@ -26,6 +27,15 @@ class ExecuteFormAccessRequestAccess(Action):
         tracker: Tracker,
         domain: DomainDict,
     ) -> List[EventType]:
+        if tracker.get_slot(_SLOT_REQUEST_CONFIRMATION) is False:
+            dispatcher.utter_message(response="utter_access_request_confirmation_false")
+            return [
+                SlotSet(_SLOT_ACCESS_REQUEST_URL),
+                SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE),
+                SlotSet(_SLOT_REQUEST_MESSAGE),
+                SlotSet(_SLOT_REQUEST_CONFIRMATION),
+            ]
+        
         try:
             identity = get_decoded_user_identity(tracker)
             email = identity["identity"]["user"]["email"]
@@ -50,6 +60,7 @@ class ExecuteFormAccessRequestAccess(Action):
                 SlotSet(_SLOT_ACCESS_REQUEST_URL),
                 SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE),
                 SlotSet(_SLOT_REQUEST_MESSAGE),
+                SlotSet(_SLOT_REQUEST_CONFIRMATION),
             ]
 
 
@@ -70,6 +81,18 @@ class ValidateFormAccessRequestAccess(FormValidationAction):
             return updated_slots
 
         return domain_slots
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> List[EventType]:
+        requested_slot = tracker.get_slot("requested_slot")
+        if requested_slot == _SLOT_REQUEST_MESSAGE:
+            dispatcher.utter_message(response="utter_ask_access_request_confirmation_repeat")
+            dispatcher.utter_message(response="utter_ask_access_request_confirmation_note")
+            dispatcher.utter_message(response="utter_ask_access_request_confirmation_proceed")
 
 
 class ActionAccessRequestSendMessage(Action):
