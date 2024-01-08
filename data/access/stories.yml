@@ -32,3 +32,22 @@ stories:
       - action: utter_access_contact_admin
       - intent: intent_core_no
       - checkpoint: check_closing
+
+  - story: User wants to check access
+    steps:
+      - intent: intent_access_check_access
+      - action: utter_access_check_access_explain
+      - action: utter_access_check_access_missing
+      - action: utter_access_have_you_contacted_org_admin
+
+  - story: Have you already contacted the org admin? yes
+    steps:
+      - action: utter_access_have_you_contacted_org_admin
+      - intent: intent_core_yes
+      - action: utter_access_have_you_contacted_org_admin_yes
+
+  - story: Have you already contacted the org admin? no
+    steps:
+      - action: utter_access_have_you_contacted_org_admin
+      - intent: intent_core_no
+      - action: utter_access_contact_admin

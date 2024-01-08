@@ -29,12 +29,22 @@ nlu:
   - intent: intent_core_yes
     examples: |
       - Yes
+      - yes
+      - yeah
+      - of course
+      - for sure
+      - yep
+      - yup
       - y
 
   - intent: intent_core_no
     examples: |
       - No
       - n
+      - nah
+      - no
+      - i don't think so
+      - nay
 
   - intent: intent_planned_features
     examples: |
@@ -162,6 +172,7 @@ nlu:
       - Where can I give input
       - I want to leave a recommendation
       - Where can I submit a thought
+      - Where can i leave a suggestion
 
   - intent: intent_send_complaint
     examples: |

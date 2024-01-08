@@ -22,10 +22,10 @@ pytest = "*"
 black = ">=23.9.1"
 
 [api-packages]
-rasa = "==3.6.13"
+rasa = "==3.6.15"
 
 [action-packages]
-rasa-sdk = "==3.6.2"
+rasa-sdk = "==3.7.1"
 
 [requires]
 python_version = "3.9"
