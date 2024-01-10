@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6b277c1e3de7e880b1a10b43110d879d52a64cfea64164f69b7051baeb55eeb8"
+            "sha256": "efe2f382ce2d120510986330a27be30c30aa395668be7db9169e4de4d59597da"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -2579,12 +2579,12 @@
         },
         "rasa": {
             "hashes": [
-                "sha256:45669d11c40ef0de80acdbc06093c4527839aaa7ebb2baaec1bef79331c98c13",
-                "sha256:a301389fab74ca101d33290156f471a6bd912a1f07bc5c84388d655810bb0f63"
+                "sha256:7e5b352d8079172129e615b119583ed80ec27460ccdd782873bde45c87dd7eca",
+                "sha256:edc95ca3a475c5a3751ea758feeb40362e6c61eab353079a8a683c36619c57ba"
             ],
             "index": "pypi",
             "markers": "python_version < '3.11' and python_version >= '3.8'",
-            "version": "==3.6.13"
+            "version": "==3.6.15"
         },
         "rasa-sdk": {
             "hashes": [

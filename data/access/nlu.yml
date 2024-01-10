@@ -17,10 +17,12 @@ nlu:
 
   - intent: intent_access_request
     examples: |
-      - I want access to
+      - I want access to [policies](service)
+      - I want access
       - I need access to the console.
       - Requesting access for me
       - Give me access
+      - Give me access to [policies](service)
       - Request access from my administrator
 
   - intent: intent_access_troubleshooting
@@ -30,6 +32,16 @@ nlu:
       - Why can't I view this?
       - I can't view this page.
       - I can't view this. I get an access error.
+
+  - intent: intent_access_check_access
+    examples: |
+      - Do I have access?
+      - Do I have access to [policies](service)
+      - Do I have permissions?
+      - Do i have permission to [policies](service)
+      - Am I allowed to access
+      - Am I allowed to see [policies](service)
+      - Can you check my access permission?
 
   - intent: intent_access_contact_admin
     examples: |

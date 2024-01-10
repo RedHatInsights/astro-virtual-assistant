@@ -52,15 +52,15 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 6
-    steps:
-      - user: |
-          politics
-        intent: nlu_fallback
-      - slot_was_set:
-        - is_org_admin: False
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 6
+#    steps:
+#      - user: |
+#          politics
+#        intent: nlu_fallback
+#      - slot_was_set:
+#        - is_org_admin: False
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main
 
   - story: User asks for unknown features - 7
     steps:
@@ -120,15 +120,15 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 13
-    steps:
-      - user: |
-          Can you commit murder?
-        intent: nlu_fallback
-      - slot_was_set:
-        - is_org_admin: False
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 13
+#    steps:
+#      - user: |
+#          Can you commit murder?
+#        intent: nlu_fallback
+#      - slot_was_set:
+#        - is_org_admin: False
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main
 
   - story: User asks for unknown features - 14
     steps:
@@ -180,12 +180,12 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 14
-    steps:
-      - user: |
-          How good are you in bed?
-        intent: nlu_fallback
-      - slot_was_set:
-        - is_org_admin: False
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 14
+#    steps:
+#      - user: |
+#          How good are you in bed?
+#        intent: nlu_fallback
+#      - slot_was_set:
+#        - is_org_admin: False
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main

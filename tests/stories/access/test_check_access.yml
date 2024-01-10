@@ -1,0 +1,51 @@
+#version: "3.1"
+#
+#stories:
+#  - story: User wants to check permissions for advisor but has contacted the org admin
+#    steps:
+#      - user: |
+#          Do I have access to advisor?
+#        intent: intent_access_check_access
+#      - action: utter_access_check_access_explain
+#      - action: utter_access_check_access_missing
+#      - action: utter_access_have_you_contacted_org_admin
+#      - intent: intent_core_yes
+#      - action: utter_access_have_you_contacted_org_admin_yes
+#
+#  - story: User wants to check permissions for policies but has not contacted the org admin
+#    steps:
+#      - user: |
+#          Do I have access to policies?
+#        intent: intent_access_check_access
+#      - action: utter_access_check_access_explain
+#      - action: utter_access_check_access_missing
+#      - action: utter_access_have_you_contacted_org_admin
+#      - intent: intent_core_no
+#      - action: utter_access_contact_admin
+#
+#  - story: User wants to check permissions for an application 1
+#    steps:
+#      - user: |
+#          Do i have permission to application1?
+#        intent: intent_access_check_access
+#      - action: utter_access_check_access_explain
+#      - action: utter_access_check_access_missing
+#      - action: utter_access_have_you_contacted_org_admin
+#
+#  - story: User wants to check permissions for an application 2
+#    steps:
+#      - user: |
+#          Am I allowed to blabla?
+#        intent: intent_access_check_access
+#      - action: utter_access_check_access_explain
+#      - action: utter_access_check_access_missing
+#      - action: utter_access_have_you_contacted_org_admin
+#
+#  - story: User wants to check permissions
+#    steps:
+#      - user: |
+#          Can you check my access permission?
+#        intent: intent_access_check_access
+#      - action: utter_access_check_access_explain
+#      - action: utter_access_check_access_missing
+#      - action: utter_access_have_you_contacted_org_admin
