@@ -56,3 +56,18 @@ def get_is_org_admin(tracker: Tracker) -> bool:
         print(f"An Exception occured while handling retrieving is_org_admin: {e}")
 
     return False
+
+
+def get_email(tracker: Tracker) -> Optional[Text]:
+    latest_user_event = get_last_user_message(tracker)
+
+    email = None
+    try:
+        email = latest_user_event.get("metadata").get("email")
+    except Exception as e:
+        print(f"An Exception occured while handling retrieving is_org_admin: {e}")
+
+    if email is None or email == "":
+        return "email not provided"
+
+    return email

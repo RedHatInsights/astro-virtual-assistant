@@ -24,7 +24,6 @@ forms:
       - feedback_collection
       - feedback_response
       - feedback_usability_study
-      - feedback_email_address
 
 entities: []
 
@@ -119,13 +118,6 @@ slots:
         conditions:
           - active_loop: form_feedback
             requested_slot: feedback_usability_study
-  feedback_email_address:
-    type: text
-    mappings:
-      - type: from_text
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_email_address
   feedback_form_to_closing_form:
     type: bool
     mappings:
@@ -173,10 +165,10 @@ responses:
           payload: "/intent_core_yes"
         - title: "No"
           payload: "/intent_core_no"
-  utter_ask_feedback_email_address:
-    - text: Please enter the email address you would like us to contact. We never share your personal information, and you can opt out at any time.
-  utter_feedback_email_address_invalid:
-    - text: Sorry, that email address is invalid. Please try again.
+  utter_feedback_usability_study_yes:
+    - text: "Great! Our team will email you with any relevant questions and opportunities."
+  utter_feedback_usability_study_no:
+    - text: "Okay."
   utter_feedback_thanks:
     - text: Thank you for your feedback!
   utter_bug_where:

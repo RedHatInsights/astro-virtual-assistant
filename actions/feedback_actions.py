@@ -12,12 +12,13 @@ from rasa_sdk.events import (
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import FollowupAction
 
+from common.rasa.tracker import get_email
+
 TYPE = "feedback_type"
 WHERE = "feedback_where"
 COLLECTION = "feedback_collection"
 RESPONSE = "feedback_response"
 USABILITY_STUDY = "feedback_usability_study"
-EMAIL_ADDRESS = "feedback_email_address"
 
 FEEDBACK_SLOTS = [
     TYPE,
@@ -25,7 +26,6 @@ FEEDBACK_SLOTS = [
     COLLECTION,
     RESPONSE,
     USABILITY_STUDY,
-    EMAIL_ADDRESS,
 ]
 
 
@@ -89,14 +89,6 @@ class ValidateFormFeedback(FormValidationAction):
         )
 
     @staticmethod
-    def extract_feedback_email_address(
-        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
-    ) -> Dict[Text, Any]:
-        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, EMAIL_ADDRESS
-        )
-
-    @staticmethod
     def validate_feedback_type(
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -117,21 +109,6 @@ class ValidateFormFeedback(FormValidationAction):
         if value in ["conversation", "console"]:
             return {WHERE: value}
         return {WHERE: None}
-
-    @staticmethod
-    def validate_feedback_email_address(
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-    ) -> Dict[Text, Any]:
-        if value is None:
-            return {EMAIL_ADDRESS: None}
-
-        if "@" not in value:
-            dispatcher.utter_message(response="utter_invalid_email")
-            return {EMAIL_ADDRESS: None}
-        return {EMAIL_ADDRESS: value}
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
@@ -164,11 +141,18 @@ class ValidateFormFeedback(FormValidationAction):
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
             if feedback_collection == "pendo":
+                reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
                 dispatcher.utter_message(response="utter_feedback_collection_pendo")
                 return [SlotSet("requested_slot", None)] + reset_slots
 
         if requested_slot == RESPONSE:
             dispatcher.utter_message(response="utter_feedback_transparency")
+
+        if requested_slot == USABILITY_STUDY:
+            if tracker.get_slot(USABILITY_STUDY) is True:
+                dispatcher.utter_message(response="utter_feedback_usability_study_yes")
+            else:
+                dispatcher.utter_message(response="utter_feedback_usability_study_no")
 
         form_result = await super().run(dispatcher, tracker, domain)
 
@@ -202,7 +186,6 @@ class ValidateFormFeedback(FormValidationAction):
             updated_slots.remove(COLLECTION)
             updated_slots.remove(RESPONSE)
             updated_slots.remove(USABILITY_STUDY)
-            updated_slots.remove(EMAIL_ADDRESS)
 
         if (
             tracker.get_slot(TYPE) == "general"
@@ -211,15 +194,10 @@ class ValidateFormFeedback(FormValidationAction):
             updated_slots.remove(COLLECTION)
             updated_slots.remove(RESPONSE)
             updated_slots.remove(USABILITY_STUDY)
-            updated_slots.remove(EMAIL_ADDRESS)
 
         if tracker.get_slot(COLLECTION) == "pendo":
             updated_slots.remove(RESPONSE)
             updated_slots.remove(USABILITY_STUDY)
-            updated_slots.remove(EMAIL_ADDRESS)
-
-        if tracker.get_slot(USABILITY_STUDY) is False:
-            updated_slots.remove(EMAIL_ADDRESS)
 
         return updated_slots
 
@@ -248,8 +226,8 @@ class ExecuteFormFeedback(Action):
                 "The user DOES NOT want to participate in our usability studies."
             )
             if tracker.get_slot(USABILITY_STUDY) is True:
-                feedback_usability_study = "The user wants to participate in a usability study. Provided email: {}".format(
-                    tracker.get_slot(EMAIL_ADDRESS)
+                feedback_usability_study = "The user wants to participate in a usability study. Email: {}".format(
+                    get_email(tracker)
                 )
 
             feedback_type_label = "-".join(feedback_type.split("_")) + "-feedback"

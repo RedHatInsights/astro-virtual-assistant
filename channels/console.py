@@ -53,6 +53,8 @@ class ConsoleInput(InputChannel):
 
             current_url = self.extract_current_url(request)  # not a required field
 
+            email = self.extract_email(identity_dict)
+
             sender_id = self.get_sender(identity_dict)
             if not sender_id:
                 return response.json(
@@ -81,7 +83,7 @@ class ConsoleInput(InputChannel):
                         sender_id,
                         input_channel=input_channel,
                         metadata=self.build_metadata(
-                            identity, is_org_admin, current_url
+                            identity, is_org_admin, email, current_url
                         ),
                     )
                 )
@@ -120,6 +122,12 @@ class ConsoleInput(InputChannel):
 
         return None
 
+    def extract_email(self, identity_dict) -> Optional[Text]:
+        try:
+            return identity_dict["identity"]["user"]["email"]
+        except KeyError:
+            return "email not provided"
+
     def get_sender(self, identity_dict) -> Optional[Text]:
         org_id = None
         username = None
@@ -135,9 +143,12 @@ class ConsoleInput(InputChannel):
 
         return None
 
-    def build_metadata(self, identity, is_org_admin, current_url) -> Dict[Text, Any]:
+    def build_metadata(
+        self, identity, is_org_admin, email, current_url
+    ) -> Dict[Text, Any]:
         return {
             "identity": identity,
             "is_org_admin": is_org_admin,
+            "email": email,
             "current_url": current_url,
         }
