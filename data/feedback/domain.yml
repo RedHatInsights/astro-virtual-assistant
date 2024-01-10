@@ -183,3 +183,5 @@ responses:
       custom:
         type: command
         command: redirect
+        params:
+          url: https://access.redhat.com/support/cases/#/case/new/get-support?product=Other&version=Unknown&caseCreate=true
