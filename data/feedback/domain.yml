@@ -182,4 +182,4 @@ responses:
     - text: For urgent issues, I'll direct you to our support page for further assistance. If you want to continue our conversation, I'll be here!
       custom:
         type: command
-        command: support_redirect
+        command: redirect
