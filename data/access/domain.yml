@@ -36,10 +36,26 @@ slots:
         conditions:
           - <<: *access_request_url_condition
             requested_slot: access_request_message
+  access_request_confirmation:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions:
+          - active_loop: form_access_request
+            requested_slot: access_request_confirmation
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions:
+          - active_loop: form_access_request
+            requested_slot: access_request_confirmation
 
 actions:
   - validate_form_access_request
   - execute_form_access_request
+  - action_access_request_send_message
 
 forms:
   form_access_request:
@@ -47,6 +63,7 @@ forms:
       - access_request_url
       - access_leave_request_message
       - access_request_message
+      - access_request_confirmation
 
 responses:
   utter_access_capabilities:
@@ -79,7 +96,23 @@ responses:
     - text: >
         Ok, please type your message below. To help your org admin, provide the reason why you need access 
         (e.g. thought you already had it, need to perform a task, etc.)
-
+  utter_ask_access_request_confirmation_repeat:
+    - text: >
+        Here is the message we will share with your organization administrator: "{access_request_message}".
+  utter_ask_access_request_confirmation_note:
+    - text: >
+        Please note, if your account has multiple organization administrators assigned, all of them will receive this message.
+  utter_ask_access_request_confirmation_proceed:
+    - text: Are you sure you'd like to proceed?
+      buttons: *buttons_yes_no
+  utter_access_request_confirmation_false:
+    - text: Ok, I won't send your request. Ask me again if you change your mind.
   utter_access_request_access_submitted:
     - text: >
         Great, we've submitted your request.
+
+  utter_access_contact_admin:
+    - text: >
+        Due to privacy laws, I am unable to share any names or email addresses of your organization administrator(s); 
+        however, I can contact them on your behalf. Would you like me to do that for you?
+      buttons: *buttons_yes_no

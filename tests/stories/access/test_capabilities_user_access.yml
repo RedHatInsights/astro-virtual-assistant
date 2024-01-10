@@ -35,7 +35,7 @@ stories:
       - user: |
           Who do I ask for access?
         intent: intent_access_contact_admin
-      - action: utter_planned_features
+      - action: utter_access_contact_admin
 
   - story: User wants access - does not want to contact admin
     steps:
