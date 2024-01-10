@@ -135,12 +135,16 @@ responses:
     - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
-        command: personal_information_redirect
+        command: redirect
+        params:
+          url: https://www.redhat.com/wapps/ugc/protected/personalInfo.html
   utter_user_preferences_password_redirect:
     - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
-        command: password_redirect
+        command: redirect
+        params:
+          url: https://www.redhat.com/wapps/ugc/protected/password.html
   utter_user_preferences_pop_ups:
     - text: "Your browser may be blocking pop-ups. Please allow pop-ups for the platform or click [here]({url}) to access the page."
   utter_user_preferences_no_action:

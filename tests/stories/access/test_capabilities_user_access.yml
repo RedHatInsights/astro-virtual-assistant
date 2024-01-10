@@ -43,7 +43,7 @@ stories:
           I want access to foobar
         intent: intent_access_request
       - action: utter_access_request
-      - user: |
+      - user: >
           No
         intent: intent_core_no
       - action: form_closing

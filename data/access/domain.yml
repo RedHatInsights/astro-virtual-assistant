@@ -5,6 +5,7 @@ intents:
   - intent_access_request
   - intent_access_troubleshooting
   - intent_access_contact_admin
+  - intent_access_check_access
 
 entities: []
 
@@ -116,3 +117,19 @@ responses:
         Due to privacy laws, I am unable to share any names or email addresses of your organization administrator(s); 
         however, I can contact them on your behalf. Would you like me to do that for you?
       buttons: *buttons_yes_no
+  utter_access_have_you_contacted_org_admin:
+    - text: >
+        Have you already requested access from your Org Admin?
+      buttons: *buttons_yes_no
+  utter_access_have_you_contacted_org_admin_yes:
+    - text: >
+        Great, please wait to hear back from them and confirm whether they have granted you the appropriate
+        permissions.
+  utter_access_check_access_explain:
+    - text: >
+        Access within the console is based on the User groups you are a member of, and the roles and permissions
+        that are included within the group. To check your access and permissions, visit
+        [My User Access](https://console.redhat.com/iam/my-user-access).
+  utter_access_check_access_missing:
+    - text: >
+        If you find that you are missing required access, you'll need to contact your organization administrator.
