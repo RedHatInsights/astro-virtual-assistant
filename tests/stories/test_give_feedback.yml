@@ -1,24 +1,6 @@
 version: "3.1"
 
 stories:
-  - story: Give feedback - 1
-    steps:
-      - user: |
-          Can I send some feedback your way?
-        intent: intent_give_feedback
-      - action: action_skip_got_help
-      - action: form_closing
-      - active_loop: form_closing
-
-  - story: Give feedback - 2
-    steps:
-      - user: |
-          Where can I leave some suggestions?
-        intent: intent_give_feedback
-      - action: action_skip_got_help
-      - action: form_closing
-      - active_loop: form_closing
-
   - story: Send Complaint - 1
     steps:
       - user: |

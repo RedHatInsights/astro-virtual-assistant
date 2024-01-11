@@ -6,12 +6,6 @@ rules:
   # - rule: User says yes for no reason
   # - rule: User says no for no reason
 
-  - rule: Give feedback
-    steps:
-      - intent: intent_give_feedback
-      - action: action_skip_got_help
-      - action: form_closing
-      - active_loop: form_closing
   - rule: Send Complaint
     steps:
       - intent: intent_send_complaint
