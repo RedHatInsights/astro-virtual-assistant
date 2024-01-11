@@ -23,6 +23,8 @@ nlu:
       - Open a case for me
       - I want to open a support case
       - I want to open a case
+      - I want to share a bug
+      - I want to report a bug
       - File a bug
       - I want to file a bug
       - Where do I file a bug?
