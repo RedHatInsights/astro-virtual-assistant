@@ -20,14 +20,21 @@ nlu:
   - intent: intent_feedback_bug
     examples: |
       - Open a support case
+      - Open a case for me
       - I want to open a support case
+      - I want to open a case
       - File a bug
+      - I want to file a bug
       - Where do I file a bug?
+      - Where do I file bugs at?
       - I want to file a bug
       - I want to report a bug
+      - I am reporting a bug
       - Report a bug
+      - I found a bug
       - bug
       - This shit is buggyyyy
+      - buggy app
 
   - intent: intent_feedback_is_it_a_bug
     examples: |
