@@ -265,7 +265,10 @@ class ActionFeedbackTypeBug(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        return [SlotSet("feedback_type", "bug"), SlotSet("requested_slot", "feedback_type")]
+        return [
+            SlotSet("feedback_type", "bug"),
+            SlotSet("requested_slot", "feedback_type"),
+        ]
 
 
 class ActionFeedbackFormToClosingForm(Action):
