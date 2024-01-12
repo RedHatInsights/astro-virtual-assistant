@@ -42,3 +42,5 @@ test-is-org-admin:
 test-is-not-org-admin:
 	curl -X POST http://0.0.0.0:5005/api/virtual-assistant/v1/talk -H "x-rh-identity: eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiJhY2NvdW50MTIzIiwib3JnX2lkIjoibzFyMmczIiwidHlwZSI6IlVzZXIiLCJ1c2VyIjp7ImlzX29yZ19hZG1pbiI6ZmFsc2UsICJ1c2VyX2lkIjoiMTIzNDU2Nzg5MCIsInVzZXJuYW1lIjoiYXN0cm8ifSwiaW50ZXJuYWwiOnsib3JnX2lkIjoibzFyMmczIn19fQ==" -H "Content-Type: application/json" --data '{ "message": "What do you do?", "metadata": {"current_url": "https://console.redhat.com"} }'
 
+test-openapi:
+	curl -X GET http://0.0.0.0:5005/api/virtual-assistant/v1/openapi.json
