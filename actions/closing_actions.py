@@ -224,7 +224,10 @@ class ActionClosingFeedbackTypeBadExperience(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        return [SlotSet("closing_feedback_type", "bad_experience")]
+        return [
+            SlotSet("closing_feedback_type", "bad_experience"),
+            SlotSet("closing_leave_feedback", True),
+        ]
 
 
 class ActionClosingFeedbackTypeGeneral(Action):
