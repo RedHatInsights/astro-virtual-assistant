@@ -13,6 +13,6 @@ def start_internal_api():
     flask_app.run(host=app.hostname, port=app.internal_api_port)
 
 
-@flask_app.route("/api/", methods=['GET'])
+@flask_app.route("/", methods=["GET"])
 def health_check():
     return jsonify({"status": "ok"})
