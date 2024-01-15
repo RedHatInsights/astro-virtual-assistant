@@ -28,6 +28,9 @@ run-actions:
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
+run-internal:
+	pipenv run ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
+
 run-db:
 	pipenv run make db
 

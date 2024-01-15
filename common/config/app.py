@@ -37,7 +37,7 @@ api_port = _config("API_PORT", default=_config("PUBLIC_PORT", default=0), cast=i
 actions_port = _config(
     "ACTIONS_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
 )
-internal_port = _config("INTERNAL_PORT", default=_config("INTERNAL_PORT", default=0), cast=int)
+internal_api_port = _config("INTERNAL_API_PORT", default=_config("INTERNAL_API_PORT", default=0), cast=int)
 
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
 __optional_when_locally = __undefined if is_running_locally is False else None

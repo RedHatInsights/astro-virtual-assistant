@@ -3,13 +3,11 @@ import sys
 
 from prometheus_client import start_http_server
 from threading import Event
-from flask import Flask
 
 from common import logging
 from common.config import app
+from internal.endpoints import start_internal_api
 
-
-app = Flask(__name__)
 
 logger = None
 
@@ -38,11 +36,10 @@ def main():
         start_prometheus()
 
     # Use INTERNAL_PORT when set
-    if app.internal_port:
-        sys.argv.extend(["--port", str(app.internal_port)])
+    if app.internal_api_port:
+        sys.argv.extend(["--port", str(app.internal_api_port)])
 
-    logger.info("Starting virtual assistant internal api...")
-    app.run(host=app.hostname, port=app.internal_port)
+    start_internal_api()
 
 
 if __name__ == "__main__":
