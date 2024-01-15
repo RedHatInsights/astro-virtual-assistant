@@ -133,3 +133,7 @@ responses:
   utter_access_check_access_missing:
     - text: >
         If you find that you are missing required access, you'll need to contact your organization administrator.
+  utter_access_check_troubleshoot:
+    - text: >
+        To access certain pages or features within the console, you first need to have permissions granted by your
+        organization administrator.

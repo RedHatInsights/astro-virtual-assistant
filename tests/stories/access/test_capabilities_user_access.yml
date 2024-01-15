@@ -14,15 +14,8 @@ stories:
           What do I do if I can't access something?
         intent: intent_access_capabilities
       - action: utter_access_capabilities
-  
-  - story: User has access issues - 3
-    steps:
-      - user: |
-          I can't view this. I get an access error.
-        intent: intent_access_troubleshooting
-      - action: utter_planned_features
 
-  - story: User has access issues - 4
+  - story: User has access issues - 3
     steps:
       - user: |
           How do i get access?
@@ -30,7 +23,7 @@ stories:
       - action: utter_access_capabilities
   
   
-  - story: User has access issues - 5
+  - story: User has access issues - 4
     steps:
       - user: |
           Who do I ask for access?
