@@ -1,0 +1,49 @@
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+
+USER root
+
+ENV PYTHON_VERSION=3.9 \
+    LANG=en_US.UTF-8 \
+    PIP_NO_CACHE_DIR=off \
+    PIPENV_VENV_IN_PROJECT=1 \
+    PIPENV_VERBOSITY=-1 \
+    APP_ROOT=/opt/virtual-assistant
+
+# Install Python 3.9
+RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq" && \
+    microdnf --nodocs -y upgrade && \
+    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    microdnf -y clean all --enablerepo='*'
+
+# Set the default Python version
+RUN alternatives --set python /usr/bin/python3.9
+RUN python --version
+
+RUN python -m venv /pipenv-venv
+ENV PATH="/pipenv-venv/bin:$PATH"
+
+RUN python -m ensurepip --upgrade && \
+    python -m pip install --upgrade pip && \
+    python -m pip install pipenv
+
+WORKDIR ${APP_ROOT}
+
+COPY Pipfile* ./
+
+RUN pipenv install --categories "packages action-packages" && \
+    pipenv --clear
+
+ENV VIRTUAL_ENV=${APP_ROOT}/.venv
+ENV \
+    PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Copy over required files
+COPY ./common ./common
+COPY ./internal ./internal
+COPY *.yml ./
+COPY ./run_internal.py ./run_internal.py
+
+USER 1001
+
+ENTRYPOINT ["python", "run_internal.py"]
