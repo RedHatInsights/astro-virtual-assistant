@@ -16,7 +16,6 @@ prometheus-client = ">=0.14.1"
 pyjwt = ">=2.7.0"
 watchtower = ">=3.0.0"
 websockets = "==10.0"
-flask = ">=3.0.0"
 
 [dev-packages]
 pyopenssl = ">=23.2.0"
@@ -28,6 +27,9 @@ rasa = "==3.6.15"
 
 [action-packages]
 rasa-sdk = "==3.7.1"
+
+[internal-api-packages]
+flask = ">=3.0.0"
 
 [requires]
 python_version = "3.9"
