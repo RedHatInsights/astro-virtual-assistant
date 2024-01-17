@@ -81,6 +81,10 @@ slots:
         conditions: *closing_anything_else
 
 responses:
+  utter_closing_end_early:
+    - text: Okay, we can end this conversation.
+  utter_closing_restart:
+    - text: Sure, I can close this conversation and start a new one for you.
   utter_ask_closing_got_help:
     - text: Were you able to get help with what you needed?
       buttons: &buttons_yes_no
