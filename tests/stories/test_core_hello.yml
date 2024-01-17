@@ -1,0 +1,42 @@
+version: "3.1"
+
+stories:
+  - story: User says hello - 1
+    steps:
+      - user: |
+          Sup bot
+        intent: intent_core_hello
+      - slot_was_set:
+        - first_time_greeting: false
+      - action: utter_core_hello
+      - action: utter_core_how_can_i_help
+  
+  - story: User says hello - 2
+    steps:
+      - user: |
+          Hello
+        intent: intent_core_hello
+      - slot_was_set:
+        - first_time_greeting: false
+      - action: utter_core_hello
+      - action: utter_core_how_can_i_help
+  
+  - story: User says hello - 3
+    steps:
+      - user: |
+          Hello robot
+        intent: intent_core_hello
+      - slot_was_set:
+        - first_time_greeting: true
+      - action: utter_core_hello_first_time
+      - action: utter_core_how_can_i_help
+  
+  - story: User says hello - 4
+    steps:
+      - user: |
+          Good morning!!!
+        intent: intent_core_hello
+      - slot_was_set:
+        - first_time_greeting: true
+      - action: utter_core_hello_first_time
+      - action: utter_core_how_can_i_help

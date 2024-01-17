@@ -18,6 +18,22 @@ stories:
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
 
+  - story: User tells us hello
+    steps:
+      - intent: intent_core_hello
+      - slot_was_set:
+          - first_time_greeting: False
+      - action: utter_core_hello
+      - action: utter_core_how_can_i_help
+  
+  - story: User tells us hello - First time
+    steps:
+      - intent: intent_core_hello
+      - slot_was_set:
+          - first_time_greeting: True
+      - action: utter_core_hello_first_time
+      - action: utter_core_how_can_i_help
+  
   - story: User asks about an unknown topic
     steps:
       - or:
