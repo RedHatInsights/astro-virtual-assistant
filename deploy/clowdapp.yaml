@@ -10,6 +10,8 @@ objects:
     name: virtual-assistant
   spec:
     envName: ${ENV_NAME}
+    testing:
+      iqePlugin: astro_va
     dependencies:
       - advisor-backend
       - notifications-gw
