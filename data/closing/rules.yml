@@ -8,6 +8,13 @@ rules:
       - action: form_closing
       - active_loop: form_closing
 
+  - rule: "'Refresh' conversation"
+    steps:
+      - intent: intent_closing_restart
+      - action: utter_closing_restart
+      - action: form_closing
+      - active_loop: form_closing
+
   - rule: Finished feedback
     condition:
       - active_loop: form_closing

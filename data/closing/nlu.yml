@@ -15,3 +15,14 @@ nlu:
       - goodbye
       - convo over
       - conversation complete
+
+  - intent: intent_closing_restart
+    examples: |
+      - start over
+      - restart
+      - restart conversation
+      - can we start over
+      - can I start over
+      - can we restart
+      - refresh conversation
+      - open a new conversation for me
