@@ -7,8 +7,11 @@ nlu:
       - I'm done.
       - ok im done
       - ok im finished
+      - finished
       - end conversation
       - end chat
       - end our conversation
       - I don't want to talk to you anymore
       - goodbye
+      - convo over
+      - conversation complete
