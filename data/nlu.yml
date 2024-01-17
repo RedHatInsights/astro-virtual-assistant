@@ -21,6 +21,10 @@ nlu:
       - What are you capable of doing?
       - How can you help?
       - What do I do?
+      - Tell me about you
+      - Tell me aobut yourself
+      - Tell me what you can do
+
   - intent: intent_core_more
     examples: |
       - More
