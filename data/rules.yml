@@ -13,3 +13,34 @@ rules:
       - action: action_closing_feedback_type_bad_experience
       - action: form_closing
       - active_loop: form_closing
+
+  - rule: First time greeting message admins
+    steps:
+      - intent: intent_core_session_start
+      - slot_was_set:
+          - first_time_greeting: True
+      - action: utter_pii_warning
+      - action: utter_core_first_time
+      - slot_was_set:
+          - is_org_admin: True
+      - action: utter_core_capabilities_main_org_admin
+
+  - rule: First time greeting message non admins
+    steps:
+      - intent: intent_core_session_start
+      - slot_was_set:
+          - first_time_greeting: True
+      - action: utter_pii_warning
+      - action: utter_core_first_time
+      - slot_was_set:
+          - is_org_admin: False
+      - action: utter_core_capabilities_main
+
+  - rule: Not First time greeting message
+    steps:
+      - intent: intent_core_session_start
+      - slot_was_set:
+          - first_time_greeting: False
+      - action: utter_core_greeting
+      - action: utter_core_how_can_i_help
+    wait_for_user_input: false
