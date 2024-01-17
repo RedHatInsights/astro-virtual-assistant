@@ -63,7 +63,6 @@ responses:
   utter_core_hello:
     - text: "Hello!"
     - text: "Hi!"
-    - text: "How do you do?"
     - text: "Hello! It is great chatting with you."
   utter_core_hello_first_time:
     - text: "Hello! It is a pleasure to meet you."
