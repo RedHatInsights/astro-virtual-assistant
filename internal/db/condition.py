@@ -9,9 +9,11 @@ class Condition:
         self.value = value
 
     def to_string(self):
-        if self.relation.upper() == 'BETWEEN':
+        if self.relation.upper() == "BETWEEN":
             if isinstance(self.value, (list)) and len(self.value) == 2:
-                return " {} BETWEEN {} AND {}".format(self.column, self.value[0], self.value[1])
+                return " {} BETWEEN {} AND {}".format(
+                    self.column, self.value[0], self.value[1]
+                )
             else:
                 raise ValueError("Between condition must be a list of 2 values")
         return " {} {} '{}'".format(self.column, self.relation, self.value)

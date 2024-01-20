@@ -40,7 +40,7 @@ def get_messages():
     args = read_arguments()
     if isinstance(args, ValueError):
         return Response(args, status=400)
-    
+
     conditions = [Condition("type_name", "=", "user")]
     if args.start_date:
         conditions.append(Operator("AND"))
@@ -62,7 +62,7 @@ def get_messages():
 
     message_list = []
     for row in rows:
-        data_json = json.loads(row[4]) # data column needs to be parsed
+        data_json = json.loads(row[4])  # data column needs to be parsed
 
         # exclude commands if unique is true
         if args.unique and data_json["text"].startswith("/"):
@@ -88,7 +88,7 @@ def get_conversation_by_sender_id(sender_id):
     args = read_arguments()
     if isinstance(args, ValueError):
         return Response(args, status=400)
-    
+
     rows = (
         Query()
         .select("sender_id, type_name, intent_name, action_name, data")
@@ -121,8 +121,10 @@ def process_message(row):
 
     for key in PARSE_DATA_KEYS_TO_INCLUDE:
         message[key] = None
-    message.update({k: data_column[k] for k in data_column.keys() & PARSE_DATA_KEYS_TO_INCLUDE})
-    
+    message.update(
+        {k: data_column[k] for k in data_column.keys() & PARSE_DATA_KEYS_TO_INCLUDE}
+    )
+
     parse_data = data_column["parse_data"] if "parse_data" in data_column else None
     if parse_data is not None:
         message["entities"] = parse_data["entities"]

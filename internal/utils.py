@@ -8,7 +8,15 @@ MAX_LIMIT = 1000
 
 
 class Arguments:
-    def __init__(self, limit=DEFAULT_LIMIT, offset=0, start_date=None, end_date=None, unique=False, format="json"):
+    def __init__(
+        self,
+        limit=DEFAULT_LIMIT,
+        offset=0,
+        start_date=None,
+        end_date=None,
+        unique=False,
+        format="json",
+    ):
         if int(limit) > MAX_LIMIT:
             return ValueError("limit must be less than {}".format(MAX_LIMIT))
         if int(limit) < 0:

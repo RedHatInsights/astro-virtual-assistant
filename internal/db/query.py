@@ -3,6 +3,7 @@ import internal.db as db
 
 class Query:
     query = ""
+
     def select(self, columns):
         self.query = "SELECT {}".format(columns)
         return self
