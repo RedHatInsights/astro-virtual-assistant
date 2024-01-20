@@ -26,7 +26,7 @@ def db_cursor():
     if app.tracker_store_type == "InMemoryTrackerStore":
         logger.error("InMemoryTrackerStore can not be accessed")
         return
-    
+
     conn = dbpool.getconn()
     try:
         with conn.cursor() as cur:

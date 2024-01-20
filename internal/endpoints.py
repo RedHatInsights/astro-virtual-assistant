@@ -1,26 +1,20 @@
 from flask import Flask, Response, jsonify, request
 import json
-import csv
-from io import StringIO
 
 from common import logging
 from common.config import app
 
-from internal import db
+from internal.utils import read_arguments, export_csv
+from internal.db.query import Query
+from internal.db.condition import Condition, Operator
+
 
 flask_app = Flask(__name__)
 logger = logging.initialize_logging()
 
 API_PREFIX = "/api/v1"
-DEFAULT_LIMIT = 100
-MAX_LIMIT = 1000
 
-KEYS_TO_INCLUDE = {
-    'event',
-    'message_id',
-    'text',
-    'timestamp'
-}
+PARSE_DATA_KEYS_TO_INCLUDE = {"event", "message_id", "text", "timestamp"}
 
 
 def start_internal_api():
@@ -40,66 +34,107 @@ def health_check():
 #  - start_date (optional): only return messages sent after this date
 #  - end_date (optional): only return messages sent before this date
 #  - unique (optional): if true, only return unique messages (i.e. typed by the user, no commands)
-#  - csv (optional): if true, return messages in csv format
+#  - format (optional): "csv" or "json" format; default is "json"
 @flask_app.route(API_PREFIX + "/messages", methods=["GET"])
 def get_messages():
-    limit = request.args.get('limit') or DEFAULT_LIMIT
-    offset = request.args.get('offset') or 0
-    start_date = request.args.get('start_date')
-    end_date = request.args.get('end_date')
-    unique = request.args.get('unique') in ['true', 'True', '1'] or False
-    is_csv = request.args.get('csv') in ['true', 'True', '1'] or False
-
-    logger.error(unique)
-
-    query = "SELECT data FROM events WHERE type_name='user'"
-
-    if start_date:
-        query += " AND timestamp >= '" + start_date + "'"
-    if end_date:
-        query += " AND timestamp <= '" + end_date + "'"
-
-    if int(limit) > MAX_LIMIT:
-        return jsonify({"error": "limit must be less than " + str(MAX_LIMIT)})
-    if int(limit) < 0:
-        return jsonify({"error": "limit must be greater than 0"})
+    args = read_arguments()
+    if isinstance(args, ValueError):
+        return Response(args, status=400)
     
-    query += " LIMIT " + str(limit) + " OFFSET " + str(offset)
+    conditions = [Condition("type_name", "=", "user")]
+    if args.start_date:
+        conditions.append(Operator("AND"))
+        conditions.append(Condition("timestamp", ">", args.start_date))
+    if args.end_date:
+        conditions.append(Operator("AND"))
+        conditions.append(Condition("timestamp", "<", args.end_date))
 
-    with db.db_cursor() as cur:
-        cur.execute(query)
-        rows = cur.fetchall()
+    rows = (
+        Query()
+        .select("sender_id, type_name, intent_name, action_name, data")
+        .from_table("events")
+        .where(conditions)
+        .order_by("timestamp ASC")
+        .limit(args.limit)
+        .offset(args.offset)
+        .execute()
+    )
 
-        # making a separate json list to exclude certain keys
-        message_list = []
-        for row in rows:
-            row_json = json.loads(row[0])
+    message_list = []
+    for row in rows:
+        data_json = json.loads(row[4]) # data column needs to be parsed
 
-            if unique and row_json['text'].startswith('/'):
-                continue
+        # exclude commands if unique is true
+        if args.unique and data_json["text"].startswith("/"):
+            continue
 
-            message = {k: row_json[k] for k in row_json.keys() & KEYS_TO_INCLUDE}
+        message = process_message(row)
+        message_list.append(message)
 
-            parse_data = row_json['parse_data']
-            message['entities'] = parse_data['entities']
-            message['intent'] = parse_data['intent']
-            message['intent_ranking'] = parse_data['intent_ranking']
+    if args.format == "csv":
+        return export_csv(message_list)
 
-            message_list.append(message)
-        
-        if is_csv:
-            csv_io = StringIO()
-            writer = csv.DictWriter(csv_io, fieldnames=message_list[0].keys())
-            writer.writeheader()
-            writer.writerows(message_list)
-            csv_data = csv_io.getvalue()
-            return Response(csv_data, mimetype='text/csv')
-
-        return jsonify(message_list)
+    return jsonify(message_list)
 
 
-# Returns conversation data, i.e. messages sent by users and responses sent back by the bot
-@flask_app.route(API_PREFIX + "/conversations", methods=["GET"])
-def get_conversations():
-    # Your code here
-    pass
+# Returns complete conversation given a sender_id
+# params:
+#  - sender_id (required): sender_id of the conversation
+#  - limit (optional): limit the number of messages returned; default is 100
+#  - offset (optional): offset the returned messages; default is 0
+#  - format (optional): "csv" or "json" format; default is "json"
+@flask_app.route(API_PREFIX + "/conversations/<sender_id>", methods=["GET"])
+def get_conversation_by_sender_id(sender_id):
+    args = read_arguments()
+    if isinstance(args, ValueError):
+        return Response(args, status=400)
+    
+    rows = (
+        Query()
+        .select("sender_id, type_name, intent_name, action_name, data")
+        .from_table("events")
+        .where([Condition("sender_id", "=", sender_id)])
+        .order_by("timestamp ASC")
+        .limit(args.limit)
+        .offset(args.offset)
+        .execute()
+    )
+
+    message_list = []
+    for row in rows:
+        message = process_message(row)
+        message_list.append(message)
+
+    if args.format == "csv":
+        return export_csv(message_list)
+
+    return jsonify(message_list)
+
+
+def process_message(row):
+    message = {}
+    message["sender_id"] = row[0]
+    message["type_name"] = row[1]
+    message["intent_name"] = row[2]
+    message["action_name"] = row[3]
+    data_column = json.loads(row[4])
+
+    for key in PARSE_DATA_KEYS_TO_INCLUDE:
+        message[key] = None
+    message.update({k: data_column[k] for k in data_column.keys() & PARSE_DATA_KEYS_TO_INCLUDE})
+    
+    parse_data = data_column["parse_data"] if "parse_data" in data_column else None
+    if parse_data is not None:
+        message["entities"] = parse_data["entities"]
+        message["intent"] = parse_data["intent"]
+        message["intent_ranking"] = parse_data["intent_ranking"]
+        message["text"] = parse_data["text"] if "text" in parse_data else None
+        message["name"] = parse_data["name"] if "name" in parse_data else None
+    else:
+        # to be consistent
+        message["entities"] = []
+        message["intent"] = {}
+        message["intent_ranking"] = []
+        message["text"] = None
+        message["name"] = None
+    return message
