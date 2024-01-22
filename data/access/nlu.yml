@@ -25,14 +25,6 @@ nlu:
       - Give me access to [policies](service)
       - Request access from my administrator
 
-  - intent: intent_access_troubleshooting
-    examples: |
-      - I'm getting an access error.
-      - I can't access the console.
-      - Why can't I view this?
-      - I can't view this page.
-      - I can't view this. I get an access error.
-
   - intent: intent_access_check_access
     examples: |
       - Do I have access?
@@ -42,6 +34,14 @@ nlu:
       - Am I allowed to access
       - Am I allowed to see [policies](service)
       - Can you check my access permission?
+      - Do i have access to [advisor](service)
+      - Do I have access to [notifications](service)
+      - Do I have access to settings?
+      - I'm getting an access error.
+      - I can't access the console.
+      - Why can't I view this?
+      - I can't view this page.
+      - I can't view this. I get an access error.
 
   - intent: intent_access_contact_admin
     examples: |
