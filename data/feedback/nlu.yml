@@ -40,9 +40,18 @@ nlu:
 
   - intent: intent_feedback_is_it_a_bug
     examples: |
-      - It's a bug
       - bug
+      - a bug
+      - It's a bug
       - it's about a bug
+      - error
+      - an error
+      - it's an error
+      - it's about an error
+      - issue
+      - an issue
+      - it's an issue
+      - it's about an issue
 
   - intent: intent_feedback_is_it_general
     examples: |
@@ -69,11 +78,22 @@ nlu:
 
   - intent: intent_feedback_collect_with_assistant
     examples: |
+      - Here
+      - Here please
+      - Here with you
+      - Right here
+      - Right here works
+      - Right here with you
+      - Right here is fine
+      - Conversation
+      - This conversation
+      - Chat
+      - This chat
+      - This chat is fine
+      - Let's do it here
+      - With you
       - I'll let you collect the details.
       - I'd prefer to use the assistant
-      - This chat is fine
-      - Right here
-      - Here with you
 
   - intent: intent_feedback_collect_with_pendo
     examples: |
