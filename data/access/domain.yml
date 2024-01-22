@@ -135,5 +135,5 @@ responses:
         If you find that you are missing required access, you'll need to contact your organization administrator.
   utter_access_check_troubleshoot:
     - text: >
-        To access certain pages or features within the console, you first need to have permissions granted by your
-        organization administrator.
+        Access within the console is based on the roles and permissions included in your User Groups. To check your
+        access and permissions, visit [My User Access](https://console.redhat.com/iam/my-user-access).```
