@@ -77,6 +77,48 @@ def get_messages():
     return jsonify(message_list)
 
 
+# Returns list of sender_id
+# params:
+#  - limit (optional): limit the number of messages returned; default is 100
+#  - offset (optional): offset the returned messages; default is 0
+#  - start_date (optional): only return messages sent after this date
+#  - end_date (optional): only return messages sent before this date
+#  - format (optional): "csv" or "json" format; default is "json"
+@flask_app.route(API_PREFIX + "/senders", methods=["GET"])
+def get_senders():
+    args = read_arguments()
+    if isinstance(args, ValueError):
+        return Response(args, status=400)
+    
+    conditions = []
+    if args.start_date:
+        conditions.append(Condition("timestamp", ">", args.start_date))
+    if args.start_date and args.end_date:
+        conditions.append(Operator("AND"))
+    if args.end_date:
+        conditions.append(Condition("timestamp", "<", args.end_date))
+
+    rows = (
+        Query()
+        .select("DISTINCT sender_id")
+        .from_table("events")
+        .order_by("sender_id ASC")
+        .where(conditions)
+        .limit(args.limit)
+        .offset(args.offset)
+        .execute()
+    )
+
+    sender_list = []
+    for row in rows:
+        sender_list.append(row[0])
+
+    if args.format == "csv":
+        return export_csv(sender_list)
+
+    return jsonify(sender_list)
+
+
 # Returns complete conversation given a sender_id
 # params:
 #  - sender_id (required): sender_id of the conversation
