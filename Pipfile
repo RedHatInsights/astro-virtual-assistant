@@ -16,6 +16,7 @@ prometheus-client = ">=0.14.1"
 pyjwt = ">=2.7.0"
 watchtower = ">=3.0.0"
 websockets = "==10.0"
+sqlalchemy = "<2.1"
 
 [dev-packages]
 pyopenssl = ">=23.2.0"
