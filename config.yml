@@ -24,7 +24,7 @@ pipeline:
      min_ngram: 1
      max_ngram: 4
    - name: DIETClassifier
-     epochs: 85
+     epochs: 80
      constrain_similarities: true
    - name: pipeline.fuzzy_entity_extractor.FuzzyEntityExtractor
      sentence_score_cutoff: 55
@@ -32,10 +32,10 @@ pipeline:
      case_sensitive: False
      use_slots: True
    - name: ResponseSelector
-     epochs: 116
+     epochs: 97
      constrain_similarities: true
    - name: FallbackClassifier
-     threshold: 0.882837273226563
+     threshold: 0.6048259767771347
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
