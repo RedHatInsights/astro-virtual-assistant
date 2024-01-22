@@ -1,5 +1,4 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy.dialects.postgresql import INTEGER, DOUBLE_PRECISION, TEXT, VARCHAR
 
 class Base(DeclarativeBase):
     pass
