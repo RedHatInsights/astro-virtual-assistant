@@ -9,6 +9,7 @@ intents:
   - intent_live_chat
   - intent_services_offline
   - intent_core_session_start
+  - intent_core_hello
   - intent_core_yes
   - intent_core_no
   - intent_data_privacy_policy
@@ -59,6 +60,12 @@ responses:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
   utter_core_greeting:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console."
+  utter_core_hello:
+    - text: "Hello!"
+    - text: "Hi!"
+    - text: "Hello! It is great chatting with you."
+  utter_core_hello_first_time:
+    - text: "Hello! It is a pleasure to meet you."
   utter_core_how_can_i_help:
     - text: "How can I help you today?"
     - text: "How can I help you?"
@@ -145,8 +152,6 @@ responses:
         command: redirect
         params:
           url: https://www.redhat.com/wapps/ugc/protected/password.html
-  utter_user_preferences_pop_ups:
-    - text: "Your browser may be blocking pop-ups. Please allow pop-ups for the platform or click [here]({url}) to access the page."
   utter_user_preferences_no_action:
     - text: "Okay, let me know if you change your mind."
   utter_services_offline_no_incidents:

@@ -42,9 +42,6 @@ class ActionUserPreferences(Action):
             dispatcher.utter_message(
                 response="utter_user_preferences_password_redirect"
             )
-            dispatcher.utter_message(
-                response="utter_user_preferences_pop_ups", url=PASSWORD_URL
-            )
             return []
         elif preference == "login":
             dispatcher.utter_message(response="utter_user_preferences_login")
@@ -54,8 +51,5 @@ class ActionUserPreferences(Action):
             dispatcher.utter_message(response="utter_user_preferences_all")
 
         dispatcher.utter_message(response="utter_user_preferences_all_redirect")
-        dispatcher.utter_message(
-            response="utter_user_preferences_pop_ups", url=PERSONAL_INFO_URL
-        )
 
         return []

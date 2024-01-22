@@ -1,9 +1,17 @@
 version: "3.1"
 
 rules:
-  - rule: remove-me-closing-start-manual-trigger
+  - rule: End conversation early
     steps:
       - intent: intent_closing_start
+      - action: utter_closing_end_early
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: "'Refresh' conversation"
+    steps:
+      - intent: intent_closing_restart
+      - action: utter_closing_restart
       - action: form_closing
       - active_loop: form_closing
 

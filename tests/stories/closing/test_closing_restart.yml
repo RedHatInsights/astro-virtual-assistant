@@ -1,0 +1,20 @@
+version: "3.1"
+
+stories:
+  - story: User asks to restart flow - 1
+    steps:
+      - user: |
+          can i start over
+        intent: intent_closing_restart
+      - action: utter_closing_restart
+      - action: form_closing
+      - active_loop: form_closing
+
+  - story: User asks to restart flow - 2
+    steps:
+      - user: |
+          open a new conversation for me
+        intent: intent_closing_restart
+      - action: utter_closing_restart
+      - action: form_closing
+      - active_loop: form_closing

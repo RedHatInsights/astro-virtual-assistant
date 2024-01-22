@@ -29,11 +29,14 @@ run-actions:
 run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
+run-internal:
+	pipenv run ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
+
 run-db:
 	pipenv run make db
 
 db:
-	${CONTAINER_EXEC} run --rm -it -p 5432:${DB_PORT} -e POSTGRES_PASSWORD=${DB_PASSWORD} -e POSTGRES_USER=${DB_USER} -e POSTGRES_DB=${DB_NAME} --name postgres postgres:15.5
+	${CONTAINER_EXEC} run --rm -it -p 5432:${DB_PORT} -e POSTGRES_PASSWORD=${DB_PASSWORD} -e POSTGRES_USER=${DB_USERNAME} -e POSTGRES_DB=${DB_NAME} --name postgres postgres:15.5
 
 drop-db:
 	${CONTAINER_EXEC} stop postgres

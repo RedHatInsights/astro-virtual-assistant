@@ -1,0 +1,20 @@
+version: "3.1"
+
+stories:
+  - story: User asks about openshift - 1
+    steps:
+      - intent: intent_openshift_ocm
+      - action: utter_openshift_untrained
+      - action: utter_openshift_ocm
+
+  - story: User asks about openshift - 2
+    steps:
+      - intent: intent_openshift_acs
+      - action: utter_openshift_untrained
+      - action: utter_openshift_acs
+
+  - story: User asks about openshift - 3
+    steps:
+      - intent: intent_openshift_rosa
+      - action: utter_openshift_untrained
+      - action: utter_openshift_rosa

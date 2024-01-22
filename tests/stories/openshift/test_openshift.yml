@@ -1,0 +1,50 @@
+version: "3.1"
+
+stories:
+  - story: User asks about openshift - 1
+    steps:
+      - user: |
+          ocm
+        intent: intent_openshift_ocm
+      - action: utter_openshift_untrained
+      - action: utter_openshift_ocm
+
+  - story: User asks about openshift - 2
+    steps:
+      - user: |
+          acs
+        intent: intent_openshift_acs
+      - action: utter_openshift_untrained
+      - action: utter_openshift_acs
+
+  - story: User asks about openshift - 3
+    steps:
+      - user: |
+          rosa
+        intent: intent_openshift_rosa
+      - action: utter_openshift_untrained
+      - action: utter_openshift_rosa
+
+  - story: User asks about openshift - 4
+    steps:
+      - user: |
+          can you help me with my cluster?
+        intent: intent_openshift_ocm
+      - action: utter_openshift_untrained
+      - action: utter_openshift_ocm
+
+  - story: User asks about openshift - 5
+    steps:
+      - user: |
+          can you help me with my clouds?
+        intent: intent_openshift_acs
+      - action: utter_openshift_untrained
+      - action: utter_openshift_acs
+
+  - story: User asks about openshift - 6
+    steps:
+      - user: |
+          deploy my cluster
+        intent: intent_openshift_rosa
+      - action: utter_openshift_untrained
+      - action: utter_openshift_rosa

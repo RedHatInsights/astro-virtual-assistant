@@ -9,6 +9,9 @@ RASA_ENDPOINTS_ARG = --endpoints endpoints.yml
 RASA_TRAIN_ARGS = ${RASA_DOMAIN_ARG}
 RASA_RUN_ARGS = ${RASA_ENDPOINTS_ARG}
 
+INTERNAL_EXEC = ${PYTHON_EXEC} run_internal.py
+INTERNAL_RUN_ARGS =
+
 ifdef DEBUG
   RASA_TRAIN_ARGS += --debug
   RASA_RUN_ARGS += --debug

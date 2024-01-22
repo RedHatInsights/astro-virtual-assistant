@@ -21,6 +21,10 @@ nlu:
       - What are you capable of doing?
       - How can you help?
       - What do I do?
+      - Tell me about you
+      - Tell me about yourself
+      - Tell me what you can do
+
   - intent: intent_core_more
     examples: |
       - More
@@ -45,6 +49,34 @@ nlu:
       - no
       - i don't think so
       - nay
+
+  - intent: intent_core_hello
+    examples: |
+      - Hi
+      - hello
+      - what's up
+      - sup
+      - hey
+      - greetings
+      - afternoon
+      - yo
+      - salutations
+      - hello world
+      - hola
+      - happy day
+      - good morning
+      - good evening
+      - good afternoon
+      - how are you?
+      - how are you doing?
+      - how's it going?
+      - how are ya?
+      - hello robert
+      - hello robot
+      - hello, whats your name?
+      - good morning!
+      - Sup robot
+      - Hello assistat
 
   - intent: intent_planned_features
     examples: |
