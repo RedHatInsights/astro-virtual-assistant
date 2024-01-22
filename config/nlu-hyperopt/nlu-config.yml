@@ -1,0 +1,27 @@
+# This is a copy of the NLU part of our config.yml for hyper-parameter optimizer
+# The variable parts are wrapped in curly braces.
+recipe: default.v1
+language: en
+
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: CountVectorsFeaturizer
+    analyzer: char_wb
+    min_ngram: 1
+    max_ngram: 4
+  - name: DIETClassifier
+    epochs: {diet-classifier-epochs}
+    constrain_similarities: true
+  - name: pipeline.fuzzy_entity_extractor.FuzzyEntityExtractor
+    sentence_score_cutoff: 55
+    word_score_cutoff: 75
+    case_sensitive: False
+    use_slots: True
+  - name: ResponseSelector
+    epochs: {response-selector-epochs}
+    constrain_similarities: true
+  - name: FallbackClassifier
+    threshold: {fallback-classifier-threshold}
