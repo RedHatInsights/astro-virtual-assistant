@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 
 from common.config import app
 
+
 class DB:
     def __init__(self) -> None:
         self.conn_str = f"postgresql+psycopg2://{app.database_user}:{app.database_password}@{app.database_host}:{app.database_port}/{app.database_name}"
