@@ -31,7 +31,7 @@ WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
 
-RUN pipenv install --categories "packages internal-api-packages" && \
+RUN pipenv install --categories "packages internal-packages" && \
     pipenv --clear
 
 ENV VIRTUAL_ENV=${APP_ROOT}/.venv
