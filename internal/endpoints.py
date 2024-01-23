@@ -1,20 +1,26 @@
 from flask import Flask, Response, jsonify, request
+from sqlalchemy import and_, or_, true, asc
+from sqlalchemy.orm import sessionmaker
 import json
 
 from common import logging
 from common.config import app
 
 from internal.utils import read_arguments, export_csv
-from internal.db.query import Query
-from internal.db.condition import Condition, Operator
+from internal.database.db import DB
+from internal.database.models import Events
 
-
-flask_app = Flask(__name__)
-logger = logging.initialize_logging()
 
 API_PREFIX = "/api/v1"
 
-PARSE_DATA_KEYS_TO_INCLUDE = {"event", "message_id", "text", "timestamp"}
+PARSE_DATA_KEYS_TO_INCLUDE = {"message_id", "text", "timestamp"}
+
+
+flask_app = Flask(__name__)
+db = DB()
+engine = db.get_engine()
+Session = sessionmaker(engine)
+logger = logging.initialize_logging()
 
 
 def start_internal_api():
@@ -40,24 +46,22 @@ def get_messages():
     args = read_arguments()
     if isinstance(args, ValueError):
         return Response(args, status=400)
-
-    conditions = [Condition("type_name", "=", "user")]
+    
+    session = Session()
+    conditions = [Events.type_name == "user"]
     if args.start_date:
-        conditions.append(Operator("AND"))
-        conditions.append(Condition("timestamp", ">", args.start_date))
+        conditions.append(Events.timestamp > args.start_date)
     if args.end_date:
-        conditions.append(Operator("AND"))
-        conditions.append(Condition("timestamp", "<", args.end_date))
+        conditions.append(Events.timestamp < args.end_date)
+    conditions = and_(true(), *conditions)
 
     rows = (
-        Query()
-        .select("sender_id, type_name, intent_name, action_name, data")
-        .from_table("events")
+        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
         .where(conditions)
-        .order_by("timestamp ASC")
+        .order_by(asc(Events.timestamp))
         .limit(args.limit)
         .offset(args.offset)
-        .execute()
+        .all()
     )
 
     message_list = []
@@ -90,23 +94,22 @@ def get_senders():
     if isinstance(args, ValueError):
         return Response(args, status=400)
     
+    session = Session()
     conditions = []
     if args.start_date:
-        conditions.append(Condition("timestamp", ">", args.start_date))
-    if args.start_date and args.end_date:
-        conditions.append(Operator("AND"))
+        conditions.append(Events.timestamp > args.start_date)
     if args.end_date:
-        conditions.append(Condition("timestamp", "<", args.end_date))
+        conditions.append(Events.timestamp < args.end_date)
+    conditions = and_(true(), *conditions)
 
     rows = (
-        Query()
-        .select("DISTINCT sender_id")
-        .from_table("events")
-        .order_by("sender_id ASC")
+        session.query(Events.sender_id)
+        .distinct()
         .where(conditions)
+        .order_by(asc(Events.sender_id))
         .limit(args.limit)
         .offset(args.offset)
-        .execute()
+        .all()
     )
 
     sender_list = []
@@ -131,15 +134,14 @@ def get_conversation_by_sender_id(sender_id):
     if isinstance(args, ValueError):
         return Response(args, status=400)
 
+    session = Session()
     rows = (
-        Query()
-        .select("sender_id, type_name, intent_name, action_name, data")
-        .from_table("events")
-        .where([Condition("sender_id", "=", sender_id)])
-        .order_by("timestamp ASC")
+        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
+        .where(Events.sender_id == sender_id)
+        .order_by(asc(Events.timestamp))
         .limit(args.limit)
         .offset(args.offset)
-        .execute()
+        .all()
     )
 
     message_list = []
