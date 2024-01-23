@@ -32,10 +32,10 @@ pipeline:
      case_sensitive: False
      use_slots: True
    - name: ResponseSelector
-     epochs: 100
+     epochs: 120
      constrain_similarities: true
    - name: FallbackClassifier
-     threshold: 0.75
+     threshold: 0.70
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
@@ -46,6 +46,6 @@ policies:
      core_fallback_threshold: 0.4
    - name: TEDPolicy
      max_history: 5
-     epochs: 100
-     learning_rate: 0.01
+     epochs: 120
+     learning_rate: 0.02
      constrain_similarities: true
