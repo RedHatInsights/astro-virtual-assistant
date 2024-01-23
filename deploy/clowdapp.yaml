@@ -124,53 +124,53 @@ objects:
             cpu: 100m
             memory: 128Mi
 
-    # - name: internal-api
-    #   minReplicas: ${{MIN_REPLICAS}}
-    #   webServices:
-    #     private:
-    #       enabled: true
-    #     metrics:
-    #       enabled: true
-    #   podSpec:
-    #     image: ${INTERNAL_API_IMAGE_NAME}:${IMAGE_TAG}
-    #     livenessProbe:
-    #       failureThreshold: 3
-    #       httpGet:
-    #         path: /
-    #         port: 9000
-    #         scheme: HTTP
-    #       initialDelaySeconds: 10
-    #       periodSeconds: 10
-    #       successThreshold: 1
-    #       timeoutSeconds: 27
-    #     readinessProbe:
-    #       failureThreshold: 3
-    #       httpGet:
-    #         path: /
-    #         port: 9000
-    #         scheme: HTTP
-    #       initialDelaySeconds: 10
-    #       periodSeconds: 10
-    #       successThreshold: 1
-    #       timeoutSeconds: 30
-    #     env:
-    #       - name: CLOWDER_ENABLED
-    #         value: ${CLOWDER_ENABLED}
-    #       - name: LOG_LEVEL
-    #         value: ${LOG_LEVEL}
-    #       - name: TRACKER_STORE_TYPE
-    #         value: ${TRACKER_STORE_TYPE}
-    #       - name: PROMETHEUS
-    #         value: ${PROMETHEUS}
-    #       - name: CONSOLEDOT_BASE_URL
-    #         value: ${CONSOLEDOT_BASE_URL}
-    #     resources:
-    #       limits:
-    #         cpu: 250m
-    #         memory: 256Mi
-    #       requests:
-    #         cpu: 100m
-    #         memory: 128Mi
+    - name: internal
+      minReplicas: ${{MIN_REPLICAS}}
+      webServices:
+        private:
+          enabled: true
+        metrics:
+          enabled: true
+      podSpec:
+        image: ${INTERNAL_IMAGE_NAME}:${IMAGE_TAG}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 27
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        env:
+          - name: CLOWDER_ENABLED
+            value: ${CLOWDER_ENABLED}
+          - name: LOG_LEVEL
+            value: ${LOG_LEVEL}
+          - name: TRACKER_STORE_TYPE
+            value: ${TRACKER_STORE_TYPE}
+          - name: PROMETHEUS
+            value: ${PROMETHEUS}
+          - name: CONSOLEDOT_BASE_URL
+            value: ${CONSOLEDOT_BASE_URL}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
 
 parameters:
 - description: Minimum number of replicas required
@@ -192,8 +192,8 @@ parameters:
   name: ACTIONS_IMAGE_NAME
   value: "quay.io/cloudservices/virtual-assistant-actions"
 - descripton: Virtual Assistant internal API image name
-  name: INTERNAL_API_IMAGE_NAME
-  value: "quay.io/cloudservices/virtual-assistant-internal-api"
+  name: INTERNAL_IMAGE_NAME
+  value: "quay.io/cloudservices/virtual-assistant-internal"
 - description: The Image tag
   name: IMAGE_TAG
   value: "latest"
