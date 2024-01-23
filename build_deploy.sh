@@ -4,6 +4,7 @@ set -exv
 
 IMAGE_API="quay.io/cloudservices/virtual-assistant-api"
 IMAGE_ACTIONS="quay.io/cloudservices/virtual-assistant-actions"
+IMAGE_INTERNAL="quay.io/cloudservices/virtual-assistant-internal"
 IMAGE_TAG=$(git rev-parse --short=7 HEAD)
 BUILD_COMMIT=$(git rev-parse HEAD)
 
@@ -32,3 +33,8 @@ docker --config="$DOCKER_CONF" build --build-arg BUILD_COMMIT=${BUILD_COMMIT} -f
 docker --config="$DOCKER_CONF" tag "${IMAGE_ACTIONS}:${IMAGE_TAG}" "${IMAGE_ACTIONS}:latest"
 docker --config="$DOCKER_CONF" push "${IMAGE_ACTIONS}:${IMAGE_TAG}"
 docker --config="$DOCKER_CONF" push "${IMAGE_ACTIONS}:latest"
+
+docker --config="$DOCKER_CONF" build --build-arg BUILD_COMMIT=${BUILD_COMMIT} -f docker/Dockerfile.astro-virtual-assistant-internal -t "${IMAGE_INTERNAL}:${IMAGE_TAG}" .
+docker --config="$DOCKER_CONF" tag "${IMAGE_INTERNAL}:${IMAGE_TAG}" "${IMAGE_INTERNAL}:latest"
+docker --config="$DOCKER_CONF" push "${IMAGE_INTERNAL}:${IMAGE_TAG}"
+docker --config="$DOCKER_CONF" push "${IMAGE_INTERNAL}:latest"
