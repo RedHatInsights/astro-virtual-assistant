@@ -14,6 +14,7 @@ class Arguments:
         offset=0,
         start_date=None,
         end_date=None,
+        type_name=None,
         unique=False,
         format="json",
     ):
@@ -25,6 +26,7 @@ class Arguments:
         self.offset = offset
         self.start_date = start_date
         self.end_date = end_date
+        self.type_name = type_name
         self.unique = unique in ["true", "True", "1"] or False
         self.format = format
 
@@ -34,9 +36,10 @@ def read_arguments():
     offset = request.args.get("offset") or 0
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
+    type_name = request.args.get("type_name")
     unique = request.args.get("unique")
     format = request.args.get("format") or "json"
-    return Arguments(limit, offset, start_date, end_date, unique, format)
+    return Arguments(limit, offset, start_date, end_date, type_name, unique, format)
 
 
 def export_csv(data):
