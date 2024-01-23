@@ -10,7 +10,7 @@ include make/Makefile.train.mk
 
 # install and train the project
 install:
-	pipenv install --categories "packages dev-packages api-packages"
+	pipenv install --categories "packages dev-packages api-packages internal-packages"
 
 clean:
 	rm -rf results .rasa models/* .astro
