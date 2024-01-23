@@ -33,12 +33,13 @@ def health_check():
     return jsonify({"status": "ok"})
 
 
-# Returns messages sent by users
+# Returns messages from all conversations
 # params:
 #  - limit (optional): limit the number of messages returned; default is 100
 #  - offset (optional): offset the returned messages; default is 0
 #  - start_date (optional): only return messages sent after this date
 #  - end_date (optional): only return messages sent before this date
+#  - type_name (optional): only return messages of this type
 #  - unique (optional): if true, only return unique messages (i.e. typed by the user, no commands)
 #  - format (optional): "csv" or "json" format; default is "json"
 @flask_app.route(API_PREFIX + "/messages", methods=["GET"])
@@ -48,7 +49,9 @@ def get_messages():
         return Response(args, status=400)
     
     session = Session()
-    conditions = [Events.type_name == "user"]
+    conditions = []
+    if args.type_name:
+        conditions.append(Events.type_name == args.type_name)
     if args.start_date:
         conditions.append(Events.timestamp > args.start_date)
     if args.end_date:
@@ -72,6 +75,53 @@ def get_messages():
         if args.unique and data_json["text"].startswith("/"):
             continue
 
+        message = process_message(row)
+        message_list.append(message)
+
+    if args.format == "csv":
+        return export_csv(message_list)
+
+    return jsonify(message_list)
+
+
+# Returns complete conversation given a sender_id
+# params:
+#  - sender_id (required): sender_id of the conversation
+#  - limit (optional): limit the number of messages returned; default is 100
+#  - start_date (optional): only return messages sent after this date
+#  - end_date (optional): only return messages sent before this date
+#  - type_name (optional): only return messages of this type
+#  - unique (optional): if true, only return unique messages (i.e. typed by the user, no commands)
+#  - offset (optional): offset the returned messages; default is 0
+#  - format (optional): "csv" or "json" format; default is "json"
+@flask_app.route(API_PREFIX + "/messages/<sender_id>", methods=["GET"])
+def get_conversation_by_sender_id(sender_id):
+    args = read_arguments()
+    if isinstance(args, ValueError):
+        return Response(args, status=400)
+
+    session = Session()
+    conditions = [Events.sender_id == sender_id]
+    if args.type_name:
+        conditions.append(Events.type_name == args.type_name)
+    if args.start_date:
+        conditions.append(Events.timestamp > args.start_date)
+    if args.end_date:
+        conditions.append(Events.timestamp < args.end_date)
+    conditions = and_(true(), *conditions)
+
+    session = Session()
+    rows = (
+        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
+        .where(conditions)
+        .order_by(asc(Events.timestamp))
+        .limit(args.limit)
+        .offset(args.offset)
+        .all()
+    )
+
+    message_list = []
+    for row in rows:
         message = process_message(row)
         message_list.append(message)
 
@@ -120,39 +170,6 @@ def get_senders():
         return export_csv(sender_list)
 
     return jsonify(sender_list)
-
-
-# Returns complete conversation given a sender_id
-# params:
-#  - sender_id (required): sender_id of the conversation
-#  - limit (optional): limit the number of messages returned; default is 100
-#  - offset (optional): offset the returned messages; default is 0
-#  - format (optional): "csv" or "json" format; default is "json"
-@flask_app.route(API_PREFIX + "/conversations/<sender_id>", methods=["GET"])
-def get_conversation_by_sender_id(sender_id):
-    args = read_arguments()
-    if isinstance(args, ValueError):
-        return Response(args, status=400)
-
-    session = Session()
-    rows = (
-        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
-        .where(Events.sender_id == sender_id)
-        .order_by(asc(Events.timestamp))
-        .limit(args.limit)
-        .offset(args.offset)
-        .all()
-    )
-
-    message_list = []
-    for row in rows:
-        message = process_message(row)
-        message_list.append(message)
-
-    if args.format == "csv":
-        return export_csv(message_list)
-
-    return jsonify(message_list)
 
 
 def process_message(row):
