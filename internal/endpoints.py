@@ -13,7 +13,7 @@ from internal.database.models import Events
 
 API_PREFIX = "/api/v1"
 
-PARSE_DATA_KEYS_TO_INCLUDE = {"message_id", "text", "timestamp"}
+DATA_KEYS_TO_INCLUDE = {"message_id", "text", "timestamp"}
 
 
 flask_app = Flask(__name__)
@@ -47,7 +47,7 @@ def get_messages():
     args = read_arguments()
     if isinstance(args, ValueError):
         return Response(args, status=400)
-    
+
     session = Session()
     conditions = []
     if args.type_name:
@@ -59,7 +59,13 @@ def get_messages():
     conditions = and_(true(), *conditions)
 
     rows = (
-        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
+        session.query(
+            Events.sender_id,
+            Events.type_name,
+            Events.intent_name,
+            Events.action_name,
+            Events.data,
+        )
         .where(conditions)
         .order_by(asc(Events.timestamp))
         .limit(args.limit)
@@ -72,7 +78,11 @@ def get_messages():
         data_json = json.loads(row[4])  # data column needs to be parsed
 
         # exclude commands if unique is true
-        if args.unique and data_json["text"].startswith("/"):
+        if args.unique and (
+            "text" not in data_json
+            or data_json["text"] is None
+            or data_json["text"].startswith("/")
+        ):
             continue
 
         message = process_message(row)
@@ -112,7 +122,13 @@ def get_conversation_by_sender_id(sender_id):
 
     session = Session()
     rows = (
-        session.query(Events.sender_id, Events.type_name, Events.intent_name, Events.action_name, Events.data)
+        session.query(
+            Events.sender_id,
+            Events.type_name,
+            Events.intent_name,
+            Events.action_name,
+            Events.data,
+        )
         .where(conditions)
         .order_by(asc(Events.timestamp))
         .limit(args.limit)
@@ -122,6 +138,16 @@ def get_conversation_by_sender_id(sender_id):
 
     message_list = []
     for row in rows:
+        data_json = json.loads(row[4])  # data column needs to be parsed
+
+        # exclude commands if unique is true
+        if args.unique and (
+            "text" not in data_json
+            or data_json["text"] is None
+            or data_json["text"].startswith("/")
+        ):
+            continue
+
         message = process_message(row)
         message_list.append(message)
 
@@ -143,7 +169,7 @@ def get_senders():
     args = read_arguments()
     if isinstance(args, ValueError):
         return Response(args, status=400)
-    
+
     session = Session()
     conditions = []
     if args.start_date:
@@ -180,10 +206,10 @@ def process_message(row):
     message["action_name"] = row[3]
     data_column = json.loads(row[4])
 
-    for key in PARSE_DATA_KEYS_TO_INCLUDE:
+    for key in DATA_KEYS_TO_INCLUDE:
         message[key] = None
     message.update(
-        {k: data_column[k] for k in data_column.keys() & PARSE_DATA_KEYS_TO_INCLUDE}
+        {k: data_column[k] for k in data_column.keys() & DATA_KEYS_TO_INCLUDE}
     )
 
     parse_data = data_column["parse_data"] if "parse_data" in data_column else None
@@ -191,13 +217,11 @@ def process_message(row):
         message["entities"] = parse_data["entities"]
         message["intent"] = parse_data["intent"]
         message["intent_ranking"] = parse_data["intent_ranking"]
-        message["text"] = parse_data["text"] if "text" in parse_data else None
         message["name"] = parse_data["name"] if "name" in parse_data else None
     else:
         # to be consistent
         message["entities"] = []
         message["intent"] = {}
         message["intent_ranking"] = []
-        message["text"] = None
         message["name"] = None
     return message
