@@ -148,3 +148,18 @@ General purpose linting for our project. Inspects yml and python files.
 - `test-identity`: Convenience method to call the API
 - `test-is-org-admin`: Convenience method to call the API as an org admin
 - `test-is-not-org-admin`: Convenience method to call the API as a non org admin
+
+### make/Makefile.hyperopt.mk
+
+- `hyperopt-nlu`: Does an nlu optimization. See [Optimizing hyperparameters](#Optimizing-hyperparameters)
+
+## Optimizing hyperparameters
+
+These are the parameters used in our configs. There are multiple tools such as 
+[hyperopt](https://github.com/hyperopt/hyperopt). There is a Rasa implementation that uses
+hyperopt to optimize the NLU data. It can be see at [RasaHQ/nlu-hyperopt](https://github.com/RasaHQ/nlu-hyperopt/).
+
+We have a make target (`hyperopt-nlu`) that sets this up for this project. 
+It takes the configuration from [config/nlu-hyperopt/](./config/nlu-hyperopt) 
+but further configuration can be done after first run in [.astro/nlu-hyperopt]. 
+Refer to our config files and the original repository for more information.
