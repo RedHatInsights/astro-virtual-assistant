@@ -80,12 +80,35 @@ def test_clowdapp():
         assert app.database_password == "secret"
         assert app.database_name == "some-db"
         assert app.database_ssl_mode == "require"
+        assert app.database_ca_path is None  # No ca path on file
 
         assert app.lock_store_type == "in_memory"
         assert app.redis_hostname is None
         assert app.redis_port is None
         assert app.redis_username is None
         assert app.redis_password is None
+
+    finally:
+        clear_app_config()
+
+
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": "./tests/resources/clowdapp-with-db-ca.json",
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_clowdapp_with_db_ca():
+    try:
+        import_app_config()
+        from common.config import app
+
+        assert app.is_running_locally is False
+
+        assert app.database_ca_path is not None
+        assert isinstance(app.database_ca_path, str) is True
 
     finally:
         clear_app_config()

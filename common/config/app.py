@@ -85,6 +85,7 @@ database_user = _config("DB_USERNAME", default=None)
 database_password = _config("DB_PASSWORD", default=None)
 database_name = _config("DB_NAME", default=None)
 database_ssl_mode = _config("DB_SSL_MODE", default=None)
+database_ca_path = _config("DB_CA_PATH", default=None)
 
 lock_store_type = _config("LOCK_STORE_TYPE", default="in_memory")
 
