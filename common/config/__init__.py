@@ -19,8 +19,11 @@ if os.getenv("ACG_CONFIG"):
     from app_common_python import LoadedConfig
 
     __repository_chain.append(RepositoryClowdapp(LoadedConfig))
-    LoadedConfig.rds_ca()
-    LoadedConfig.kafka_ca()
+    if LoadedConfig.database.rdsCa is not None:
+        LoadedConfig.rds_ca()
+
+    if len(LoadedConfig.kafka.brokers) > 0 and LoadedConfig.kafka.brokers[0].cacert is not None:
+        LoadedConfig.kafka_ca()
 
 __repository_chain.append(RepositoryOpenshift())
 
