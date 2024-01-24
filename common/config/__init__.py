@@ -19,6 +19,8 @@ if os.getenv("ACG_CONFIG"):
     from app_common_python import LoadedConfig
 
     __repository_chain.append(RepositoryClowdapp(LoadedConfig))
+    LoadedConfig.rds_ca()
+    LoadedConfig.kafka_ca()
 
 __repository_chain.append(RepositoryOpenshift())
 
