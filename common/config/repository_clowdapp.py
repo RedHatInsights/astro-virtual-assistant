@@ -35,6 +35,7 @@ class RepositoryClowdapp(RepositoryEmpty):
 
     def __init__(self, config):
         self.config = config
+        self.__db_ca_path = None
 
     def __contains__(self, item):
         if self.config is None:
@@ -72,6 +73,9 @@ class RepositoryClowdapp(RepositoryEmpty):
                     else:
                         raise ValueError("Invalid configuration %s" % item)
         elif item.startswith(self.__DATABASE_PREFIX):
+            if item == self.__DATABASE_PREFIX + "CA_PATH":
+                return self.__get_database_ca_path()
+
             return _get_item_with_param(
                 self.__DATABASE_PREFIX, item, self.config.database
             )
@@ -101,6 +105,12 @@ class RepositoryClowdapp(RepositoryEmpty):
                 return endpoint
 
         return None
+
+    def __get_database_ca_path(self):
+        if self.__db_ca_path is None and self.config.database.rdsCa is not None:
+            self.__db_ca_path = self.config.rds_ca()
+
+        return self.__db_ca_path
 
 
 def _get_item_with_param(prefix: Text, item: Text, config, fail_if_not_found=True):
