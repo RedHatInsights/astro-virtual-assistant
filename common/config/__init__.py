@@ -22,7 +22,10 @@ if os.getenv("ACG_CONFIG"):
     if LoadedConfig.database.rdsCa is not None:
         LoadedConfig.rds_ca()
 
-    if len(LoadedConfig.kafka.brokers) > 0 and LoadedConfig.kafka.brokers[0].cacert is not None:
+    if (
+        len(LoadedConfig.kafka.brokers) > 0
+        and LoadedConfig.kafka.brokers[0].cacert is not None
+    ):
         LoadedConfig.kafka_ca()
 
 __repository_chain.append(RepositoryOpenshift())
