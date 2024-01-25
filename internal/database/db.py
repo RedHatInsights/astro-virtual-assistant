@@ -20,5 +20,5 @@ class DB:
             self.conn_args = {"sslrootcert": app.database_ca_path}
 
     def get_engine(self):
-        engine = create_engine(self.conn_str, connect_args=self.conn_args)
+        engine = create_engine(self.conn_str, connect_args=self.conn_args or {})
         return engine
