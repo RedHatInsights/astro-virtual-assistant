@@ -1,6 +1,8 @@
 from decouple import undefined as __undefined, Choices
 import os
 
+from rasa.constants import DEFAULT_RASA_PORT
+
 from . import config as _config
 
 name = _config("APP_NAME", default="astro-virtual-assistant")
@@ -33,7 +35,9 @@ hostname = _config("HOSTNAME", default=None)
 prometheus = _config("PROMETHEUS", default=False, cast=bool)
 
 prometheus_port = _config("METRICS_PORT", default=0, cast=int)
-api_port = _config("API_PORT", default=_config("PUBLIC_PORT", default=0), cast=int)
+api_port = _config(
+    "API_PORT", default=_config("PUBLIC_PORT", default=DEFAULT_RASA_PORT), cast=int
+)
 actions_port = _config(
     "ACTIONS_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
 )

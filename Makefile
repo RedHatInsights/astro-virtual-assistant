@@ -18,7 +18,7 @@ clean:
 
 # runs the assistant
 run:
-	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS}
+	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS} --enable-api
 
 run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}

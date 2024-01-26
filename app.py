@@ -5,6 +5,9 @@ import sys
 
 from prometheus_client import start_http_server
 from threading import Event
+
+from rasa.constants import DEFAULT_RASA_PORT
+
 from common import logging
 from common.config import app
 
@@ -55,8 +58,8 @@ def main():
     if app.prometheus is True:
         start_prometheus()
 
-    # Use API_PORT when set
-    if app.api_port:
+    # Use API_PORT when set to other than default
+    if app.api_port != DEFAULT_RASA_PORT:
         sys.argv.extend(["--port", str(app.api_port)])
 
     rasa_main()
