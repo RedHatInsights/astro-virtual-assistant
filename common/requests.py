@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
+import aiohttp
 from rasa_sdk import Tracker
 
-import requests
 from common import logging
 from common.config import app
 
@@ -15,7 +15,7 @@ from .auth import get_auth_header
 logger = logging.initialize_logging()
 
 
-def send_console_request(
+async def send_console_request(
     app_name: str,
     path: str,
     tracker: Tracker,
@@ -49,20 +49,20 @@ def send_console_request(
 
     try:
         logger.info("Calling console service %s %s", method.upper(), url)
-        result = requests.request(
-            method,
-            url,
-            headers=headers.build_headers(),
-            timeout=app.requests_timeout,
-            **kwargs,
-        )
+        async with aiohttp.ClientSession() as session:
+            async with session.request(
+                method,
+                url,
+                headers=headers.build_headers(),
+                timeout=app.requests_timeout,
+                **kwargs,
+            ) as console_response:
+                if not console_response.ok:
+                    logger.error(
+                        f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {console_response.content}"
+                    )
 
-        if not result.ok:
-            logger.error(
-                f"Received non OK~sh response from call {method.upper()} {url}: ({result.status_code}) - {result.content}"
-            )
-
-        return result
+                return console_response
     except Exception as e:
         logger.error(
             f"Exception while handling request: {method.upper()} {url}", exc_info=True
