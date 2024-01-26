@@ -179,7 +179,7 @@ objects:
       schedule: ${CLEANER_SCHEDULE}
       suspend: ${{CLEANER_SUSPEND}}
       podSpec:
-        image: quay.io/tahmidefaz/virtual-assistant-actions:internal-1
+        image: ${INTERNAL_IMAGE_NAME}:${IMAGE_TAG}
         restartPolicy: Never
         command:
           - ./internal/cronjob/db-cleaner.sh
