@@ -1,3 +1,4 @@
+import aiohttp
 from sanic import Blueprint, response
 from asyncio import CancelledError
 from sanic.request import Request
@@ -98,6 +99,26 @@ class ConsoleInput(InputChannel):
                 logger.debug("Message: %s", message)
 
             return response.json(collector.messages)
+
+        @custom_webhook.route("/first_visit", methods=["GET"])
+        async def first_visit(request: Request) -> HTTPResponse:
+            identity = self.extract_identity(request)
+            if not identity:
+                return response.json(
+                    {"error": "No x-rh-identity header present"}, status=400
+                )
+            # base64 decode the identity header
+            identity_dict = decode_identity(identity)
+            sender_id = self.get_sender(identity_dict)
+
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f"http://localhost:5005/conversations/{sender_id}/tracker") as tracker_response:
+                    tracker_result = await tracker_response.json()
+                    is_first_visit = 'name' not in tracker_result['latest_message']['intent']
+
+            return response.json({
+                "first_visit": is_first_visit
+            })
 
         return custom_webhook
 
