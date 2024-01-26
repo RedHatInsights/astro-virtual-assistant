@@ -9,30 +9,43 @@ include make/Makefile.lint.mk
 include make/Makefile.train.mk
 include make/Makefile.hyperopt.mk
 
+main-env:
+	echo "main-env"
+	. .venv/main/bin/activate
+
+internal-env:
+	echo "internal-env"
+	. .venv/internal/bin/activate
+
 # install and train the project
 install:
-	pipenv install --categories "packages dev-packages api-packages internal-packages"
+	python3 -m venv .venv/main
+	${MAKE} main-env
+	pipenv install --categories "packages dev-packages api-packages"
+	python3 -m venv .venv/internal
+	${MAKE} internal-env
+	pipenv install --categories "packages dev-packages internal-packages"
 
 clean:
 	rm -rf results .rasa models/* .astro
 
 # runs the assistant
-run:
+run: main-env
 	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS}
 
-run-interactive:
+run-interactive:  main-env
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
-run-actions:
+run-actions:  main-env
 	pipenv run ${RASA_ACTIONS_EXEC} --actions actions --auto-reload
 
-run-cli:
+run-cli:  main-env
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
-run-internal:
+run-internal: internal-env
 	pipenv run ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
 
-run-db:
+run-db: main-env
 	pipenv run make db
 
 db:
@@ -42,5 +55,5 @@ drop-db:
 	${CONTAINER_EXEC} stop postgres
 	${CONTAINER_EXEC} rm postgres
 
-compose:
+compose: main-env
 	pipenv run ${COMPOSE_EXEC} up
