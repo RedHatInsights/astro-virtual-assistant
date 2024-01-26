@@ -9,8 +9,14 @@ ENV PYTHON_VERSION=3.9 \
     PIPENV_VERBOSITY=-1 \
     APP_ROOT=/opt/virtual-assistant
 
+# install postgresql from postgresql.org RPM if not building on RHSM system
+RUN FULL_RHEL=$(microdnf repolist --enabled | grep rhel-8) ; \
+    if [ -z "$FULL_RHEL" ] ; then \
+        rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm ; \
+    fi
+
 # Install Python 3.9
-RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq" && \
+RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq postgresql15" && \
     microdnf --nodocs -y upgrade && \
     microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -45,5 +51,3 @@ COPY *.yml ./
 COPY ./run_internal.py ./run_internal.py
 
 USER 1001
-
-ENTRYPOINT ["python", "run_internal.py"]

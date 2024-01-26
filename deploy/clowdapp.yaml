@@ -133,6 +133,9 @@ objects:
           enabled: true
       podSpec:
         image: ${INTERNAL_IMAGE_NAME}:${IMAGE_TAG}
+        command:
+          - python
+          - run_internal.py
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -167,6 +170,22 @@ objects:
         resources:
           limits:
             cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    jobs:
+    - name: db-cleaner
+      schedule: ${CLEANER_SCHEDULE}
+      suspend: ${{CLEANER_SUSPEND}}
+      podSpec:
+        image: quay.io/tahmidefaz/virtual-assistant-actions:internal-1
+        restartPolicy: Never
+        command:
+          - ./internal/cronjob/db-cleaner.sh
+        resources:
+          limits:
+            cpu: 200m
             memory: 256Mi
           requests:
             cpu: 100m
@@ -215,3 +234,7 @@ parameters:
 - description: Server's max allowed header size
   name: SERVER_REQUEST_MAX_HEADER_SIZE
   value: "20000"
+- name: CLEANER_SUSPEND
+  value: 'false'
+- name: CLEANER_SCHEDULE
+  value: "1 0 * * *"
