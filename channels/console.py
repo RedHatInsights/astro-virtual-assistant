@@ -101,7 +101,7 @@ class ConsoleInput(InputChannel):
 
             return response.json(collector.messages)
 
-        @custom_webhook.route("/first_visit", methods=["GET"])
+        @custom_webhook.route("/session/status", methods=["GET"])
         async def first_visit(request: Request) -> HTTPResponse:
             identity = self.extract_identity(request)
             if not identity:
