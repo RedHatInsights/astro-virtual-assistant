@@ -113,13 +113,15 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity_dict)
 
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"http://{app.api_listen_address}:{app.api_port}/conversations/{sender_id}/tracker") as tracker_response:
+                async with session.get(
+                    f"http://{app.api_listen_address}:{app.api_port}/conversations/{sender_id}/tracker"
+                ) as tracker_response:
                     tracker_result = await tracker_response.json()
-                    is_first_visit = 'name' not in tracker_result['latest_message']['intent']
+                    is_first_visit = (
+                        "name" not in tracker_result["latest_message"]["intent"]
+                    )
 
-            return response.json({
-                "first_visit": is_first_visit
-            })
+            return response.json({"first_visit": is_first_visit})
 
         return custom_webhook
 
