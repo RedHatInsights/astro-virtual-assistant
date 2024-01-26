@@ -4,6 +4,7 @@ from asyncio import CancelledError
 from sanic.request import Request
 from sanic.response import HTTPResponse
 from typing import Text, Dict, Any, Optional, Callable, Awaitable
+from common.config import app
 import hashlib
 
 from common.identity import decode_identity
@@ -112,7 +113,7 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity_dict)
 
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"http://localhost:5005/conversations/{sender_id}/tracker") as tracker_response:
+                async with session.get(f"http://{app.api_listen_address}:{app.api_port}/conversations/{sender_id}/tracker") as tracker_response:
                     tracker_result = await tracker_response.json()
                     is_first_visit = 'name' not in tracker_result['latest_message']['intent']
 
