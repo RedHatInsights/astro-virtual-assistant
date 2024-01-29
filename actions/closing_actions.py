@@ -87,6 +87,10 @@ class ValidateFormClosing(FormValidationAction):
                 dispatcher.utter_message(
                     response="utter_closing_feedback_bad_experience"
                 )
+            elif closing_feedback_type == "this_conversation":
+                dispatcher.utter_message(
+                    response="utter_closing_feedback_this_conversation"
+                )
             else:
                 dispatcher.utter_message(response="utter_closing_feedback_general")
 
@@ -165,6 +169,7 @@ class ExecuteFormClosing(Action):
                         "description": f"""
                         Feedback type: {feedback_type}
                         Feedback: {closing_feedback}
+                        Sender: {tracker.sender_id}
                         
                         {user_got_help_section}
                         """,

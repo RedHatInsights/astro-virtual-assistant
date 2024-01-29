@@ -131,11 +131,12 @@ class ValidateFormFeedback(FormValidationAction):
                 return [SlotSet("requested_slot", None)] + reset_slots
 
             elif feedback_where == "conversation":
-                dispatcher.utter_message(response="utter_feedback_to_closing_form")
-
                 return reset_slots + [
                     SlotSet("requested_slot", None),
                     SlotSet("feedback_form_to_closing_form", True),
+                    SlotSet("closing_skip_got_help", True),
+                    SlotSet("closing_leave_feedback", True),
+                    SlotSet("closing_feedback_type", "this_conversation"),
                 ]
 
         if requested_slot == COLLECTION:

@@ -31,6 +31,7 @@ slots:
     values:
       - general
       - bad_experience
+      - this_conversation
     mappings:
       - type: custom
   closing_got_help:
@@ -107,6 +108,9 @@ responses:
     - text: >
         I'm sorry that you had a bad experience.
         You can type in your feedback below and I'll share it with my team.
+  utter_closing_feedback_this_conversation:
+    - text: >
+        Please talk below about our conversation.
   utter_closing_finally:
     - text: >
         My team is training me so that I'm able to expand the ways I can help you. Your interactions and

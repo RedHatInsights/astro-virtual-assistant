@@ -140,8 +140,6 @@ responses:
           payload: "/intent_feedback_where_console"
         - title: "This conversation"
           payload: "/intent_feedback_where_conversation"
-  utter_feedback_to_closing_form:
-    - text: Please talk below about our conversation.
   utter_ask_feedback_collection:
     - text: "How would you like to provide your feedback?"
       buttons:
