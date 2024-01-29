@@ -87,23 +87,25 @@ responses:
   utter_closing_restart:
     - text: Sure, I can close this conversation and start a new one for you.
   utter_ask_closing_got_help:
-    - text: Were you able to get help with what you needed?
-      buttons: &buttons_yes_no
-        - title: Yes
-          payload: /intent_core_yes
-        - title: No
-          payload: /intent_core_no
+    - text: How would you rate our conversation?
+      custom:
+        type: command
+        command: thumbs
   utter_closing_got_help_yes:
     - text: Great!
   utter_closing_got_help_no:
     - text: Thanks for sharing.
   utter_ask_closing_leave_feedback:
-    - text: Would you like to leave any additional feedback?
-      buttons: *buttons_yes_no
+    - text: Got it. Would you like to leave any additional feedback?
+      buttons: &buttons_yes_no
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
     - text: Would you like to submit any feedback?
       buttons: *buttons_yes_no
   utter_closing_feedback_general:
-    - text: Okay. You can type in your feedback below and I'll share it with my team.
+    - text: You can type in your feedback below and I'll share it with my team.
   utter_closing_feedback_bad_experience:
     - text: >
         I'm sorry that you had a bad experience.
