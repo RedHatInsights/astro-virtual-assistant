@@ -90,9 +90,6 @@ responses:
       custom:
         type: command
         command: thumbs
-        params:
-          thumbsUp: /intent_core_yes
-          thumbsDown: /intent_core_no
   utter_closing_got_help_yes:
     - text: Great!
   utter_closing_got_help_no:
