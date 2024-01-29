@@ -136,7 +136,7 @@ class ValidateFormFeedback(FormValidationAction):
                     SlotSet("feedback_form_to_closing_form", True),
                     SlotSet("closing_skip_got_help", True),
                     SlotSet("closing_leave_feedback", True),
-                    SlotSet("closing_feedback_type", "this_conversation")
+                    SlotSet("closing_feedback_type", "this_conversation"),
                 ]
 
         if requested_slot == COLLECTION:
