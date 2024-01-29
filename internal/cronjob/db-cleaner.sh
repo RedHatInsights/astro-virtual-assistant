@@ -1,0 +1,19 @@
+#!/bin/bash
+
+RETENTION_DAYS=${RETENTION_DAYS:-180}
+
+if [[ ! -z "${ACG_CONFIG}" ]]; then
+    CLOWDER_DATABASE_PASSWORD=$(jq -r '.database.password' ${ACG_CONFIG})
+    CLOWDER_DATABASE_HOSTNAME=$(jq -r '.database.hostname' ${ACG_CONFIG})
+    CLOWDER_DATABASE_USERNAME=$(jq -r '.database.username' ${ACG_CONFIG})
+    CLOWDER_DATABASE_NAME=$(jq -r '.database.name' ${ACG_CONFIG})
+
+    echo "Clowder DB config load complete."
+fi
+
+echo "RETENTION_DAYS: $RETENTION_DAYS"
+
+PGPASSWORD=$CLOWDER_DATABASE_PASSWORD psql -h $CLOWDER_DATABASE_HOSTNAME -U $CLOWDER_DATABASE_USERNAME -d $CLOWDER_DATABASE_NAME -c "DELETE FROM events WHERE timestamp < EXTRACT(EPOCH FROM (NOW() - interval '$RETENTION_DAYS days'));"
+PGPASSWORD=$CLOWDER_DATABASE_PASSWORD psql -h $CLOWDER_DATABASE_HOSTNAME -U $CLOWDER_DATABASE_USERNAME -d $CLOWDER_DATABASE_NAME -c "VACUUM ANALYZE events;"
+
+echo "Process Complete."
