@@ -1,7 +1,11 @@
 from decouple import undefined as __undefined, Choices
 import os
 
-from rasa.constants import DEFAULT_RASA_PORT
+try:
+    from rasa.constants import DEFAULT_RASA_PORT
+except ModuleNotFoundError:
+    # Rasa is not installed in actions and internal server - Default to 0
+    DEFAULT_RASA_PORT = 0
 
 from . import config as _config
 
