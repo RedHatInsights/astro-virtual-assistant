@@ -31,6 +31,7 @@ rasa-sdk = "==3.7.1"
 [internal-packages]
 flask = ">=3.0.0"
 sqlalchemy = "<2.1"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.9"
