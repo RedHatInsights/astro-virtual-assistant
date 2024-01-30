@@ -10,19 +10,15 @@ include make/Makefile.train.mk
 include make/Makefile.hyperopt.mk
 
 main-env:
-	echo "main-env"
-	. .venv/main/bin/activate
+	export PIPENV_CUSTOM_VENV_NAME=astro-main
 
 internal-env:
-	echo "internal-env"
-	. .venv/internal/bin/activate
+	export PIPENV_CUSTOM_VENV_NAME=astro-internal
 
 # install and train the project
 install:
-	python3 -m venv .venv/main
 	${MAKE} main-env
 	pipenv install --categories "packages dev-packages api-packages"
-	python3 -m venv .venv/internal
 	${MAKE} internal-env
 	pipenv install --categories "packages dev-packages internal-packages"
 
