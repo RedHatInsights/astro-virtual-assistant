@@ -32,7 +32,6 @@ nlu:
 
   - intent: intent_core_yes
     examples: |
-      - Yes
       - yes
       - yeah
       - of course
@@ -43,12 +42,12 @@ nlu:
 
   - intent: intent_core_no
     examples: |
-      - No
       - n
       - nah
       - no
       - i don't think so
       - nay
+      - nvm
 
   - intent: intent_core_hello
     examples: |
@@ -191,6 +190,21 @@ nlu:
       - How can I trust the security of this?
       - is this private?
       - are we being monitored?
+
+  - intent: intent_data_deletion
+    examples: |
+      - Can you delete my messages
+      - I want to remove my messages
+      - Please dont store my messages
+      - Am I able to remove my message history?
+      - Please clear the chat history
+      - Delete chat history
+      - do not save this chat history
+      - empty the chat logs
+      - can you please delete my chat logs
+      - i dont want you to save this conversation log
+      - remove conversation log from your storage
+      - please get rid of my conversations in your logs
 
   - intent: intent_send_complaint
     examples: |
