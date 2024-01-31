@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.9"
-          cache: 'pipenv'
+          cache: 'pip'
       - run: pip install gspread google pyyaml
       - run: python scripts/dump_data.py > intents.csv
       - run: python scripts/update_google_sheet.py
