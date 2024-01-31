@@ -6,6 +6,7 @@ import yaml
 import glob
 import csv
 
+
 class Flow:
     pass
 
@@ -27,10 +28,11 @@ class ResponseContent:
     command: Optional[List[Text]]
 
     def __init__(
-            self,
-            text: Optional[Text],
-            options: Optional[List[Text]],
-            command: Optional[List[Text]]):
+        self,
+        text: Optional[Text],
+        options: Optional[List[Text]],
+        command: Optional[List[Text]],
+    ):
         self.text = text
         self.options = options
         self.command = command
@@ -41,7 +43,9 @@ class Response:
     contents: List[ResponseContent]
     yaml_filename: Text
 
-    def __init__(self, name: Text, contents: List[ResponseContent], yaml_filename: Text):
+    def __init__(
+        self, name: Text, contents: List[ResponseContent], yaml_filename: Text
+    ):
         self.name = name
         self.contents = contents
         self.yaml_filename = yaml_filename
@@ -72,60 +76,86 @@ class TrainingData:
 
     def add_intent(self, name: Text, training: List[Text], filename: Text):
         if name in self.intents:
-            raise DuplicatedDataFound("intent", name, filename, self.intents[name].yaml_filename)
+            raise DuplicatedDataFound(
+                "intent", name, filename, self.intents[name].yaml_filename
+            )
 
         self.intents[name] = Intent(name, training, filename)
 
     def add_response(self, name: Text, data: Dict, filename: Text):
         if name in self.responses:
-            raise DuplicatedDataFound("response", name, filename, self.responses[name].yaml_filename)
+            raise DuplicatedDataFound(
+                "response", name, filename, self.responses[name].yaml_filename
+            )
 
         self.responses[name] = Response(
             name,
             [
                 ResponseContent(
                     text=content["text"] if "text" in content else None,
-                    options=[
-                        button["title"] for button in content["buttons"]
-                    ] if "buttons" in content else None,
-                    command=content["custom"]["command"] if "custom" in content else None
-                ) for content in data
+                    options=(
+                        [button["title"] for button in content["buttons"]]
+                        if "buttons" in content
+                        else None
+                    ),
+                    command=(
+                        content["custom"]["command"] if "custom" in content else None
+                    ),
+                )
+                for content in data
             ],
-            filename
+            filename,
         )
 
     def __str__(self):
-        return f"intents: {self.intents.__str__()}\n responses: {self.responses.__str__()}"
+        return (
+            f"intents: {self.intents.__str__()}\n responses: {self.responses.__str__()}"
+        )
 
 
 def process_nlu_entry(training_data: TrainingData, nlu_entry: dict, filename: Text):
-    if 'intent' in nlu_entry:
-        examples = nlu_entry['examples'] if 'examples' in nlu_entry else []
+    if "intent" in nlu_entry:
+        examples = nlu_entry["examples"] if "examples" in nlu_entry else []
         if isinstance(examples, str):
             examples = [e.strip() for e in examples.split("-") if len(e.strip()) > 0]
-        training_data.add_intent(nlu_entry['intent'], examples, filename)
+        training_data.add_intent(nlu_entry["intent"], examples, filename)
 
 
-def process_responses_entry(training_data: TrainingData, name: Text, data: Dict, filename: Text):
+def process_responses_entry(
+    training_data: TrainingData, name: Text, data: Dict, filename: Text
+):
     training_data.add_response(name, data, filename)
 
 
 if __name__ == "__main__":
     training_data = TrainingData()
     for yaml_filename in glob.iglob("./data/**/*.y*ml", recursive=True):
-        if yaml_filename.lower().endswith(".yml") or yaml_filename.lower().endswith(".yaml"):
+        if yaml_filename.lower().endswith(".yml") or yaml_filename.lower().endswith(
+            ".yaml"
+        ):
             try:
                 with open(yaml_filename) as file:
                     file_contents = yaml.load(file, yaml.Loader)
                     if file_contents is not None:
-                        if 'nlu' in file_contents:
-                            for nlu_entry in file_contents['nlu']:
-                                process_nlu_entry(training_data, nlu_entry, yaml_filename)
-                        if 'responses' in file_contents:
-                            for response_name, response_data in file_contents['responses'].items():
-                                process_responses_entry(training_data, response_name, response_data, yaml_filename)
+                        if "nlu" in file_contents:
+                            for nlu_entry in file_contents["nlu"]:
+                                process_nlu_entry(
+                                    training_data, nlu_entry, yaml_filename
+                                )
+                        if "responses" in file_contents:
+                            for response_name, response_data in file_contents[
+                                "responses"
+                            ].items():
+                                process_responses_entry(
+                                    training_data,
+                                    response_name,
+                                    response_data,
+                                    yaml_filename,
+                                )
             except DuplicatedDataFound as ddf:
-                print(f"Error processing file %{yaml_filename}: Found a duplicate {ddf.what} {ddf.name}")
+                print(
+                    f"Error processing file %{yaml_filename}: Found a duplicate {ddf.what} {ddf.name}"
+                )
                 traceback.print_exc()
                 exit(1)
             except Exception as exception:
@@ -135,7 +165,7 @@ if __name__ == "__main__":
 
     # Print intents to csv
     writer = csv.writer(sys.stdout)
-    writer.writerow(['intent', 'training', 'filename'])
+    writer.writerow(["intent", "training", "filename"])
     for intent, data in training_data.intents.items():
         for training_entry in data.training:
             writer.writerow([data.name, training_entry, data.yaml_filename])

@@ -11,7 +11,9 @@ def fetch_csv(csv_file: Text) -> List:
         return list(reader(input))
 
 
-def dump_to_google_sheet(spreadsheet_id: Text, worksheet_name: Text, data: List, credentials: Credentials):
+def dump_to_google_sheet(
+    spreadsheet_id: Text, worksheet_name: Text, data: List, credentials: Credentials
+):
     client = gspread.authorize(credentials)
     spreadsheet = client.open_by_key(spreadsheet_id)
     ws = spreadsheet.worksheet(worksheet_name)
@@ -26,9 +28,7 @@ if __name__ == "__main__":
     service_account_info = {
         "token_uri": "https://oauth2.googleapis.com/token",
         "client_email": getenv("GOOGLE_CLOUD_ACCOUNT"),
-        "private_key": getenv("GOOGLE_CLOUD_ACCOUNT_SECRET").replace(
-            "\\n", "\n"
-        ),
+        "private_key": getenv("GOOGLE_CLOUD_ACCOUNT_SECRET").replace("\\n", "\n"),
     }
     scopes = [
         "https://spreadsheets.google.com/feeds",
@@ -38,5 +38,5 @@ if __name__ == "__main__":
         service_account_info, scopes=scopes
     )
 
-    data = fetch_csv('./intents.csv')
+    data = fetch_csv("./intents.csv")
     dump_to_google_sheet(spreadsheet_id, worksheet_name, data, credentials)

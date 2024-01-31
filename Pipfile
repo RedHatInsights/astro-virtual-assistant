@@ -23,6 +23,7 @@ pytest = "*"
 black = ">=23.9.1"
 gspread = "*"
 google = "*"
+pyyaml = "*"
 
 [api-packages]
 rasa = "==3.6.15"
