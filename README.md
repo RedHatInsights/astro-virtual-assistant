@@ -163,3 +163,17 @@ We have a make target (`hyperopt-nlu`) that sets this up for this project.
 It takes the configuration from [config/nlu-hyperopt/](./config/nlu-hyperopt) 
 but further configuration can be done after first run in [.astro/nlu-hyperopt]. 
 Refer to our config files and the original repository for more information.
+
+## Scripts
+
+To make it easier to review all our intents and their training examples, there are some scripts found on [scripts/](./scripts).
+-  [scripts/dump_data.py](./scripts/dump_data.py) Will scan the [data](./data) directory, load all the intents and dump all
+   of these in stdin in CSV format. It will also validate for repeated intents, which is something that could be
+   extracted to a separate process.
+- [scripts/update_google_sheet.py] It will read the file `./intents.csv` and upload it to google sheets using the following environmental variables:
+  - SPREADSHEET_ID: Id of the google sheet
+  - WORKSHEET_NAME: Name of the work sheet
+  - GOOGLE_CLOUD_ACCOUNT: Service account email
+  - GOOGLE_CLOUD_ACCOUNT_SECRET: Private key of the service account email
+  
+  This is currently done automatically on commits to main branch by one of our github workflows.
