@@ -21,6 +21,9 @@ websockets = "==10.0"
 pyopenssl = ">=23.2.0"
 pytest = "*"
 black = ">=23.9.1"
+gspread = "*"
+google = "*"
+pyyaml = "*"
 
 [api-packages]
 rasa = "==3.6.15"
