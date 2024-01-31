@@ -1,0 +1,27 @@
+name: Updates intents to google sheet
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+          cache: 'pipenv'
+      - run: pip install gspread google pyyaml
+      - run: python scripts/dump_data.py > intents.csv
+      - run: python scripts/update_google_sheet.py
+        env:
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          WORKSHEET_NAME: "main"
+          GOOGLE_CLOUD_ACCOUNT: ${{ secrets.GOOGLE_CLOUD_ACCOUNT }}
+          GOOGLE_CLOUD_ACCOUNT_SECRET: ${{ secrets.GOOGLE_CLOUD_ACCOUNT_SECRET }}
