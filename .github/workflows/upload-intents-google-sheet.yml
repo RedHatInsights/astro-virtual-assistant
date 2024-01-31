@@ -1,7 +1,7 @@
 name: Updates intents to google sheet
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
 
 permissions:
