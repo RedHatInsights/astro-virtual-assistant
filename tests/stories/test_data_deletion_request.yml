@@ -6,22 +6,6 @@ stories:
       - user: |
           I want to remove my messages, scared of CIA
         intent: intent_data_deletion
-      - action: utter_data_deletion_confirmation
-      - user: |
-          yes
-        intent: intent_core_yes
       - action: utter_data_deletion_privacy_statement
       - action: utter_data_deletion_open_a_ticket
-      - action: utter_core_how_can_i_help
-
-  - story: User wants to delete their data but then they don't
-    steps:
-      - user: |
-          delete chat history
-        intent: intent_data_deletion
-      - action: utter_data_deletion_confirmation
-      - user: |
-          nvm
-        intent: intent_core_no
-      - action: utter_data_deletion_cancel
       - action: utter_core_how_can_i_help

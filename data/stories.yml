@@ -97,21 +97,8 @@ stories:
   - story: Data deletion request
     steps:
       - intent: intent_data_deletion
-      - action: utter_data_deletion_confirmation
-
-  - story: Data deletion request - confirmed
-    steps:
-      - action: utter_data_deletion_confirmation
-      - intent: intent_core_yes
       - action: utter_data_deletion_privacy_statement
       - action: utter_data_deletion_open_a_ticket
-      - action: utter_core_how_can_i_help
-
-  - story: Data deletion request - canceled
-    steps:
-      - action: utter_data_deletion_confirmation
-      - intent: intent_core_no
-      - action: utter_data_deletion_cancel
       - action: utter_core_how_can_i_help
 
   - story: Are you an AI?
