@@ -5,15 +5,18 @@ nlu:
     examples: |
       - Access issue
       - Access denied
+      - Access error
       - Can you help me get access?
+      - I am getting an access issue
+      - I am getting an access error
       - I am getting an access denied error...
       - I can't view my data.
       - I was able to view this page before, but now I can't.
       - I can't access my data.
       - Why can't I access my data?
-      - Why don't I have access to this?
       - What do I do if I can't access something?
       - how do I get access?
+      - How can I access?
 
   - intent: intent_access_request
     examples: |
@@ -37,9 +40,9 @@ nlu:
       - Do i have access to [advisor](service)
       - Do I have access to [notifications](service)
       - Do I have access to settings?
-      - I'm getting an access error.
       - I can't access the console.
       - Why can't I view this?
+      - Why don't I have access to this?
       - I can't view this page.
       - I can't view this. I get an access error.
 
