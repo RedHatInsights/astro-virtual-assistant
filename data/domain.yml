@@ -13,6 +13,7 @@ intents:
   - intent_core_yes
   - intent_core_no
   - intent_data_privacy_policy
+  - intent_data_deletion
   - intent_send_complaint
   - intent_are_you_ai
   - intent_user_preferences
@@ -111,6 +112,12 @@ responses:
     - text: "Your data is protected under [Red Hat's privacy policy](https://www.redhat.com/en/about/privacy-policy)."
   utter_privacy_info_2:
     - text: "My team will manually review your messages to identify new use cases and add data to our natural language understanding (NLU) models."
+  utter_data_deletion_privacy_statement:
+    - text: "Please review our [Privacy Statement](https://www.redhat.com/en/about/privacy-policy#rights). You can review your rights and choices there."
+  utter_data_deletion_open_a_ticket:
+    - text: "If you choose to open a ticket to delete your data, I will work with the privacy team to ensure our conversations are removed."
+  utter_data_deletion_cancel:
+    - text: "Got it. You're always welcome to ask again if you change your mind."
   utter_live_chat:
     - text: "I don't support live chat, but you can leave feedback for my team to review."
   utter_are_you_ai_1:
