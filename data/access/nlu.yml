@@ -44,7 +44,6 @@ nlu:
       - Why can't I view this?
       - Why don't I have access to this?
       - I can't view this page.
-      - I can't view this. I get an access error.
 
   - intent: intent_access_contact_admin
     examples: |
