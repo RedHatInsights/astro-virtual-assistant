@@ -4,6 +4,11 @@ intents:
   - intent_image_builder_getting_started
   - intent_image_builder_custom_content
   - intent_image_builder_launch
+  - intent_image_builder_rhel_9
+  - intent_image_builder_rhel_8
+  - intent_image_builder_custom_content_epel
+  - intent_image_builder_custom_content_epel_8
+  - intent_image_builder_custom_content_epel_9
 
 entities:
   - content
@@ -75,6 +80,9 @@ forms:
 
 actions:
   - validate_form_image_builder_getting_started
+  - action_image_builder_getting_started
+  - validate_form_image_builder_custom_content
+  - action_image_builder_custom_content
   - action_image_builder_launch
 
 responses:
@@ -113,7 +121,7 @@ responses:
         - title: "EPEL 9"
           payload: "/intent_image_builder_custom_content_epel_9"
   utter_image_builder_custom_content_epel:
-    - "The {epel} repository has been enabled and can now be used when building images with Image Builder. Would you like to be directed to Image Builder?"
+    - text: "The {epel} repository has been enabled and can now be used when building images with Image Builder. Would you like to be directed to Image Builder?"
   utter_image_builder_custom_content_other:
     - text: "Other custom repositories can be configured from [Content Repositories]({link})."  
   utter_image_builder_launch:

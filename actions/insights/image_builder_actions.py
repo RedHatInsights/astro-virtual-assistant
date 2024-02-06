@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted
+from rasa_sdk.events import ActionExecuted, SlotSet, UserUtteranceReverted, ActionReverted
 from rasa_sdk.types import DomainDict
 
 from common import logging
@@ -10,6 +10,7 @@ from common import logging
 
 logger = logging.initialize_logging()
 RHEL_VERSION = "image_builder_rhel_version"
+RHEL_VERSION_CONFIRM = "image_builder_rhel_version_confirmed"
 
 class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     def name(self) -> Text:
@@ -54,45 +55,10 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     ) -> List[Dict[Text, Any]]:
         requested_slot = tracker.get_slot("requested_slot")
 
-        feedback_type = tracker.get_slot()
-        if requested_slot == TYPE:
-            if feedback_type == "bug":
-                dispatcher.utter_message(response="utter_feedback_type_bug")
-                dispatcher.utter_message(response="utter_bug_where")
-            elif feedback_type == "general":
-                dispatcher.utter_message(response="utter_ask_feedback_where_general")
-
-        if requested_slot == WHERE:
-            feedback_where = tracker.get_slot(WHERE)
-            reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
-            if feedback_where == "console" and feedback_type == "bug":
-                dispatcher.utter_message(response="utter_bug_redirect")
-                return [SlotSet("requested_slot", None)] + reset_slots
-
-            elif feedback_where == "conversation":
-                return reset_slots + [
-                    SlotSet("requested_slot", None),
-                    SlotSet("feedback_form_to_closing_form", True),
-                    SlotSet("closing_skip_got_help", True),
-                    SlotSet("closing_leave_feedback", True),
-                    SlotSet("closing_feedback_type", "this_conversation"),
-                ]
-
-        if requested_slot == COLLECTION:
-            feedback_collection = tracker.get_slot(COLLECTION)
-            if feedback_collection == "pendo":
-                reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
-                dispatcher.utter_message(response="utter_feedback_collection_pendo")
-                return [SlotSet("requested_slot", None)] + reset_slots
-
-        if requested_slot == RESPONSE:
-            dispatcher.utter_message(response="utter_feedback_transparency")
-
-        if requested_slot == USABILITY_STUDY:
-            if tracker.get_slot(USABILITY_STUDY) is True:
-                dispatcher.utter_message(response="utter_feedback_usability_study_yes")
-            else:
-                dispatcher.utter_message(response="utter_feedback_usability_study_no")
+        if requested_slot == RHEL_VERSION:
+            rhel_version = tracker.get_slot(RHEL_VERSION)
+            if rhel_version == "RHEL 9":
+                return [SlotSet(RHEL_VERSION_CONFIRM, True), SlotSet("requested_slot", None)]
 
         form_result = await super().run(dispatcher, tracker, domain)
 
@@ -125,19 +91,28 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
         if tracker.get_slot(RHEL_VERSION) == "RHEL 9":
             updated_slots.remove("image_builder_rhel_version_confirm")
 
-        if (
-            tracker.get_slot(TYPE) == "general"
-            and tracker.get_slot("feedback_where") == "conversation"
-        ):
-            updated_slots.remove(COLLECTION)
-            updated_slots.remove(RESPONSE)
-            updated_slots.remove(USABILITY_STUDY)
-
-        if tracker.get_slot(COLLECTION) == "pendo":
-            updated_slots.remove(RESPONSE)
-            updated_slots.remove(USABILITY_STUDY)
-
         return updated_slots
+
+class ImageBuilderGettingStarted(Action):
+    def name(self) -> Text:
+        return "action_image_builder_getting_started"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        # Need to find way to use the RHEL version to fill the proper form in wizard
+        # rhel_version = tracker.get_slot(RHEL_VERSION)
+        dispatcher.utter_message(response="utter_image_builder_redirect_1")
+        dispatcher.utter_message(
+            response="utter_image_builder_redirect_2",
+            link="https://console.redhat.com/insights/image-builder/imagewizard#SIDs=&tags="
+        )
+
+        events = [ActionExecuted(self.name())]
+        return events
 
 
 class ImageBuilderLaunch(Action):
@@ -150,16 +125,13 @@ class ImageBuilderLaunch(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        provider = tracker.latest_message['entities'][0]['value']
+        provider = tracker.latest_message['entities'][0]['value'].lower()
         # The team does not have a generic quickstart for other providers, default to AWS
         logger.info(f"Provider: {provider}")
         quick_start = ""
-        if provider == "aws":
-            quick_start = "https://console.redhat.com/insights/image-builder?quickstart=insights-launch-aws"
-        elif provider == "azure":
-            quick_start = "https://console.redhat.com/insights/image-builder?quickstart=insights-launch-azure"
-        elif provider == "gcp":
-            quick_start = "https://console.redhat.com/insights/image-builder?quickstart=insights-launch-gcp"
+        if provider == "aws" or provider == "azure" or provider == "gcp":
+            quick_start = f"https://console.redhat.com/insights/image-builder?quickstart=insights-launch-{provider}"
+            provider = provider.upper()
         else:
             provider = "your provider"
             quick_start = "https://console.redhat.com/insights/image-builder?quickstart=insights-launch-aws"

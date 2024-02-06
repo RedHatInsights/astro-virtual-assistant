@@ -50,6 +50,10 @@ nlu:
       - RHEL 8
       - 8
 
+  - intent: intent_image_builder_custom_content_epel
+    examples: |
+      - epel
+
   - intent: intent_image_builder_custom_content_epel_8
     examples: |
       - EPEL 8
