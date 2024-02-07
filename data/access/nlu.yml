@@ -20,25 +20,25 @@ nlu:
 
   - intent: intent_access_request
     examples: |
-      - I want access to [policies](service)
+      - I want access to [policies](core_services)
       - I want access
       - I need access to the console.
       - Requesting access for me
       - Give me access
-      - Give me access to [policies](service)
+      - Give me access to [policies](core_services)
       - Request access from my administrator
 
   - intent: intent_access_check_access
     examples: |
       - Do I have access?
-      - Do I have access to [policies](service)
+      - Do I have access to [policies](core_services)
       - Do I have permissions?
-      - Do i have permission to [policies](service)
+      - Do i have permission to [policies](core_services)
       - Am I allowed to access
-      - Am I allowed to see [policies](service)
+      - Am I allowed to see [policies](core_services)
       - Can you check my access permission?
-      - Do i have access to [advisor](service)
-      - Do I have access to [notifications](service)
+      - Do i have access to [advisor](core_services)
+      - Do I have access to [notifications](core_services)
       - Do I have access to settings?
       - I can't access the console.
       - Why can't I view this?

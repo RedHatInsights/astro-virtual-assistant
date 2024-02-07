@@ -26,6 +26,7 @@ pipeline:
    - name: DIETClassifier
      epochs: 80
      constrain_similarities: true
+   - name: EntitySynonymMapper
    - name: pipeline.fuzzy_entity_extractor.FuzzyEntityExtractor
      sentence_score_cutoff: 55
      word_score_cutoff: 75
