@@ -22,7 +22,7 @@ stories:
   - story: User checks API availability - 3
     steps:
       - user: |
-          Can you provide me the api docs for the advisor service?
+          Can you provide me the api docs for the [advisor](core_services) service?
         intent: intent_api_availability
       - action: utter_api_capabilities
       - action: form_closing

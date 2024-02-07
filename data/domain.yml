@@ -21,9 +21,11 @@ intents:
   - intent_user_preferences_password
   - intent_user_preferences_no_action
   - intent_customer_support # TODO: S9
+  - intent_core_help
 
 entities:
   - preference
+  - core_services
 
 slots:
   _dummy:
@@ -32,6 +34,20 @@ slots:
     mappings:
       - type: custom
         action: action_core_pre_process
+  core_services:
+    type: categorical
+    values:
+      - openshift
+      - rosa
+      - ocm
+      - acs
+      - policies
+      - advisor
+      - notifications
+    mappings:
+      - type: from_entity
+        entity: core_services
+
   current_url:
     type: text
     influence_conversation: true

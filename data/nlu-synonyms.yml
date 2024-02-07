@@ -1,0 +1,17 @@
+version: "3.1"
+
+nlu:
+  - synonym: openshift
+    examples: |
+      - open shift
+
+  #  We need to implement a reconciliation strategy to be able to include cluster
+  #   As it collides with "cluster security"
+  #   One strategy would be to use whatever includes the other
+  #  - synonym: ocm
+  #    examples: |
+  #      - cluster
+
+  - synonym: acs
+    examples: |
+      - cluster security

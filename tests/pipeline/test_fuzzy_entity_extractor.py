@@ -37,6 +37,7 @@ def _create_test_entity_extractor(config=None) -> FuzzyEntityExtractor:
                 ["red", "green", "blue"],
                 {
                     "cyan": "blue",
+                    "lapis lazuli": "blue",
                     "magenta": "red",
                     "cherry": "red",
                     "scarlet": "red",
@@ -47,7 +48,7 @@ def _create_test_entity_extractor(config=None) -> FuzzyEntityExtractor:
             FuzzyEntities(
                 "size",
                 ["big", "small"],
-                {"large": "big", "tiny": "small", "huge": "big", "immense": "big"},
+                {"large": "big", "tiny": "small", "huge": "big", "immense": "big", "of considerable size": "big"},
             ),
         ],
     )
@@ -90,6 +91,57 @@ def test_color_extraction():
         ENTITY_ATTRIBUTE_VALUE: "big",
     }
 
+
+def test_multi_word_color_extraction():
+    """
+    Tests the extraction of colors, multi words colors and multi words with typos ("of consderble size")
+    :return:
+    """
+    extractor = _create_test_entity_extractor()
+    entities = extractor.extract_entities(
+        _create_message(
+            "Hello world I like red and cyan. I found out that lapis lazuli is a synonym for blue. I would like a swandich of consderble size"
+        )
+    )
+
+    # Sort entities to make them easier to assert
+    entities.sort(key=lambda e: e[ENTITY_ATTRIBUTE_START])
+
+    assert len(entities) == 5
+    assert entities[0] == {
+        ENTITY_ATTRIBUTE_TYPE: "color",
+        ENTITY_ATTRIBUTE_START: 19,
+        ENTITY_ATTRIBUTE_END: 22,
+        ENTITY_ATTRIBUTE_VALUE: "red",
+    }
+
+    assert entities[1] == {
+        ENTITY_ATTRIBUTE_TYPE: "color",
+        ENTITY_ATTRIBUTE_START: 27,
+        ENTITY_ATTRIBUTE_END: 31,
+        ENTITY_ATTRIBUTE_VALUE: "blue",
+    }
+
+    assert entities[2] == {
+        ENTITY_ATTRIBUTE_TYPE: "color",
+        ENTITY_ATTRIBUTE_START: 50,
+        ENTITY_ATTRIBUTE_END: 62,
+        ENTITY_ATTRIBUTE_VALUE: "blue",
+    }
+
+    assert entities[3] == {
+        ENTITY_ATTRIBUTE_TYPE: "color",
+        ENTITY_ATTRIBUTE_START: 80,
+        ENTITY_ATTRIBUTE_END: 84,
+        ENTITY_ATTRIBUTE_VALUE: "blue",
+    }
+
+    assert entities[4] == {
+        ENTITY_ATTRIBUTE_TYPE: "size",
+        ENTITY_ATTRIBUTE_START: 110,
+        ENTITY_ATTRIBUTE_END: 128,
+        ENTITY_ATTRIBUTE_VALUE: "big",
+    }
 
 def test_case_sensitive_color_extraction():
     extractor = _create_test_entity_extractor({CONFIG_CASE_SENSITIVE: True})

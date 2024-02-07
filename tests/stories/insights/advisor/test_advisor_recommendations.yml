@@ -4,7 +4,7 @@ stories:
   - story: User asks for advisor recommendations
     steps:
       - user: |
-          What suggestions is advisor giving me?
+          What suggestions is [advisor](core_services) giving me?
         intent: insights_advisor_recommendation_pathways
       - action: utter_advisor_recommendation_pathways
       - action: action_advisor_api_pathway

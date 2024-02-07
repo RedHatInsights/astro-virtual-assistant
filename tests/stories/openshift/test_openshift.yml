@@ -4,47 +4,47 @@ stories:
   - story: User asks about openshift - 1
     steps:
       - user: |
-          ocm
-        intent: intent_openshift_ocm
+          I need help with [ocm](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
 
   - story: User asks about openshift - 2
     steps:
       - user: |
-          acs
-        intent: intent_openshift_acs
+          What is [acs](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_acs
 
   - story: User asks about openshift - 3
     steps:
       - user: |
-          rosa
-        intent: intent_openshift_rosa
+          I want to manage [rosa](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_rosa
 
   - story: User asks about openshift - 4
     steps:
       - user: |
-          can you help me with my cluster?
-        intent: intent_openshift_ocm
+          can you help me with my [ocm](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
 
   - story: User asks about openshift - 5
     steps:
       - user: |
-          can you help me with my clouds?
-        intent: intent_openshift_acs
+          help me deploy my [rosa](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
-      - action: utter_openshift_acs
+      - action: utter_openshift_rosa
 
   - story: User asks about openshift - 6
     steps:
       - user: |
-          deploy my cluster
-        intent: intent_openshift_rosa
+          I want help with [ocm](core_services)
+        intent: intent_core_help
       - action: utter_openshift_untrained
-      - action: utter_openshift_rosa
+      - action: utter_openshift_ocm

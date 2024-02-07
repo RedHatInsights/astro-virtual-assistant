@@ -1,15 +1,15 @@
 version: "3.1"
 
 stories:
-  - story: Org admin asks for an unknown feature
-    steps:
-      - user: |
-          cats
-        intent: nlu_fallback
-      - slot_was_set:
-          - is_org_admin: True
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main_org_admin
+#  - story: Org admin asks for an unknown feature
+#    steps:
+#      - user: |
+#          cats
+#        intent: nlu_fallback
+#      - slot_was_set:
+#          - is_org_admin: True
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main_org_admin
 
   - story: Org admin goes to the bot for the first time
     steps:

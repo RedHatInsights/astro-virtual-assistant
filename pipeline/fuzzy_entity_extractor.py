@@ -175,17 +175,20 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
             )
 
             if len(fuzzy_result_list) > 0:
-                for token in tokens:
-                    for fuzzy_result in fuzzy_result_list:
+                for fuzzy_result in fuzzy_result_list:
+                    token_count = len(fuzzy_result[0].split(" "))
+
+                    for i in range(len(tokens) - token_count + 1):
+                        sub_message = ' '.join(map(lambda t: t.text, tokens[i:i+token_count]))
                         ratio = fuzz.QRatio(
-                            self._process_text(token.text), fuzzy_result[0]
+                            self._process_text(sub_message), fuzzy_result[0]
                         )
                         if ratio >= self.word_score_cutoff:
                             entities.append(
                                 {
                                     ENTITY_ATTRIBUTE_TYPE: fuzzy_entity.name,
-                                    ENTITY_ATTRIBUTE_START: token.start,
-                                    ENTITY_ATTRIBUTE_END: token.end,
+                                    ENTITY_ATTRIBUTE_START: tokens[i].start,
+                                    ENTITY_ATTRIBUTE_END: tokens[i + token_count - 1].end,
                                     ENTITY_ATTRIBUTE_VALUE: fuzzy_entity.get_value_of(
                                         fuzzy_result[0]
                                     ),

@@ -4,7 +4,7 @@ stories:
   - story: User wants to check permissions for advisor but has contacted the org admin
     steps:
       - user: |
-          Do I have access to [advisor](service)?
+          Do I have access to [advisor](core_services)?
         intent: intent_access_check_access
       - action: utter_access_check_access_explain
       - action: utter_access_check_access_missing
@@ -17,7 +17,7 @@ stories:
   - story: User wants to check permissions for policies but has not contacted the org admin
     steps:
       - user: |
-          Do I have access to [policies](service)?
+          Do I have access to [policies](core_services)?
         intent: intent_access_check_access
       - action: utter_access_check_access_explain
       - action: utter_access_check_access_missing
