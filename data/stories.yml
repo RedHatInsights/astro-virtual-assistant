@@ -94,6 +94,13 @@ stories:
       - action: utter_privacy_info_2
       - action: utter_core_how_can_i_help
 
+  - story: Data deletion request
+    steps:
+      - intent: intent_data_deletion
+      - action: utter_data_deletion_privacy_statement
+      - action: utter_data_deletion_open_a_ticket
+      - action: utter_core_how_can_i_help
+
   - story: Are you an AI?
     steps:
       - intent: intent_are_you_ai
