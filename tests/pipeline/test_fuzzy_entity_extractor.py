@@ -48,7 +48,13 @@ def _create_test_entity_extractor(config=None) -> FuzzyEntityExtractor:
             FuzzyEntities(
                 "size",
                 ["big", "small"],
-                {"large": "big", "tiny": "small", "huge": "big", "immense": "big", "of considerable size": "big"},
+                {
+                    "large": "big",
+                    "tiny": "small",
+                    "huge": "big",
+                    "immense": "big",
+                    "of considerable size": "big",
+                },
             ),
         ],
     )
@@ -142,6 +148,7 @@ def test_multi_word_color_extraction():
         ENTITY_ATTRIBUTE_END: 128,
         ENTITY_ATTRIBUTE_VALUE: "big",
     }
+
 
 def test_case_sensitive_color_extraction():
     extractor = _create_test_entity_extractor({CONFIG_CASE_SENSITIVE: True})
