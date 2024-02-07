@@ -39,6 +39,8 @@ def send_console_request(
         endpoint = app.notifications_url
     elif app_name == "vulnerability":
         endpoint = app.vulnerability_url
+    elif app_name == "content-sources":
+        endpoint = app.content_sources_url
     else:
         print(f"Invalid app: {app_name}")
         raise ValueError(f"Invalid app_name used: {app_name}")

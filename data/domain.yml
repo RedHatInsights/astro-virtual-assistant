@@ -12,6 +12,7 @@ intents:
   - intent_core_hello
   - intent_core_yes
   - intent_core_no
+  - intent_core_other
   - intent_data_privacy_policy
   - intent_send_complaint
   - intent_are_you_ai

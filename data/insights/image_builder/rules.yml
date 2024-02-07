@@ -22,6 +22,8 @@ rules:
   - rule: Image Builder - Custom Content
     steps:
       - intent: intent_image_builder_custom_content
+      - action: utter_image_builder_custom_content
+      - action: utter_image_builder_custom_content_repository
       - action: form_image_builder_custom_content
       - active_loop: form_image_builder_custom_content
 
