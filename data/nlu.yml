@@ -32,7 +32,6 @@ nlu:
 
   - intent: intent_core_yes
     examples: |
-      - Yes
       - yes
       - yeah
       - of course
@@ -43,12 +42,12 @@ nlu:
 
   - intent: intent_core_no
     examples: |
-      - No
       - n
       - nah
       - no
       - i don't think so
       - nay
+      - nvm
 
   - intent: intent_core_other
     examples: |
@@ -198,6 +197,21 @@ nlu:
       - is this private?
       - are we being monitored?
 
+  - intent: intent_data_deletion
+    examples: |
+      - Can you delete my messages
+      - I want to remove my messages
+      - Please dont store my messages
+      - Am I able to remove my message history?
+      - Please clear the chat history
+      - Delete chat history
+      - do not save this chat history
+      - empty the chat logs
+      - can you please delete my chat logs
+      - i dont want you to save this conversation log
+      - remove conversation log from your storage
+      - please get rid of my conversations in your logs
+
   - intent: intent_send_complaint
     examples: |
       - This sucks.
@@ -263,3 +277,29 @@ nlu:
       - Where can I change my [username](preference)?
       - Where can I change my [preferences](preference)?
       - Where can I edit all of my [preferences](preference)?
+
+  - intent: intent_core_help
+    examples: |
+      - I want to manage
+      - Can you help me install?
+      - I need help with
+      - What is
+      - Can you help me with
+      - Can you help me with my [ocm](core_services)?
+      - What can do you do with
+      - Where is [openshift](core_services)
+      - Can you help me with my [acs](core_services)
+      - Could you help me with my [ocm](core_services)
+      - I need some assistance with [acs](core_services)
+      - Can you help me with my [acs](core_services)
+      - I need some assistance with [openshift](core_services)
+      - Do you do anything with Red Hat [openshift](core_services) services on aws?
+      - What is [rosa](core_services)
+      - What are the [rosa](core_services) prerequisites
+      - Can you install my [rosa](core_services) for me?
+      - Download [rosa](core_services)
+      - Deploy my [ocm](core_services)
+      - Help me deploy my [openshift](core_services)
+      - I need to deploy
+      - I would like to deploy
+      - I would like help with my (core_services)

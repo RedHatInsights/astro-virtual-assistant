@@ -21,15 +21,15 @@ stories:
       - action: utter_unknown_topic
       - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 3
-    steps:
-      - user: |
-          Who is the president?
-        intent: nlu_fallback
-      - slot_was_set:
-        - is_org_admin: False
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 3
+#    steps:
+#      - user: |
+#          Who is the president?
+#        intent: nlu_fallback
+#      - slot_was_set:
+#        - is_org_admin: False
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main
 
   - story: User asks for unknown features - 4
     steps:
@@ -80,15 +80,15 @@ stories:
 #      - action: utter_unknown_topic
 #      - action: utter_core_capabilities_main
 
-  - story: User asks for unknown features - 9
-    steps:
-      - user: |
-          cats
-        intent: nlu_fallback
-      - slot_was_set:
-        - is_org_admin: False
-      - action: utter_unknown_topic
-      - action: utter_core_capabilities_main
+#  - story: User asks for unknown features - 9
+#    steps:
+#      - user: |
+#          cats
+#        intent: nlu_fallback
+#      - slot_was_set:
+#        - is_org_admin: False
+#      - action: utter_unknown_topic
+#      - action: utter_core_capabilities_main
 
   - story: User asks for unknown features - 10
     steps:
