@@ -28,7 +28,7 @@ def send_console_request(
 
     try:
         get_auth_header(tracker, headers)
-    except Exception as e:
+    except ValueError as e:
         print(f"An Exception occured while handling retrieving auth credentials: {e}")
         return None
 
