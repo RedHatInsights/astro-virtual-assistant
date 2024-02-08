@@ -17,25 +17,25 @@ nlu:
 
   - intent: intent_image_builder_custom_content
     examples: |
-      - How do I add [3rd party](content) content to my RHEL images created by Image Builder?
-      - Add [custom](content) content to my RHEL images
-      - Add [microsoft](content) to my images
+      - How do I add [3rd party](image_builder_content) content to my RHEL images created by Image Builder?
+      - Add [custom](image_builder_content) content to my RHEL images
+      - Add [microsoft](image_builder_content) to my images
       - What custom content can I add
       - custom RHEL content
-      - Can I use [sql](content) with image builder?
-      - Add [nvidia](content) with image builder
-      - I want to add [content](content) from  repository to my images
-      - RHEL image w [custom content](content)
+      - Can I use [sql](image_builder_content) with image builder?
+      - Add [nvidia](image_builder_content) with image builder
+      - I want to add [content](image_builder_content) from  repository to my images
+      - RHEL image w [custom content](image_builder_content)
 
   - intent: intent_image_builder_launch
     examples: |
-      - How do I launch RHEL images in [AWS](provider)?
-      - Launch my RHEL image in [Azure](provider)
-      - We use [GCP](provider) for our images
-      - I want to launch my images in [OpenStack](provider)
+      - How do I launch RHEL images in [AWS](image_builder_provider)?
+      - Launch my RHEL image in [Azure](image_builder_provider)
+      - We use [GCP](image_builder_provider) for our images
+      - I want to launch my images in [OpenStack](image_builder_provider)
       - Launch images
       - Help me start my images
-      - How do I access(?) my images
+      - How do I access my images
       - Where can I launch my RHEL images
       - I just used image builder, where are my images
 

@@ -199,7 +199,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
                     status, result
                 )
             )
-            return []
+            return
 
         logger.error(f"GET Result: {result}")
         result = result.json()
@@ -212,7 +212,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
                     status, result
                 )
             )
-            return []
+            return
 
         repository = None
         # find the information for the repository they want (EPEL 8 or EPEL 9)
@@ -246,7 +246,15 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
 
         logger.error(f"POST Result: {result}")
 
-        if result.status_code != 201:
+        if result.status_code == 400 and "already belongs" in result.detail:
+            dispatcher.utter_message(
+                response="utter_image_builder_custom_content_already_enabled", version=version
+            )
+        elif result.status_code == 201:
+            dispatcher.utter_message(
+                response="utter_image_builder_custom_content_epel_enabled", version=version
+            )
+        else:
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_error"
             )
@@ -255,9 +263,8 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
                     status, result
                 )
             )
-            return []
 
-        return result
+        return
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
@@ -268,20 +275,20 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             repository = tracker.get_slot(CONTENT_REPOSITORY)
             if repository == "EPEL":
                 dispatcher.utter_message(
+                    response="utter_image_builder_custom_content_epel"
+                )
+                dispatcher.utter_message(
                     response="utter_image_builder_custom_content_epel_which"
                 )
             if repository == "Other":
                 dispatcher.utter_message(
-                    response="utter_image_builder_custom_content_repository"
+                    response="utter_image_builder_custom_content_other"
                 )
                 return [SlotSet("requested_slot", None)]
 
         if requested_slot == CONTENT_REPOSITORY_VERSION:
             version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
             await self.enable_custom_repositories(dispatcher, tracker, version)
-            dispatcher.utter_message(
-                response="utter_image_builder_custom_content_epel", version=version
-            )
 
         form_result = await super().run(dispatcher, tracker, domain)
 
@@ -335,8 +342,7 @@ class ImageBuilderCustomContent(Action):
             link="https://console.redhat.com/insights/image-builder/imagewizard#SIDs=&tags=",
         )
 
-        events = [ActionExecuted(self.name())]
-        return events
+        return [ActionExecuted(self.name()), SlotSet(CONTENT_REPOSITORY, None), SlotSet(CONTENT_REPOSITORY_VERSION, None)]
 
 
 class ImageBuilderLaunch(Action):

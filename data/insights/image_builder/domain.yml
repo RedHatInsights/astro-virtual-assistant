@@ -11,8 +11,8 @@ intents:
   - intent_image_builder_custom_content_epel_9
 
 entities:
-  - content
-  - provider
+  - image_builder_content
+  - image_builder_provider
 
 slots:
   image_builder_rhel_version:
@@ -113,15 +113,19 @@ responses:
           payload: "/intent_image_builder_custom_content_epel"
         - title: "Other"
           payload: "/intent_core_other"
+  utter_image_builder_custom_content_epel:
+    - text: "I can enable EPEL repositories for you. Please note that EPEL is [not supported](https://access.redhat.com/solutions/3358)."
   utter_image_builder_custom_content_epel_which:
-    - text: "I can enable the EPEL 8 and/or the EPEL 9 repositories for you. Select which you'd like to enable:"
+    - text: "Select the version matching your RHEL image:"
       buttons:
         - title: "EPEL 8"
           payload: "/intent_image_builder_custom_content_epel_8"
         - title: "EPEL 9"
           payload: "/intent_image_builder_custom_content_epel_9"
-  utter_image_builder_custom_content_epel:
-    - text: "The {version} repository has been enabled and can now be used when building images with Image Builder. Would you like to be directed to Image Builder?"
+  utter_image_builder_custom_content_epel_enabled:
+    - text: "The {version} repository has been enabled and can now be used when building images with Image Builder."
+  utter_image_builder_custom_content_epel_already_enabled:
+    - text: "Looks like you already have the {version} repository enabled."
   utter_image_builder_custom_content_other:
     - text: "Other custom repositories can be configured from [Content Repositories](/insights/content)."
   utter_image_builder_custom_content_error:
