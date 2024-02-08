@@ -81,7 +81,7 @@ vulnerability_url = _config(
     "ENDPOINT__VULNERABILITY_ENGINE__MANAGER_SERVICE__URL", default=__endpoint_default
 )
 content_sources_url = _config(
-    "ENDPOINT__CONTENT_SOURCES__SERVICE__URL", default=__endpoint_default
+    "ENDPOINT__CONTENT_SOURCES_BACKEND__SERVICE__URL", default=__endpoint_default
 )
 
 

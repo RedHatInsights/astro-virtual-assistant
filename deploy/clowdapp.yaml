@@ -16,6 +16,7 @@ objects:
       - advisor-backend
       - notifications-gw
       - vulnerability-engine
+      - content-sources-backend
     
     inMemoryDb: true
     database:

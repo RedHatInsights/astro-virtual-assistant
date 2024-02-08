@@ -27,6 +27,12 @@
       "hostname": "v-engine.svc",
       "name": "manager-service",
       "port": 1234
+    },
+    {
+      "app": "content-sources-backend",
+      "hostname": "c-s-service.svc",
+      "name": "service",
+      "port": 8080
     }
   ],
   "privateEndpoints": [

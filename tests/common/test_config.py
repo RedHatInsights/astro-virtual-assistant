@@ -71,6 +71,7 @@ def test_clowdapp():
         assert app.advisor_url == "http://n-api.svc:8000"
         assert app.notifications_url == "http://n-gw.svc:1337"
         assert app.vulnerability_url == "http://v-engine.svc:1234"
+        assert app.content_sources_url == "http://c-s-service.svc:8080"
         assert app.actions_url == "http://my-virtual-assistant-actions:10000"
 
         assert app.tracker_store_type == "InMemoryTrackerStore"
@@ -173,6 +174,7 @@ def test_loads_file_when_running_locally():
         assert app.advisor_url == app.console_dot_base_url
         assert app.notifications_url == app.console_dot_base_url
         assert app.vulnerability_url == app.console_dot_base_url
+        assert app.content_sources_url == app.console_dot_base_url
 
         assert app.database_host is None
         assert app.database_port == 0
