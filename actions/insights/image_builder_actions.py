@@ -248,11 +248,13 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
 
         if result.status_code == 400 and "already belongs" in result.detail:
             dispatcher.utter_message(
-                response="utter_image_builder_custom_content_already_enabled", version=version
+                response="utter_image_builder_custom_content_already_enabled",
+                version=version,
             )
         elif result.status_code == 201:
             dispatcher.utter_message(
-                response="utter_image_builder_custom_content_epel_enabled", version=version
+                response="utter_image_builder_custom_content_epel_enabled",
+                version=version,
             )
         else:
             dispatcher.utter_message(
@@ -342,7 +344,11 @@ class ImageBuilderCustomContent(Action):
             link="https://console.redhat.com/insights/image-builder/imagewizard#SIDs=&tags=",
         )
 
-        return [ActionExecuted(self.name()), SlotSet(CONTENT_REPOSITORY, None), SlotSet(CONTENT_REPOSITORY_VERSION, None)]
+        return [
+            ActionExecuted(self.name()),
+            SlotSet(CONTENT_REPOSITORY, None),
+            SlotSet(CONTENT_REPOSITORY_VERSION, None),
+        ]
 
 
 class ImageBuilderLaunch(Action):
