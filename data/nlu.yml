@@ -297,3 +297,22 @@ nlu:
       - I need to deploy
       - I would like to deploy
       - I would like help with my (core_services)
+
+  - intent: intent_core_here
+    examples: |
+      - Here
+      - Here please
+      - Here with you
+      - Right here
+      - Right here works
+      - Right here with you
+      - Right here is fine
+      - Conversation
+      - This conversation
+      - Chat
+      - This chat
+      - This chat is fine
+      - Let's do it here
+      - With you
+      - I'll let you collect the details.
+      - I'd prefer to use the assistant

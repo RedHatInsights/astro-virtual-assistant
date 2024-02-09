@@ -7,7 +7,6 @@ intents:
   - intent_feedback_is_it_a_bug
   - intent_feedback_where_console
   - intent_feedback_where_conversation
-  - intent_feedback_collect_with_assistant
   - intent_feedback_collect_with_pendo
 
 actions:
@@ -86,7 +85,7 @@ slots:
     mappings:
       - type: from_intent
         value: assistant
-        intent: intent_feedback_collect_with_assistant
+        intent: intent_core_here
         conditions:
           - active_loop: form_feedback
             requested_slot: feedback_collection
@@ -144,7 +143,7 @@ responses:
     - text: "How would you like to provide your feedback?"
       buttons:
         - title: "Through this conversation"
-          payload: "/intent_feedback_collect_with_assistant"
+          payload: "/intent_core_here"
         - title: "With our form"
           payload: "/intent_feedback_collect_with_pendo"
   utter_feedback_collection_pendo:
