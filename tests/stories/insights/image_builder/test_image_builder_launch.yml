@@ -11,21 +11,21 @@ stories:
   - story: User wants to launch their images in aws
     steps:
       - user: |
-          Launch my rhel image in [aws](image_builder_provider)
+          Launch my rhel image in [aws]{"entity": "image_builder_provider", "value": "AWS"}
         intent: intent_image_builder_launch
       - action: action_image_builder_launch
   
   - story: User wants to launch their images in azure
     steps:
       - user: |
-          Launch my rhel image in [azure](image_builder_provider)
+          Launch my rhel image in [azure]{"entity": "image_builder_provider", "value": "Azure"}
         intent: intent_image_builder_launch
       - action: action_image_builder_launch
   
   - story: User wants to launch their images in gcp
     steps:
       - user: |
-          Launch my rhel image in [gcp](image_builder_provider)
+          Launch my rhel image in [gcp]{"entity": "image_builder_provider", "value": "GCP"}
         intent: intent_image_builder_launch
       - action: action_image_builder_launch
 

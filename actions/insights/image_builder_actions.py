@@ -362,13 +362,14 @@ class ImageBuilderLaunch(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         provider = ""
+        provider_lower = ""
         if len(tracker.latest_message["entities"]) > 0:
-            provider = tracker.latest_message["entities"][0]["value"].lower()
+            provider = tracker.latest_message["entities"][0]["value"]
+            provider_lower = provider.lower()
         # The team does not have a generic quickstart for other providers, default to AWS
         quick_start = ""
-        if provider == "aws" or provider == "azure" or provider == "gcp":
-            quick_start = f"https://console.redhat.com/insights/image-builder?quickstart=insights-launch-{provider}"
-            provider = provider.upper()
+        if provider_lower == "aws" or provider_lower == "azure" or provider_lower == "gcp":
+            quick_start = f"https://console.redhat.com/insights/image-builder?quickstart=insights-launch-{provider_lower}"
         else:
             provider = "your provider"
             quick_start = "https://console.redhat.com/insights/image-builder?quickstart=insights-launch-aws"
