@@ -1,10 +1,5 @@
 version: "3.1"
 
-intents:
-  - intent_openshift_ocm
-  - intent_openshift_acs
-  - intent_openshift_rosa
-
 responses:
   utter_openshift_untrained:
     - text: I'm not currently trained to assist with those queries.

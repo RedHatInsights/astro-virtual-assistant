@@ -1,15 +1,5 @@
 version: "3.1"
 
-intents:
-  - intent_feedback_any
-  - intent_feedback_bug
-  - intent_feedback_is_it_general
-  - intent_feedback_is_it_a_bug
-  - intent_feedback_where_console
-  - intent_feedback_where_conversation
-  - intent_feedback_collect_with_assistant
-  - intent_feedback_collect_with_pendo
-
 actions:
   - validate_form_feedback
   - execute_form_feedback

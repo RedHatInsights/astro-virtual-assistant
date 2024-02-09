@@ -1,8 +1,5 @@
 version: "3.1"
 
-intents:
-  - intent_out_of_scope_subscriptions_costs
-
 entities: []
 
 slots: {}

@@ -1,7 +1,7 @@
 version: "3.1"
 
 nlu:
-  - intent: intent_core_ui_start
+  - intent: intent_core_session_start
   - intent: intent_core_capabilities
     examples: |
       - How can you help me?

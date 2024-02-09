@@ -1,8 +1,5 @@
 version: "3.1"
 
-intents:
-  - insights_advisor_recommendation_pathways
-
 actions:
   - action_advisor_api_pathway
 

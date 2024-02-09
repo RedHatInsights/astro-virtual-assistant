@@ -1,28 +1,5 @@
 version: "3.1"
 
-intents:
-  - intent_core_capabilities
-  - intent_core_more
-  - intent_planned_features
-  - intent_out_of_scope
-  - intent_unknown_topic
-  - intent_live_chat
-  - intent_services_offline
-  - intent_core_session_start
-  - intent_core_hello
-  - intent_core_yes
-  - intent_core_no
-  - intent_data_privacy_policy
-  - intent_data_deletion
-  - intent_send_complaint
-  - intent_are_you_ai
-  - intent_user_preferences
-  - intent_user_preferences_all
-  - intent_user_preferences_password
-  - intent_user_preferences_no_action
-  - intent_customer_support # TODO: S9
-  - intent_core_help
-
 entities:
   - preference
   - core_services
