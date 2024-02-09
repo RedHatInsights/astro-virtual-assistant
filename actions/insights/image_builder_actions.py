@@ -368,7 +368,11 @@ class ImageBuilderLaunch(Action):
             provider_lower = provider.lower()
         # The team does not have a generic quickstart for other providers, default to AWS
         quick_start = ""
-        if provider_lower == "aws" or provider_lower == "azure" or provider_lower == "gcp":
+        if (
+            provider_lower == "aws"
+            or provider_lower == "azure"
+            or provider_lower == "gcp"
+        ):
             quick_start = f"https://console.redhat.com/insights/image-builder?quickstart=insights-launch-{provider_lower}"
         else:
             provider = "your provider"
