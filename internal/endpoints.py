@@ -5,6 +5,7 @@ import json
 
 from common import logging
 from common.config import app
+from common.identity import decode_identity
 
 from internal.utils import read_arguments, export_csv
 from internal.database.db import DB
@@ -159,6 +160,7 @@ def get_conversation_by_sender_id(sender_id):
 
 # Returns list of sender_id
 # params:
+#  - unity_id (optional): only return messages from this username
 #  - limit (optional): limit the number of messages returned; default is 100
 #  - offset (optional): offset the returned messages; default is 0
 #  - start_date (optional): only return messages sent after this date
@@ -179,7 +181,7 @@ def get_senders():
     conditions = and_(true(), *conditions)
 
     rows = (
-        session.query(Events.sender_id)
+        session.query(Events.sender_id, Events.data)
         .distinct()
         .where(conditions)
         .order_by(asc(Events.sender_id))
@@ -190,7 +192,24 @@ def get_senders():
 
     sender_list = []
     for row in rows:
-        sender_list.append(row[0])
+        if args.unity_id is not None:
+            data_json = json.loads(row[1])
+            if "metadata" not in data_json:
+                logger.info("metadata not found in data column")
+                continue
+            if "identity" not in data_json["metadata"]:
+                logger.info("identity not found in metadata")
+                continue
+            identity = decode_identity(data_json["metadata"]["identity"])["identity"]
+            if not identity or "user" not in identity or "username" not in identity["user"]:
+                logger.info("username not found in identity")
+                continue
+            unity_id = identity["user"]["username"]
+            if unity_id != args.unity_id:
+                continue
+        # the DISTINCT query is not distinct on the sender_id anymore
+        if row[0] not in sender_list:
+            sender_list.append(row[0])
 
     if args.format == "csv":
         return export_csv(sender_list)
