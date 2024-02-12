@@ -2,10 +2,10 @@ from flask import Flask, Response, jsonify, request
 from sqlalchemy import and_, or_, true, asc
 from sqlalchemy.orm import sessionmaker
 import json
+import hashlib
 
 from common import logging
 from common.config import app
-from common.identity import decode_identity
 
 from internal.utils import read_arguments, export_csv
 from internal.database.db import DB
@@ -160,7 +160,7 @@ def get_conversation_by_sender_id(sender_id):
 
 # Returns list of sender_id
 # params:
-#  - username (optional): only return messages from this username
+#  - username and org_id (optional): only return sender_id of this user's conversation; both needed
 #  - limit (optional): limit the number of messages returned; default is 100
 #  - offset (optional): offset the returned messages; default is 0
 #  - start_date (optional): only return messages sent after this date
@@ -178,10 +178,17 @@ def get_senders():
         conditions.append(Events.timestamp > args.start_date)
     if args.end_date:
         conditions.append(Events.timestamp < args.end_date)
+    if args.org_id and args.username:
+        hash = hashlib.sha256(
+            "{org_id}-{username}".format(
+                org_id=args.org_id, username=args.username
+            ).encode()
+        ).hexdigest()
+        conditions.append(Events.sender_id == hash)
     conditions = and_(true(), *conditions)
 
     rows = (
-        session.query(Events.sender_id, Events.data)
+        session.query(Events.sender_id)
         .distinct()
         .where(conditions)
         .order_by(asc(Events.sender_id))
@@ -192,28 +199,7 @@ def get_senders():
 
     sender_list = []
     for row in rows:
-        if args.username is not None:
-            data_json = json.loads(row[1])
-            if "metadata" not in data_json:
-                logger.info("metadata not found in data column")
-                continue
-            if "identity" not in data_json["metadata"]:
-                logger.info("identity not found in metadata")
-                continue
-            identity = decode_identity(data_json["metadata"]["identity"])["identity"]
-            if (
-                not identity
-                or "user" not in identity
-                or "username" not in identity["user"]
-            ):
-                logger.info("username not found in identity")
-                continue
-            username = identity["user"]["username"]
-            if username != args.username:
-                continue
-        # the DISTINCT query is not distinct on the sender_id anymore
-        if row[0] not in sender_list:
-            sender_list.append(row[0])
+        sender_list.append(row[0])
 
     if args.format == "csv":
         return export_csv(sender_list)
