@@ -201,7 +201,11 @@ def get_senders():
                 logger.info("identity not found in metadata")
                 continue
             identity = decode_identity(data_json["metadata"]["identity"])["identity"]
-            if not identity or "user" not in identity or "username" not in identity["user"]:
+            if (
+                not identity
+                or "user" not in identity
+                or "username" not in identity["user"]
+            ):
                 logger.info("username not found in identity")
                 continue
             unity_id = identity["user"]["username"]

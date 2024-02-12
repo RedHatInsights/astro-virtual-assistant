@@ -42,7 +42,9 @@ def read_arguments():
     unique = request.args.get("unique")
     unity_id = request.args.get("unity_id")
     format = request.args.get("format") or "json"
-    return Arguments(limit, offset, start_date, end_date, type_name, unique, unity_id, format)
+    return Arguments(
+        limit, offset, start_date, end_date, type_name, unique, unity_id, format
+    )
 
 
 def export_csv(data):
