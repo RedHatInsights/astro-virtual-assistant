@@ -160,7 +160,7 @@ def get_conversation_by_sender_id(sender_id):
 
 # Returns list of sender_id
 # params:
-#  - unity_id (optional): only return messages from this username
+#  - username (optional): only return messages from this username
 #  - limit (optional): limit the number of messages returned; default is 100
 #  - offset (optional): offset the returned messages; default is 0
 #  - start_date (optional): only return messages sent after this date
@@ -192,7 +192,7 @@ def get_senders():
 
     sender_list = []
     for row in rows:
-        if args.unity_id is not None:
+        if args.username is not None:
             data_json = json.loads(row[1])
             if "metadata" not in data_json:
                 logger.info("metadata not found in data column")
@@ -208,8 +208,8 @@ def get_senders():
             ):
                 logger.info("username not found in identity")
                 continue
-            unity_id = identity["user"]["username"]
-            if unity_id != args.unity_id:
+            username = identity["user"]["username"]
+            if username != args.username:
                 continue
         # the DISTINCT query is not distinct on the sender_id anymore
         if row[0] not in sender_list:
