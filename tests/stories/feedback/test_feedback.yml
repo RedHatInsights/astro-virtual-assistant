@@ -20,7 +20,7 @@ stories:
       - active_loop: form_feedback
       - user: |
           I'll let you collect the details
-        intent: intent_feedback_collect_with_assistant
+        intent: intent_core_here
       - action: form_feedback
       - active_loop: form_feedback
       - user: |

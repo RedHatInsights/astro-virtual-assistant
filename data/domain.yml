@@ -22,6 +22,7 @@ intents:
   - intent_user_preferences_no_action
   - intent_customer_support # TODO: S9
   - intent_core_help
+  - intent_core_here
 
 entities:
   - preference

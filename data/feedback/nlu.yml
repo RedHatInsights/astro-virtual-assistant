@@ -76,25 +76,6 @@ nlu:
       - conversation
       - This assistant
 
-  - intent: intent_feedback_collect_with_assistant
-    examples: |
-      - Here
-      - Here please
-      - Here with you
-      - Right here
-      - Right here works
-      - Right here with you
-      - Right here is fine
-      - Conversation
-      - This conversation
-      - Chat
-      - This chat
-      - This chat is fine
-      - Let's do it here
-      - With you
-      - I'll let you collect the details.
-      - I'd prefer to use the assistant
-
   - intent: intent_feedback_collect_with_pendo
     examples: |
       - I'd prefer to use a form
