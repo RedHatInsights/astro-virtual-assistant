@@ -99,8 +99,6 @@ responses:
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
           payload: /insights_advisor_recommendation_pathways
-        # - title: See more
-        #   payload: /intent_core_more
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
@@ -110,10 +108,6 @@ responses:
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
           payload: /insights_advisor_recommendation_pathways
-  utter_core_capabilities_more_1:
-    - text: "That's all I can do for now. Sorry!"
-  utter_core_capabilities_more_no_more:
-    - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
     - text: "Sorry I didn't get that. Can you rephrase?"
