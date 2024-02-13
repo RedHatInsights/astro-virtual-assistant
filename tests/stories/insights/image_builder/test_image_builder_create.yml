@@ -1,0 +1,12 @@
+version: "3.1"
+
+stories:
+  - story: User wants to create a rhel image
+    steps:
+      - user: |
+          Create a rhel image
+        intent: intent_image_builder_getting_started
+      - action: utter_image_builder_getting_started
+      - action: utter_image_builder_getting_started_version
+      - action: form_image_builder_getting_started
+      - active_loop: form_image_builder_getting_started

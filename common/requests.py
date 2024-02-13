@@ -28,7 +28,7 @@ def send_console_request(
 
     try:
         get_auth_header(tracker, headers)
-    except Exception as e:
+    except ValueError as e:
         print(f"An Exception occured while handling retrieving auth credentials: {e}")
         return None
 
@@ -39,6 +39,8 @@ def send_console_request(
         endpoint = app.notifications_url
     elif app_name == "vulnerability":
         endpoint = app.vulnerability_url
+    elif app_name == "content-sources":
+        endpoint = app.content_sources_url
     else:
         print(f"Invalid app: {app_name}")
         raise ValueError(f"Invalid app_name used: {app_name}")

@@ -49,6 +49,12 @@ nlu:
       - nay
       - nvm
 
+  - intent: intent_core_other
+    examples: |
+      - other
+      - something else
+      - a different one
+
   - intent: intent_core_hello
     examples: |
       - Hi

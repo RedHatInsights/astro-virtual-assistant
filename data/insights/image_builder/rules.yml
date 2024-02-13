@@ -1,0 +1,43 @@
+version: "3.1"
+
+rules:
+  - rule: Image Builder - Getting Started
+    steps:
+      - intent: intent_image_builder_getting_started
+      - action: utter_image_builder_getting_started
+      - action: utter_image_builder_getting_started_version
+      - action: form_image_builder_getting_started
+      - active_loop: form_image_builder_getting_started
+
+  - rule: Image Builder - Getting Started continued
+    condition:
+      - active_loop: form_image_builder_getting_started
+    steps:
+      - action: form_image_builder_getting_started
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_image_builder_getting_started
+
+  - rule: Image Builder - Custom Content
+    steps:
+      - intent: intent_image_builder_custom_content
+      - action: utter_image_builder_custom_content
+      - action: utter_image_builder_custom_content_repository
+      - action: form_image_builder_custom_content
+      - active_loop: form_image_builder_custom_content
+
+  - rule: Image Builder - Custom Content continued
+    condition:
+      - active_loop: form_image_builder_custom_content
+    steps:
+      - action: form_image_builder_custom_content
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_image_builder_custom_content
+
+  - rule: Image Builder - Launch
+    steps:
+      - intent: intent_image_builder_launch
+      - action: action_image_builder_launch

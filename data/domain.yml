@@ -12,6 +12,7 @@ intents:
   - intent_core_hello
   - intent_core_yes
   - intent_core_no
+  - intent_core_other
   - intent_data_privacy_policy
   - intent_data_deletion
   - intent_send_complaint
@@ -163,14 +164,14 @@ responses:
   utter_user_preferences_contact_support:
     - text: "Contact Red Hat Support at [access.redhat.com](https://access.redhat.com) for more information."
   utter_user_preferences_all_redirect:
-    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
         params:
           url: https://www.redhat.com/wapps/ugc/protected/personalInfo.html
   utter_user_preferences_password_redirect:
-    - text: "We will open the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
