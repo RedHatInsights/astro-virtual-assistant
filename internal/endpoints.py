@@ -2,6 +2,7 @@ from flask import Flask, Response, jsonify, request
 from sqlalchemy import and_, or_, true, asc
 from sqlalchemy.orm import sessionmaker
 import json
+import hashlib
 
 from common import logging
 from common.config import app
@@ -159,6 +160,7 @@ def get_conversation_by_sender_id(sender_id):
 
 # Returns list of sender_id
 # params:
+#  - username and org_id (optional): only return sender_id of this user's conversation; both needed
 #  - limit (optional): limit the number of messages returned; default is 100
 #  - offset (optional): offset the returned messages; default is 0
 #  - start_date (optional): only return messages sent after this date
@@ -176,6 +178,13 @@ def get_senders():
         conditions.append(Events.timestamp > args.start_date)
     if args.end_date:
         conditions.append(Events.timestamp < args.end_date)
+    if args.org_id and args.username:
+        hash = hashlib.sha256(
+            "{org_id}-{username}".format(
+                org_id=args.org_id, username=args.username
+            ).encode()
+        ).hexdigest()
+        conditions.append(Events.sender_id == hash)
     conditions = and_(true(), *conditions)
 
     rows = (

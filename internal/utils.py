@@ -16,6 +16,8 @@ class Arguments:
         end_date=None,
         type_name=None,
         unique=False,
+        org_id=None,
+        username=None,
         format="json",
     ):
         if int(limit) > MAX_LIMIT:
@@ -28,6 +30,8 @@ class Arguments:
         self.end_date = end_date
         self.type_name = type_name
         self.unique = unique in ["true", "True", "1"] or False
+        self.org_id = org_id
+        self.username = username
         self.format = format
 
 
@@ -38,8 +42,12 @@ def read_arguments():
     end_date = request.args.get("end_date")
     type_name = request.args.get("type_name")
     unique = request.args.get("unique")
+    org_id = request.args.get("org_id")
+    username = request.args.get("username")
     format = request.args.get("format") or "json"
-    return Arguments(limit, offset, start_date, end_date, type_name, unique, format)
+    return Arguments(
+        limit, offset, start_date, end_date, type_name, unique, org_id, username, format
+    )
 
 
 def export_csv(data):
