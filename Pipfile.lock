@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9c67172b300f044dd48ce809d67f9166e989130f12a672808d3204148c21464c"
+            "sha256": "029c351a408711299a4f3bdebc238ad08419b288766ddace74c594e96918620a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -4071,12 +4071,12 @@
         },
         "jsonpickle": {
             "hashes": [
-                "sha256:4a8442d97ca3f77978afa58068768dba7bff2dbabe79a9647bc3cdafd4ef019f",
-                "sha256:e37abba4bfb3ca4a4647d28bb9f4706436f7b46c8a8333b4a718abafa8e46b37"
+                "sha256:5691f44495327858ab3a95b9c440a79b41e35421be1a6e09a47b6c9b9421fd06",
+                "sha256:e8d6dcc58f6722bea0321cd328fbda81c582461185688a535df02be0f699afb4"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==3.0.2"
+            "version": "==3.0.3"
         },
         "logstash-formatter": {
             "hashes": [
