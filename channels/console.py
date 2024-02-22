@@ -112,16 +112,22 @@ class ConsoleInput(InputChannel):
             identity_dict = decode_identity(identity)
             sender_id = self.get_sender(identity_dict)
 
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"http://{app.api_listen_address}:{app.api_port}/conversations/{sender_id}/tracker"
-                ) as tracker_response:
-                    tracker_result = await tracker_response.json()
-                    is_first_visit = (
-                        "name" not in tracker_result["latest_message"]["intent"]
-                    )
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(
+                        f"{app.api_url}/conversations/{sender_id}/tracker"
+                    ) as tracker_response:
+                        tracker_result = await tracker_response.json()
+                        is_first_visit = (
+                            "name" not in tracker_result["latest_message"]["intent"]
+                        )
 
-            return response.json({"first_visit": is_first_visit})
+                return response.json({"first_visit": is_first_visit})
+            except Exception as e:
+                logger.error(
+                    f"An exception occurred while trying to check tracker for sender_id: {sender_id}. Error: {e}"
+                )
+                return response.json({"error": "can not contact tracker"}, status=500)
 
         return custom_webhook
 
