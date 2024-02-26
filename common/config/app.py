@@ -85,8 +85,8 @@ content_sources_url = _config(
 )
 
 api_url = _config(
-    "PRIVATE_ENDPOINT__VIRTUAL_ASSISTANT__API__URL",
-    default=f"http://0.0.0.0:{api_port}",
+    "ENDPOINT__VIRTUAL_ASSISTANT__API__URL",
+    default=f"http://localhost:{api_port}",
 )
 actions_url = _config(
     "PRIVATE_ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default="http://localhost:5055"
