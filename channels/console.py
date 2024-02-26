@@ -1,4 +1,5 @@
 import aiohttp
+from rasa.shared.core.trackers import EventVerbosity
 from sanic import Blueprint, response
 from asyncio import CancelledError
 from sanic.request import Request
@@ -113,14 +114,14 @@ class ConsoleInput(InputChannel):
             sender_id = self.get_sender(identity_dict)
 
             try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(
-                        f"{app.api_url}/conversations/{sender_id}/tracker"
-                    ) as tracker_response:
-                        tracker_result = await tracker_response.json()
-                        is_first_visit = (
-                            "name" not in tracker_result["latest_message"]["intent"]
-                        )
+                # Use internal API instead of an HTTP request.
+                # Copied from https://github.com/RasaHQ/rasa/blob/68ce281aeec352876afb2baf74844e95b0c69ff4/rasa/server.py#L718-L741
+                tracker = await request.app.ctx.agent.processor.fetch_full_tracker_with_initial_session(
+                    sender_id, output_channel=CollectingOutputChannel()
+                )
+
+                state = tracker.current_state(EventVerbosity.AFTER_RESTART)
+                is_first_visit = "name" not in state["latest_message"]["intent"]
 
                 return response.json({"first_visit": is_first_visit})
             except Exception as e:
