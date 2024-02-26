@@ -7,6 +7,7 @@ from prometheus_client import start_http_server
 from threading import Event
 
 from rasa.constants import DEFAULT_RASA_PORT
+from sanic.log import LOGGING_CONFIG_DEFAULTS
 
 from common import logging
 from common.config import app
@@ -61,6 +62,14 @@ def main():
     # Use API_PORT when set to other than default
     if app.api_port != DEFAULT_RASA_PORT:
         sys.argv.extend(["--port", str(app.api_port)])
+
+    # Rasa sets a default config, but we've already configured the environment
+    # Override their default config, enabling
+    # Enable incremental logging to prevent our logging from being closed
+    LOGGING_CONFIG_DEFAULTS["incremental"] = True
+    LOGGING_CONFIG_DEFAULTS["loggers"] = {}
+    LOGGING_CONFIG_DEFAULTS["handlers"] = {}
+    LOGGING_CONFIG_DEFAULTS["formatters"] = {}
 
     rasa_main()
 
