@@ -50,5 +50,5 @@ drop-db:
 	${CONTAINER_EXEC} stop postgres
 	${CONTAINER_EXEC} rm postgres
 
-compose: main-env
+compose:
 	pipenv run ${COMPOSE_EXEC} up
