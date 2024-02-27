@@ -9,39 +9,38 @@ include make/Makefile.lint.mk
 include make/Makefile.train.mk
 include make/Makefile.hyperopt.mk
 
-main-env:
-	export PIPENV_CUSTOM_VENV_NAME=astro-main
-
-internal-env:
-	export PIPENV_CUSTOM_VENV_NAME=astro-internal
-
 # install and train the project
 install:
-	${MAKE} main-env
 	pipenv install --categories "packages dev-packages api-packages"
-	${MAKE} internal-env
-	pipenv install --categories "packages dev-packages internal-packages"
+
+create-internal:
+	mkdir -p .venv-internal
+	python3 -m venv .venv-internal
+
+install-internal:
+	if [ ! -d .venv-internal ]; then ${MAKE} create-internal; fi
+	. .venv-internal/bin/activate && pipenv install --categories "packages dev-packages internal-packages" --skip-lock
 
 clean:
 	rm -rf results .rasa models/* .astro
 
 # runs the assistant
-run: main-env
+run:
 	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS}
 
-run-interactive:  main-env
+run-interactive:
 	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
 
-run-actions:  main-env
+run-actions:
 	pipenv run ${RASA_ACTIONS_EXEC} --actions actions --auto-reload
 
-run-cli:  main-env
+run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
-run-internal: internal-env
-	pipenv run ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
+run-internal:
+	. .venv-internal/bin/activate && ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
 
-run-db: main-env
+run-db:
 	pipenv run make db
 
 db:
