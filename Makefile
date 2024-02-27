@@ -11,7 +11,15 @@ include make/Makefile.hyperopt.mk
 
 # install and train the project
 install:
-	pipenv install --categories "packages dev-packages api-packages internal-packages"
+	pipenv install --categories "packages dev-packages api-packages"
+
+create-internal:
+	mkdir -p .venv-internal
+	python3 -m venv .venv-internal
+
+install-internal:
+	if [ ! -d .venv-internal ]; then ${MAKE} create-internal; fi
+	. .venv-internal/bin/activate && pipenv install --categories "packages dev-packages internal-packages" --skip-lock
 
 clean:
 	rm -rf results .rasa models/* .astro
@@ -30,7 +38,7 @@ run-cli:
 	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
 
 run-internal:
-	pipenv run ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
+	. .venv-internal/bin/activate && ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
 
 run-db:
 	pipenv run make db
