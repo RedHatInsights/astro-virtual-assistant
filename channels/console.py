@@ -116,10 +116,8 @@ class ConsoleInput(InputChannel):
             try:
                 # Use internal API instead of an HTTP request.
                 # Copied from https://github.com/RasaHQ/rasa/blob/68ce281aeec352876afb2baf74844e95b0c69ff4/rasa/server.py#L718-L741
-                tracker = await request.app.ctx.agent.processor.fetch_full_tracker_with_initial_session(
-                    sender_id, output_channel=CollectingOutputChannel()
-                )
 
+                tracker = await request.app.ctx.agent.processor.get_tracker(sender_id)
                 state = tracker.current_state(EventVerbosity.AFTER_RESTART)
                 is_first_visit = "name" not in state["latest_message"]["intent"]
 
