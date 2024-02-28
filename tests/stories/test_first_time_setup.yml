@@ -20,8 +20,6 @@ stories:
       - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
-      - intent: intent_core_more
-      - action: utter_core_capabilities_more_1
 
   - story: Session start intent is sent from a previous user
     steps:

@@ -47,12 +47,6 @@ stories:
       - intent: intent_core_capabilities
       - checkpoint: check_core_capabilities
 
-  - story: User wants to know even more (and we don't have anything else)!
-    steps:
-      - action: utter_core_capabilities_more_1
-      - intent: intent_core_more
-      - action: utter_core_capabilities_more_no_more
-
   - story: User asks for a planned but not implemented feature
     steps:
       - intent: intent_planned_features
@@ -127,16 +121,3 @@ stories:
       - intent: intent_core_help
       - action: action_default_fallback
       - action: action_listen
-
-rules:
-  - rule: Org admin wants to know more
-    steps:
-      - action: utter_core_capabilities_main_org_admin
-      - intent: intent_core_more
-      - action: utter_core_capabilities_more_1
-
-  - rule: User wants to know more
-    steps:
-      - action: utter_core_capabilities_main
-      - intent: intent_core_more
-      - action: utter_core_capabilities_more_1
