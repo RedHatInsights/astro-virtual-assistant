@@ -22,3 +22,24 @@ nlu:
       - How much do I pay for my subscriptions?
       - How much am I paying for my subscriptions?
       - How much am I paying for my subs?
+
+  - intent: intent_register_rhel_system
+    examples: |
+      - Register your RHEL systems
+      - can you help me register my systems in rhel
+      - how to register rhel systems
+      - rhel system registration
+      - how do I connect my rhel system to red hat
+      - Is it possible to up rhel connction to red hat directly?
+      - officially connect rhel system with red hat
+
+  - intent: intent_activate_subscription
+    examples: |
+      - I bought my subscription somewhere else, how can I activate it?
+      - Where can I activate my subscription
+      - i purchased my subscriptions elsewhere and now need to activate them
+      - subscriptions activation
+      - activate subs
+      - activate my new subscription
+      - i have a new subscription that hasn't been activated anywhere
+      - are you able to activate a new sub for me?
