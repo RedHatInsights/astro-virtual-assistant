@@ -25,3 +25,12 @@ responses:
           payload: View subscriptions documentation
   utter_out_of_scope_subscriptions_costs:
     - text: "I don't know anything about the finances around here."
+  utter_rhel_system_registration:
+    - text: "You can easily register your RHEL systems using our [registration assistant](https://access.redhat.com/labs/registrationassistant/)"
+  utter_activate_subscriptions:
+    - text: "You can activate your subscriptions by filling out a form. I've opened that in a new tab for you."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: https://access.redhat.com/subscriptions/activate/redhat
