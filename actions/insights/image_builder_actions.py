@@ -249,7 +249,9 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         if "errors" in result:
             errors = result["errors"]
 
-        if status == 400 and any("already belongs" in error["detail"] for error in errors):
+        if status == 400 and any(
+            "already belongs" in error["detail"] for error in errors
+        ):
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_epel_already_enabled",
                 version=version,
