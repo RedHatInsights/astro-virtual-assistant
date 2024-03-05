@@ -1,0 +1,16 @@
+version: "3.1"
+
+rules:
+  - rule: Setting up a notification
+    steps:
+      - intent: intent_notifications_setup
+      # whatever action to set the slots to whats needed
+      - action: form_notifications
+      - active_loop: form_notifications
+  
+  - rule: Edit notifications
+    steps:
+      - intent: intent_notifications_edit
+      # whatever action to set the slots to whats needed
+      - action: form_notifications
+      - active_loop: form_notifications

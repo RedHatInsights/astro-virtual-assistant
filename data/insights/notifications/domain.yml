@@ -1,0 +1,100 @@
+version: "3.1"
+
+intents:
+  - intent_notifications_setup
+
+actions: []
+
+responses:
+  utter_notifications_non_admin:
+    - text: "Only your organization administrator can create and configure notification events."
+  utter_notifications_learn:
+    - text: "I recommend visiting the [Notifications dashboard](/settings/notifications) and [our documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
+
+  # Setup notifications
+  utter_notifications_setup:
+    - text: "It sounds like you want to configure an event notification for your organization."
+  utter_notifications_setup_non_admin_can_help:
+    - text: "I can help you modify your notification preferences or contact your org admin for you."
+  utter_notifications_setup_which_service:
+    - text: "Which service would you like to configure an event notification for?"
+      buttons:
+        - title: "OpenShift"
+          payload: "openshift"
+        - title: "RHEL"
+          payload: "rhel"
+        - title: "Core Console Services"
+          payload: "core console"
+        - title: "I'm not sure"
+          payload: "not sure"
+  utter_notifications_setup_not_sure_service:
+    - text: "Okay, here are some resources for you."
+
+  # Edit notifications
+  utter_notifications_edit:
+    - text: "It sounds like you want to manage your notification."
+  utter_notifications_edit_non_admin:
+    - text: "To manage your preferences, please select a service."
+      buttons:
+        - text: "Other"
+          payload: "other"
+  utter_notifications_edit_selected_non_admin:
+    - text: "Great! I'll open up the page where you can manage preferences for {service}."
+  utter_notifications_edit_other_non_admin:
+    - text: ""
+  utter_notifications_edit_what:
+    - text: "It sounds like you want to manage notifications. Would you like to modify them for your whole organization or manage how you receive existing notifications?"
+      buttons:
+        - title: "Manage my organization's notifications"
+          payload: "Manage my organization's notifications"
+        - title: "Manage my own preferences"
+          payload: "Manage my own preferences"
+        - title: "Learn more about notifications"
+          payload: "Learn more about notifications"
+  utter_notifications_edit_events:
+    - text: "Got it! You want to manage your organization's notifications."
+  utter_notifications_edit_events_how:
+    - text: "What would you like to change?"
+      buttons:
+        - title: "Set up a new event"
+          payload: "Set up a new event"
+        - title: "Modify an existing event"
+          payload: "Modify an existing event"
+        - title: "Disable an event"
+          payload: "Disable an event"
+  utter_notifications_edit_events_which_service:
+    - text: "Great! Which service has the event you want to modify?"
+      buttons:
+        - title: "OpenShift"
+          payload: "OpenShift"
+        - title: "RHEL"
+          payload: "RHEL"
+        - title: "Core Console Services"
+          payload: "Core Console Services"
+  utter_notifications_edit_events_for_service:
+    - text: "Okay. Which active {event} event do you want to modify?"
+      buttons: []
+
+  # Behavior groups
+  utter_notifications_edit_selected_event:
+    - text: "How would you like to change {event}?"
+      buttons:
+        - title: "Attach an existing behavior group"
+          payload: "Attach an existing behavior group"
+        - title: "Create a new behavior group"
+          payload: "Attach a new behavior group"
+        - title: "Remove an existing behavior group"
+          payload: "Remove an existing behavior group"
+  utter_notifications_edit_new_group:
+    - text: "Great! The Notifications dashboard has plenty of options for you. I'll transfer your selections from our chat as well."
+  utter_notifications_edit_existing_group:
+    - text: "Okay. The Notifications dashboard lets you attach and detach behavior groups to your events."
+  utter_notifications_edit_no_groups:
+    - text: "It looks like you don't have any behavior groups attached to the {event} event yet."
+  utter_notifications_edit_no_groups_what:
+    - text: "What would you like to do?"
+      buttons:
+        - title: "Attach an existing behavior group"
+          payload: "Attach an existing behavior group"
+        - title: "Create a new behavior group"
+          payload: "Attach a new behavior group"
