@@ -201,7 +201,6 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             )
             return
 
-        logger.error(f"GET Result: {result}")
         result = result.json()
         if not result or not result["data"] or status != 200:
             dispatcher.utter_message(
@@ -244,14 +243,18 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             headers=headers,
         )
 
-        logger.error(f"POST Result: {result}")
+        status = result.status_code
+        result = result.json()
+        errors = None
+        if "errors" in result:
+            errors = result["errors"]
 
-        if result.status_code == 400 and "already belongs" in result.detail:
+        if status == 400 and any("already belongs" in error["detail"] for error in errors):
             dispatcher.utter_message(
-                response="utter_image_builder_custom_content_already_enabled",
+                response="utter_image_builder_custom_content_epel_already_enabled",
                 version=version,
             )
-        elif result.status_code == 201:
+        elif status == 201:
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_epel_enabled",
                 version=version,
