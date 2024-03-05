@@ -1,5 +1,6 @@
 from __future__ import annotations
 import logging
+from itertools import chain
 from typing import Any, Dict, List, Optional, Text, Type
 
 import jsonpickle
@@ -22,6 +23,7 @@ from rasa.shared.nlu.constants import (
     ENTITY_ATTRIBUTE_START,
     ENTITY_ATTRIBUTE_VALUE,
     ENTITY_ATTRIBUTE_END,
+    ENTITY_ATTRIBUTE_CONFIDENCE,
 )
 from rasa.shared.nlu.training_data.training_data import TrainingData
 from rasa.shared.nlu.training_data.message import Message
@@ -38,6 +40,9 @@ CONFIG_SENTENCE_SCORE_CUTOFF = "sentence_score_cutoff"
 CONFIG_WORD_SCORE_CUTOFF = "word_score_cutoff"
 CONFIG_CASE_SENSITIVE = "case_sensitive"
 CONFIG_USE_SLOTS = "use_slots"
+
+OVERRIDE_LEFT = -1
+OVERRIDE_RIGHT = 1
 
 
 class FuzzyEntities:
@@ -158,7 +163,7 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
         to support multiple words.
         """
 
-        entities = []
+        entities: Dict[Text, List[Dict[Text, Any]]] = {}
 
         tokens = None
         if self.fuzzy_entities and message.get(TEXT):
@@ -172,6 +177,7 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
                 self._process_text(message.get(TEXT)),
                 fuzzy_entity.entity_list,
                 score_cutoff=self.sentence_score_cutoff,
+                limit=None,
             )
 
             if len(fuzzy_result_list) > 0:
@@ -186,7 +192,10 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
                             self._process_text(sub_message), fuzzy_result[0]
                         )
                         if ratio >= self.word_score_cutoff:
-                            entities.append(
+                            if fuzzy_entity.name not in entities:
+                                entities[fuzzy_entity.name] = []
+
+                            entities[fuzzy_entity.name].append(
                                 {
                                     ENTITY_ATTRIBUTE_TYPE: fuzzy_entity.name,
                                     ENTITY_ATTRIBUTE_START: tokens[i].start,
@@ -196,16 +205,66 @@ class FuzzyEntityExtractor(EntityExtractorMixin, GraphComponent):
                                     ENTITY_ATTRIBUTE_VALUE: fuzzy_entity.get_value_of(
                                         fuzzy_result[0]
                                     ),
+                                    ENTITY_ATTRIBUTE_CONFIDENCE: ratio,
                                 }
                             )
 
-        return entities
+        entities = self._reconciliate_entities(entities)
+
+        return list(chain.from_iterable(entities.values()))
 
     def _process_text(self, text: Text):
         if self.case_sensitive:
             return text
 
         return text.lower()
+
+    @staticmethod
+    def _reconciliate_entities(entities: Dict):
+        rencociliated_entities = {}
+        for entity_type, elements in entities.items():
+            elements = sorted(elements, key=lambda e: e[ENTITY_ATTRIBUTE_START])
+
+            for i in range(len(elements) - 1):
+                left = elements[i]
+                right = elements[i + 1]
+                override = None
+
+                if right[ENTITY_ATTRIBUTE_START] == left[ENTITY_ATTRIBUTE_START]:
+                    if right[ENTITY_ATTRIBUTE_END] == left[ENTITY_ATTRIBUTE_END]:
+                        continue
+                    elif right[ENTITY_ATTRIBUTE_END] > left[ENTITY_ATTRIBUTE_END]:
+                        override = OVERRIDE_RIGHT
+                    else:
+                        override = OVERRIDE_LEFT
+                elif left[ENTITY_ATTRIBUTE_END] < right[ENTITY_ATTRIBUTE_START]:
+                    continue
+                else:
+                    rightScore = (
+                        right[ENTITY_ATTRIBUTE_END] - right[ENTITY_ATTRIBUTE_START]
+                    ) * right[ENTITY_ATTRIBUTE_CONFIDENCE]
+                    leftScore = (
+                        left[ENTITY_ATTRIBUTE_END] - left[ENTITY_ATTRIBUTE_START]
+                    ) * left[ENTITY_ATTRIBUTE_CONFIDENCE]
+                    if rightScore > leftScore:
+                        override = OVERRIDE_RIGHT
+                    elif leftScore > rightScore:
+                        override = OVERRIDE_LEFT
+
+                if override is OVERRIDE_RIGHT:
+                    elements[i] = right
+                elif override is OVERRIDE_LEFT:
+                    elements[i + 1] = left
+
+            reconciliation_map = {}
+            for element in elements:
+                element.pop(ENTITY_ATTRIBUTE_CONFIDENCE, None)
+                reconciliation_map[
+                    f"{element[ENTITY_ATTRIBUTE_VALUE]}-{element[ENTITY_ATTRIBUTE_START]}x{element[ENTITY_ATTRIBUTE_END]}"
+                ] = element
+            rencociliated_entities[entity_type] = reconciliation_map.values()
+
+        return rencociliated_entities
 
     @classmethod
     def load(
