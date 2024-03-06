@@ -182,14 +182,14 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     async def enable_custom_repositories(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, version: str
     ):
-        result = send_console_request(
+        result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1/popular_repositories/?offset=0&limit=20",
             tracker,
         )
         status = None
         try:
-            status = result.status_code
+            status = result.status
         except Exception as e:
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_error"
@@ -201,7 +201,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             )
             return
 
-        result = result.json()
+        result = await result.json()
         if not result or not result["data"] or status != 200:
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_error"
@@ -234,7 +234,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             }
         ]
 
-        result = send_console_request(
+        result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1.0/repositories/bulk_create/",
             tracker,
@@ -243,8 +243,8 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             headers=headers,
         )
 
-        status = result.status_code
-        result = result.json()
+        status = result.status
+        result = await result.json()
         errors = None
         if "errors" in result:
             errors = result["errors"]
