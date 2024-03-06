@@ -11,4 +11,4 @@ actions: []
 
 responses:
   utter_api_capabilities:
-    - text: "You can view information about Red Hat APIs on our [API Catalog](https://developers.redhat.com/api-catalog)"
+    - text: "You can view information about Red Hat APIs on our [API Catalog](https://developers.redhat.com/api-catalog)."
