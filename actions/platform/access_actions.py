@@ -45,7 +45,7 @@ class ExecuteFormAccessRequestAccess(Action):
             user_message = tracker.get_slot(_SLOT_REQUEST_MESSAGE)
             requested_url = tracker.get_slot(_SLOT_ACCESS_REQUEST_URL)
 
-            send_rbac_request_admin(
+            await send_rbac_request_admin(
                 tracker,
                 org_id,
                 username,
