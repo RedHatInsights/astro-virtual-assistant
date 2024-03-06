@@ -74,10 +74,10 @@ objects:
         resources:
           limits:
             cpu: 500m
-            memory: 2Gi
+            memory: 3Gi
           requests:
             cpu: 250m
-            memory: 1Gi
+            memory: 2Gi
 
     - name: actions
       minReplicas: ${{MIN_REPLICAS}}
@@ -243,4 +243,4 @@ parameters:
   value: "1 0 * * *"
 - name: REST_WORKERS
   description: The number of workers in Sanic's REST API
-  value: "4"
+  value: "2"
