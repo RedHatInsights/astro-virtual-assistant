@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 import aiohttp
+from aiohttp import ContentTypeError
 from rasa_sdk import Tracker
 
 from common import logging
@@ -21,6 +22,7 @@ async def send_console_request(
     tracker: Tracker,
     method: str = "get",
     headers: Optional[Header] = None,
+    fetch_content: bool = True,
     **kwargs,
 ) -> Any:
     if headers is None:
@@ -61,6 +63,12 @@ async def send_console_request(
                     logger.error(
                         f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {console_response.content}"
                     )
+
+                if fetch_content:
+                    try:
+                        return console_response, await console_response.json()
+                    except ContentTypeError:
+                        return console_response, await console_response.text()
 
                 return console_response
     except Exception as e:

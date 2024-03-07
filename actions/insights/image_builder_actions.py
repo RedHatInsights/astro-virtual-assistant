@@ -182,33 +182,19 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     async def enable_custom_repositories(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, version: str
     ):
-        result = await send_console_request(
+        response, result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1/popular_repositories/?offset=0&limit=20",
             tracker,
         )
-        status = None
-        try:
-            status = result.status
-        except Exception as e:
-            dispatcher.utter_message(
-                response="utter_image_builder_custom_content_error"
-            )
-            logger.debug(
-                "Failed to get a response from the content-sources API: status {}; result {}".format(
-                    status, result
-                )
-            )
-            return
 
-        result = await result.json()
-        if not result or not result["data"] or status != 200:
+        if not response.ok or not result or not result["data"]:
             dispatcher.utter_message(
                 response="utter_image_builder_custom_content_error"
             )
             logger.debug(
                 "Failed to get a response from the content-sources API: status {}; result {}".format(
-                    status, result
+                    response.status, result
                 )
             )
             return
@@ -234,7 +220,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             }
         ]
 
-        result = await send_console_request(
+        response, result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1.0/repositories/bulk_create/",
             tracker,
@@ -242,9 +228,8 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
             json=formatted,
             headers=headers,
         )
+        status = response.status
 
-        status = result.status
-        result = await result.json()
         errors = None
         if "errors" in result:
             errors = result["errors"]
