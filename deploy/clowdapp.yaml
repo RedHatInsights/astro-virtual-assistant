@@ -73,10 +73,10 @@ objects:
             value: ${REST_WORKERS}
         resources:
           limits:
-            cpu: 500m
+            cpu: 750m
             memory: 3Gi
           requests:
-            cpu: 250m
+            cpu: 500m
             memory: 2Gi
 
     - name: actions
