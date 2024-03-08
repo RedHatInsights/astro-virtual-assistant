@@ -137,9 +137,11 @@ class IntegrationSetupCommon(FormValidationAction):
                     for template in self.create_template():
                         dispatcher.utter_message(response=template)
 
-        # print(f"next expected: {await self.next_requested_slot(dispatcher, tracker,domain)}")
-        # if tracker.get_slot("requested_slot") == "integration_setup_create_other":
-        if await self.all_required_slots_are_set(dispatcher, tracker, domain):
+        if tracker.get_slot(
+            "requested_slot"
+        ) != "integration_setup_create_other" and await self.all_required_slots_are_set(
+            dispatcher, tracker, domain
+        ):
             return await self.process_data(tracker, dispatcher, next_events)
 
         print(next_events)
