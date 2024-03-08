@@ -20,7 +20,6 @@ slots:
       - communications
       - reporting
       - webhook
-      - unknown
     mappings: &custom_mapping
       - type: custom
   integration_setup_walk_me:

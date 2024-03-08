@@ -49,7 +49,7 @@ integrations_slot_match = FuzzySlotMatch(
 )
 
 
-class IntegrationSetup(Action):
+class IntegrationSetup(FormValidationAction):
     def name(self) -> str:
         return "validate_form_integration_setup"
 
@@ -59,7 +59,7 @@ class IntegrationSetup(Action):
         tracker: "Tracker",
         domain: "DomainDict",
     ) -> List[EventType]:
-        events = []
+        events = await super().run(dispatcher, tracker, domain)
         if tracker.get_slot("requested_slot") == "integration_setup_kind":
             resolved_match = resolve_slot_match(
                 tracker.latest_message["text"], integrations_slot_match
@@ -68,9 +68,28 @@ class IntegrationSetup(Action):
                 for resolved_slot in resolved_match:
                     events.append(SlotSet(resolved_slot, resolved_match[resolved_slot]))
             else:
-                events.append(SlotSet("integration_setup_kind", "unknown"))
+                dispatcher.utter_message(response="utter_integration_kind_not_found")
+                events.append(SlotSet("requested_slot", None))
+                events.append(ActiveLoop(None))
+                events.append(SlotSet("requested_slot", "integration_setup_kind"))
+                events.append(ActiveLoop("form_integration_setup"))
 
         return events
+
+    # We are processing in the `run` method, but this ensures we don't break out of the form.
+    async def extract_integration_setup_kind(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_kind": None}
+
+    async def validate_integration_setup_kind(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_kind": slot_value}
 
 
 class IntegrationSetupInit(Action):

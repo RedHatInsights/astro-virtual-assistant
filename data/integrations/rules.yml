@@ -1,20 +1,6 @@
 version: "3.1"
 
 rules:
-  - rule: Integration kind not resolved
-    condition:
-      - active_loop: form_integration_setup
-      - slot_was_set:
-          - integration_setup_kind: unknown
-    steps:
-      - action: form_integration_setup
-      - active_loop: null
-      - slot_was_set:
-          - requested_slot: null
-      - action: utter_integration_kind_not_found
-      - action: form_integration_setup
-      - active_loop: form_integration_setup
-
   - rule: Non admin user wants to setup an integration
     condition:
       - slot_was_set:
