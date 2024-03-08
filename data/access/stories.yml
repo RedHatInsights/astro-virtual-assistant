@@ -22,12 +22,6 @@ stories:
       - intent: intent_access_contact_admin
       - action: utter_access_contact_admin
 
-  - story: User wants to contact their org admin - No
-    steps:
-      - action: utter_access_contact_admin
-      - intent: intent_core_no
-      - checkpoint: check_closing
-
   - story: User wants to check access
     steps:
       - intent: intent_access_check_access

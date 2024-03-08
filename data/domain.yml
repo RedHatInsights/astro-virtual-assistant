@@ -55,6 +55,10 @@ slots:
     influence_conversation: true
     mappings:
       - type: custom
+  core_break_form:
+    type: bool
+    mappings:
+      - type: custom
   first_time_greeting:
     type: bool
     influence_conversation: true
@@ -63,6 +67,11 @@ slots:
   is_org_admin:
     type: bool
     influence_conversation: true
+    mappings:
+      - type: custom
+
+  base_console_url:
+    type: text
     mappings:
       - type: custom
 

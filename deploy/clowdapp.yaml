@@ -15,6 +15,7 @@ objects:
     dependencies:
       - advisor-backend
       - notifications-gw
+      - notifications-backend
       - vulnerability-engine
       - content-sources-backend
     

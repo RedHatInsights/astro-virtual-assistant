@@ -74,9 +74,15 @@ logging_cloudwatch_log_stream = _config("AWS_LOG_STREAM", default=os.uname().nod
 
 
 advisor_url = _config("ENDPOINT__ADVISOR_BACKEND__API__URL", default=__endpoint_default)
-notifications_url = _config(
+notifications_gw_url = _config(
     "ENDPOINT__NOTIFICATIONS_GW__SERVICE__URL", default=__endpoint_default
 )
+notifications_url = _config(
+    "ENDPOINT__NOTIFICATIONS_BACKEND__SERVICE__URL", default=__endpoint_default
+)
+
+sources_url = _config("ENDPOINT__SOURCES_API__SVC__URL", default=__endpoint_default)
+
 vulnerability_url = _config(
     "ENDPOINT__VULNERABILITY_ENGINE__MANAGER_SERVICE__URL", default=__endpoint_default
 )

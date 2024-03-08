@@ -51,7 +51,9 @@ def get_is_org_admin(tracker: Tracker) -> bool:
     latest_user_event = get_last_user_message(tracker)
 
     try:
-        return latest_user_event.get("metadata").get("is_org_admin")
+        return latest_user_event.get("metadata").get(
+            "is_org_admin", True
+        )  # Change this to false
     except Exception as e:
         print(f"An Exception occured while handling retrieving is_org_admin: {e}")
 

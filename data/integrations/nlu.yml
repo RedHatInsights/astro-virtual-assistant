@@ -1,0 +1,15 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_integration_setup
+    examples: |
+      - set up integration
+      - how do i use integrations
+      - i want to use integrations
+      - i want to plug into slack integration
+      - i want to plug into teams
+      - i want to send messages to google chat
+      - i want to send messages to microsoft teams
+      - setup splunk
+      - connect alerts to slack
+      - create snow connection
