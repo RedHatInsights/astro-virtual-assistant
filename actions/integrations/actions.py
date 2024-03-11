@@ -49,6 +49,24 @@ integrations_slot_match = FuzzySlotMatch(
 )
 
 
+def get_communications_integration_type_name(raw_type: str):
+    if raw_type == "google_chat":
+        return "Google Chat"
+    if raw_type == "teams":
+        return "Microsoft Office Teams"
+    if raw_type == "slack":
+        return "Slack"
+
+
+def get_reporting_integration_type_name(raw_type: str):
+    if raw_type == "ansible":
+        return "Event-Driven Ansible"
+    if raw_type == "service-now":
+        return "ServiceNow"
+    if raw_type == "splunk":
+        return "Splunk"
+
+
 class IntegrationSetup(FormValidationAction):
     def name(self) -> str:
         return "validate_form_integration_setup"
@@ -156,10 +174,15 @@ class IntegrationSetupCommon(FormValidationAction):
                     for template in self.create_template():
                         dispatcher.utter_message(response=template)
 
-        if tracker.get_slot(
-            "requested_slot"
-        ) != "integration_setup_create_other" and await self.all_required_slots_are_set(
-            dispatcher, tracker, domain
+        only_show_me_where = tracker.get_slot("integration_setup_walk_me") is False
+        create_other_was_requested = (
+            tracker.get_slot("requested_slot") == "integration_setup_create_other"
+        )
+
+        if (
+            not create_other_was_requested
+            and not only_show_me_where
+            and await self.all_required_slots_are_set(dispatcher, tracker, domain)
         ):
             return await self.process_data(tracker, dispatcher, next_events)
 
@@ -410,14 +433,6 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
     def walk_template(self) -> Text:
         return "utter_integration_setup_communications_go"
 
-    def get_integration_type_name(self, raw_type: str):
-        if raw_type == "google_chat":
-            return "Google Chat"
-        if raw_type == "teams":
-            return "Microsoft Office Teams"
-        if raw_type == "slack":
-            return "Slack"
-
     async def process_data(
         self,
         tracker: Tracker,
@@ -452,7 +467,7 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
         if response.ok:
             dispatcher.utter_message(
                 response="utter_integration_setup_communications_success",
-                integration_type_name=self.get_integration_type_name(
+                integration_type_name=get_communications_integration_type_name(
                     tracker.get_slot("integration_setup_type")
                 ),
             )
@@ -481,20 +496,49 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
         return {}
 
 
+class AskForIntegrationSetupWalkMe(Action):
+    def name(self) -> Text:
+        return "action_ask_integration_setup_walk_me"
+
+    def get_reporting_integration_type_display_name(self, tracker: Tracker):
+        integration_type = tracker.get_slot("integration_setup_type")
+        if integration_type:
+            return get_reporting_integration_type_name(integration_type)
+        return None
+
+    def get_communication_integration_type_display_name(self, tracker: Tracker):
+        integration_type = tracker.get_slot("integration_setup_type")
+        if integration_type:
+            return get_communications_integration_type_name(integration_type)
+        return None
+
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        if tracker.active_loop_name == "form_integration_setup_communications":
+            dispatcher.utter_message(
+                response="utter_form_integration_setup_reporting_integration_setup_walk_me",
+                integration_type_display_name=self.get_communication_integration_type_display_name(
+                    tracker
+                ),
+            )
+        elif tracker.active_loop_name == "form_integration_setup_reporting":
+            dispatcher.utter_message(
+                response="utter_form_integration_setup_communications_integration_setup_walk_me",
+                integration_type_display_name=self.get_reporting_integration_type_display_name(
+                    tracker
+                ),
+            )
+
+        return []
+
+
 class IntegrationSetupReporting(IntegrationSetupCommon):
     def name(self) -> Text:
         return "validate_form_integration_setup_reporting"
 
     def walk_template(self) -> Text:
         return "utter_integration_setup_communications_go"
-
-    def get_integration_type_name(self, raw_type: str):
-        if raw_type == "ansible":
-            return "Event-Driven Ansible"
-        if raw_type == "service-now":
-            return "ServiceNow"
-        if raw_type == "splunk":
-            return "Splunk"
 
     def get_integration_type(self, raw_type: str) -> Text:
         if raw_type == "ansible":
@@ -549,7 +593,7 @@ class IntegrationSetupReporting(IntegrationSetupCommon):
         if response.ok:
             dispatcher.utter_message(
                 response="utter_integration_setup_reporting_success",
-                integration_type_name=self.get_integration_type_name(
+                integration_type_name=get_reporting_integration_type_name(
                     tracker.get_slot("integration_setup_type")
                 ),
             )

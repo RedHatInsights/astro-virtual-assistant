@@ -65,7 +65,7 @@ async def send_console_request(
             ) as console_response:
                 if not console_response.ok:
                     logger.error(
-                        f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {console_response.content}"
+                        f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {await console_response.text()}"
                     )
 
                 if fetch_content:

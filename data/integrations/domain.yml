@@ -10,6 +10,7 @@ actions:
   - validate_form_integration_setup_reporting
   - validate_form_integration_setup_webhook
   - form_integration_setup_init
+  - action_ask_integration_setup_walk_me
 
 slots:
   integration_setup_kind:
@@ -194,9 +195,9 @@ responses:
           payload: /intent_core_no
 
   # Communications
-  utter_ask_form_integration_setup_communications_integration_setup_walk_me:
+  utter_form_integration_setup_communications_integration_setup_walk_me:
     - text: >
-        It looks like you want to setup a communications integration. Would you like me to show you where to go
+        It looks like you want to setup a communications {integration_type_display_name} integration. Would you like me to show you where to go
         to do so or walk you through it?
       buttons:
         - title: Show me where to go
@@ -238,9 +239,9 @@ responses:
           payload: /intent_core_no
 
   # Reporting & Automation
-  utter_ask_form_integration_setup_reporting_integration_setup_walk_me:
+  utter_form_integration_setup_reporting_integration_setup_walk_me:
     - text: >
-        It looks like you want to setup a reporting integration. Would you like me to show you where to go
+        It looks like you want to setup a reporting {integration_type_display_name} integration. Would you like me to show you where to go
         to do so or walk you through it?
       buttons:
         - title: Show me where to go
