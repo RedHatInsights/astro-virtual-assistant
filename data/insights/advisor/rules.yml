@@ -1,0 +1,9 @@
+version: "3.1"
+
+rules:
+  - rule: User wants advisor recommendation by type
+    steps:
+      - intent: intent_insights_advisor_recommendation_by_type
+      - action: action_advisor_recommendation_by_type
+      - action: form_closing
+      - active_loop: form_closing
