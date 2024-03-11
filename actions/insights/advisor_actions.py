@@ -100,12 +100,15 @@ CATEGORY_SECURITY = "security"
 CATEGORY_AVAILABILITY = "availability"
 CATEGORY_STABILITY = "stability"
 
-advisor_categories = FuzzySlotMatch("advisor_category", [
-    FuzzySlotMatchOption(CATEGORY_PERFORMANCE),
-    FuzzySlotMatchOption(CATEGORY_SECURITY),
-    FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
-    FuzzySlotMatchOption(CATEGORY_STABILITY),
-])
+advisor_categories = FuzzySlotMatch(
+    "advisor_category",
+    [
+        FuzzySlotMatchOption(CATEGORY_PERFORMANCE),
+        FuzzySlotMatchOption(CATEGORY_SECURITY),
+        FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
+        FuzzySlotMatchOption(CATEGORY_STABILITY),
+    ],
+)
 
 
 class AdvisorRecommendationByType(Action):
@@ -120,15 +123,13 @@ class AdvisorRecommendationByType(Action):
         return [UserUtteranceReverted()]
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         user_input = tracker.latest_message["text"]
 
         resolved = []
         for word in user_input.split(" "):
-            resolved = resolve_slot_match(
-                word, advisor_categories
-            )
+            resolved = resolve_slot_match(word, advisor_categories)
 
             if len(resolved) > 0:
                 break
@@ -137,7 +138,9 @@ class AdvisorRecommendationByType(Action):
             return self.cancel(dispatcher)
 
         # Find the id of the category
-        response, content = await send_console_request("advisor", "/api/insights/v1/rulecategory/", tracker)
+        response, content = await send_console_request(
+            "advisor", "/api/insights/v1/rulecategory/", tracker
+        )
 
         if not response.ok:
             return self.cancel(dispatcher)
@@ -153,7 +156,11 @@ class AdvisorRecommendationByType(Action):
         if category_id is None:
             return self.cancel(dispatcher)
 
-        response, content = await send_console_request("advisor", f"/api/insights/v1/rule?category={category_id}&{self.filter_query}&limit=3", tracker)
+        response, content = await send_console_request(
+            "advisor",
+            f"/api/insights/v1/rule?category={category_id}&{self.filter_query}&limit=3",
+            tracker,
+        )
 
         if not response.ok:
             return self.cancel(dispatcher)
