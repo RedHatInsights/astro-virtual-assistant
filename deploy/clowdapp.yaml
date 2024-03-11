@@ -16,8 +16,8 @@ objects:
       - advisor-backend
       - notifications-gw
       - vulnerability-engine
-      - content-sources-backend
       - pulp
+      - content-sources-backend
     
     inMemoryDb: true
     database:
