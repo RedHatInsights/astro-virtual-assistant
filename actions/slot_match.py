@@ -20,10 +20,10 @@ class FuzzySlotMatchOption:
     sub_options: Optional[FuzzySlotMatch]
 
     def __init__(
-            self,
-            value: str,
-            synonyms: Optional[List[str]] = None,
-            sub_options: Optional[FuzzySlotMatch] = None,
+        self,
+        value: str,
+        synonyms: Optional[List[str]] = None,
+        sub_options: Optional[FuzzySlotMatch] = None,
     ):
         self.value = value
         self.synonyms = synonyms if synonyms is not None else [self.value]
@@ -31,7 +31,7 @@ class FuzzySlotMatchOption:
 
 
 def resolve_slot_match(
-        user_message: str, slot_match: FuzzySlotMatch, accepted_rate=ACCEPTED_RATIO
+    user_message: str, slot_match: FuzzySlotMatch, accepted_rate=ACCEPTED_RATIO
 ) -> Dict[str, any]:
     for options in slot_match.options:
         for value in options.synonyms:
