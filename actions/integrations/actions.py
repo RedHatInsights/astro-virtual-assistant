@@ -218,6 +218,15 @@ class IntegrationSetupCommon(FormValidationAction):
 
         return {}
 
+    async def validate_integration_setup_walk_me(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_walk_me": slot_value}
+
     async def extract_integration_setup_name(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
@@ -225,6 +234,15 @@ class IntegrationSetupCommon(FormValidationAction):
             return {"integration_setup_name": tracker.latest_message["text"]}
 
         return {}
+
+    async def validate_integration_setup_name(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_name": slot_value}
 
     async def extract_integration_setup_url(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -250,6 +268,15 @@ class IntegrationSetupCommon(FormValidationAction):
 
         return {}
 
+    async def validate_integration_setup_url(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_url": slot_value}
+
     async def extract_integration_setup_create_other(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
@@ -264,6 +291,15 @@ class IntegrationSetupCommon(FormValidationAction):
                 return {"integration_setup_create_other": False}
 
         return {}
+
+    async def validate_integration_setup_create_other(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_create_other": slot_value}
 
     async def extract_integration_setup_use_secret(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -280,12 +316,30 @@ class IntegrationSetupCommon(FormValidationAction):
 
         return {}
 
+    async def validate_integration_setup_use_secret(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_use_secret": slot_value}
+
     async def extract_integration_setup_secret(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == "integration_setup_secret":
             return {"integration_setup_secret": tracker.latest_message["text"]}
         return {}
+
+    async def validate_integration_setup_secret(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_secret": slot_value}
 
     async def required_slots(
         self,
@@ -411,6 +465,15 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
 
         return {}
 
+    async def validate_integration_setup_redhat_operator_installed(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_redhat_operator_installed": slot_value}
+
     async def extract_integration_setup_redhat_cluster_identifier(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
@@ -424,6 +487,15 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
                 ]
             }
         return {}
+
+    async def validate_integration_setup_redhat_cluster_identifier(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_redhat_cluster_identifier": slot_value}
 
 
 class IntegrationSetupCommunications(IntegrationSetupCommon):
@@ -494,6 +566,15 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
                 return resolved
 
         return {}
+
+    async def validate_integration_setup_type(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_type": slot_value}
 
 
 class AskForIntegrationSetupWalkMe(Action):
@@ -619,6 +700,15 @@ class IntegrationSetupReporting(IntegrationSetupCommon):
                 return resolved
 
         return {}
+
+    async def validate_integration_setup_type(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"integration_setup_type": slot_value}
 
 
 class IntegrationSetupWebhook(IntegrationSetupCommon):
