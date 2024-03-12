@@ -18,6 +18,7 @@ objects:
       - notifications-backend
       - vulnerability-engine
       - content-sources-backend
+      - sources-api
     
     inMemoryDb: true
     database:
