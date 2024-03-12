@@ -7,6 +7,7 @@ rules:
           - is_org_admin: false
     steps:
       - intent: intent_integration_setup
+      - action: action_deactivate_loop
       - action: utter_integration_no_permissions
       - action: utter_access_contact_admin
 
@@ -16,6 +17,7 @@ rules:
           - is_org_admin: true
     steps:
       - intent: intent_integration_setup
+      - action: action_deactivate_loop
       - action: utter_integration_what
 
   - rule: Admin user wants to start setting up an integration

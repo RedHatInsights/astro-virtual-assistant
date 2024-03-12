@@ -139,6 +139,11 @@ responses:
   utter_integration_setup_cloud_2:
     - text: >
         Here you go. To create a new Cloud integration, click the "Add integration" button.
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/integrations?category=Cloud"
 
   # Red Hat
 
