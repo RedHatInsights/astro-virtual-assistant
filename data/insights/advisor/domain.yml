@@ -2,9 +2,11 @@ version: "3.1"
 
 intents:
   - insights_advisor_recommendation_pathways
+  - intent_insights_advisor_recommendation_by_type
 
 actions:
   - action_advisor_api_pathway
+  - action_advisor_recommendation_by_type
 
 responses:
   utter_advisor_recommendation_pathways:
