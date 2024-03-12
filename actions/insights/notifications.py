@@ -13,7 +13,7 @@ async def send_notification(tracker: Tracker, event: dict):
     headers = Header()
     headers.add_header("Content-Type", "application/json")
     return await send_console_request(
-        "notifications",
+        "notifications-gw",
         "/notifications",
         tracker,
         "post",

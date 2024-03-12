@@ -322,3 +322,22 @@ nlu:
       - With you
       - I'll let you collect the details.
       - I'd prefer to use the assistant
+
+  - intent: intent_core_learn_more
+    examples: |
+      - learn more
+      - know more
+      - get more information
+      - I would like to know more
+      - I want to learn more
+      - want to know more
+      - more info
+      - give me the info
+
+  - intent: intent_core_guide_me
+    examples: |
+      - show me
+      - walk me through it
+      - do it for me
+      - show me how it is done
+      - guide me

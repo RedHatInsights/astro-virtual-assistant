@@ -1,0 +1,345 @@
+intents:
+  - intent_integration_setup
+  - intent_core_learn_more
+  - intent_core_guide_me
+
+actions:
+  - validate_form_integration_setup
+  - validate_form_integration_setup_redhat
+  - validate_form_integration_setup_communications
+  - validate_form_integration_setup_reporting
+  - validate_form_integration_setup_webhook
+  - form_integration_setup_init
+  - action_ask_integration_setup_walk_me
+
+slots:
+  integration_setup_kind:
+    type: categorical
+    values:
+      - cloud
+      - red_hat
+      - communications
+      - reporting
+      - webhook
+    mappings: &custom_mapping
+      - type: custom
+  integration_setup_walk_me:
+    type: bool
+    mappings: *custom_mapping
+  integration_setup_name:
+    type: text
+    mappings: *custom_mapping
+  integration_setup_create_other:
+    type: bool
+    mappings: *custom_mapping
+  integration_setup_url:
+    type: text
+    mappings: *custom_mapping
+  integration_setup_use_secret:
+    type: bool
+    mappings: *custom_mapping
+  integration_setup_secret:
+    type: text
+    mappings: *custom_mapping
+  integration_setup_redhat_operator_installed:
+    type: bool
+    mappings: *custom_mapping
+  integration_setup_redhat_cluster_identifier:
+    type: text
+    mappings: *custom_mapping
+  integration_setup_type:
+    type: text
+    mappings: *custom_mapping
+
+forms:
+  form_integration_setup:
+    required_slots:
+      - integration_setup_kind
+
+  form_integration_setup_redhat:
+    required_slots:
+      - integration_setup_walk_me
+      - integration_setup_name
+      - integration_setup_redhat_operator_installed
+      - integration_setup_redhat_cluster_identifier
+      - integration_setup_create_other
+
+  form_integration_setup_communications:
+    required_slots:
+      - integration_setup_walk_me
+      - integration_setup_type
+      - integration_setup_name
+      - integration_setup_url
+      - integration_setup_create_other
+
+  form_integration_setup_reporting:
+    required_slots:
+      - integration_setup_walk_me
+      - integration_setup_type
+      - integration_setup_name
+      - integration_setup_url
+      - integration_setup_use_secret
+      - integration_setup_secret
+      - integration_setup_create_other
+
+  form_integration_setup_webhook:
+    required_slots:
+      - integration_setup_walk_me
+      - integration_setup_name
+      - integration_setup_url
+      - integration_setup_use_secret
+      - integration_setup_secret
+      - integration_setup_create_other
+
+responses:
+  # Starters
+  utter_integration_no_permissions:
+    - text: >
+        You do not have the correct permissions to set up integrations, but you can read the
+        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
+        and request access from your org admin.
+  utter_integration_what:
+    - text: >
+        Are you looking to set up an integration or learn more about how to do so?
+      buttons:
+        - title: Setup an integration
+          payload: /intent_integration_setup
+        - title: Learn more
+          payload: /intent_core_learn_more
+  utter_integration_learn_more_1:
+    - text: >
+        You can read more about our integrations offerings in our
+        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
+  utter_integration_learn_more_2:
+    - text: >
+        In case you'd like my help in setting up an integration in the future, you can always start a new conversation.
+  # Base setup
+  utter_ask_integration_setup_kind:
+    - text: >
+        Got it! You want to setup an integration.
+
+        What kind of integration are you looking to create? Choose an option below or type a response.
+      buttons:
+        - title: Cloud
+          payload: cloud
+        - title: Red Hat
+          payload: red_hat
+        - title: Communications
+          payload: communications
+        - title: Reporting & Automation
+          payload: reporting
+        - title: Webhooks
+          payload: webhook
+
+  # Cloud
+
+  utter_integration_setup_cloud_1:
+    - text: >
+        It looks like you want to setup a Cloud integration. I'll bring you to the Integrations page.
+  utter_integration_setup_cloud_2:
+    - text: >
+        Here you go. To create a new Cloud integration, click the "Add integration" button.
+
+  # Red Hat
+
+  utter_ask_form_integration_setup_redhat_integration_setup_walk_me:
+    - text: >
+        It looks like you want to setup a Red Hat integration. Would you like me to show you where to go
+        to do so or walk you through it?
+      buttons:
+        - title: Show me where to go
+          payload: /intent_core_learn_more
+        - title: Walk me through it
+          payload: /intent_core_guide_me
+  utter_integration_setup_redhat_go:
+    - text: >
+        Here you go. To create a new Red Hat integration, click the "Add integration" button.
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/integrations?category=Red Hat"
+  utter_integration_setup_redhat_walk_1:
+    - text: >
+        Okay, can do. I can create a Red Hat OpenShift Container Platform integration for you.
+
+  utter_integration_setup_redhat_walk_2:
+    - text: >
+        I can connect the Hybrid Committed Spend application to your integration.
+  utter_ask_form_integration_setup_redhat_integration_setup_redhat_operator_installed:
+    - text: >
+        Before we can continue, you need to install the *costmanagement-metrics-operator* from
+        the OpenShift Container Platform web console.
+
+        Have you done this?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No, show me how
+          payload: /intent_core_no
+  utter_ask_form_integration_setup_redhat_integration_setup_redhat_cluster_identifier:
+    - text: >
+        Now, enter the cluster identifier. You can find the cluster identifier in the cluster's
+        Help > About screen
+  utter_integration_setup_redhat_walk_success:
+    - text: >
+        Your Red Hat OpenShift Container Platform integration was successfully created. You can
+        view your new integration on the Red Hat tab.
+  utter_ask_form_integration_setup_redhat_integration_setup_create_other:
+    - text: >
+        Do you need to create another Red Hat integration?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+
+  # Communications
+  utter_form_integration_setup_communications_integration_setup_walk_me:
+    - text: >
+        It looks like you want to setup a communications {integration_type_display_name} integration. Would you like me to show you where to go
+        to do so or walk you through it?
+      buttons:
+        - title: Show me where to go
+          payload: /intent_core_learn_more
+        - title: Walk me through it
+          payload: /intent_core_guide_me
+  utter_integration_setup_communications_go:
+    - text: >
+        Here you go. To create a new communications integration, click the "Add integration" button.
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/integrations?category=Communications"
+  utter_ask_form_integration_setup_communications_integration_setup_type:
+    - text: >
+        Okay, can do. First, select the type of integration you'd like to use.
+      buttons:
+        - title: Google chat
+          payload: google chat
+        - title: Microsoft Office Teams
+          payload: microsoft office teams
+        - title: Slack
+          payload: slack
+  utter_integration_setup_communications_validation_error:
+    - text: >
+        Looks like there is a validation error, please check your URL and try again.
+  utter_integration_setup_communications_success:
+    - text: >
+        Your {integration_type_name} integration was successfully created. You can view
+        your new integration on the Communications tab.
+  utter_ask_form_integration_setup_communications_integration_setup_create_other:
+    - text: >
+        Do you need to create another communications integration?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+
+  # Reporting & Automation
+  utter_form_integration_setup_reporting_integration_setup_walk_me:
+    - text: >
+        It looks like you want to setup a reporting {integration_type_display_name} integration. Would you like me to show you where to go
+        to do so or walk you through it?
+      buttons:
+        - title: Show me where to go
+          payload: /intent_core_learn_more
+        - title: Walk me through it
+          payload: /intent_core_guide_me
+  utter_integration_setup_reporting_go:
+    - text: >
+        Here you go. To create a new reporting & automation integration, click the "Add integration" button.
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/integrations?category=Reporting"
+  utter_ask_form_integration_setup_reporting_integration_setup_type:
+    - text: >
+        Okay, can do. First, select the type of integration you'd like to create.
+      buttons:
+        - title: Event-Driven ansible
+          payload: ansible
+        - title: ServiceNow
+          payload: servicenow
+        - title: Splunk
+          payload: splunk
+  utter_integration_setup_reporting_success:
+    - text: >
+        Your {integration_type_name} integration was successfully created. You can view
+        your new integration on the Reporting & Automation tab.
+  utter_ask_form_integration_setup_reporting_integration_setup_create_other:
+    - text: >
+        Do you need to create another reporting & automation integration?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+
+  # Webhook
+  utter_ask_form_integration_setup_webhook_integration_setup_walk_me:
+    - text: >
+        It looks like you want to setup an integration using a webhook. Would you like me to show you where to go
+        to do so or walk you through it?
+      buttons:
+        - title: Show me where to go
+          payload: /intent_core_learn_more
+        - title: Walk me through it
+          payload: /intent_core_guide_me
+  utter_integration_setup_webhook_go:
+    - text: >
+        Here you go. To create a new integration using a webhook, click the "Add integration" button.
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/integrations?category=Webhooks"
+  utter_integration_setup_webhook_success:
+    - text: >
+        Your integration was successfully created. You can view
+        your new integration on the Webhooks tab.
+  utter_ask_form_integration_setup_webhook_integration_setup_create_other:
+    - text: >
+        Do you need to create another integration using a webhook?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+
+  # Common
+  utter_ask_integration_setup_name:
+    - text: >
+        Now, create a name for your integration.
+  utter_ask_integration_setup_url:
+    - text: >
+        Next, define an endpoint URL.
+
+        The URL must include "https://"
+  utter_integration_setup_validation_error:
+    - text: >
+        Looks like there is a validation error, please check your URL and try again.
+  utter_integration_setup_error:
+    - text: >
+        I'm unable to create the integration for you. Please follow the
+        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#doc-wrapper)
+        to see if you can resolve the issue.
+        I apologize for the inconvenience.
+  utter_ask_integration_setup_use_secret:
+    - text: >
+        Do you want to define a secret token for this integration? This is optional.
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_ask_integration_setup_secret:
+    - text: >
+        Okay. Please enter the secret that is going to be used.
+
+  utter_integration_kind_not_found:
+    - text: >
+        I don't yet know about that kind of integrations. Could you try again?

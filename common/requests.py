@@ -37,12 +37,16 @@ async def send_console_request(
     endpoint = None
     if app_name == "advisor":
         endpoint = app.advisor_url
+    elif app_name == "notifications-gw":
+        endpoint = app.notifications_gw_url
     elif app_name == "notifications":
         endpoint = app.notifications_url
     elif app_name == "vulnerability":
         endpoint = app.vulnerability_url
     elif app_name == "content-sources":
         endpoint = app.content_sources_url
+    elif app_name == "sources":
+        endpoint = app.sources_url
     else:
         print(f"Invalid app: {app_name}")
         raise ValueError(f"Invalid app_name used: {app_name}")
@@ -61,7 +65,7 @@ async def send_console_request(
             ) as console_response:
                 if not console_response.ok:
                     logger.error(
-                        f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {console_response.content}"
+                        f"Received non OK~sh response from call {method.upper()} {url}: ({console_response.status}) - {await console_response.text()}"
                     )
 
                 if fetch_content:

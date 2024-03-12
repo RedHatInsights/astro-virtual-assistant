@@ -30,6 +30,18 @@
       "port": 1337
     },
     {
+      "app": "notifications-backend",
+      "hostname": "notifications.svc",
+      "name": "service",
+      "port": 1337
+    },
+    {
+      "app": "sources-api",
+      "hostname": "sources.svc",
+      "name": "svc",
+      "port": 1337
+    },
+    {
       "app": "vulnerability-engine",
       "hostname": "v-engine.svc",
       "name": "manager-service",
