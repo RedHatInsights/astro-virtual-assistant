@@ -284,9 +284,9 @@ nlu:
       - Where can I change my [preferences](preference)?
       - Where can I edit all of my [preferences](preference)?
       - please update my [preferences](preference)
-      - i need to reset my password
-      - password reset 
-      - reset my username please
+      - i need to reset my [password](preference)
+      - [password](preference) reset 
+      - reset my [username](preference) please
 
   - intent: intent_core_help
     examples: |
