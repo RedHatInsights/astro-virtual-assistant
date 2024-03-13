@@ -25,11 +25,6 @@ nlu:
       - Tell me about yourself
       - Tell me what you can do
 
-  - intent: intent_core_more
-    examples: |
-      - More
-      - See more
-
   - intent: intent_core_yes
     examples: |
       - yes
