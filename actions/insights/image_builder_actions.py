@@ -137,12 +137,15 @@ class ImageBuilderGettingStarted(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        # Need to find way to use the RHEL version to fill the proper form in wizard
-        # rhel_version = tracker.get_slot(RHEL_VERSION)
+        rhel_version = tracker.get_slot(RHEL_VERSION)
+        print(rhel_version)
+        version_param = "rhel9"
+        if rhel_version == "RHEL 8":
+            version_param = "rhel8"
         dispatcher.utter_message(response="utter_image_builder_redirect_1")
         dispatcher.utter_message(
             response="utter_image_builder_redirect_2",
-            link="https://console.redhat.com/insights/image-builder/imagewizard#SIDs=&tags=",
+            link="https://console.redhat.com/insights/image-builder/imagewizard?release={version}#SIDs=&tags=".format(version=version_param),
         )
 
         return [
@@ -326,12 +329,15 @@ class ImageBuilderCustomContent(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        # Need to find way to use the RHEL version to fill the proper form in wizard
-        # rhel_version = tracker.get_slot(RHEL_VERSION)
+        epel_version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
+        print(epel_version)
+        version_param = "rhel9"
+        if epel_version == "EPEL 8":
+            version_param = "rhel8"
         dispatcher.utter_message(response="utter_image_builder_redirect_1")
         dispatcher.utter_message(
             response="utter_image_builder_redirect_2",
-            link="https://console.redhat.com/insights/image-builder/imagewizard#SIDs=&tags=",
+            link='https://console.redhat.com/insights/image-builder/imagewizard?release={version}#SIDs=&tags='.format(version=version_param),
         )
 
         return [

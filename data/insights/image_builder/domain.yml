@@ -35,7 +35,17 @@ slots:
     type: bool
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &image_builder_rhel_version_confirmed
+          - active_loop: form_image_builder_getting_started
+            requested_slot: image_builder_rhel_version_confirmed
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *image_builder_rhel_version_confirmed
+
   image_builder_content_repository:
     type: text
     influence_conversation: true
@@ -101,9 +111,9 @@ responses:
     - text: "Are you sure you'd like to use RHEL 8?"
       buttons:
         - title: "Yes"
-          payload: "/intent_image_builder_rhel_8"
+          payload: "/intent_core_yes"
         - title: "No"
-          payload: "/intent_image_builder_rhel_9"
+          payload: "/intent_core_no"
   utter_image_builder_custom_content:
     - text: "I can help you add custom content to your RHEL images."
   utter_image_builder_custom_content_repository:
