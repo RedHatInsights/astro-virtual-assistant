@@ -44,6 +44,12 @@ nlu:
       - Why can't I view this?
       - Why don't I have access to this?
       - I can't view this page.
+      - i'm unable to see [notifications](core_services)
+      - can't see the pages i need to see
+      - update my perms so i can see [advisor](core_services)
+      - im not able to view any more
+      - my access isnt working any more for [policies](core_services)
+      - did someone revoke my access, i can't see it
 
   - intent: intent_access_contact_admin
     examples: |

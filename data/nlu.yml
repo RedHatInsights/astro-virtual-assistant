@@ -152,6 +152,9 @@ nlu:
       - Give me a damn human being!!
       - is this chat live?
       - customer support
+      - can you have a real time conversatoin
+      - do you have tech support
+      - can i talk to a technical support agent
 
   - intent: intent_services_offline
     examples: |
@@ -165,6 +168,14 @@ nlu:
       - Is [developers.redhat.com](product) having issues?
       - Is [insights](product) having issues?
       - Is [inventory](product) having an outage?
+      - outages
+      - where can i view outages
+      - report an outage
+      - see current outages
+      - it's down
+      - where can i see what systems are down
+      - what's the site for viewing outages
+      - report a service offline
 
   - intent: intent_data_privacy_policy
     examples: |
@@ -272,6 +283,10 @@ nlu:
       - Where can I change my [username](preference)?
       - Where can I change my [preferences](preference)?
       - Where can I edit all of my [preferences](preference)?
+      - please update my [preferences](preference)
+      - i need to reset my password
+      - password reset 
+      - reset my username please
 
   - intent: intent_core_help
     examples: |
