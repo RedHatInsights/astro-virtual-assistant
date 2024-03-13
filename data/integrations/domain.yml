@@ -138,7 +138,7 @@ responses:
         It looks like you want to set up a Cloud integration. I'll bring you to the Integrations page.
   utter_integration_setup_cloud_2:
     - text: >
-        Here you go. To create a new Cloud integration, click the "Add integration" button.
+        I'm going to open the UI in another tab for you. To create a new Cloud integration, click the "Add integration" button.
       custom:
         type: command
         command: redirect
@@ -158,7 +158,7 @@ responses:
           payload: /intent_core_guide_me
   utter_integration_setup_redhat_go:
     - text: >
-        Here you go. To create a new Red Hat integration, click the "Add integration" button.
+        I'm going to open the UI in another tab for you. To create a new Red Hat integration, click the "Add integration" button.
       custom:
         type: command
         command: redirect
@@ -211,7 +211,7 @@ responses:
           payload: /intent_core_guide_me
   utter_integration_setup_communications_go:
     - text: >
-        Here you go. To create a new communications integration, click the "Add integration" button.
+        I'm going to open the UI in another tab for you. To create a new communications integration, click the "Add integration" button.
       custom:
         type: command
         command: redirect
@@ -255,7 +255,7 @@ responses:
           payload: /intent_core_guide_me
   utter_integration_setup_reporting_go:
     - text: >
-        Here you go. To create a new reporting & automation integration, click the "Add integration" button.
+        I'm going to open the UI in another tab for you. To create a new reporting & automation integration, click the "Add integration" button.
       custom:
         type: command
         command: redirect
@@ -296,7 +296,7 @@ responses:
           payload: /intent_core_guide_me
   utter_integration_setup_webhook_go:
     - text: >
-        Here you go. To create a new integration using a webhook, click the "Add integration" button.
+        I'm going to open the UI in another tab for you. To create a new integration using a webhook, click the "Add integration" button.
       custom:
         type: command
         command: redirect
