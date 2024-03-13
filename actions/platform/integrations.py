@@ -582,13 +582,13 @@ class AskForIntegrationSetupWalkMe(Action):
         integration_type = tracker.get_slot("integration_setup_type")
         if integration_type:
             return get_reporting_integration_type_name(integration_type)
-        return None
+        return ""
 
     def get_communication_integration_type_display_name(self, tracker: Tracker):
         integration_type = tracker.get_slot("integration_setup_type")
         if integration_type:
             return get_communications_integration_type_name(integration_type)
-        return None
+        return ""
 
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict

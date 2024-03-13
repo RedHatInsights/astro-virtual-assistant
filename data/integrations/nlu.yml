@@ -13,3 +13,4 @@ nlu:
       - setup splunk
       - connect alerts to slack
       - create snow connection
+      - set up slack
