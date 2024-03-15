@@ -2,7 +2,6 @@ version: "3.1"
 
 intents:
   - intent_core_capabilities
-  - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
   - intent_unknown_topic

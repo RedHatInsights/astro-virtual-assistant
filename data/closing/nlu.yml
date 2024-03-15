@@ -15,6 +15,12 @@ nlu:
       - goodbye
       - convo over
       - conversation complete
+      - close chat
+      - that's enough
+      - how do i stop this conversation
+      - see ya
+      - please stop this chat
+      - close this window
 
   - intent: intent_closing_restart
     examples: |
