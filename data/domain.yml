@@ -23,6 +23,7 @@ intents:
   - intent_customer_support # TODO: S9
   - intent_core_help
   - intent_core_here
+  - intent_core_something_else
 
 entities:
   - preference

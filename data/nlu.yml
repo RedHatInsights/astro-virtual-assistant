@@ -351,3 +351,12 @@ nlu:
       - do it for me
       - show me how it is done
       - guide me
+
+  - intent: intent_core_something_else
+    examples: |
+      - something else
+      - lets skip this
+      - lets do something else
+      - I want to do something else
+      - Lets start over
+      - I don't want to do this anymore

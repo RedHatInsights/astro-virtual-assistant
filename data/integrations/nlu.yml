@@ -14,3 +14,24 @@ nlu:
       - connect alerts to slack
       - create snow connection
       - set up slack
+
+  - intent: intent_integration_edit
+    examples: |
+      - How do i edit my integration
+      - change integration
+      - update integration
+      - change slack connection
+      - update slack connection
+      - update splunk connection
+      - change splunk connection
+      - change service now connection
+      - update service now connection
+      - change servicenow connection
+      - update servicenow connection
+      - change teams connection
+      - update teams connection
+      - rename an integration
+      - i need to connect additional services
+      - i need to pause an integration
+      - i need to disable an integration
+      - delete integration

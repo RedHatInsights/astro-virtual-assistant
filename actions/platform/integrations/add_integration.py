@@ -7,6 +7,7 @@ from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
+from actions.platform.integrations import all_required_slots_are_set
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
 
@@ -182,27 +183,13 @@ class IntegrationSetupCommon(FormValidationAction):
         if (
             not create_other_was_requested
             and not only_show_me_where
-            and await self.all_required_slots_are_set(dispatcher, tracker, domain)
+            and await all_required_slots_are_set(
+                self, dispatcher, tracker, domain, ["integration_setup_create_other"]
+            )
         ):
             return await self.process_data(tracker, dispatcher, next_events)
 
         return next_events
-
-    async def all_required_slots_are_set(
-        self,
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
-        domain: "DomainDict",
-    ) -> bool:
-        for slot in await self.required_slots(
-            self.domain_slots(domain), dispatcher, tracker, domain
-        ):
-            if slot == "integration_setup_create_other":
-                continue
-            if tracker.get_slot(slot) is None:
-                return False
-
-        return True
 
     async def extract_integration_setup_walk_me(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
