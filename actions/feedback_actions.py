@@ -12,6 +12,8 @@ from rasa_sdk.events import (
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import FollowupAction
 
+from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+
 from common.rasa.tracker import get_email
 
 TYPE = "feedback_type"
@@ -27,6 +29,75 @@ FEEDBACK_SLOTS = [
     RESPONSE,
     USABILITY_STUDY,
 ]
+
+type_slot_match = FuzzySlotMatch(
+    TYPE,
+    [
+        FuzzySlotMatchOption(
+            "bug",
+            [
+                "a bug",
+                "it's about a bug",
+                "an error",
+                "it's about an error",
+                "issue",
+                "it's about an issue",
+            ],
+        ),
+        FuzzySlotMatchOption(
+            "general",
+            [
+                "it's a feature",
+                "it's a suggestion",
+                "something else",
+                "it's about something else",
+            ],
+        ),
+    ],
+)
+
+where_slot_match = FuzzySlotMatch(
+    WHERE,
+    [
+        FuzzySlotMatchOption(
+            "conversation",
+            ["this conversation", "our conversation", "conversation", "this assistant"],
+        ),
+        FuzzySlotMatchOption(
+            "console",
+            [
+                "the console",
+                "it's with the console",
+                "the platform",
+                "platform",
+                "console",
+            ],
+        ),
+    ],
+)
+
+collection_slot_match = FuzzySlotMatch(
+    COLLECTION,
+    [
+        FuzzySlotMatchOption(
+            "pendo", ["pendo", "I'd prefer to use pendo", "form please", "your form"]
+        ),
+        FuzzySlotMatchOption(
+            "assistant",
+            [
+                "assistant",
+                "this assistant",
+                "with you",
+                "right here",
+                "this conversation",
+                "chat",
+                "conversation",
+                "I'll let you collect the details.",
+                "I'd prefer to use the assistant",
+            ],
+        ),
+    ],
+)
 
 
 class ValidateFormFeedback(FormValidationAction):
@@ -52,25 +123,41 @@ class ValidateFormFeedback(FormValidationAction):
     def extract_feedback_type(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, TYPE
-        )
+        if tracker.get_slot("requested_slot") == TYPE:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], type_slot_match
+            )
+            if len(resolved) > 0:
+                print(resolved)
+                return resolved
+
+        return {}
 
     @staticmethod
     def extract_feedback_where(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, WHERE
-        )
+        if tracker.get_slot("requested_slot") == WHERE:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], where_slot_match
+            )
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     @staticmethod
     def extract_feedback_collection(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, COLLECTION
-        )
+        if tracker.get_slot("requested_slot") == COLLECTION:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], collection_slot_match
+            )
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     @staticmethod
     def extract_feedback_response(
@@ -114,10 +201,16 @@ class ValidateFormFeedback(FormValidationAction):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         requested_slot = tracker.get_slot("requested_slot")
+        if requested_slot is None:
+            print("requested_slot is None")
+        else:
+            print("requested: " + requested_slot)
 
         feedback_type = tracker.get_slot(TYPE)
         if requested_slot == TYPE:
+            print("feedback_type: " + str(feedback_type))
             if feedback_type == "bug":
+                print("utter_feedback_type_bug")
                 dispatcher.utter_message(response="utter_feedback_type_bug")
                 dispatcher.utter_message(response="utter_bug_where")
             elif feedback_type == "general":
