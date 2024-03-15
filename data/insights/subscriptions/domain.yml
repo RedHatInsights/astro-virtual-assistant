@@ -2,12 +2,16 @@ version: "3.1"
 
 intents:
   - intent_out_of_scope_subscriptions_costs
+  - intent_check_subscriptions
+  - intent_activate_subscription
+  - intent_subscriptions_redirect
 
 entities: []
 
 slots: {}
 
-actions: []
+actions:
+  - action_check_subscriptions
 
 responses:
   utter_capabilities_subscriptions:
@@ -34,3 +38,18 @@ responses:
         command: redirect
         params:
           url: https://access.redhat.com/subscriptions/activate/redhat
+  utter_subscriptions_redirect:
+    - custom:
+        type: command
+        command: redirect
+        params:
+          url: https://console.redhat.com/subscriptions/inventory
+  utter_check_subscriptions_additional:
+    - text: "Whould you like to activate subscriptions or view more information about all of your subscriptions?"
+      buttons:
+        - title: Activate Subscriptions
+          payload: /intent_activate_subscription
+        - title: View information about my subscriptions
+          payload: /intent_subscriptions_redirect
+        - title: No, thanks
+          payload: /intent_closing_start
