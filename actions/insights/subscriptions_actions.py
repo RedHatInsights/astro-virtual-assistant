@@ -50,6 +50,11 @@ class SubscriptionsCheck(Action):
         )
 
         if not response.ok:
+            logger.debug(
+                "Failed to get a response from the RHSM API: status {}; result {}".format(
+                    response.status, content
+                )
+            )
             return self.cancel(dispatcher)
 
         if resolved.get("subscriptions_category"):
@@ -63,12 +68,17 @@ class SubscriptionsCheck(Action):
             subs_type_count = content_body.get(resolved_category)
 
             if content_body:
-                response_text = (
-                    f"You have {subs_type_count} {resolved_category_text} subscriptions"
+                dispatcher.utter_message(
+                    response="utter_subscriptions_count_granular",
+                    count=subs_type_count,
+                    category=resolved_category_text,
                 )
-                dispatcher.utter_message(text=response_text)
         else:
             content_body = content.get("body")
             if content_body:
-                response_text = f"You have:\n{content_body['active']} active subscriptions\n{content_body['expiringSoon']} subscriptions that are expiring soon\n{content_body['expired']} that have alredy expired"
-                dispatcher.utter_message(text=response_text)
+                dispatcher.utter_message(
+                    response="utter_subscriptions_count_all",
+                    active=content_body["active"],
+                    expiring=content_body["expiringSoon"],
+                    expired=content_body["expired"],
+                )

@@ -60,3 +60,7 @@ responses:
           payload: /intent_subscriptions_redirect
         - title: No, thanks
           payload: /intent_closing_start
+  utter_subscriptions_count_granular:
+    - text: "You have {count} {category} subscriptions"
+  utter_subscriptions_count_all:
+    - text: "You have:\n{active} active subscriptions\n{expiring} subscriptions that are expiring soon\n{expired} that have already expired"

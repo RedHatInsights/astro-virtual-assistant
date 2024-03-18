@@ -7,6 +7,7 @@ stories:
           my subs status
         intent: intent_check_subscriptions
       - action: action_check_subscriptions
+      - action: utter_subscriptions_count_all
       - action: utter_check_subscriptions_additional
 
   - story: User wants to check subscriptions - 2
@@ -15,6 +16,7 @@ stories:
           how many subs?
         intent: intent_check_subscriptions
       - action: action_check_subscriptions
+      - action: utter_subscriptions_count_all
       - action: utter_check_subscriptions_additional
   
   - story: User wants to check subscriptions - 3
@@ -23,6 +25,7 @@ stories:
           Any expiring subs?
         intent: intent_check_subscriptions
       - action: action_check_subscriptions
+      - action: utter_subscriptions_count_granular
       - action: utter_check_subscriptions_additional
 
   - story: User wants to check subscriptions - 3
@@ -31,4 +34,5 @@ stories:
           Show me my active subscriptions
         intent: intent_check_subscriptions
       - action: action_check_subscriptions
+      - action: utter_subscriptions_count_all
       - action: utter_check_subscriptions_additional
