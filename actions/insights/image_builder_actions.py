@@ -10,6 +10,8 @@ from rasa_sdk.events import (
 )
 from rasa_sdk.types import DomainDict
 
+from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+
 from common import logging
 from common.header import Header
 from common.requests import send_console_request
@@ -23,33 +25,47 @@ RHEL_VERSION_CONFIRM = "image_builder_rhel_version_confirmed"
 CONTENT_REPOSITORY = "image_builder_content_repository"
 CONTENT_REPOSITORY_VERSION = "image_builder_content_repository_version"
 
+rhel_version_match = FuzzySlotMatch(
+    RHEL_VERSION,
+    [
+        FuzzySlotMatchOption("RHEL 9", ["RHEL 9", "9", "the newest one"]),
+        FuzzySlotMatchOption("RHEL 8", ["RHEL 8", "8", "the oldest one"]),
+    ],
+)
+
+content_repository_match = FuzzySlotMatch(
+    CONTENT_REPOSITORY,
+    [
+        FuzzySlotMatchOption("EPEL", ["epel", "extra packages", "provided"]),
+        FuzzySlotMatchOption("Other", ["other", "something else", "a different one"]),
+    ],
+)
+
+content_repository_version_match = FuzzySlotMatch(
+    CONTENT_REPOSITORY_VERSION,
+    [
+        FuzzySlotMatchOption("EPEL 8", ["8", "epel 8"]),
+        FuzzySlotMatchOption("EPEL 9", ["9", "epel 9"]),
+    ],
+)
+
 
 class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_image_builder_getting_started"
 
     @staticmethod
-    def break_form_if_not_extracted_requested_slot(
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-        slot: Text,
-    ):
-        if (
-            tracker.slots.get("requested_slot") == slot
-            and tracker.slots.get(slot) is None
-        ):
-            return {"core_break_form": True}
-
-        return {slot: tracker.slots.get(slot)}
-
-    @staticmethod
     def extract_image_builder_rhel_version(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormImageBuilderGettingStarted.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, RHEL_VERSION
-        )
+        if tracker.get_slot("requested_slot") == RHEL_VERSION:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], rhel_version_match
+            )
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     @staticmethod
     def validate_image_builder_rhel_version(
@@ -65,15 +81,14 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
         if requested_slot == RHEL_VERSION:
             rhel_version = tracker.get_slot(RHEL_VERSION)
             if rhel_version == "RHEL 9":
-                return [
-                    SlotSet(RHEL_VERSION_CONFIRM, True),
-                    SlotSet("requested_slot", None),
-                ]
+                events.append(SlotSet("requested_slot", None))
+                events.append(SlotSet(RHEL_VERSION_CONFIRM, True))
             else:
                 dispatcher.utter_message(response="utter_image_builder_rhel_8_support")
                 dispatcher.utter_message(
@@ -83,34 +98,13 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
         if requested_slot == RHEL_VERSION_CONFIRM:
             rhel_version_confirmed = tracker.get_slot(RHEL_VERSION_CONFIRM)
             if rhel_version_confirmed is True:
-                return [
-                    SlotSet("requested_slot", None),
-                    SlotSet(RHEL_VERSION, "RHEL 8"),
-                ]
+                events.append(SlotSet("requested_slot", None))
+                events.append(SlotSet(RHEL_VERSION, "RHEL 8"))
             else:
-                return [
-                    SlotSet("requested_slot", None),
-                    SlotSet(RHEL_VERSION, "RHEL 9"),
-                ]
+                events.append(SlotSet("requested_slot", None))
+                events.append(SlotSet(RHEL_VERSION, "RHEL 9"))
 
-        form_result = await super().run(dispatcher, tracker, domain)
-
-        core_break_form = tracker.get_slot("core_break_form")
-
-        if core_break_form is True:
-            form_start = tracker.get_last_event_for("active_loop")
-            form_start_index = tracker.events.index(form_start)
-            user_utterances_count = 1
-            for event in tracker.events[form_start_index:]:
-                if event["event"] == "user":
-                    user_utterances_count += 1
-
-            return [UserUtteranceReverted()] * user_utterances_count + [
-                SlotSet("requested_slot", None),
-                ActionReverted(),
-            ]
-
-        return form_result
+        return events
 
     async def required_slots(
         self,
@@ -161,27 +155,30 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         return "validate_form_image_builder_custom_content"
 
     @staticmethod
-    def break_form_if_not_extracted_requested_slot(
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-        slot: Text,
-    ):
-        if (
-            tracker.slots.get("requested_slot") == slot
-            and tracker.slots.get(slot) is None
-        ):
-            return {"core_break_form": True}
-
-        return {slot: tracker.slots.get(slot)}
-
-    @staticmethod
     def extract_image_builder_content_respository(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        return ValidateFormImageBuilderGettingStarted.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, CONTENT_REPOSITORY
-        )
+        if tracker.get_slot("requested_slot") == CONTENT_REPOSITORY:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], content_repository_match
+            )
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
+
+    @staticmethod
+    def extract_image_builder_content_respository_version(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        if tracker.get_slot("requested_slot") == CONTENT_REPOSITORY_VERSION:
+            resolved = resolve_slot_match(
+                tracker.latest_message["text"], content_repository_version_match
+            )
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     async def enable_custom_repositories(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, version: str
@@ -265,6 +262,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
         if requested_slot == CONTENT_REPOSITORY:
@@ -280,30 +278,13 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
                 dispatcher.utter_message(
                     response="utter_image_builder_custom_content_other"
                 )
-                return [SlotSet("requested_slot", None)]
+                events.append(SlotSet("requested_slot", None))
 
         if requested_slot == CONTENT_REPOSITORY_VERSION:
             version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
             await self.enable_custom_repositories(dispatcher, tracker, version)
 
-        form_result = await super().run(dispatcher, tracker, domain)
-
-        core_break_form = tracker.get_slot("core_break_form")
-
-        if core_break_form is True:
-            form_start = tracker.get_last_event_for("active_loop")
-            form_start_index = tracker.events.index(form_start)
-            user_utterances_count = 1
-            for event in tracker.events[form_start_index:]:
-                if event["event"] == "user":
-                    user_utterances_count += 1
-
-            return [UserUtteranceReverted()] * user_utterances_count + [
-                SlotSet("requested_slot", None),
-                ActionReverted(),
-            ]
-
-        return form_result
+        return events
 
     async def required_slots(
         self,
