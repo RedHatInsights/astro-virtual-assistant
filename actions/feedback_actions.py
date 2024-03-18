@@ -30,6 +30,8 @@ FEEDBACK_SLOTS = [
     USABILITY_STUDY,
 ]
 
+RESET_SLOTS = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
+
 type_slot_match = FuzzySlotMatch(
     TYPE,
     [
@@ -200,17 +202,12 @@ class ValidateFormFeedback(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
-        if requested_slot is None:
-            print("requested_slot is None")
-        else:
-            print("requested: " + requested_slot)
 
         feedback_type = tracker.get_slot(TYPE)
         if requested_slot == TYPE:
-            print("feedback_type: " + str(feedback_type))
             if feedback_type == "bug":
-                print("utter_feedback_type_bug")
                 dispatcher.utter_message(response="utter_feedback_type_bug")
                 dispatcher.utter_message(response="utter_bug_where")
             elif feedback_type == "general":
@@ -218,13 +215,13 @@ class ValidateFormFeedback(FormValidationAction):
 
         if requested_slot == WHERE:
             feedback_where = tracker.get_slot(WHERE)
-            reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
             if feedback_where == "console" and feedback_type == "bug":
                 dispatcher.utter_message(response="utter_bug_redirect")
-                return [SlotSet("requested_slot", None)] + reset_slots
+                events.append(SlotSet("requested_slot", None))
+                return events + RESET_SLOTS
 
             elif feedback_where == "conversation":
-                return reset_slots + [
+                return events + RESET_SLOTS + [
                     SlotSet("requested_slot", None),
                     SlotSet("feedback_form_to_closing_form", True),
                     SlotSet("closing_skip_got_help", True),
@@ -235,9 +232,8 @@ class ValidateFormFeedback(FormValidationAction):
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
             if feedback_collection == "pendo":
-                reset_slots = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
                 dispatcher.utter_message(response="utter_feedback_collection_pendo")
-                return [SlotSet("requested_slot", None)] + reset_slots
+                return events + [SlotSet("requested_slot", None)] + RESET_SLOTS
 
         if requested_slot == RESPONSE:
             dispatcher.utter_message(response="utter_feedback_transparency")
@@ -247,8 +243,6 @@ class ValidateFormFeedback(FormValidationAction):
                 dispatcher.utter_message(response="utter_feedback_usability_study_yes")
             else:
                 dispatcher.utter_message(response="utter_feedback_usability_study_no")
-
-        form_result = await super().run(dispatcher, tracker, domain)
 
         core_break_form = tracker.get_slot("core_break_form")
 
@@ -260,12 +254,12 @@ class ValidateFormFeedback(FormValidationAction):
                 if event["event"] == "user":
                     user_utterances_count += 1
 
-            return [UserUtteranceReverted()] * user_utterances_count + [
+            return events + [UserUtteranceReverted()] * user_utterances_count + [
                 SlotSet("requested_slot", None),
                 ActionReverted(),
             ]
 
-        return form_result
+        return events
 
     async def required_slots(
         self,
