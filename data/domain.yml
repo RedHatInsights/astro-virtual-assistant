@@ -2,7 +2,6 @@ version: "3.1"
 
 intents:
   - intent_core_capabilities
-  - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
   - intent_unknown_topic
@@ -24,6 +23,7 @@ intents:
   - intent_customer_support # TODO: S9
   - intent_core_help
   - intent_core_here
+  - intent_core_something_else
 
 entities:
   - preference

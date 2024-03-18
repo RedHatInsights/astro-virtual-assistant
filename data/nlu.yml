@@ -25,11 +25,6 @@ nlu:
       - Tell me about yourself
       - Tell me what you can do
 
-  - intent: intent_core_more
-    examples: |
-      - More
-      - See more
-
   - intent: intent_core_yes
     examples: |
       - yes
@@ -157,6 +152,9 @@ nlu:
       - Give me a damn human being!!
       - is this chat live?
       - customer support
+      - can you have a real time conversatoin
+      - do you have tech support
+      - can i talk to a technical support agent
 
   - intent: intent_services_offline
     examples: |
@@ -170,6 +168,14 @@ nlu:
       - Is [developers.redhat.com](product) having issues?
       - Is [insights](product) having issues?
       - Is [inventory](product) having an outage?
+      - outages
+      - where can i view outages
+      - report an outage
+      - see current outages
+      - it's down
+      - where can i see what systems are down
+      - what's the site for viewing outages
+      - report a service offline
 
   - intent: intent_data_privacy_policy
     examples: |
@@ -277,6 +283,10 @@ nlu:
       - Where can I change my [username](preference)?
       - Where can I change my [preferences](preference)?
       - Where can I edit all of my [preferences](preference)?
+      - please update my [preferences](preference)
+      - i need to reset my [password](preference)
+      - [password](preference) reset 
+      - reset my [username](preference) please
 
   - intent: intent_core_help
     examples: |
@@ -341,3 +351,12 @@ nlu:
       - do it for me
       - show me how it is done
       - guide me
+
+  - intent: intent_core_something_else
+    examples: |
+      - something else
+      - lets skip this
+      - lets do something else
+      - I want to do something else
+      - Lets start over
+      - I don't want to do this anymore

@@ -1,6 +1,12 @@
 version: "3.1"
 
 rules:
+  - rule: User wants to troubleshoot an integration
+    steps:
+      - intent: intent_integration_troubleshoot
+      - action: action_deactivate_loop
+      - action: utter_integration_troubleshoot
+
   - rule: Non admin user wants to setup an integration
     condition:
       - slot_was_set:

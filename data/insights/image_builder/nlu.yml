@@ -14,6 +14,7 @@ nlu:
       - RHEL images
       - Setup me some images
       - Image builder please
+      - can you help me build an image
 
   - intent: intent_image_builder_custom_content
     examples: |
