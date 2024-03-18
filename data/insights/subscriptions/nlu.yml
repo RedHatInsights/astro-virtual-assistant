@@ -23,6 +23,17 @@ nlu:
       - How much am I paying for my subscriptions?
       - How much am I paying for my subs?
 
+  - intent: intent_subscriptions_generic
+    examples: |
+      - I need help with my subscriptions
+      - Can you help me with my subscriptions?
+      - what resources do you have around subscriptions?
+      - Where can I read about subscriptions?
+      - subs help
+      - subscriptions information
+      - subs info
+      - subscriptions
+
   - intent: intent_register_rhel_system
     examples: |
       - Register your RHEL systems
@@ -62,3 +73,14 @@ nlu:
     examples: |
       - subscriptions redirect
       - subs redirect
+      - View subs page
+      - show subs page
+      - take me to the subs page
+      - show me the subs page
+
+  - intent: intent_subscriptions_doc
+    examples: |
+      - View subscriptions documentation on the Red Hat Portal
+      - Show subscriptions docs
+      - Show subscriptions documentations
+      - open the subs doc page

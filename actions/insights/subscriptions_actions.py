@@ -12,14 +12,14 @@ logger = logging.initialize_logging()
 
 CATEGORY_ACTIVE = "active"
 CATEGORY_EXPIRED = "expired"
-CATEGORY_EXPIRING_SOON = "expiring soon"
+CATEGORY_EXPIRING = "expiring"
 
 subs_categories = FuzzySlotMatch(
     "subscriptions_category",
     [
         FuzzySlotMatchOption(CATEGORY_ACTIVE),
         FuzzySlotMatchOption(CATEGORY_EXPIRED),
-        FuzzySlotMatchOption(CATEGORY_EXPIRING_SOON),
+        FuzzySlotMatchOption(CATEGORY_EXPIRING),
     ],
 )
 
@@ -56,14 +56,16 @@ class SubscriptionsCheck(Action):
             resolved_category = resolved["subscriptions_category"]
             resolved_category_text = resolved["subscriptions_category"]
 
-            if resolved_category == CATEGORY_EXPIRING_SOON:
+            if resolved_category == CATEGORY_EXPIRING:
                 resolved_category = "expiringSoon"
 
             content_body = content.get("body")
             subs_type_count = content_body.get(resolved_category)
 
             if content_body:
-                response_text = f"You have {subs_type_count} {resolved_category_text} subscriptions"
+                response_text = (
+                    f"You have {subs_type_count} {resolved_category_text} subscriptions"
+                )
                 dispatcher.utter_message(text=response_text)
         else:
             content_body = content.get("body")

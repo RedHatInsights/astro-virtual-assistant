@@ -11,3 +11,8 @@ rules:
     steps:
       - intent: intent_subscriptions_redirect
       - action: utter_subscriptions_redirect
+
+  - rule: Subscriptions Documentation
+    steps:
+      - intent: intent_subscriptions_doc
+      - action: utter_subscriptions_doc
