@@ -79,4 +79,6 @@ async def send_console_request(
         logger.error(
             f"Exception while handling request: {method.upper()} {url}", exc_info=True
         )
+        if fetch_content:
+            return None, None
         return None

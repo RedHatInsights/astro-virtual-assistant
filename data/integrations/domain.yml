@@ -348,3 +348,16 @@ responses:
   utter_integration_kind_not_found:
     - text: >
         I don't yet know about that kind of integrations. Could you try again?
+
+  utter_integration_name_used:
+    - text: >
+        That name you entered is already taken, please choose other.
+  utter_integration_url_not_https:
+    - text: >
+        The url you entered does not start with `https://`.
+
+  utter_integration_troubleshoot:
+    - text: >
+        I'm not able to help you troubleshoot integration errors at this time. Please review
+        [our integrations](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#assembly-installing-configuring-insights-for-splunk_integrations) 
+        documentation -- each integration has its own section on troubleshooting common errors.

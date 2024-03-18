@@ -7,6 +7,11 @@ from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
+from actions.platform.integrations import (
+    all_required_slots_are_set,
+    is_source_name_valid,
+    validate_integration_url,
+)
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
 
@@ -182,27 +187,13 @@ class IntegrationSetupCommon(FormValidationAction):
         if (
             not create_other_was_requested
             and not only_show_me_where
-            and await self.all_required_slots_are_set(dispatcher, tracker, domain)
+            and await all_required_slots_are_set(
+                self, dispatcher, tracker, domain, ["integration_setup_create_other"]
+            )
         ):
             return await self.process_data(tracker, dispatcher, next_events)
 
         return next_events
-
-    async def all_required_slots_are_set(
-        self,
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
-        domain: "DomainDict",
-    ) -> bool:
-        for slot in await self.required_slots(
-            self.domain_slots(domain), dispatcher, tracker, domain
-        ):
-            if slot == "integration_setup_create_other":
-                continue
-            if tracker.get_slot(slot) is None:
-                return False
-
-        return True
 
     async def extract_integration_setup_walk_me(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
@@ -245,24 +236,10 @@ class IntegrationSetupCommon(FormValidationAction):
     async def extract_integration_setup_url(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        # Validate URL
         if tracker.get_slot("requested_slot") == "integration_setup_url":
-            try:
-                result = urlparse(tracker.latest_message["text"])
-                if result.scheme != "https":
-                    dispatcher.utter_message(text="The URL is not using https.")
-                    dispatcher.utter_message(
-                        response="utter_integration_setup_validation_error"
-                    )
-                    return {"integration_setup_url": None}
-
-            except AttributeError:
-                dispatcher.utter_message(
-                    response="utter_integration_setup_validation_error"
-                )
-                return {"integration_setup_url": None}
-
-            return {"integration_setup_url": tracker.latest_message["text"]}
+            if validate_integration_url(dispatcher, tracker.latest_message["text"]):
+                return {"integration_setup_url": tracker.latest_message["text"]}
+            return {"integration_setup_url": None}
 
         return {}
 
@@ -366,20 +343,10 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        response, content = await send_console_request(
-            "sources",
-            "/api/sources/v3.1/graphql",
-            tracker,
-            method="post",
-            json={
-                "query": f'{{ sources(filter: {{name: "name", value: "{slot_value}"}}){{ id, name }}}}'
-            },
-        )
-
-        if response.ok and len(content.get("data").get("sources")) == 0:
+        if is_source_name_valid(tracker, slot_value):
             return {"integration_setup_name": slot_value}
         else:
-            dispatcher.utter_message(text="That name is taken. Try another.")
+            dispatcher.utter_message(response="utter_integration_name_used")
             return {"integration_setup_name": None}
 
     async def process_data(
