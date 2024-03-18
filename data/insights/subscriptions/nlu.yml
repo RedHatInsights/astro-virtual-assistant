@@ -22,6 +22,10 @@ nlu:
       - How much do I pay for my subscriptions?
       - How much am I paying for my subscriptions?
       - How much am I paying for my subs?
+      - subs cost
+      - cost for a subscriptions
+      - subs costing
+      - subscriptions costing our company
 
   - intent: intent_subscriptions_generic
     examples: |
@@ -61,6 +65,9 @@ nlu:
       - What subscriptions do I have?
       - do I have any expiring subscriptions?
       - How many active subscriptions do I have?
+      - Show me active subs
+      - Show me expiring subs
+      - Show me expired subs
       - Do I have expired subscriptions?
       - Can you give me a status rundown of all my subs?
       - what's going on with my subs?
@@ -68,6 +75,8 @@ nlu:
       - Do I have any subs that are active?
       - Do I have any subs that are expiring soon
       - How many subscriptions that are expiring soon?
+      - what information do you have for my subs?
+      - information on my subscriptions
 
   - intent: intent_subscriptions_redirect
     examples: |

@@ -11,13 +11,13 @@ stories:
   - story: User wants generic information for subscriptions - 2
     steps:
       - user: |
-          What info do you have for subs?
+          subs resources
         intent: intent_subscriptions_generic
       - action: utter_capabilities_subscriptions
   
   - story: User wants generic information for subscriptions - 3
     steps:
       - user: |
-          subs
+          subscriptions info
         intent: intent_subscriptions_generic
       - action: utter_capabilities_subscriptions
