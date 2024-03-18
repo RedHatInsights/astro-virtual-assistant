@@ -28,8 +28,12 @@ CONTENT_REPOSITORY_VERSION = "image_builder_content_repository_version"
 rhel_version_match = FuzzySlotMatch(
     RHEL_VERSION,
     [
-        FuzzySlotMatchOption("RHEL 9", ["RHEL 9", "9", "the newest one", "new", "newest", "best"]),
-        FuzzySlotMatchOption("RHEL 8", ["RHEL 8", "8", "older version", "oldest", "oldest one"]),
+        FuzzySlotMatchOption(
+            "RHEL 9", ["RHEL 9", "9", "the newest one", "new", "newest", "best"]
+        ),
+        FuzzySlotMatchOption(
+            "RHEL 8", ["RHEL 8", "8", "older version", "oldest", "oldest one"]
+        ),
     ],
 )
 
@@ -37,7 +41,9 @@ content_repository_match = FuzzySlotMatch(
     CONTENT_REPOSITORY,
     [
         FuzzySlotMatchOption("EPEL", ["EPEL", "epel", "extra packages", "provided"]),
-        FuzzySlotMatchOption("Other", ["Other", "other", "something else", "a different one"]),
+        FuzzySlotMatchOption(
+            "Other", ["Other", "other", "something else", "a different one"]
+        ),
     ],
 )
 
@@ -173,7 +179,9 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == CONTENT_REPOSITORY_VERSION:
             resolved = resolve_slot_match(
-                tracker.latest_message["text"], content_repository_version_match, accepted_rate=95
+                tracker.latest_message["text"],
+                content_repository_version_match,
+                accepted_rate=95,
             )
             if len(resolved) > 0:
                 return resolved
