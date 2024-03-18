@@ -35,3 +35,25 @@ nlu:
       - i need to pause an integration
       - i need to disable an integration
       - delete integration
+
+  - intent: intent_integration_troubleshoot
+    examples: |
+      - my integration isn't working
+      - i'm not able to set up my integration successfully, can you help?
+      - i need assistance getting my integration hooked up because i keep getting an error integration error
+      - failure to add integration
+      - i keep getting an error when trying to integrate with slack
+      - im unable to successfully integrate with google chat
+      - can you help me troubleshoot my integration errors please
+      - why is my integration not working
+      - cloud integration is failing
+      - cloud integration setup failure
+      - we keep getting errors with integrations
+      - troubleshoot integration not working
+      - can you help me troubleshoot my integrations
+      - servicenow failure
+      - error with microsoft teams
+      - splunk is not working
+      - are you able to troubleshoot my event driven ansible integration
+      - can you fix my integration problems
+      - are you able to resolve my integration errors for me
