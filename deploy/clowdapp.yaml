@@ -19,6 +19,7 @@ objects:
       - vulnerability-engine
       - content-sources-backend
       - sources-api
+      - rhsm-subscriptions
     
     inMemoryDb: true
     database:
