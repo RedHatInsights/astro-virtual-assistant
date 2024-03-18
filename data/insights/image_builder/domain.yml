@@ -19,6 +19,7 @@ slots:
     type: text
     influence_conversation: true
     mappings: &custom_mapping
+      - type: custom
   image_builder_rhel_version_confirmed:
     type: bool
     influence_conversation: true
@@ -40,6 +41,7 @@ slots:
     mappings: *custom_mapping
   image_builder_content_repository_version:
     type: text
+    influence_conversation: true
     mappings: *custom_mapping
 
 forms:

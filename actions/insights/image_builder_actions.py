@@ -28,24 +28,24 @@ CONTENT_REPOSITORY_VERSION = "image_builder_content_repository_version"
 rhel_version_match = FuzzySlotMatch(
     RHEL_VERSION,
     [
-        FuzzySlotMatchOption("RHEL 9", ["RHEL 9", "9", "the newest one"]),
-        FuzzySlotMatchOption("RHEL 8", ["RHEL 8", "8", "the oldest one"]),
+        FuzzySlotMatchOption("RHEL 9", ["RHEL 9", "9", "the newest one", "new", "newest", "best"]),
+        FuzzySlotMatchOption("RHEL 8", ["RHEL 8", "8", "older version", "oldest", "oldest one"]),
     ],
 )
 
 content_repository_match = FuzzySlotMatch(
     CONTENT_REPOSITORY,
     [
-        FuzzySlotMatchOption("EPEL", ["epel", "extra packages", "provided"]),
-        FuzzySlotMatchOption("Other", ["other", "something else", "a different one"]),
+        FuzzySlotMatchOption("EPEL", ["EPEL", "epel", "extra packages", "provided"]),
+        FuzzySlotMatchOption("Other", ["Other", "other", "something else", "a different one"]),
     ],
 )
 
 content_repository_version_match = FuzzySlotMatch(
     CONTENT_REPOSITORY_VERSION,
     [
-        FuzzySlotMatchOption("EPEL 8", ["8", "epel 8"]),
-        FuzzySlotMatchOption("EPEL 9", ["9", "epel 9"]),
+        FuzzySlotMatchOption("EPEL 8", ["8", "epel 8", "EPEL 8"]),
+        FuzzySlotMatchOption("EPEL 9", ["9", "epel 9", "EPEL 9"]),
     ],
 )
 
@@ -60,7 +60,7 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == RHEL_VERSION:
             resolved = resolve_slot_match(
-                tracker.latest_message["text"], rhel_version_match
+                tracker.latest_message["text"], rhel_version_match, accepted_rate=95
             )
             if len(resolved) > 0:
                 return resolved
@@ -155,7 +155,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         return "validate_form_image_builder_custom_content"
 
     @staticmethod
-    def extract_image_builder_content_respository(
+    def extract_image_builder_content_repository(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == CONTENT_REPOSITORY:
@@ -168,12 +168,12 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         return {}
 
     @staticmethod
-    def extract_image_builder_content_respository_version(
+    def extract_image_builder_content_repository_version(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == CONTENT_REPOSITORY_VERSION:
             resolved = resolve_slot_match(
-                tracker.latest_message["text"], content_repository_version_match
+                tracker.latest_message["text"], content_repository_version_match, accepted_rate=95
             )
             if len(resolved) > 0:
                 return resolved
@@ -203,7 +203,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         repository = None
         # find the information for the repository they want (EPEL 8 or EPEL 9)
         for repo in result["data"]:
-            if repo["suggested_name"].startswith(version):
+            if repo["suggested_name"] and repo["suggested_name"].startswith(version):
                 repository = repo
                 break
 
@@ -283,6 +283,9 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         if requested_slot == CONTENT_REPOSITORY_VERSION:
             version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
             await self.enable_custom_repositories(dispatcher, tracker, version)
+            events.append(SlotSet(CONTENT_REPOSITORY, None))
+            events.append(SlotSet(CONTENT_REPOSITORY_VERSION, None))
+            events.append(SlotSet("requested_slot", None))
 
         return events
 
