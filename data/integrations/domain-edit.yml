@@ -169,7 +169,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: "/settings/integrations"
+          url: "{base_console_url}/settings/integrations"
   utter_ask_integration_edit_data_more_changes:
     - text: >
         Do you need to change anything else about this integration?
