@@ -47,16 +47,13 @@ async def validate_integration_url(dispatcher: CollectingDispatcher, message: Te
     try:
         result = urlparse(message)
         if result.scheme != "https":
-            dispatcher.utter_message(text="The URL is not using https.")
+            dispatcher.utter_message(response="utter_integration_url_not_https")
             dispatcher.utter_message(
                 response="utter_integration_setup_validation_error"
             )
             return False
     except AttributeError:
-        dispatcher.utter_message(
-            response="utter_integration_setup_validation_error"
-        )
+        dispatcher.utter_message(response="utter_integration_setup_validation_error")
         return False
 
     return True
-

@@ -7,7 +7,11 @@ from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-from actions.platform.integrations import all_required_slots_are_set, is_source_name_valid, validate_integration_url
+from actions.platform.integrations import (
+    all_required_slots_are_set,
+    is_source_name_valid,
+    validate_integration_url,
+)
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
 
@@ -342,7 +346,7 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
         if is_source_name_valid(tracker, slot_value):
             return {"integration_setup_name": slot_value}
         else:
-            dispatcher.utter_message(text="That name is taken. Try another.")
+            dispatcher.utter_message(response="utter_integration_name_used")
             return {"integration_setup_name": None}
 
     async def process_data(

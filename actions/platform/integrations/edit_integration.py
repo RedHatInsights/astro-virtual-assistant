@@ -9,7 +9,11 @@ from rasa_sdk.events import SlotSet, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-from actions.platform.integrations import all_required_slots_are_set, is_source_name_valid, validate_integration_url
+from actions.platform.integrations import (
+    all_required_slots_are_set,
+    is_source_name_valid,
+    validate_integration_url,
+)
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
 
@@ -285,7 +289,7 @@ class IntegrationEditCommon(FormValidationAction):
         if tracker.get_slot("requested_slot") == "integration_edit_integration":
             message: Text = tracker.latest_message["text"]
             if message.startswith("integration:"):
-                integration_data = message[len("integration:"):]
+                integration_data = message[len("integration:") :]
                 try:
                     integration = json.loads(integration_data)
                     if (
@@ -701,7 +705,7 @@ class IntegrationEditData(IntegrationEditCommon):
         if is_source_name_valid(tracker, slot_value):
             return {"integration_setup_name": slot_value}
         else:
-            dispatcher.utter_message(text="That name is taken. Try another.")
+            dispatcher.utter_message(response="utter_integration_name_used")
             return {"integration_setup_name": None}
 
     async def extract_integration_setup_url(
