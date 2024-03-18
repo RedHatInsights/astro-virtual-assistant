@@ -29,49 +29,12 @@ slots:
       - bug
     mappings: &custom_mapping
       - type: custom
-      # - type: from_intent
-      #   value: general
-      #   intent: intent_feedback_is_it_general
-      #   conditions:
-      #     - active_loop: form_feedback
-      #       requested_slot: feedback_type
-      # - type: from_intent
-      #   value: bug
-      #   intent: intent_feedback_is_it_a_bug
-      #   conditions:
-      #     - active_loop: form_feedback
-      #       requested_slot: feedback_type
-      # - type: from_intent
-      #   value: general
-      #   intent: intent_core_yes
-      #   conditions:
-      #     - active_loop: form_feedback
-      #       requested_slot: feedback_type
-      # - type: from_intent
-      #   value: general
-      #   intent: intent_core_no
-      #   conditions:
-      #     - active_loop: form_feedback
-      #       requested_slot: feedback_type
   feedback_where:
     type: categorical
     values:
       - console
       - conversation
     mappings: *custom_mapping
-    # mappings:
-    #   - type: from_intent
-    #     value: console
-    #     intent: intent_feedback_where_console
-    #     conditions:
-    #       - active_loop: form_feedback
-    #         requested_slot: feedback_where
-    #   - type: from_intent
-    #     value: conversation
-    #     intent: intent_feedback_where_conversation
-    #     conditions:
-    #       - active_loop: form_feedback
-    #         requested_slot: feedback_where
   # How does the user want their data to be collected?
   # i.e. the bot or the pendo form
   feedback_collection:
@@ -80,19 +43,6 @@ slots:
       - assistant
       - pendo
     mappings: *custom_mapping
-    # mappings:
-    #   - type: from_intent
-    #     value: assistant
-    #     intent: intent_core_here
-    #     conditions:
-    #       - active_loop: form_feedback
-    #         requested_slot: feedback_collection
-    #   - type: from_intent
-    #     value: pendo
-    #     intent: intent_feedback_collect_with_pendo
-    #     conditions:
-    #       - active_loop: form_feedback
-    #         requested_slot: feedback_collection
   feedback_response:
     type: text
     mappings:

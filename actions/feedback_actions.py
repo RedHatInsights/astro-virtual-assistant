@@ -130,7 +130,6 @@ class ValidateFormFeedback(FormValidationAction):
                 tracker.latest_message["text"], type_slot_match
             )
             if len(resolved) > 0:
-                print(resolved)
                 return resolved
 
         return {}
@@ -221,13 +220,17 @@ class ValidateFormFeedback(FormValidationAction):
                 return events + RESET_SLOTS
 
             elif feedback_where == "conversation":
-                return events + RESET_SLOTS + [
-                    SlotSet("requested_slot", None),
-                    SlotSet("feedback_form_to_closing_form", True),
-                    SlotSet("closing_skip_got_help", True),
-                    SlotSet("closing_leave_feedback", True),
-                    SlotSet("closing_feedback_type", "this_conversation"),
-                ]
+                return (
+                    events
+                    + RESET_SLOTS
+                    + [
+                        SlotSet("requested_slot", None),
+                        SlotSet("feedback_form_to_closing_form", True),
+                        SlotSet("closing_skip_got_help", True),
+                        SlotSet("closing_leave_feedback", True),
+                        SlotSet("closing_feedback_type", "this_conversation"),
+                    ]
+                )
 
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
@@ -254,10 +257,14 @@ class ValidateFormFeedback(FormValidationAction):
                 if event["event"] == "user":
                     user_utterances_count += 1
 
-            return events + [UserUtteranceReverted()] * user_utterances_count + [
-                SlotSet("requested_slot", None),
-                ActionReverted(),
-            ]
+            return (
+                events
+                + [UserUtteranceReverted()] * user_utterances_count
+                + [
+                    SlotSet("requested_slot", None),
+                    ActionReverted(),
+                ]
+            )
 
         return events
 
