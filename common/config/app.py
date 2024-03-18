@@ -89,7 +89,7 @@ vulnerability_url = _config(
 content_sources_url = _config(
     "ENDPOINT__CONTENT_SOURCES_BACKEND__SERVICE__URL", default=__endpoint_default
 )
-rhsm_url = _config("ENDPOINT__RHSM_BACKEND__API__URL", default=__endpoint_default)
+rhsm_url = _config("ENDPOINT__SWATCH_API__SERVICE__URL", default=__endpoint_default)
 
 actions_url = _config(
     "PRIVATE_ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default="http://localhost:5055"
