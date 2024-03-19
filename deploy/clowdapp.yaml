@@ -19,8 +19,8 @@ objects:
       - vulnerability-engine
       - content-sources-backend
       - sources-api
-      - rhsm-subscriptions
-    
+      - swatch-api
+
     inMemoryDb: true
     database:
       name: virtual-assistant
