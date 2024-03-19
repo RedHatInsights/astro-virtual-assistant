@@ -4,6 +4,18 @@ rules:
   - rule: User wants advisor recommendation by type
     steps:
       - intent: intent_insights_advisor_recommendation_by_type
-      - action: action_advisor_recommendation_by_type
+      - action: action_deactivate_loop
+      - action: form_insights_advisor_recommendation_by_category_init
+      - action: form_insights_advisor_recommendation_by_category
+      - active_loop: form_insights_advisor_recommendation_by_category
+
+  - rule: Finished recommendation by type
+    condition:
+      - active_loop: form_insights_advisor_recommendation_by_category
+    steps:
+      - action: form_insights_advisor_recommendation_by_category
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
       - action: form_closing
       - active_loop: form_closing

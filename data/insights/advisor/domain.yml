@@ -6,14 +6,60 @@ intents:
 
 actions:
   - action_advisor_api_pathway
-  - action_advisor_recommendation_by_type
+  - validate_form_insights_advisor_recommendation_by_category
+  - form_insights_advisor_recommendation_by_category_init
+
+slots:
+  insights_advisor_system_kind:
+    type: categorical
+    values:
+      - rhel
+      - openshift
+    mappings: &custom_mapping
+      - type: custom
+  insights_advisor_recommendation_category:
+    type: categorical
+    values:
+      - performance
+      - security
+      - availability
+      - stability
+    mappings: *custom_mapping
+
+forms:
+  form_insights_advisor_recommendation_by_category:
+    required_slots:
+      - insights_advisor_system_kind
+      - insights_advisor_recommendation_category
 
 responses:
   utter_advisor_recommendation_pathways:
     - text: "I am contacting Advisor to find your recommendations."
   utter_advisor_recommendation_pathways_error:
-    - text: "I am sorry, I am having trouble contacting Advisor. Try visiting Advisor's dashboard [here](https://console.redhat.com/openshift/insights/advisor/recommendations)."
+    - text: "I am sorry, I am having trouble contacting Advisor. Try visiting Advisor's dashboard [here](/insights/advisor/recommendations)."
   utter_advisor_recommendation_pathways_total:
     - text: "You have {total} recommended pathways from Advisor. Here are {displayed} of them."
   utter_advisor_recommendation_pathways_closing:
     - text: "You can find more recommendations in the [Advisor dashboard]({link})."
+  utter_advisor_for_openshift:
+    - text: >
+        I'm working on learning this functionality. In the meantime, you can visit the 
+        [Advisor for OpenShift UI](/openshift/insights/advisor/recommendations).
+  utter_ask_insights_advisor_system_kind:
+    - text: Are you looking for help with Advisor for OpenShift or RHEL?
+      buttons:
+        - title: OpenShift
+          payload: openshift
+        - title: RHEL
+          payload: rhel
+  utter_ask_insights_advisor_recommendation_category:
+    - text: What type of recommendation are you looking for?
+      buttons:
+        - title: Performance
+          payload: performance
+        - title: Security
+          payload: security
+        - title: Availability
+          payload: availability
+        - title: Stability
+          payload: stability

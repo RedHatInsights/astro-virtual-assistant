@@ -4,11 +4,12 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-from typing import Any, Text, Dict, List
+from typing import Any, Text, Dict, List, Optional
 
-from rasa_sdk import Action, Tracker
+from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted, UserUtteranceReverted
+from rasa_sdk.events import ActionExecuted, UserUtteranceReverted, SlotSet, ActiveLoop
+from rasa_sdk.types import DomainDict
 
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common import logging
@@ -101,7 +102,7 @@ CATEGORY_AVAILABILITY = "availability"
 CATEGORY_STABILITY = "stability"
 
 advisor_categories = FuzzySlotMatch(
-    "advisor_category",
+    "insights_advisor_recommendation_category",
     [
         FuzzySlotMatchOption(CATEGORY_PERFORMANCE),
         FuzzySlotMatchOption(CATEGORY_SECURITY),
@@ -110,70 +111,179 @@ advisor_categories = FuzzySlotMatch(
     ],
 )
 
+advisor_system = FuzzySlotMatch(
+    "insights_advisor_system_kind",
+    [
+        FuzzySlotMatchOption("rhel", ["rhel", "redhat"]),
+        FuzzySlotMatchOption("openshift"),
+    ],
+)
 
-class AdvisorRecommendationByType(Action):
 
-    filter_query = "impacting=true&rule_status=enabled&sort=-total_risk"
+async def all_required_slots_are_set(
+    form: FormValidationAction,
+    dispatcher: CollectingDispatcher,
+    tracker: Tracker,
+    domain: DomainDict,
+    ignore: Optional[List[Text]] = None,
+) -> bool:
+    for slot in await form.required_slots(
+        form.domain_slots(domain), dispatcher, tracker, domain
+    ):
+        if ignore is not None and slot in ignore:
+            continue
+        if tracker.get_slot(slot) is None:
+            return False
+
+    return True
+
+
+class AdvisorRecommendationByCategoryInit(Action):
 
     def name(self) -> Text:
-        return "action_advisor_recommendation_by_type"
-
-    def cancel(self, dispatcher: CollectingDispatcher):
-        dispatcher.utter_message(response="utter_unknown_topic")
-        return [UserUtteranceReverted()]
+        return "form_insights_advisor_recommendation_by_category_init"
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        return [
+            SlotSet("insights_advisor_system_kind"),
+            SlotSet("insights_advisor_recommendation_category"),
+        ]
+
+
+class AdvisorRecommendationByType(FormValidationAction):
+
+    filter_query = "impacting=true&rule_status=enabled&sort=-total_risk"
+
+    def name(self) -> Text:
+        return "validate_form_insights_advisor_recommendation_by_category"
+
+    async def extract_insights_advisor_system_kind(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        requested_slot = tracker.get_slot("requested_slot")
         user_input = tracker.latest_message["text"]
 
-        resolved = []
-        for word in user_input.split(" "):
-            resolved = resolve_slot_match(word, advisor_categories)
-
+        if requested_slot == "insights_advisor_system_kind":
+            resolved = resolve_slot_match(user_input, advisor_system)
             if len(resolved) > 0:
-                break
+                return resolved
 
-        if len(resolved) == 0:
-            return self.cancel(dispatcher)
+        if (
+            requested_slot is None
+            and tracker.get_slot("insights_advisor_system_kind") is None
+        ):
+            resolved = {}
+            for word in user_input.split(" "):
+                resolved = resolve_slot_match(word, advisor_system)
+                if len(resolved) > 0:
+                    return resolved
 
-        # Find the id of the category
-        response, content = await send_console_request(
-            "advisor", "/api/insights/v1/rulecategory/", tracker
-        )
+        return {}
 
-        if not response.ok:
-            return self.cancel(dispatcher)
+    async def validate_insights_advisor_system_kind(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"insights_advisor_system_kind": slot_value}
 
-        category_id = None
-        category_name = None
-        for category in content:
-            if category["name"].lower() == resolved["advisor_category"]:
-                category_id = category["id"]
-                category_name = category["name"].lower()
-                break
+    async def extract_insights_advisor_recommendation_category(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        requested_slot = tracker.get_slot("requested_slot")
+        user_input = tracker.latest_message["text"]
 
-        if category_id is None:
-            return self.cancel(dispatcher)
+        if requested_slot == "insights_advisor_recommendation_category":
+            resolved = resolve_slot_match(user_input, advisor_categories)
+            if len(resolved) > 0:
+                return resolved
 
-        response, content = await send_console_request(
-            "advisor",
-            f"/api/insights/v1/rule?category={category_id}&{self.filter_query}&limit=3",
-            tracker,
-        )
+        if (
+            requested_slot is None
+            and tracker.get_slot("insights_advisor_recommendation_category") is None
+        ):
+            resolved = {}
+            for word in user_input.split(" "):
+                resolved = resolve_slot_match(word, advisor_categories)
+                if len(resolved) > 0:
+                    return resolved
 
-        if not response.ok:
-            return self.cancel(dispatcher)
+        return {}
 
-        if len(content["data"]) > 0:
-            message = f"List of {category_name} recommendations\n"
-            index = 1
-            for rule in content["data"]:
-                message += f" {index}. [{rule['description']}](/insights/advisor/recommendations/{rule['rule_id']})\n"
-                index += 1
+    async def validate_insights_advisor_recommendation_category(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"insights_advisor_recommendation_category": slot_value}
 
-            message += f"\n[See more {category_name} recommendations here](/insights/advisor/recommendations?category={category_id}&{self.filter_query}&limit=20&offset=0)."
-        else:
-            message = f"You don't have any {category_name} recommendation right now."
+    def error(self, dispatcher: CollectingDispatcher, events):
+        dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
+        return events
 
-        dispatcher.utter_message(text=message)
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
+
+        if tracker.get_slot("insights_advisor_system_kind") == "openshift":
+            dispatcher.utter_message(response="utter_advisor_for_openshift")
+            return events + [ActiveLoop(None), SlotSet("requested_slot")]
+
+        if await all_required_slots_are_set(self, dispatcher, tracker, domain):
+            # Find the id of the category
+            response, content = await send_console_request(
+                "advisor", "/api/insights/v1/rulecategory/", tracker
+            )
+
+            if not response.ok:
+                return self.error(dispatcher, events)
+
+            category_id = None
+            category_name = None
+            insights_advisor_recommendation_category = tracker.get_slot(
+                "insights_advisor_recommendation_category"
+            )
+
+            for category in content:
+                if category["name"].lower() == insights_advisor_recommendation_category:
+                    category_id = category["id"]
+                    category_name = category["name"].lower()
+                    break
+
+            if category_id is None:
+                return self.error(dispatcher, events)
+
+            response, content = await send_console_request(
+                "advisor",
+                f"/api/insights/v1/rule?category={category_id}&{self.filter_query}&limit=3",
+                tracker,
+            )
+
+            if not response.ok:
+                return self.error(dispatcher, events)
+
+            if len(content["data"]) > 0:
+                message = (
+                    f"Here are your top {category_name} recommendations from Advisor.\n"
+                )
+                index = 1
+                for rule in content["data"]:
+                    message += f" {index}. [{rule['description']}](/insights/advisor/recommendations/{rule['rule_id']})\n"
+                    index += 1
+
+                message += f"\nYou can see additional recommendations on the [Advisor dashboard](/insights/advisor/recommendations?category={category_id}&{self.filter_query}&limit=20&offset=0)."
+            else:
+                message = (
+                    f"You don't have any {category_name} recommendations right now."
+                )
+
+            dispatcher.utter_message(text=message)
+
+        return events
