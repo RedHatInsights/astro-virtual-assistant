@@ -74,7 +74,7 @@ def test_clowdapp():
         assert app.sources_url == "http://sources.svc:1337"
         assert app.vulnerability_url == "http://v-engine.svc:1234"
         assert app.content_sources_url == "http://c-s-service.svc:8080"
-        assert app.rhsm_url == "http://swatch.svc:8000"
+        assert app.rhsm_url == "http://rhsm-api-proxy.svc:8000"
         assert app.actions_url == "http://my-virtual-assistant-actions:10000"
 
         assert app.tracker_store_type == "InMemoryTrackerStore"

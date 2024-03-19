@@ -19,7 +19,7 @@ objects:
       - vulnerability-engine
       - content-sources-backend
       - sources-api
-      - swatch-api
+      - rhsm-api-proxy
 
     inMemoryDb: true
     database:
