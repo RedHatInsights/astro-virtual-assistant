@@ -43,8 +43,8 @@ responses:
     - text: "You can find more recommendations in the [Advisor dashboard]({link})."
   utter_advisor_for_openshift:
     - text: >
-        I'm working on learning this functionality. In the meantime, you can visit the Advisor
-        for OpenShift UI.
+        I'm working on learning this functionality. In the meantime, you can visit the 
+        [Advisor for OpenShift UI](/openshift/insights/advisor/recommendations).
   utter_ask_insights_advisor_system_kind:
     - text: Are you looking for help with Advisor for OpenShift or RHEL?
       buttons:
