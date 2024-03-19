@@ -47,6 +47,8 @@ async def send_console_request(
         endpoint = app.content_sources_url
     elif app_name == "sources":
         endpoint = app.sources_url
+    elif app_name == "rhsm":
+        endpoint = app.rhsm_url
     else:
         print(f"Invalid app: {app_name}")
         raise ValueError(f"Invalid app_name used: {app_name}")

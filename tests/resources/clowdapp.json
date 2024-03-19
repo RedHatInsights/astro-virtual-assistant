@@ -45,6 +45,12 @@
       "hostname": "c-s-service.svc",
       "name": "service",
       "port": 8080
+    },
+    {
+      "app": "swatch-api",
+      "hostname": "swatch.svc",
+      "name": "service",
+      "port": 8000
     }
   ],
   "privateEndpoints": [
