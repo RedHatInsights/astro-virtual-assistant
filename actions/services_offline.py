@@ -1,9 +1,9 @@
 from typing import Text, Dict, List, Any
 
+import aiohttp
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
-import requests
 
 from common import metrics
 
@@ -17,12 +17,12 @@ class ActionServicesOffline(Action):
     ) -> List[Dict[Text, Any]]:
         metrics.action_custom_action_count.labels(action_type=self.name()).inc()
 
-        result = None
-
         try:
-            result = requests.get(
-                "https://status.redhat.com/api/v2/incidents/unresolved.json"
-            ).json()
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    "https://status.redhat.com/api/v2/incidents/unresolved.json"
+                ) as status_response:
+                    result = await status_response.json()
         except Exception as e:
             print(
                 f"An Exception occured while handling response from status.redhat.com: {e}"

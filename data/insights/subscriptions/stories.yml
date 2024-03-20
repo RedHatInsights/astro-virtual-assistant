@@ -6,3 +6,22 @@ stories:
       - intent: intent_out_of_scope_subscriptions_costs
       - action: utter_out_of_scope_subscriptions_costs
       - action: utter_capabilities_subscriptions
+
+  - story: User wants generic information for subscriptions
+    steps:
+      - intent: intent_subscriptions_generic
+      - action: utter_capabilities_subscriptions
+
+  - story: User wants to register RHEL systems
+    steps:
+      - intent: intent_register_rhel_system
+      - action: utter_rhel_system_registration
+      - action: form_closing
+      - active_loop: form_closing
+
+  - story: User wants to activate subscriptions
+    steps:
+      - intent: intent_activate_subscription
+      - action: utter_activate_subscriptions
+      - action: form_closing
+      - active_loop: form_closing

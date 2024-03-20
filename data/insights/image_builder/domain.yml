@@ -18,55 +18,31 @@ slots:
   image_builder_rhel_version:
     type: text
     influence_conversation: true
-    mappings:
-      - type: from_intent
-        intent: intent_image_builder_rhel_9
-        value: "RHEL 9"
-        conditions:
-          - active_loop: form_image_builder_getting_started
-            requested_slot: image_builder_rhel_version
-      - type: from_intent
-        intent: intent_image_builder_rhel_8
-        value: "RHEL 8"
-        conditions:
-          - active_loop: form_image_builder_getting_started
-            requested_slot: image_builder_rhel_version
+    mappings: &custom_mapping
+      - type: custom
   image_builder_rhel_version_confirmed:
     type: bool
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &image_builder_rhel_version_confirmed
+          - active_loop: form_image_builder_getting_started
+            requested_slot: image_builder_rhel_version_confirmed
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *image_builder_rhel_version_confirmed
+
   image_builder_content_repository:
     type: text
     influence_conversation: true
-    mappings:
-      - type: from_intent
-        intent: intent_image_builder_custom_content_epel
-        value: "EPEL"
-        conditions:
-          - active_loop: form_image_builder_custom_content
-            requested_slot: image_builder_content_repository
-      - type: from_intent
-        intent: intent_core_other
-        value: "Other"
-        conditions:
-          - active_loop: form_image_builder_custom_content
-            requested_slot: image_builder_content_repository
+    mappings: *custom_mapping
   image_builder_content_repository_version:
     type: text
-    mappings:
-      - type: from_intent
-        intent: intent_image_builder_custom_content_epel_8
-        value: "EPEL 8"
-        conditions:
-          - active_loop: form_image_builder_custom_content
-            requested_slot: image_builder_content_repository_version
-      - type: from_intent
-        intent: intent_image_builder_custom_content_epel_9
-        value: "EPEL 9"
-        conditions:
-          - active_loop: form_image_builder_custom_content
-            requested_slot: image_builder_content_repository_version
+    influence_conversation: true
+    mappings: *custom_mapping
 
 forms:
   form_image_builder_getting_started:
@@ -92,36 +68,36 @@ responses:
     - text: "Which version of RHEL would you like to use?"
       buttons:
         - title: "RHEL 9"
-          payload: "/intent_image_builder_rhel_9"
+          payload: "RHEL 9"
         - title: "RHEL 8"
-          payload: "/intent_image_builder_rhel_8"
+          payload: "RHEL 8"
   utter_image_builder_rhel_8_support:
     - text: "RHEL 8 will move from Full Support to Maintenance Support after May 31, 2024, and Maintenance Support will end on May 31, 2029. Learn more about the RHEL life cycle [here](https://access.redhat.com/support/policy/updates/errata)."
   utter_image_builder_rhel_8_confirmation:
     - text: "Are you sure you'd like to use RHEL 8?"
       buttons:
         - title: "Yes"
-          payload: "/intent_image_builder_rhel_8"
+          payload: "/intent_core_yes"
         - title: "No"
-          payload: "/intent_image_builder_rhel_9"
+          payload: "/intent_core_no"
   utter_image_builder_custom_content:
     - text: "I can help you add custom content to your RHEL images."
   utter_image_builder_custom_content_repository:
     - text: "Would you like to add custom content from EPEL or from another custom repository?"
       buttons:
         - title: "EPEL"
-          payload: "/intent_image_builder_custom_content_epel"
+          payload: "EPEL"
         - title: "Other"
-          payload: "/intent_core_other"
+          payload: "Other"
   utter_image_builder_custom_content_epel:
     - text: "I can enable EPEL repositories for you. Please note that EPEL is [not supported](https://access.redhat.com/solutions/3358)."
   utter_image_builder_custom_content_epel_which:
     - text: "Select the version matching your RHEL image:"
       buttons:
         - title: "EPEL 8"
-          payload: "/intent_image_builder_custom_content_epel_8"
+          payload: "EPEL 8"
         - title: "EPEL 9"
-          payload: "/intent_image_builder_custom_content_epel_9"
+          payload: "EPEL 9"
   utter_image_builder_custom_content_epel_enabled:
     - text: "The {version} repository has been enabled and can now be used when building images with Image Builder."
   utter_image_builder_custom_content_epel_already_enabled:

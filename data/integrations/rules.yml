@@ -1,0 +1,166 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to troubleshoot an integration
+    steps:
+      - intent: intent_integration_troubleshoot
+      - action: action_deactivate_loop
+      - action: utter_integration_troubleshoot
+
+  - rule: Non admin user wants to setup an integration
+    condition:
+      - slot_was_set:
+          - is_org_admin: false
+    steps:
+      - intent: intent_integration_setup
+      - action: action_deactivate_loop
+      - action: utter_integration_no_permissions
+      - action: utter_access_contact_admin
+
+  - rule: Admin user wants to setup an integration
+    condition:
+      - slot_was_set:
+          - is_org_admin: true
+    steps:
+      - intent: intent_integration_setup
+      - action: action_deactivate_loop
+      - action: utter_integration_what
+
+  - rule: Admin user wants to start setting up an integration
+    condition:
+      - slot_was_set:
+          - is_org_admin: true
+    steps:
+      - action: utter_integration_what
+      - intent: intent_integration_setup
+      - action: form_integration_setup_init
+      - action: form_integration_setup
+      - active_loop: form_integration_setup
+
+  - rule: Admin user wants to learn more about setting up integrations
+    condition:
+      - slot_was_set:
+          - is_org_admin: true
+    steps:
+      - action: utter_integration_what
+      - intent: intent_core_learn_more
+      - action: utter_integration_learn_more_1
+      - action: utter_integration_learn_more_2
+      - action: form_closing
+      - active_loop: form_closing
+
+  # Cloud
+  - rule: User selected cloud integration
+    condition:
+      - active_loop: form_integration_setup
+      - slot_was_set:
+          - integration_setup_kind: cloud
+    steps:
+      - action: form_integration_setup
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_integration_setup_cloud_1
+      - action: utter_integration_setup_cloud_2
+      - action: form_closing
+      - active_loop: form_closing
+
+  # Red Hat
+  - rule: User selected Red Hat integration
+    condition:
+      - active_loop: form_integration_setup
+      - slot_was_set:
+          - integration_setup_kind: red_hat
+    steps:
+      - action: form_integration_setup
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_integration_setup_redhat
+      - active_loop: form_integration_setup_redhat
+
+  - rule: User finishes with Red Hat integration
+    condition:
+      - active_loop: form_integration_setup_redhat
+    steps:
+      - action: form_integration_setup_redhat
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+
+  # Communications
+  - rule: User selected communications integrations
+    condition:
+      - active_loop: form_integration_setup
+      - slot_was_set:
+          - integration_setup_kind: communications
+    steps:
+      - action: form_integration_setup
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_integration_setup_communications
+      - active_loop: form_integration_setup_communications
+
+  - rule: User finishes with communications integration
+    condition:
+      - active_loop: form_integration_setup_communications
+    steps:
+      - action: form_integration_setup_communications
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+
+  # Reporting
+  - rule: User selected reporting integrations
+    condition:
+      - active_loop: form_integration_setup
+      - slot_was_set:
+          - integration_setup_kind: reporting
+    steps:
+      - action: form_integration_setup
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_integration_setup_reporting
+      - active_loop: form_integration_setup_reporting
+
+  - rule: User finishes with reporting integration
+    condition:
+      - active_loop: form_integration_setup_reporting
+    steps:
+      - action: form_integration_setup_reporting
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+
+  # Webhooks
+  - rule: User selected webhooks integrations
+    condition:
+      - active_loop: form_integration_setup
+      - slot_was_set:
+          - integration_setup_kind: webhook
+    steps:
+      - action: form_integration_setup
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_integration_setup_webhook
+      - active_loop: form_integration_setup_webhook
+
+  - rule: User finishes with webhooks integration
+    condition:
+      - active_loop: form_integration_setup_webhook
+    steps:
+      - action: form_integration_setup_webhook
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing

@@ -16,6 +16,13 @@ nlu:
       - I want to make a suggestion
       - Where can I leave a comment
       - I want to leave a comment
+      - you need to make some changes
+      - i have a request
+      - i have a feature submission
+      - i have an idea for a new thing for you to do
+      - we have an rfe to make
+      - i want to submit my rfe
+      - do you take suggestions for new capabilities?
 
   - intent: intent_feedback_bug
     examples: |
@@ -37,47 +44,5 @@ nlu:
       - bug
       - This shit is buggyyyy
       - buggy app
-
-  - intent: intent_feedback_is_it_a_bug
-    examples: |
-      - bug
-      - a bug
-      - It's a bug
-      - it's about a bug
-      - error
-      - an error
-      - it's an error
-      - it's about an error
-      - issue
-      - an issue
-      - it's an issue
-      - it's about an issue
-
-  - intent: intent_feedback_is_it_general
-    examples: |
-      - it's a feature
-      - its a suggestion
-      - it's about something else
-      - it's about a bug
-      - it's about something else
-
-  - intent: intent_feedback_where_console
-    examples: |
-      - The console
-      - It's with the console
-      - The platform
-      - platform
-      - console
-
-  - intent: intent_feedback_where_conversation
-    examples: |
-      - This conversation
-      - Our conversation
-      - conversation
-      - This assistant
-
-  - intent: intent_feedback_collect_with_pendo
-    examples: |
-      - I'd prefer to use a form
-      - Form please
-      - pendo
+      - i've run into an issue
+      - this isn't working

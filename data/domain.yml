@@ -2,7 +2,6 @@ version: "3.1"
 
 intents:
   - intent_core_capabilities
-  - intent_core_more
   - intent_planned_features
   - intent_out_of_scope
   - intent_unknown_topic
@@ -24,6 +23,7 @@ intents:
   - intent_customer_support # TODO: S9
   - intent_core_help
   - intent_core_here
+  - intent_core_something_else
 
 entities:
   - preference
@@ -55,6 +55,10 @@ slots:
     influence_conversation: true
     mappings:
       - type: custom
+  core_break_form:
+    type: bool
+    mappings:
+      - type: custom
   first_time_greeting:
     type: bool
     influence_conversation: true
@@ -63,6 +67,11 @@ slots:
   is_org_admin:
     type: bool
     influence_conversation: true
+    mappings:
+      - type: custom
+
+  base_console_url:
+    type: text
     mappings:
       - type: custom
 
@@ -99,8 +108,6 @@ responses:
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
           payload: /insights_advisor_recommendation_pathways
-        # - title: See more
-        #   payload: /intent_core_more
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
@@ -110,10 +117,6 @@ responses:
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
           payload: /insights_advisor_recommendation_pathways
-  utter_core_capabilities_more_1:
-    - text: "That's all I can do for now. Sorry!"
-  utter_core_capabilities_more_no_more:
-    - text: "I'm sorry, at this point I don't have any other case I can help you with."
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
     - text: "Sorry I didn't get that. Can you rephrase?"

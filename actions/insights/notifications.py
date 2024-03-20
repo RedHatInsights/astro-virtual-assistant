@@ -8,16 +8,22 @@ from common.requests import send_console_request
 from common.config import app
 
 
-def send_notification(tracker: Tracker, event: dict):
+async def send_notification(tracker: Tracker, event: dict):
     """Send a notification using the notifications-gateway"""
     headers = Header()
     headers.add_header("Content-Type", "application/json")
-    return send_console_request(
-        "notifications", "/notifications", tracker, "post", json=event, headers=headers
+    return await send_console_request(
+        "notifications-gw",
+        "/notifications",
+        tracker,
+        "post",
+        json=event,
+        headers=headers,
+        fetch_content=False,
     )
 
 
-def send_rbac_request_admin(
+async def send_rbac_request_admin(
     tracker: Tracker,
     org_id: str,
     username: str,
@@ -52,4 +58,4 @@ def send_rbac_request_admin(
         }
     )
 
-    return send_notification(tracker, event)
+    return await send_notification(tracker, event)

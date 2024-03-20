@@ -1,0 +1,23 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to check subscriptions
+    steps:
+      - intent: intent_check_subscriptions
+      - action: action_check_subscriptions
+      - action: utter_check_subscriptions_additional
+
+  - rule: Subscriptions Redirect
+    steps:
+      - intent: intent_subscriptions_redirect
+      - action: utter_subscriptions_redirect_message
+      - action: utter_subscriptions_redirect_command
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: Subscriptions Documentation
+    steps:
+      - intent: intent_subscriptions_doc
+      - action: utter_subscriptions_doc
+      - action: form_closing
+      - active_loop: form_closing

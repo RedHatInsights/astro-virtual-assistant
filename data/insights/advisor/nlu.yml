@@ -1,6 +1,16 @@
 version: "3.1"
 
 nlu:
+  - intent: intent_insights_advisor_recommendation_by_type
+    examples: |
+      - What performance issues do I have?
+      - What are the performance problems on my systems?
+      - What security issues do I have?
+      - What are the security problems on my systems?
+      - What availability issues do i have?
+      - What are the availability problems on my systems?
+      - What stability issues do I have?
+      - What are the stability issues on my systems?
   - intent: insights_advisor_recommendation_pathways
     examples: |
       - Are there any recommendations from Advisor?

@@ -44,3 +44,9 @@ rules:
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
     wait_for_user_input: false
+
+  - rule: User wants to do something else
+    steps:
+      - intent: intent_core_something_else
+      - action: action_deactivate_loop
+      - action: utter_core_how_can_i_help

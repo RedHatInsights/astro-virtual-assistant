@@ -16,6 +16,13 @@ rules:
       - action: form_access_request
       - active_loop: form_access_request
 
+  - rule: User wants to contact their org admin - No
+    steps:
+      - action: utter_access_contact_admin
+      - intent: intent_core_no
+      - action: form_closing
+      - active_loop: form_closing
+
   - rule: User requested access
     condition:
       - active_loop: form_access_request
