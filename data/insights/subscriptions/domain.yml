@@ -72,5 +72,7 @@ responses:
         You have:
 
         * {active} active subscriptions
+
         * {expiring} subscriptions that are expiring soon
+
         * {expired} that have already expired
