@@ -39,12 +39,13 @@ responses:
         command: redirect
         params:
           url: https://access.redhat.com/subscriptions/activate/redhat
-  utter_subscriptions_redirect:
+  utter_subscriptions_redirect_message:
     - text: >
         You can view information about your subscriptions on the [Subscriptions Inventory page](https://console.redhat.com/subscriptions/inventory).
 
         I'll open that in a new tab for you.
-      custom:
+  utter_subscriptions_redirect_command:
+    - custom:
         type: command
         command: redirect
         params:
@@ -70,8 +71,6 @@ responses:
     - text: >
         You have:
 
-        {active} active subscriptions
-
-        {expiring} subscriptions that are expiring soon
-
-        {expired} that have already expired
+        * {active} active subscriptions
+        * {expiring} subscriptions that are expiring soon
+        * {expired} that have already expired

@@ -10,7 +10,8 @@ rules:
   - rule: Subscriptions Redirect
     steps:
       - intent: intent_subscriptions_redirect
-      - action: utter_subscriptions_redirect
+      - action: utter_subscriptions_redirect_message
+      - action: utter_subscriptions_redirect_command
       - action: form_closing
       - active_loop: form_closing
 
