@@ -20,7 +20,7 @@ responses:
   utter_capabilities_subscriptions:
     - text: "Here are a few things I can help you do. Select an option below or type in your questions."
       buttons:
-        - title: View documentation on the Red Hat Portal.
+        - title: View documentation on the Red Hat Portal
           payload: /intent_subscriptions_doc
         - title: View my organization's subscriptions
           payload: /intent_check_subscriptions
@@ -31,15 +31,20 @@ responses:
   utter_out_of_scope_subscriptions_costs:
     - text: "I don't know anything about the finances around here."
   utter_rhel_system_registration:
-    - text: "You can easily register your RHEL systems using our [registration assistant](https://access.redhat.com/labs/registrationassistant/)"
+    - text: "You can easily register your RHEL systems using our [registration assistant](https://access.redhat.com/labs/registrationassistant/)."
   utter_activate_subscriptions:
-    - text: "You can activate your subscriptions by filling out a form. I've opened that in a new tab for you."
+    - text: "You can activate your subscriptions by filling out a form. I'll open that in a new tab for you."
       custom:
         type: command
         command: redirect
         params:
           url: https://access.redhat.com/subscriptions/activate/redhat
-  utter_subscriptions_redirect:
+  utter_subscriptions_redirect_message:
+    - text: >
+        You can view information about your subscriptions on the [Subscriptions Inventory page](https://console.redhat.com/subscriptions/inventory).
+
+        I'll open that in a new tab for you.
+  utter_subscriptions_redirect_command:
     - custom:
         type: command
         command: redirect
@@ -52,9 +57,9 @@ responses:
         params:
           url: https://access.redhat.com/products/subscription-central
   utter_check_subscriptions_additional:
-    - text: "Whould you like to activate subscriptions or view more information about all of your subscriptions?"
+    - text: "Would you like to activate subscriptions or view more information about all of your subscriptions?"
       buttons:
-        - title: Activate Subscriptions
+        - title: Activate subscriptions
           payload: /intent_activate_subscription
         - title: View information about my subscriptions
           payload: /intent_subscriptions_redirect
@@ -63,4 +68,9 @@ responses:
   utter_subscriptions_count_granular:
     - text: "You have {count} {category} subscriptions"
   utter_subscriptions_count_all:
-    - text: "You have:\n{active} active subscriptions\n{expiring} subscriptions that are expiring soon\n{expired} that have already expired"
+    - text: >
+        You have:
+
+        * {active} active subscriptions
+        * {expiring} subscriptions that are expiring soon
+        * {expired} that have already expired
