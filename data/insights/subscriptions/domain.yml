@@ -68,11 +68,8 @@ responses:
   utter_subscriptions_count_granular:
     - text: "You have {count} {category} subscriptions"
   utter_subscriptions_count_all:
-    - text: >
+    - text: |
         You have:
-
         * {active} active subscriptions
-
         * {expiring} subscriptions that are expiring soon
-
         * {expired} that have already expired
