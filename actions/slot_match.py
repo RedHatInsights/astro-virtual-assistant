@@ -33,6 +33,8 @@ class FuzzySlotMatchOption:
 def resolve_slot_match(
     user_message: str, slot_match: FuzzySlotMatch, accepted_rate=ACCEPTED_RATIO
 ) -> Dict[str, any]:
+    print("resolve")
+    print(slot_match)
     for options in slot_match.options:
         for value in options.synonyms:
             ratio = fuzz.QRatio(user_message, value)

@@ -1,0 +1,12 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_product_description
+    examples: |
+      - what is [Ansible](product)?
+      - What are [Automation analytics](product)?
+      - What is [Remediations](product) used for?
+      - What does [Advisor](product) mean?
+      - what's [Insights](product)?
+      - [Malware](product) description
+      - [Integrations](product) for?

@@ -1,0 +1,7 @@
+version: "3.1"
+
+stories:
+  - story: Simple product description
+    steps:
+      - intent: intent_product_description
+      - action: action_product_description
