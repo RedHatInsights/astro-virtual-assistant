@@ -5,7 +5,10 @@ rules:
     steps:
       - intent: intent_integration_troubleshoot
       - action: action_deactivate_loop
-      - action: utter_integration_troubleshoot
+      - action: utter_integration_troubleshoot_1
+      - action: utter_integration_troubleshoot_2
+      - action: form_closing
+      - active_loop: form_closing
 
   - rule: Non admin user wants to setup an integration
     condition:

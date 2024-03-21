@@ -14,6 +14,20 @@ nlu:
       - connect alerts to slack
       - create snow connection
       - set up slack
+      - can you help me setup integrations
+      - are you able to setup my integrations for me
+      - i want to create an integration
+      - create a new integration
+      - integrate with slack
+      - create ms teams integration
+      - my company wants to integrate with snow
+      - how do i get integrations with 3rd party apps
+      - do you offer third party integrations
+      - what integrations does the console have
+      - how do i enable a new integration
+      - help me connect to a webhook
+      - cloud connection setup
+      - install an integration
 
   - intent: intent_integration_edit
     examples: |
@@ -35,6 +49,19 @@ nlu:
       - i need to pause an integration
       - i need to disable an integration
       - delete integration
+      - can you disable a webhook for me
+      - are you able to enable an integration that has been previously disabled
+      - i'd like to change the name of my ms teams integration, is that possible?
+      - can i change the endpoint of my splunk account?
+      - please edit the gchat endpoint to this new url
+      - we dont need our servicenow integration any more, please get rid of it
+      - can i edit the details of my 3rd party integrations
+      - reenable my third party app please
+      - turn off these cloud integrations
+      - disable aws cloud
+      - rename azure cloud integration
+      - change the name of my splunk connection
+      - disconnect from google chat
 
   - intent: intent_integration_troubleshoot
     examples: |

@@ -2,6 +2,7 @@ intents:
   - intent_integration_setup
   - intent_core_learn_more
   - intent_core_guide_me
+  - intent_integration_troubleshoot
 
 actions:
   - validate_form_integration_setup
@@ -356,8 +357,11 @@ responses:
     - text: >
         The url you entered does not start with `https://`.
 
-  utter_integration_troubleshoot:
+  utter_integration_troubleshoot_1:
     - text: >
-        I'm not able to help you troubleshoot integration errors at this time. Please review
+        I'm not able to help you troubleshoot integration errors at this time.
+  utter_integration_troubleshoot_2:
+    - text: >
+        Please review
         [our integrations](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#assembly-installing-configuring-insights-for-splunk_integrations) 
         documentation -- each integration has its own section on troubleshooting common errors.

@@ -10,6 +10,8 @@ actions:
   - validate_form_integration_edit_data
   - action_ask_integration_edit_integration
   - action_ask_integration_edit_data_what
+  - action_ask_form_integration_edit_enable_integration_edit_integration_search
+  - action_ask_form_integration_edit_disable_integration_edit_integration_search
 
 slots:
   integration_edit_what:
@@ -87,25 +89,27 @@ responses:
         - title: Edit an integration
           payload: edit
   # Enable
-  utter_ask_form_integration_edit_enable_integration_edit_integration_search:
+  utter_form_integration_edit_enable_integration_edit_integration_search:
     - text: >
         Got it! You want to enable an integration. This will enable data collection.
 
         Which disabled integration would you like to enable?
   utter_integration_edit_enable_done:
     - text: >
-        Got it. Your integration was successfully enabled. You can go to confirm that your desired
-        changes have been made.
+        Got it. Your integration was successfully enabled. You can confirm that your desired changes have been made on the 
+        [Integrations page](/settings/integrations) 
+        if you'd like.
   # Disable
-  utter_ask_form_integration_edit_disable_integration_edit_integration_search:
+  utter_form_integration_edit_disable_integration_edit_integration_search:
     - text: >
         Got it! You want to disable an integration. This will temporally disable data collection.
 
         Which enabled integration would you like to disable?
   utter_integration_edit_disable_done:
     - text: >
-        Got it. Your integration was successfully disabled. You can go to confirm that your desired
-        changes have been made.
+        Got it. Your integration was successfully disabled. You can confirm that your desired changes have been made on the 
+        [Integrations page](/settings/integrations) 
+        if you'd like.
   # Delete
   utter_ask_form_integration_edit_delete_integration_edit_integration_search:
     - text: >
@@ -153,9 +157,6 @@ responses:
   utter_integration_edit_data_what_url_success:
     - text: >
         The endpoint URL for your integration was successfully updated.
-  #  utter_integration_edit_data_what_url_error:
-  #    - text: >
-  #        Looks like there is a validation error, please check your URL and try again.
   utter_ask_form_integration_edit_data_integration_setup_secret:
     - text: >
         Enter a new secret token for this integration.
@@ -206,4 +207,10 @@ responses:
         I apologize for the inconvenience.
   utter_integration_not_found:
     - text: >
-        I'm unable to find any integration with that name, you may try again or ask me something else.
+        I'm unable to find any integration with that name, you may try again or you might want to do something else.
+      buttons:
+        - title: I want to do something else
+          payload: /intent_core_something_else
+  utter_integration_select_or_type:
+    - text: >
+        You can select one below or type in the name.
