@@ -107,7 +107,7 @@ responses:
         - title: Show my critical vulnerabilities
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
-          payload: /insights_advisor_recommendation_pathways
+          payload: /intent_insights_advisor_recommendation_by_type
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
@@ -116,7 +116,7 @@ responses:
         - title: Show my critical vulnerabilities
           payload: /insights_vulnerability_my_cves
         - title: Get recommendations from Advisor
-          payload: /insights_advisor_recommendation_pathways
+          payload: /intent_insights_advisor_recommendation_by_type
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
     - text: "Sorry I didn't get that. Can you rephrase?"

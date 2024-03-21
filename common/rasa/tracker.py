@@ -51,7 +51,10 @@ def get_is_org_admin(tracker: Tracker) -> bool:
     latest_user_event = get_last_user_message(tracker)
 
     try:
-        return latest_user_event.get("metadata").get("is_org_admin", False)
+        # Default to true if running locally
+        return latest_user_event.get("metadata").get(
+            "is_org_admin", app.is_running_locally
+        )
     except Exception as e:
         print(f"An Exception occured while handling retrieving is_org_admin: {e}")
 

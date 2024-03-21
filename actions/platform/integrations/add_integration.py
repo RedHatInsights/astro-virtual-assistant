@@ -562,14 +562,14 @@ class AskForIntegrationSetupWalkMe(Action):
     ) -> List[EventType]:
         if tracker.active_loop_name == "form_integration_setup_communications":
             dispatcher.utter_message(
-                response="utter_form_integration_setup_reporting_integration_setup_walk_me",
+                response="utter_form_integration_setup_communications_integration_setup_walk_me",
                 integration_type_display_name=self.get_communication_integration_type_display_name(
                     tracker
                 ),
             )
         elif tracker.active_loop_name == "form_integration_setup_reporting":
             dispatcher.utter_message(
-                response="utter_form_integration_setup_communications_integration_setup_walk_me",
+                response="utter_form_integration_setup_reporting_integration_setup_walk_me",
                 integration_type_display_name=self.get_reporting_integration_type_display_name(
                     tracker
                 ),
