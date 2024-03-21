@@ -30,7 +30,7 @@ advisor_categories = FuzzySlotMatch(
         FuzzySlotMatchOption(CATEGORY_SECURITY),
         FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
         FuzzySlotMatchOption(CATEGORY_STABILITY),
-        FuzzySlotMatchOption(CATEGORY_NEW, ["recent", "recently"]),
+        FuzzySlotMatchOption(CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently"]),
     ],
 )
 
@@ -119,7 +119,6 @@ class AdvisorRecommendationByType(FormValidationAction):
     ) -> Dict[Text, Any]:
         requested_slot = tracker.get_slot("requested_slot")
         user_input = tracker.latest_message["text"]
-        print("requested_slot, user_input", requested_slot, user_input)
 
         if requested_slot == "insights_advisor_recommendation_category":
             resolved = resolve_slot_match(user_input, advisor_categories)
@@ -145,7 +144,6 @@ class AdvisorRecommendationByType(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        print("slot_value...", slot_value)
         return {"insights_advisor_recommendation_category": slot_value}
 
     def error(self, dispatcher: CollectingDispatcher, events):
@@ -176,16 +174,12 @@ class AdvisorRecommendationByType(FormValidationAction):
                 "insights_advisor_recommendation_category"
             )
 
-            content.append({'id': 99999, 'name': 'new'})
+            content.append({"id": 99999, "name": "new"})
             for category in content:
-                print("rec_category....", insights_advisor_recommendation_category)
-                print("content....", content)
                 if category["name"].lower() == insights_advisor_recommendation_category:
                     category_id = category["id"]
                     category_name = category["name"].lower()
                     break
-
-            print("category_id...", category_id, category_name)
 
             if category_id is None:
                 return self.error(dispatcher, events)
@@ -205,8 +199,12 @@ class AdvisorRecommendationByType(FormValidationAction):
                 return self.error(dispatcher, events)
 
             if len(content["data"]) > 0:
+                category_text = f"top {category_name}"
+                if category_name == CATEGORY_NEW:
+                    category_text = "newest"
+
                 message = (
-                    f"Here are your top {category_name} recommendations from Advisor.\n"
+                    f"Here are your {category_text} recommendations from Advisor.\n"
                 )
                 index = 1
                 for rule in content["data"]:
@@ -215,7 +213,10 @@ class AdvisorRecommendationByType(FormValidationAction):
 
                 dashboard_link = f"/insights/advisor/recommendations?category={category_id}&{self.filter_query}&limit=20&offset=0"
                 if category_name == CATEGORY_NEW:
-                    dashboard_link = f"/insights/advisor/recommendations?limit=20&offset=0"
+                    dashboard_link = (
+                        f"/insights/advisor/recommendations?limit=20&offset=0"
+                    )
+
                 message += f"\nYou can see additional recommendations on the [Advisor dashboard]({dashboard_link})."
             else:
                 message = (
