@@ -4,13 +4,15 @@ rules:
   - rule: Setting up a notification
     steps:
       - intent: intent_notifications_setup
-      # whatever action to set the slots to whats needed
+      - action: action_notifications_reset
+      - action: action_notifications_setup
       - action: form_notifications
       - active_loop: form_notifications
   
   - rule: Edit notifications
     steps:
       - intent: intent_notifications_edit
+      - action: action_notifications_reset
       # whatever action to set the slots to whats needed
       - action: form_notifications
       - active_loop: form_notifications

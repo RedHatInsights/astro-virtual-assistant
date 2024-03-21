@@ -2,20 +2,66 @@ version: "3.1"
 
 intents:
   - intent_notifications_setup
+  - intent_notifications_edit
 
-actions: []
+slots:
+  notifications_service:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_event:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_service_option:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_event_option:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_behavior_option:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+
+forms:
+  form_notifications:
+    required_slots:
+      - notifications_service_option
+      - notifications_service
+      - notifications_event
+      - notifications_event_option
+      - notifications_behavior_option
+
+actions:
+  - validate_form_notifications
+  - action_notifications_setup
+  - action_notifications_reset
 
 responses:
   utter_notifications_non_admin:
     - text: "Only your organization administrator can create and configure notification events."
   utter_notifications_learn:
-    - text: "I recommend visiting the [Notifications dashboard](/settings/notifications) and [our documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
+    - text: "Okay, I recommend these resources on the Notifications service."
+  utter_notifications_learn_dashboard:
+    - text: "[Notifications dashboard](/settings/notifications)"
+  utter_notifications_learn_docs:
+    - text: "[Documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
+  utter_notifications_service_which_event:
+    - text: "What event would you like to {option}?"
 
   # Setup notifications
   utter_notifications_setup:
     - text: "It sounds like you want to configure an event notification for your organization."
   utter_notifications_setup_non_admin_can_help:
     - text: "I can help you modify your notification preferences or contact your org admin for you."
+      buttons:
+        - title: "Manage preferences for my current notifications"
+          payload: "manage preferences"
+        - title: "Contact my organization's admin for me"
+          payload: "contact orgadmin"
   utter_notifications_setup_which_service:
     - text: "Which service would you like to configure an event notification for?"
       buttons:
@@ -29,10 +75,12 @@ responses:
           payload: "not sure"
   utter_notifications_setup_not_sure_service:
     - text: "Okay, here are some resources for you."
+  utter_notifications_setup_for_chosen_service:
+    - text: "Got it. Let's set up an {service} event."
 
   # Edit notifications
   utter_notifications_edit:
-    - text: "It sounds like you want to manage your notification."
+    - text: "It sounds like you want to manage your notifications."
   utter_notifications_edit_non_admin:
     - text: "To manage your preferences, please select a service."
       buttons:
@@ -63,7 +111,7 @@ responses:
         - title: "Disable an event"
           payload: "Disable an event"
   utter_notifications_edit_events_which_service:
-    - text: "Great! Which service has the event you want to modify?"
+    - text: "Great! I can help modify settings for the following services:"
       buttons:
         - title: "OpenShift"
           payload: "OpenShift"
@@ -72,7 +120,7 @@ responses:
         - title: "Core Console Services"
           payload: "Core Console Services"
   utter_notifications_edit_events_for_service:
-    - text: "Okay. Which active {event} event do you want to modify?"
+    - text: "Okay. Which active {service} event do you want to modify?"
       buttons: []
 
   # Behavior groups
@@ -80,9 +128,9 @@ responses:
     - text: "How would you like to change {event}?"
       buttons:
         - title: "Attach an existing behavior group"
-          payload: "Attach an existing behavior group"
+          payload: "attach an existing behavior group"
         - title: "Create a new behavior group"
-          payload: "Attach a new behavior group"
+          payload: "create a new behavior group"
         - title: "Remove an existing behavior group"
           payload: "Remove an existing behavior group"
   utter_notifications_edit_new_group:
