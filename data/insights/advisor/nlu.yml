@@ -11,8 +11,6 @@ nlu:
       - What are the availability problems on my systems?
       - What stability issues do I have?
       - What are the stability issues on my systems?
-  - intent: insights_advisor_recommendation_pathways
-    examples: |
       - Are there any recommendations from Advisor?
       - Recommendations from Advisor
       - Advisor recommendations
@@ -33,3 +31,5 @@ nlu:
       - What is advisor telling me to do?
       - what recommendations do I have
       - advisor info
+  - intent: insights_advisor_recommendation_pathways
+    examples: |

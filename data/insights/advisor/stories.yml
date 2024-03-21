@@ -1,9 +1,0 @@
-version: "3.1"
-
-stories:
-  - story: User wants advisor's recommended pathways
-    steps:
-      - intent: insights_advisor_recommendation_pathways
-      - action: utter_advisor_recommendation_pathways
-      - action: action_advisor_api_pathway
-      - checkpoint: check_closing
