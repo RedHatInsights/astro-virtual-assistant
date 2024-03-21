@@ -8,7 +8,8 @@ slots:
   notifications_service:
     type: text
     influence_conversation: true
-    mappings: *custom_mapping
+    mappings: &custom_mapping
+      - type: custom
   notifications_event:
     type: text
     influence_conversation: true
