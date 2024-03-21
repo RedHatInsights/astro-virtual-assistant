@@ -31,5 +31,3 @@ nlu:
       - What is advisor telling me to do?
       - what recommendations do I have
       - advisor info
-  - intent: insights_advisor_recommendation_pathways
-    examples: |
