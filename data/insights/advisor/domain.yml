@@ -62,3 +62,5 @@ responses:
           payload: availability
         - title: Stability
           payload: stability
+        - title: New Recommendations
+          payload: new

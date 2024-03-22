@@ -21,6 +21,7 @@ CATEGORY_PERFORMANCE = "performance"
 CATEGORY_SECURITY = "security"
 CATEGORY_AVAILABILITY = "availability"
 CATEGORY_STABILITY = "stability"
+CATEGORY_NEW = "new"
 
 advisor_categories = FuzzySlotMatch(
     "insights_advisor_recommendation_category",
@@ -29,6 +30,9 @@ advisor_categories = FuzzySlotMatch(
         FuzzySlotMatchOption(CATEGORY_SECURITY),
         FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
         FuzzySlotMatchOption(CATEGORY_STABILITY),
+        FuzzySlotMatchOption(
+            CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently", "newest"]
+        ),
     ],
 )
 
@@ -75,7 +79,7 @@ class AdvisorRecommendationByCategoryInit(Action):
 
 class AdvisorRecommendationByType(FormValidationAction):
 
-    filter_query = "impacting=true&rule_status=enabled&sort=-total_risk"
+    filter_query = "impacting=true&rule_status=enabled"
 
     def name(self) -> Text:
         return "validate_form_insights_advisor_recommendation_by_category"
@@ -158,32 +162,42 @@ class AdvisorRecommendationByType(FormValidationAction):
             return events + [ActiveLoop(None), SlotSet("requested_slot")]
 
         if await all_required_slots_are_set(self, dispatcher, tracker, domain):
-            # Find the id of the category
-            response, content = await send_console_request(
-                "advisor", "/api/insights/v1/rulecategory/", tracker
-            )
-
-            if not response.ok:
-                return self.error(dispatcher, events)
-
-            category_id = None
-            category_name = None
             insights_advisor_recommendation_category = tracker.get_slot(
                 "insights_advisor_recommendation_category"
             )
 
-            for category in content:
-                if category["name"].lower() == insights_advisor_recommendation_category:
-                    category_id = category["id"]
-                    category_name = category["name"].lower()
-                    break
+            category_id = None
+            category_name = None
 
-            if category_id is None:
-                return self.error(dispatcher, events)
+            if insights_advisor_recommendation_category == CATEGORY_NEW:
+                extra_filter_params = "sort=-publish_date"
+                category_name = CATEGORY_NEW
+            else:
+                # Find the id of the category
+                response, content = await send_console_request(
+                    "advisor", "/api/insights/v1/rulecategory/", tracker
+                )
+
+                if not response.ok:
+                    return self.error(dispatcher, events)
+
+                for category in content:
+                    if (
+                        category["name"].lower()
+                        == insights_advisor_recommendation_category
+                    ):
+                        category_id = category["id"]
+                        category_name = category["name"].lower()
+                        break
+
+                if category_id is None:
+                    return self.error(dispatcher, events)
+
+                extra_filter_params = f"category={category_id}&sort=-total_risk"
 
             response, content = await send_console_request(
                 "advisor",
-                f"/api/insights/v1/rule?category={category_id}&{self.filter_query}&limit=3",
+                f"/api/insights/v1/rule?{extra_filter_params}&{self.filter_query}&limit=3",
                 tracker,
             )
 
@@ -191,15 +205,25 @@ class AdvisorRecommendationByType(FormValidationAction):
                 return self.error(dispatcher, events)
 
             if len(content["data"]) > 0:
+                category_text = f"top {category_name}"
+                if category_name == CATEGORY_NEW:
+                    category_text = "newest"
+
                 message = (
-                    f"Here are your top {category_name} recommendations from Advisor.\n"
+                    f"Here are your {category_text} recommendations from Advisor.\n"
                 )
                 index = 1
                 for rule in content["data"]:
                     message += f" {index}. [{rule['description']}](/insights/advisor/recommendations/{rule['rule_id']})\n"
                     index += 1
 
-                message += f"\nYou can see additional recommendations on the [Advisor dashboard](/insights/advisor/recommendations?category={category_id}&{self.filter_query}&limit=20&offset=0)."
+                dashboard_link = f"/insights/advisor/recommendations?category={category_id}&{self.filter_query}&limit=20&offset=0"
+                if category_name == CATEGORY_NEW:
+                    dashboard_link = (
+                        f"/insights/advisor/recommendations?limit=20&offset=0"
+                    )
+
+                message += f"\nYou can see additional recommendations on the [Advisor dashboard]({dashboard_link})."
             else:
                 message = (
                     f"You don't have any {category_name} recommendations right now."
