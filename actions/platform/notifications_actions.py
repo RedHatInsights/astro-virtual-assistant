@@ -140,7 +140,14 @@ behavior_opt_match = FuzzySlotMatch(
             "create", ["create a new behavior group", "create", "new", "new behavior"]
         ),
         FuzzySlotMatchOption(
-            "remove", ["remove an existing behavior group", "Remove existing behavior groups", "remove", "detach them", "delete"]
+            "remove",
+            [
+                "remove an existing behavior group",
+                "Remove existing behavior groups",
+                "remove",
+                "detach them",
+                "delete",
+            ],
         ),
     ],
 )
@@ -221,8 +228,23 @@ class ValidateFormNotifications(FormValidationAction):
                     [event["name"], event["display_name"], event["application_id"]],
                 )
             )
-        
-        options.append(FuzzySlotMatchOption(UNSURE_SERVICE, ["Another service", "not listed", "unsure", "not sure", "idk", "I'm not sure", "no clue", "I have no idea", "other"]))
+
+        options.append(
+            FuzzySlotMatchOption(
+                UNSURE_SERVICE,
+                [
+                    "Another service",
+                    "not listed",
+                    "unsure",
+                    "not sure",
+                    "idk",
+                    "I'm not sure",
+                    "no clue",
+                    "I have no idea",
+                    "other",
+                ],
+            )
+        )
 
         event_match.options = options
         resolved = resolve_slot_match(tracker.latest_message["text"], event_match)
@@ -405,15 +427,23 @@ class ValidateFormNotifications(FormValidationAction):
             event = tracker.get_slot(NOTIF_EVENT)
             if event["id"] == "unsure":
                 if tracker.get_slot(_SLOT_IS_ORG_ADMIN):
-                    dispatcher.utter_message(response="utter_notifications_edit_preferences_other_admin")
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_preferences_other_admin"
+                    )
                 else:
-                    dispatcher.utter_message(response="utter_notifications_edit_preferences_other")
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_preferences_other"
+                    )
                     events.append(SlotSet(NOTIF_CONTACT_ADMIN, True))
                 events.append(SlotSet("requested_slot", None))
                 return events
-        
+
             if tracker.get_slot(NOTIF_BUNDLE_OPT) == "manage preferences":
-                dispatcher.utter_message(response="utter_notifications_edit_preferences_selected", bundle=bundle["name"], service=event["application_name"])
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_preferences_selected",
+                    bundle=bundle["name"],
+                    service=event["application_name"],
+                )
                 events.append(SlotSet("requested_slot", None))
                 return events
 
