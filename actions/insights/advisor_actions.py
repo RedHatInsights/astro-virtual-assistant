@@ -30,7 +30,7 @@ advisor_categories = FuzzySlotMatch(
         FuzzySlotMatchOption(CATEGORY_SECURITY),
         FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
         FuzzySlotMatchOption(CATEGORY_STABILITY),
-        FuzzySlotMatchOption(CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently"]),
+        FuzzySlotMatchOption(CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently", "newest"]),
     ],
 )
 
@@ -160,34 +160,35 @@ class AdvisorRecommendationByType(FormValidationAction):
             return events + [ActiveLoop(None), SlotSet("requested_slot")]
 
         if await all_required_slots_are_set(self, dispatcher, tracker, domain):
-            # Find the id of the category
-            response, content = await send_console_request(
-                "advisor", "/api/insights/v1/rulecategory/", tracker
-            )
-
-            if not response.ok:
-                return self.error(dispatcher, events)
-
-            category_id = None
-            category_name = None
             insights_advisor_recommendation_category = tracker.get_slot(
                 "insights_advisor_recommendation_category"
             )
 
-            content.append({"id": 99999, "name": "new"})
-            for category in content:
-                if category["name"].lower() == insights_advisor_recommendation_category:
-                    category_id = category["id"]
-                    category_name = category["name"].lower()
-                    break
+            category_id = None
+            category_name = None
 
-            if category_id is None:
-                return self.error(dispatcher, events)
-
-            extra_filter_params = f"category={category_id}&sort=-total_risk"
-
-            if category_name == CATEGORY_NEW:
+            if insights_advisor_recommendation_category == CATEGORY_NEW:
                 extra_filter_params = "sort=-publish_date"
+                category_name = CATEGORY_NEW
+            else:
+                # Find the id of the category
+                response, content = await send_console_request(
+                    "advisor", "/api/insights/v1/rulecategory/", tracker
+                )
+
+                if not response.ok:
+                    return self.error(dispatcher, events)
+
+                for category in content:
+                    if category["name"].lower() == insights_advisor_recommendation_category:
+                        category_id = category["id"]
+                        category_name = category["name"].lower()
+                        break
+
+                if category_id is None:
+                    return self.error(dispatcher, events)
+
+                extra_filter_params = f"category={category_id}&sort=-total_risk"
 
             response, content = await send_console_request(
                 "advisor",
