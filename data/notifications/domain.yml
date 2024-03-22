@@ -5,7 +5,7 @@ intents:
   - intent_notifications_edit
 
 slots:
-  notifications_service:
+  notifications_bundle:
     type: text
     influence_conversation: true
     mappings: &custom_mapping
@@ -14,7 +14,7 @@ slots:
     type: text
     influence_conversation: true
     mappings: *custom_mapping
-  notifications_service_option:
+  notifications_bundle_option:
     type: text
     influence_conversation: true
     mappings: *custom_mapping
@@ -30,8 +30,8 @@ slots:
 forms:
   form_notifications:
     required_slots:
-      - notifications_service_option
-      - notifications_service
+      - notifications_bundle_option
+      - notifications_bundle
       - notifications_event
       - notifications_event_option
       - notifications_behavior_option
@@ -51,7 +51,7 @@ responses:
     - text: "[Notifications dashboard](/settings/notifications)"
   utter_notifications_learn_docs:
     - text: "[Documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
-  utter_notifications_service_which_event:
+  utter_notifications_bundle_which_event:
     - text: "What event would you like to {option}?"
   utter_notifications_error:
     - text: "Sorry, I'm having trouble communicating with the Notifications service. Please try again later."
@@ -80,7 +80,7 @@ responses:
   utter_notifications_setup_not_sure_service:
     - text: "Okay, here are some resources for you."
   utter_notifications_setup_for_chosen_service:
-    - text: "Got it. Let's set up an {service} event."
+    - text: "Got it. Let's set up an {bundle} event."
 
   # Edit notifications
   utter_notifications_edit:
@@ -135,10 +135,10 @@ responses:
         - title: "Core Console Services"
           payload: "core console"
   utter_notifications_edit_events_for_service:
-    - text: "Okay. Which active {service} event do you want to modify?"
+    - text: "Okay. Which {bundle} event do you want to modify?"
       buttons: []
   utter_notifications_edit_events_none_1:
-    - text: "You don't have any active events for {service} yet."
+    - text: "You don't have any active events for {bundle} yet."
   utter_notifications_edit_events_none_2:
     - text: "Visit the [Notifications dashboard](/settings/notifications/configure-events) for more information."
   utter_notifications_edit_events_mute_success:
@@ -184,7 +184,7 @@ responses:
         - title: "Create a new behavior group"
           payload: "create"
   utter_notifications_edit_create_group:
-    - text: "Great! I'll redirect you to the **Create behavior group** interface for {service} in the Console. We'll have the {event} event preselected for you in step 3."
+    - text: "Great! I'm redirecting you to the Notifications dashboard. Navigate to **Create behavior group** in the Console, and select {event} event in step 3."
       custom:
         type: command
         command: redirect

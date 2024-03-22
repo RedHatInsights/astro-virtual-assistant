@@ -16,8 +16,8 @@ logger = logging.initialize_logging()
 
 # Slots
 _SLOT_IS_ORG_ADMIN = "is_org_admin"
-NOTIF_SERVICE = "notifications_service"
-NOTIF_SERVICE_OPT = "notifications_service_option"
+NOTIF_BUNDLE = "notifications_bundle"
+NOTIF_BUNDLE_OPT = "notifications_bundle_option"
 NOTIF_EVENT = "notifications_event"
 NOTIF_EVENT_OPT = "notifications_event_option"
 NOTIF_BEHAVIOR_OPT = "notifications_behavior_option"
@@ -25,7 +25,7 @@ NOTIF_BEHAVIOR_OPT = "notifications_behavior_option"
 UNSURE_SERVICE = {"id": "unsure", "name": "unsure", "display_name": "unsure"}
 
 service_match = FuzzySlotMatch(
-    NOTIF_SERVICE,
+    NOTIF_BUNDLE,
     [
         FuzzySlotMatchOption("Openshift", ["openshift", "open shift"]),
         FuzzySlotMatchOption("RHEL", ["rhel", "red hat enterprise linux", "linux"]),
@@ -49,7 +49,7 @@ service_match = FuzzySlotMatch(
 
 # going to continue to test phrases
 service_opt_match = FuzzySlotMatch(
-    NOTIF_SERVICE_OPT,
+    NOTIF_BUNDLE_OPT,
     [
         FuzzySlotMatchOption(
             "manage events",
@@ -150,10 +150,10 @@ class ValidateFormNotifications(FormValidationAction):
         return "validate_form_notifications"
 
     @staticmethod
-    def extract_notifications_service(
+    def extract_notifications_bundle(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        if tracker.get_slot("requested_slot") != NOTIF_SERVICE:
+        if tracker.get_slot("requested_slot") != NOTIF_BUNDLE:
             return {}
 
         resolved = resolve_slot_match(tracker.latest_message["text"], service_match)
@@ -163,10 +163,10 @@ class ValidateFormNotifications(FormValidationAction):
         return {}
 
     @staticmethod
-    def extract_notifications_service_option(
+    def extract_notifications_bundle_option(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        if tracker.get_slot("requested_slot") != NOTIF_SERVICE_OPT:
+        if tracker.get_slot("requested_slot") != NOTIF_BUNDLE_OPT:
             return {}
 
         resolved = resolve_slot_match(tracker.latest_message["text"], service_opt_match)
@@ -196,7 +196,7 @@ class ValidateFormNotifications(FormValidationAction):
             return {}
 
         # build FuzzySlotMatchOptions from the available events
-        bundle = tracker.get_slot(NOTIF_SERVICE)
+        bundle = tracker.get_slot(NOTIF_BUNDLE)
         if not bundle:
             return {}
 
@@ -244,35 +244,35 @@ class ValidateFormNotifications(FormValidationAction):
         return {}
 
     @staticmethod
-    async def validate_notifications_service(
+    async def validate_notifications_bundle(
         value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         if value == "unsure":
-            return {NOTIF_SERVICE: UNSURE_SERVICE}
+            return {NOTIF_BUNDLE: UNSURE_SERVICE}
         response, result = await get_available_bundles(tracker, name=value)
         if not response.ok or not result:
             received_notifications_error(dispatcher, response, result)
-            return {NOTIF_SERVICE: None}
+            return {NOTIF_BUNDLE: None}
         if len(result) == 0:
-            return {NOTIF_SERVICE: None}
+            return {NOTIF_BUNDLE: None}
         formatted = {
             "id": result[0]["id"],
             "name": result[0]["name"],
             "display_name": result[0]["displayName"],
         }
-        return {NOTIF_SERVICE: formatted}
+        return {NOTIF_BUNDLE: formatted}
 
     @staticmethod
-    def validate_notifications_service_option(
+    def validate_notifications_bundle_option(
         value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        return {NOTIF_SERVICE_OPT: value}
+        return {NOTIF_BUNDLE_OPT: value}
 
     @staticmethod
     def validate_notifications_event_option(
@@ -307,15 +307,15 @@ class ValidateFormNotifications(FormValidationAction):
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
-        if requested_slot == NOTIF_SERVICE_OPT:
-            option = tracker.get_slot(NOTIF_SERVICE_OPT)
+        if requested_slot == NOTIF_BUNDLE_OPT:
+            option = tracker.get_slot(NOTIF_BUNDLE_OPT)
             if option == "manage events":
                 dispatcher.utter_message(response="utter_notifications_edit")
                 dispatcher.utter_message(response="utter_notifications_edit_events_how")
                 events.append(SlotSet("requested_slot", NOTIF_EVENT_OPT))
             elif option == "manage preferences":
                 dispatcher.utter_message(response="utter_notifications_edit_non_admin")
-                events.append(SlotSet("requested_slot", NOTIF_SERVICE))
+                events.append(SlotSet("requested_slot", NOTIF_BUNDLE))
             elif option == "contact admin":
                 events.append(SlotSet("requested_slot", None))
             elif option == "learn":
@@ -324,12 +324,12 @@ class ValidateFormNotifications(FormValidationAction):
                 dispatcher.utter_message(response="utter_notifications_learn_docs")
                 events.append(SlotSet("requested_slot", None))
 
-        if requested_slot == NOTIF_SERVICE:
-            bundle = tracker.get_slot(NOTIF_SERVICE)
+        if requested_slot == NOTIF_BUNDLE:
+            bundle = tracker.get_slot(NOTIF_BUNDLE)
             # avoiding a bug
             if not bundle:
                 return events
-            option = tracker.get_slot(NOTIF_SERVICE_OPT)
+            option = tracker.get_slot(NOTIF_BUNDLE_OPT)
             if bundle["name"] == "unsure":
                 dispatcher.utter_message(response="utter_notifications_learn")
                 dispatcher.utter_message(response="utter_notifications_learn_dashboard")
@@ -348,7 +348,7 @@ class ValidateFormNotifications(FormValidationAction):
                 if len(result) == 0:
                     dispatcher.utter_message(
                         response="utter_notifications_edit_events_none_1",
-                        service=bundle["display_name"],
+                        bundle=bundle["display_name"],
                     )
                     dispatcher.utter_message(
                         response="utter_notifications_edit_events_none_2"
@@ -371,11 +371,11 @@ class ValidateFormNotifications(FormValidationAction):
                 if option != "manage preferences":
                     dispatcher.utter_message(
                         response="utter_notifications_setup_for_chosen_service",
-                        service=bundle["display_name"],
+                        bundle=bundle["display_name"],
                     )
                 dispatcher.utter_message(
                     response="utter_notifications_edit_events_for_service",
-                    service=bundle["display_name"],
+                    bundle=bundle["display_name"],
                     buttons=buttons,
                 )
 
@@ -389,15 +389,15 @@ class ValidateFormNotifications(FormValidationAction):
                 dispatcher.utter_message(
                     response="utter_notifications_setup_which_service"
                 )
-                events.append(SlotSet(NOTIF_SERVICE_OPT, "manage events"))
+                events.append(SlotSet(NOTIF_BUNDLE_OPT, "manage events"))
             elif option == "modify" or option == "disable":
                 dispatcher.utter_message(
                     response="utter_notifications_edit_events_which_service"
                 )
-            events.append(SlotSet("requested_slot", NOTIF_SERVICE))
+            events.append(SlotSet("requested_slot", NOTIF_BUNDLE))
 
         if requested_slot == NOTIF_EVENT:
-            bundle = tracker.get_slot(NOTIF_SERVICE)
+            bundle = tracker.get_slot(NOTIF_BUNDLE)
             event = tracker.get_slot(NOTIF_EVENT)
             if tracker.get_slot(NOTIF_EVENT_OPT) == "disable":
                 response = await mute_event(tracker, event["id"])
@@ -428,14 +428,13 @@ class ValidateFormNotifications(FormValidationAction):
         if requested_slot == NOTIF_BEHAVIOR_OPT:
             option = tracker.get_slot(NOTIF_BEHAVIOR_OPT)
             event = tracker.get_slot(NOTIF_EVENT)
-            bundle = tracker.get_slot(NOTIF_SERVICE)
+            bundle = tracker.get_slot(NOTIF_BUNDLE)
             if option == "attach":
                 dispatcher.utter_message(response="utter_notifications_edit_new_group")
                 events.append(SlotSet("requested_slot", None))
             elif option == "create":
                 dispatcher.utter_message(
                     response="utter_notifications_edit_create_group",
-                    service=bundle["display_name"],
                     event=event["display_name"],
                 )
                 events.append(SlotSet("requested_slot", None))
@@ -488,8 +487,8 @@ class ActionNotificationsReset(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [
-            SlotSet(NOTIF_SERVICE, None),
-            SlotSet(NOTIF_SERVICE_OPT, None),
+            SlotSet(NOTIF_BUNDLE, None),
+            SlotSet(NOTIF_BUNDLE_OPT, None),
             SlotSet(NOTIF_EVENT, None),
             SlotSet(NOTIF_EVENT_OPT, None),
             SlotSet(NOTIF_BEHAVIOR_OPT, None),
@@ -509,13 +508,13 @@ class ActionNotificationsSetup(Action):
             dispatcher.utter_message(
                 response="utter_notifications_setup_non_admin_can_help"
             )
-            return [SlotSet("requested_slot", NOTIF_SERVICE_OPT)]
+            return [SlotSet("requested_slot", NOTIF_BUNDLE_OPT)]
         else:
             dispatcher.utter_message(response="utter_notifications_setup")
             dispatcher.utter_message(response="utter_notifications_setup_which_service")
             return [
-                SlotSet("requested_slot", NOTIF_SERVICE),
-                SlotSet(NOTIF_SERVICE_OPT, "new"),
+                SlotSet("requested_slot", NOTIF_BUNDLE),
+                SlotSet(NOTIF_BUNDLE_OPT, "new"),
             ]
 
 
@@ -532,11 +531,11 @@ class ActionNotificationsEdit(Action):
             dispatcher.utter_message(
                 response="utter_notifications_edit_non_admin_options"
             )
-            return [SlotSet("requested_slot", NOTIF_SERVICE_OPT)]
+            return [SlotSet("requested_slot", NOTIF_BUNDLE_OPT)]
         else:
             dispatcher.utter_message(response="utter_notifications_edit")
             dispatcher.utter_message(response="utter_notifications_edit_what")
-            return [SlotSet("requested_slot", NOTIF_SERVICE_OPT)]
+            return [SlotSet("requested_slot", NOTIF_BUNDLE_OPT)]
 
 
 def received_notifications_error(dispatcher: CollectingDispatcher, response, result):
