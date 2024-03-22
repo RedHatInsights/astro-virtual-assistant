@@ -53,6 +53,8 @@ responses:
     - text: "[Documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
   utter_notifications_service_which_event:
     - text: "What event would you like to {option}?"
+  utter_notifications_error:
+    - text: "Sorry, I'm having trouble communicating with the Notifications service. Please try again later."
 
   # Setup notifications
   utter_notifications_setup:
@@ -84,10 +86,14 @@ responses:
   utter_notifications_edit:
     - text: "It sounds like you want to manage your notifications."
   utter_notifications_edit_non_admin:
-    - text: "To manage your preferences, please choose a service."
+    - text: "To manage your preferences, please choose a product."
       buttons:
-        - text: "Other"
-          payload: "other"
+        - title: "OpenShift"
+          payload: "openshift"
+        - title: "RHEL"
+          payload: "rhel"
+        - title: "Core Console Services"
+          payload: "core console"
   utter_notifications_edit_non_admin_options:
     - text: "Would you like to manage your preferences or contact your org admin for additional changes?"
       buttons:
@@ -131,6 +137,10 @@ responses:
   utter_notifications_edit_events_for_service:
     - text: "Okay. Which active {service} event do you want to modify?"
       buttons: []
+  utter_notifications_edit_events_none_1:
+    - text: "You don't have any active events for {service} yet."
+  utter_notifications_edit_events_none_2:
+    - text: "Visit the [Notifications dashboard](/settings/notifications/configure-events) for more information."
   utter_notifications_edit_events_mute_success:
     - text: "I have muted notifications for the {event} event."
   utter_notifications_edit_events_mute_error:
@@ -161,7 +171,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: https://console.redhat.com/settings/notifications/configure-events
+          url: https://console.redhat.com/settings/notifications/configure-events?name={event}
   utter_notifications_edit_existing_group:
     - text: "Okay. The Notifications dashboard lets you attach and detach behavior groups to your events."
   utter_notifications_edit_no_groups:
