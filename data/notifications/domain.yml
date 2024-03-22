@@ -167,7 +167,7 @@ responses:
           payload: "attach"
         - title: "Create a new behavior group"
           payload: "create"
-        - title: "Remove an existing behavior group"
+        - title: "Remove existing behavior groups"
           payload: "remove"
   utter_notifications_edit_new_group:
     - text: "The Notifications dashboard has plenty of options for you. I'll transfer your selections from our chat as well."

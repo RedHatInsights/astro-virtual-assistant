@@ -140,7 +140,7 @@ behavior_opt_match = FuzzySlotMatch(
             "create", ["create a new behavior group", "create", "new", "new behavior"]
         ),
         FuzzySlotMatchOption(
-            "remove", ["remove an existing behavior group", "remove", "delete"]
+            "remove", ["remove an existing behavior group", "Remove existing behavior groups", "remove", "detach them", "delete"]
         ),
     ],
 )
