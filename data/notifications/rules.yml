@@ -32,7 +32,7 @@ rules:
     condition:
       - active_loop: form_notifications
       - slot_was_set:
-          - notifications_bundle_option: "contact admin"
+          - notifications_contact_admin: True
     steps:
       - action: form_notifications
       - active_loop: null

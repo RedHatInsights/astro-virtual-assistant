@@ -26,6 +26,10 @@ slots:
     type: text
     influence_conversation: true
     mappings: *custom_mapping
+  notifications_contact_admin:
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
 
 forms:
   form_notifications:

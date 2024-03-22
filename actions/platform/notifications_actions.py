@@ -21,6 +21,7 @@ NOTIF_BUNDLE_OPT = "notifications_bundle_option"
 NOTIF_EVENT = "notifications_event"
 NOTIF_EVENT_OPT = "notifications_event_option"
 NOTIF_BEHAVIOR_OPT = "notifications_behavior_option"
+NOTIF_CONTACT_ADMIN = "notifications_contact_admin"
 
 UNSURE_SERVICE = {"id": "unsure", "name": "unsure", "display_name": "unsure"}
 
@@ -317,6 +318,7 @@ class ValidateFormNotifications(FormValidationAction):
                 dispatcher.utter_message(response="utter_notifications_edit_non_admin")
                 events.append(SlotSet("requested_slot", NOTIF_BUNDLE))
             elif option == "contact admin":
+                events.append(SlotSet(NOTIF_CONTACT_ADMIN, True))
                 events.append(SlotSet("requested_slot", None))
             elif option == "learn":
                 dispatcher.utter_message(response="utter_notifications_learn")
@@ -492,6 +494,7 @@ class ActionNotificationsReset(Action):
             SlotSet(NOTIF_EVENT, None),
             SlotSet(NOTIF_EVENT_OPT, None),
             SlotSet(NOTIF_BEHAVIOR_OPT, None),
+            SlotSet(NOTIF_CONTACT_ADMIN, None),
         ]
 
 
