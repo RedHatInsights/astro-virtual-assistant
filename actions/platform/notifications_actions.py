@@ -221,6 +221,8 @@ class ValidateFormNotifications(FormValidationAction):
                     [event["name"], event["display_name"], event["application_id"]],
                 )
             )
+        
+        options.append(FuzzySlotMatchOption(UNSURE_SERVICE, ["Another service", "not listed", "unsure", "not sure", "idk", "I'm not sure", "no clue", "I have no idea", "other"]))
 
         event_match.options = options
         resolved = resolve_slot_match(tracker.latest_message["text"], event_match)
@@ -401,6 +403,20 @@ class ValidateFormNotifications(FormValidationAction):
         if requested_slot == NOTIF_EVENT:
             bundle = tracker.get_slot(NOTIF_BUNDLE)
             event = tracker.get_slot(NOTIF_EVENT)
+            if event["id"] == "unsure":
+                if tracker.get_slot(_SLOT_IS_ORG_ADMIN):
+                    dispatcher.utter_message(response="utter_notifications_edit_preferences_other_admin")
+                else:
+                    dispatcher.utter_message(response="utter_notifications_edit_preferences_other")
+                    events.append(SlotSet(NOTIF_CONTACT_ADMIN, True))
+                events.append(SlotSet("requested_slot", None))
+                return events
+        
+            if tracker.get_slot(NOTIF_BUNDLE_OPT) == "manage preferences":
+                dispatcher.utter_message(response="utter_notifications_edit_preferences_selected", bundle=bundle["name"], service=event["application_name"])
+                events.append(SlotSet("requested_slot", None))
+                return events
+
             if tracker.get_slot(NOTIF_EVENT_OPT) == "disable":
                 response = await mute_event(tracker, event["id"])
                 if response.ok:
@@ -565,6 +581,7 @@ async def get_available_bundles(tracker: Tracker, name: Optional[str] = None):
 async def get_available_events_by_bundle(
     tracker: Tracker, bundleId: str, has_notifications_available: Optional[bool] = None
 ):
+    # TODO: request this feature
     if has_notifications_available:
         # params = "?hasNotifications=true"
         pass

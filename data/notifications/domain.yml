@@ -107,8 +107,6 @@ responses:
           payload: "contact admin"
   utter_notifications_edit_selected_non_admin:
     - text: "Great! I'll open up the page where you can manage preferences for {service}."
-  utter_notifications_edit_other_non_admin:
-    - text: ""
   utter_notifications_edit_what:
     - text: "Would you like to modify them for your whole organization or manage how you receive existing notifications?"
       buttons:
@@ -156,6 +154,8 @@ responses:
         command: redirect
         params:
           url: "{base_console_url}/user-preferences/notifications?bundle={bundle}&app={service}"
+  utter_notifications_edit_preferences_other_admin:
+    - text: "You need to add the event to your organization's notification events. Contact support for product information."
   utter_notifications_edit_preferences_other:
     - text: "Your Organization Administrator has configured which notifications you can or can't receive. You will need to contact that person to request access to other events."
 
@@ -170,7 +170,7 @@ responses:
         - title: "Remove existing behavior groups"
           payload: "remove"
   utter_notifications_edit_new_group:
-    - text: "The Notifications dashboard has plenty of options for you. I'll transfer your selections from our chat as well."
+    - text: "The Notifications dashboard has plenty of options for you. I'll open it in a new tab."
       custom:
         type: command
         command: redirect
