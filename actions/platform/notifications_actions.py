@@ -5,8 +5,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 from rasa_sdk.types import DomainDict
 
-from rapidfuzz import fuzz
-
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 
 from common import logging
@@ -24,19 +22,28 @@ NOTIF_EVENT = "notifications_event"
 NOTIF_EVENT_OPT = "notifications_event_option"
 NOTIF_BEHAVIOR_OPT = "notifications_behavior_option"
 
-UNSURE_SERVICE = {
-    "id": "unsure",
-    "name": "unsure",
-    "display_name": "unsure"
-}
+UNSURE_SERVICE = {"id": "unsure", "name": "unsure", "display_name": "unsure"}
 
 service_match = FuzzySlotMatch(
     NOTIF_SERVICE,
     [
         FuzzySlotMatchOption("Openshift", ["openshift", "open shift"]),
         FuzzySlotMatchOption("RHEL", ["rhel", "red hat enterprise linux", "linux"]),
-        FuzzySlotMatchOption("Core Console", ["core console", "console", "hcc", "platform"]),
-        FuzzySlotMatchOption("unsure", ["not sure", "unsure", "idk", "I'm not sure", "no clue", "I have no idea", "other"]),
+        FuzzySlotMatchOption(
+            "Core Console", ["core console", "console", "hcc", "platform"]
+        ),
+        FuzzySlotMatchOption(
+            "unsure",
+            [
+                "not sure",
+                "unsure",
+                "idk",
+                "I'm not sure",
+                "no clue",
+                "I have no idea",
+                "other",
+            ],
+        ),
     ],
 )
 
@@ -44,10 +51,48 @@ service_match = FuzzySlotMatch(
 service_opt_match = FuzzySlotMatch(
     NOTIF_SERVICE_OPT,
     [
-        FuzzySlotMatchOption("manage events", ["manage events", "Manage my organization's event settings", "event settings", "org events"]),
-        FuzzySlotMatchOption("manage preferences", ["manage preferences", "manage my own notification preferences", "manage preferences for my current notifications", "preferences", "pref"]),
-        FuzzySlotMatchOption("contact admin", ["contact admin", "contact my org admin for me", "contact my organization's admin", "org admin", "admin"]),
-        FuzzySlotMatchOption("learn", ["learn more about notifications", "learn", "help", "docs", "documentation", "learn more", "learn about notifications", "learn about"]),
+        FuzzySlotMatchOption(
+            "manage events",
+            [
+                "manage events",
+                "Manage my organization's event settings",
+                "event settings",
+                "org events",
+            ],
+        ),
+        FuzzySlotMatchOption(
+            "manage preferences",
+            [
+                "manage preferences",
+                "manage my own notification preferences",
+                "manage preferences for my current notifications",
+                "preferences",
+                "pref",
+            ],
+        ),
+        FuzzySlotMatchOption(
+            "contact admin",
+            [
+                "contact admin",
+                "contact my org admin for me",
+                "contact my organization's admin",
+                "org admin",
+                "admin",
+            ],
+        ),
+        FuzzySlotMatchOption(
+            "learn",
+            [
+                "learn more about notifications",
+                "learn",
+                "help",
+                "docs",
+                "documentation",
+                "learn more",
+                "learn about notifications",
+                "learn about",
+            ],
+        ),
     ],
 )
 
@@ -60,111 +105,142 @@ event_opt_match = FuzzySlotMatch(
     NOTIF_EVENT_OPT,
     [
         FuzzySlotMatchOption("new", ["set up a new event", "add", "new event", "new"]),
-        FuzzySlotMatchOption("modify", ["modify settings for an event notification", "edit", "change", "modify", "existing"]),
-        FuzzySlotMatchOption("disable", ["disable an event notification", "disable notification please", "delete event", "remove", "delete", "disable"]),
+        FuzzySlotMatchOption(
+            "modify",
+            [
+                "modify settings for an event notification",
+                "edit",
+                "change",
+                "modify",
+                "existing",
+            ],
+        ),
+        FuzzySlotMatchOption(
+            "disable",
+            [
+                "disable an event notification",
+                "disable notification please",
+                "delete event",
+                "remove",
+                "delete",
+                "disable",
+            ],
+        ),
     ],
 )
 
 behavior_opt_match = FuzzySlotMatch(
     NOTIF_BEHAVIOR_OPT,
     [
-        FuzzySlotMatchOption("attach", ["attach an existing behavior group", "attach", "existing"]),
-        FuzzySlotMatchOption("create", ["create a new behavior group", "create", "new", "new behavior"]),
-        FuzzySlotMatchOption("remove", ["remove an existing behavior group", "remove", "delete"]),
+        FuzzySlotMatchOption(
+            "attach", ["attach an existing behavior group", "attach", "existing"]
+        ),
+        FuzzySlotMatchOption(
+            "create", ["create a new behavior group", "create", "new", "new behavior"]
+        ),
+        FuzzySlotMatchOption(
+            "remove", ["remove an existing behavior group", "remove", "delete"]
+        ),
     ],
 )
+
 
 class ValidateFormNotifications(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_notifications"
 
     @staticmethod
-    def extract_notifications_service(dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+    def extract_notifications_service(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") != NOTIF_SERVICE:
             return {}
 
-        resolved = resolve_slot_match(
-            tracker.latest_message["text"], service_match
-        )
+        resolved = resolve_slot_match(tracker.latest_message["text"], service_match)
         if len(resolved) > 0:
             return resolved
-        
+
         return {}
-    
+
     @staticmethod
-    def extract_notifications_service_option(dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+    def extract_notifications_service_option(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") != NOTIF_SERVICE_OPT:
             return {}
 
-        resolved = resolve_slot_match(
-            tracker.latest_message["text"], service_opt_match
-        )
+        resolved = resolve_slot_match(tracker.latest_message["text"], service_opt_match)
         if len(resolved) > 0:
             return resolved
-        
+
         return {}
-    
+
     @staticmethod
-    def extract_notifications_event_option(dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+    def extract_notifications_event_option(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") != NOTIF_EVENT_OPT:
             return {}
 
-        resolved = resolve_slot_match(
-            tracker.latest_message["text"], event_opt_match
-        )
+        resolved = resolve_slot_match(tracker.latest_message["text"], event_opt_match)
         if len(resolved) > 0:
             return resolved
-        
+
         return {}
 
     @staticmethod
-    async def extract_notifications_event(dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+    async def extract_notifications_event(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") != NOTIF_EVENT:
             return {}
-        
+
         # build FuzzySlotMatchOptions from the available events
         bundle = tracker.get_slot(NOTIF_SERVICE)
         if not bundle:
             return {}
-        
+
         options = []
-        response, result = await get_available_events_by_bundle(tracker, bundle['id'])
+        response, result = await get_available_events_by_bundle(tracker, bundle["id"])
         if not response.ok or not result:
             received_notifications_error(dispatcher, response, result)
             return {}
-        print("bullshit result" + str(result))
-        for event in result['data']:
+        for event in result["data"]:
             possible_value = {
-                "id": event['id'],
-                "name": event['name'],
-                "display_name": event['display_name'],
-                "application_id": event['application_id'],
-                "application_name": event['application']['name'],
-                "application_display_name": event['application']['display_name'],
+                "id": event["id"],
+                "name": event["name"],
+                "display_name": event["display_name"],
+                "application_id": event["application_id"],
+                "application_name": event["application"]["name"],
+                "application_display_name": event["application"]["display_name"],
             }
-            options.append(FuzzySlotMatchOption(possible_value, [event['name'], event['display_name'], event['application_id']]))
-        
+            options.append(
+                FuzzySlotMatchOption(
+                    possible_value,
+                    [event["name"], event["display_name"], event["application_id"]],
+                )
+            )
+
         event_match.options = options
-        resolved = resolve_slot_match(
-            tracker.latest_message["text"], event_match
-        )
+        resolved = resolve_slot_match(tracker.latest_message["text"], event_match)
         if len(resolved) > 0:
             return resolved
-        
+
         return {}
-    
+
     @staticmethod
-    def extract_notifications_behavior_option(dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+    def extract_notifications_behavior_option(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") != NOTIF_BEHAVIOR_OPT:
             return {}
 
         resolved = resolve_slot_match(
             tracker.latest_message["text"], behavior_opt_match
         )
-        print(f"resolved: {resolved}")
         if len(resolved) > 0:
             return resolved
-        
+
         return {}
 
     @staticmethod
@@ -185,7 +261,7 @@ class ValidateFormNotifications(FormValidationAction):
         formatted = {
             "id": result[0]["id"],
             "name": result[0]["name"],
-            "display_name": result[0]["displayName"]
+            "display_name": result[0]["displayName"],
         }
         return {NOTIF_SERVICE: formatted}
 
@@ -197,7 +273,7 @@ class ValidateFormNotifications(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         return {NOTIF_SERVICE_OPT: value}
-    
+
     @staticmethod
     def validate_notifications_event_option(
         value: Text,
@@ -206,7 +282,7 @@ class ValidateFormNotifications(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         return {NOTIF_EVENT_OPT: value}
-    
+
     @staticmethod
     def validate_notifications_event(
         value: Text,
@@ -215,7 +291,7 @@ class ValidateFormNotifications(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         return {NOTIF_EVENT: value}
-    
+
     @staticmethod
     def validate_notifications_behavior_option(
         value: Text,
@@ -231,9 +307,7 @@ class ValidateFormNotifications(FormValidationAction):
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
-        print(f"requested_slot: {requested_slot}")
         if requested_slot == NOTIF_SERVICE_OPT:
-            print("NOTIF_SERVICE_OPT")
             option = tracker.get_slot(NOTIF_SERVICE_OPT)
             if option == "manage events":
                 dispatcher.utter_message(response="utter_notifications_edit")
@@ -249,16 +323,14 @@ class ValidateFormNotifications(FormValidationAction):
                 dispatcher.utter_message(response="utter_notifications_learn_dashboard")
                 dispatcher.utter_message(response="utter_notifications_learn_docs")
                 events.append(SlotSet("requested_slot", None))
-        
+
         if requested_slot == NOTIF_SERVICE:
-            print("NOTIF_SERVICE")
             bundle = tracker.get_slot(NOTIF_SERVICE)
             # avoiding a bug
             if not bundle:
                 return events
             option = tracker.get_slot(NOTIF_SERVICE_OPT)
-            print(f"bundle: {bundle}, option: {option}")
-            if bundle['name'] == "unsure":
+            if bundle["name"] == "unsure":
                 dispatcher.utter_message(response="utter_notifications_learn")
                 dispatcher.utter_message(response="utter_notifications_learn_dashboard")
                 dispatcher.utter_message(response="utter_notifications_learn_docs")
@@ -267,50 +339,77 @@ class ValidateFormNotifications(FormValidationAction):
                 has_notifications_available = None
                 if option == "manage preferences":
                     has_notifications_available = True
-                response, result = await get_available_events_by_bundle(tracker, bundle['id'], has_notifications_available)
+                response, result = await get_available_events_by_bundle(
+                    tracker, bundle["id"], has_notifications_available
+                )
                 if not response.ok or not result:
                     received_notifications_error(dispatcher, response, result)
                     return events
                 if len(result) == 0:
-                    dispatcher.utter_message(response="utter_notifications_edit_events_none_1", service=bundle['display_name'])
-                    dispatcher.utter_message(response="utter_notifications_edit_events_none_2")
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_events_none_1",
+                        service=bundle["display_name"],
+                    )
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_events_none_2"
+                    )
                     events.append(SlotSet("requested_slot", None))
                     return events
-                
+
                 buttons = []
-                for event in result['data']:
-                    print(event)
-                    buttons.append({"title": '{} | {}'.format(event['display_name'], event['application']['display_name']), "payload": event['display_name']})
-                
+                for event in result["data"]:
+                    buttons.append(
+                        {
+                            "title": "{} | {}".format(
+                                event["display_name"],
+                                event["application"]["display_name"],
+                            ),
+                            "payload": event["display_name"],
+                        }
+                    )
+
                 if option != "manage preferences":
-                    dispatcher.utter_message(response="utter_notifications_setup_for_chosen_service", service=bundle['display_name'])
-                dispatcher.utter_message(response="utter_notifications_edit_events_for_service", service=bundle['display_name'], 
-                                         buttons=buttons)
-                
+                    dispatcher.utter_message(
+                        response="utter_notifications_setup_for_chosen_service",
+                        service=bundle["display_name"],
+                    )
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_events_for_service",
+                    service=bundle["display_name"],
+                    buttons=buttons,
+                )
+
                 if tracker.get_slot(NOTIF_EVENT_OPT) is None:
                     # implied event_option (skipped N2.2)
                     events.append(SlotSet(NOTIF_EVENT_OPT, "modify"))
 
         if requested_slot == NOTIF_EVENT_OPT:
-            print("NOTIF_EVENT_OPT")
             option = tracker.get_slot(NOTIF_EVENT_OPT)
             if option == "new":
-                dispatcher.utter_message(response="utter_notifications_setup_which_service")
+                dispatcher.utter_message(
+                    response="utter_notifications_setup_which_service"
+                )
                 events.append(SlotSet(NOTIF_SERVICE_OPT, "manage events"))
             elif option == "modify" or option == "disable":
-                dispatcher.utter_message(response="utter_notifications_edit_events_which_service")
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_events_which_service"
+                )
             events.append(SlotSet("requested_slot", NOTIF_SERVICE))
-        
+
         if requested_slot == NOTIF_EVENT:
-            print("NOTIF_EVENT")
             bundle = tracker.get_slot(NOTIF_SERVICE)
             event = tracker.get_slot(NOTIF_EVENT)
             if tracker.get_slot(NOTIF_EVENT_OPT) == "disable":
-                response = await mute_event(tracker, event['id'])
+                response = await mute_event(tracker, event["id"])
                 if response.ok:
-                    dispatcher.utter_message(response="utter_notifications_edit_events_mute_success", event=event['display_name'])
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_events_mute_success",
+                        event=event["display_name"],
+                    )
                 else:
-                    dispatcher.utter_message(response="utter_notifications_edit_events_mute_error")
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_events_mute_error"
+                    )
                     logger.error(
                         "Failed to get a response from the notifications API (PUT): status {}".format(
                             response
@@ -318,43 +417,57 @@ class ValidateFormNotifications(FormValidationAction):
                         exc_info=True,
                     )
                     return events
-                
+
                 events.append(SlotSet("requested_slot", None))
             else:
-                dispatcher.utter_message(response="utter_notifications_edit_selected_event", event=event['display_name'])
-        
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_selected_event",
+                    event=event["display_name"],
+                )
+
         if requested_slot == NOTIF_BEHAVIOR_OPT:
-            print("NOTIF_BEHAVIOR_OPT")
             option = tracker.get_slot(NOTIF_BEHAVIOR_OPT)
             event = tracker.get_slot(NOTIF_EVENT)
             bundle = tracker.get_slot(NOTIF_SERVICE)
-            print(f"option: {option}")
             if option == "attach":
                 dispatcher.utter_message(response="utter_notifications_edit_new_group")
                 events.append(SlotSet("requested_slot", None))
             elif option == "create":
-                dispatcher.utter_message(response="utter_notifications_edit_create_group", service=bundle['display_name'], event=event['display_name'])
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_create_group",
+                    service=bundle["display_name"],
+                    event=event["display_name"],
+                )
                 events.append(SlotSet("requested_slot", None))
             elif option == "remove":
-                response, result = await get_behavior_groups(tracker, bundle['id'])
+                response, result = await get_behavior_groups(tracker, bundle["id"])
                 if not response.ok or not result:
                     received_notifications_error(dispatcher, response, result)
                     return events
-                
+
                 if len(result) > 0:
-                    response = await mute_event(tracker, event['id'])
+                    response = await mute_event(tracker, event["id"])
                     if response.ok:
-                        dispatcher.utter_message(response="utter_notifications_edit_events_mute_success", event=event['display_name'])
+                        dispatcher.utter_message(
+                            response="utter_notifications_edit_events_mute_success",
+                            event=event["display_name"],
+                        )
                         events.append(SlotSet("requested_slot", None))
                     else:
-                        dispatcher.utter_message(response="utter_notifications_edit_events_mute_error")
+                        dispatcher.utter_message(
+                            response="utter_notifications_edit_events_mute_error"
+                        )
                 else:
-                    print("no groups")
-                    dispatcher.utter_message(response="utter_notifications_edit_no_groups", event=event['display_name'])
-                    dispatcher.utter_message(response="utter_notifications_edit_no_groups_what")
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_no_groups",
+                        event=event["display_name"],
+                    )
+                    dispatcher.utter_message(
+                        response="utter_notifications_edit_no_groups_what"
+                    )
                     events.append(SlotSet(NOTIF_BEHAVIOR_OPT))
                     events.append(SlotSet("requested_slot", NOTIF_BEHAVIOR_OPT))
-        
+
         return events
 
     async def required_slots(
@@ -374,7 +487,13 @@ class ActionNotificationsReset(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        return [SlotSet(NOTIF_SERVICE, None), SlotSet(NOTIF_SERVICE_OPT, None), SlotSet(NOTIF_EVENT, None), SlotSet(NOTIF_EVENT_OPT, None), SlotSet(NOTIF_BEHAVIOR_OPT, None)]
+        return [
+            SlotSet(NOTIF_SERVICE, None),
+            SlotSet(NOTIF_SERVICE_OPT, None),
+            SlotSet(NOTIF_EVENT, None),
+            SlotSet(NOTIF_EVENT_OPT, None),
+            SlotSet(NOTIF_BEHAVIOR_OPT, None),
+        ]
 
 
 class ActionNotificationsSetup(Action):
@@ -387,12 +506,17 @@ class ActionNotificationsSetup(Action):
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
         if is_org_admin is False:
             dispatcher.utter_message(response="utter_notifications_non_admin")
-            dispatcher.utter_message(response="utter_notifications_setup_non_admin_can_help")
+            dispatcher.utter_message(
+                response="utter_notifications_setup_non_admin_can_help"
+            )
             return [SlotSet("requested_slot", NOTIF_SERVICE_OPT)]
         else:
             dispatcher.utter_message(response="utter_notifications_setup")
             dispatcher.utter_message(response="utter_notifications_setup_which_service")
-            return [SlotSet("requested_slot", NOTIF_SERVICE), SlotSet(NOTIF_SERVICE_OPT, "new")]
+            return [
+                SlotSet("requested_slot", NOTIF_SERVICE),
+                SlotSet(NOTIF_SERVICE_OPT, "new"),
+            ]
 
 
 class ActionNotificationsEdit(Action):
@@ -405,7 +529,9 @@ class ActionNotificationsEdit(Action):
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
         if is_org_admin is False:
             dispatcher.utter_message(response="utter_notifications_non_admin")
-            dispatcher.utter_message(response="utter_notifications_edit_non_admin_options")
+            dispatcher.utter_message(
+                response="utter_notifications_edit_non_admin_options"
+            )
             return [SlotSet("requested_slot", NOTIF_SERVICE_OPT)]
         else:
             dispatcher.utter_message(response="utter_notifications_edit")
@@ -414,16 +540,14 @@ class ActionNotificationsEdit(Action):
 
 
 def received_notifications_error(dispatcher: CollectingDispatcher, response, result):
-    dispatcher.utter_message(
-        response="utter_notifications_error"
-    )
+    dispatcher.utter_message(response="utter_notifications_error")
     logger.error(
         "Failed to get a response from the notifications API: status {}; result {}".format(
             response.status, result
         ),
         exc_info=True,
     )
-    
+
 
 async def get_available_bundles(tracker: Tracker, name: Optional[str] = None):
     params = "?includeApplications=false"
@@ -436,13 +560,16 @@ async def get_available_bundles(tracker: Tracker, name: Optional[str] = None):
     )
 
 
-async def get_available_events_by_bundle(tracker: Tracker, bundleId: str, has_notifications_available: Optional[bool] = None):
+async def get_available_events_by_bundle(
+    tracker: Tracker, bundleId: str, has_notifications_available: Optional[bool] = None
+):
     if has_notifications_available:
         # params = "?hasNotifications=true"
         pass
     return await send_console_request(
         "notifications-gw",
-        '/api/notifications/v1.0/notifications/eventTypes?bundleId=%s&limit=20&offset=0&sort_by=application:ASC' % bundleId,
+        "/api/notifications/v1.0/notifications/eventTypes?bundleId=%s&limit=20&offset=0&sort_by=application:ASC"
+        % bundleId,
         tracker,
     )
 
@@ -450,7 +577,7 @@ async def get_available_events_by_bundle(tracker: Tracker, bundleId: str, has_no
 async def get_behavior_groups(tracker: Tracker, bundleId: str):
     return await send_console_request(
         "notifications-gw",
-        '/api/notifications/v1.0/notifications/bundles/%s/behaviorGroups' % bundleId,
+        "/api/notifications/v1.0/notifications/bundles/%s/behaviorGroups" % bundleId,
         tracker,
     )
 
@@ -460,7 +587,7 @@ async def mute_event(tracker: Tracker, eventId: str):
     headers.add_header("Content-Type", "application/json")
     return await send_console_request(
         "notifications-gw",
-        '/api/notifications/v1.0/notifications/eventTypes/%s/behaviorGroups' % eventId,
+        "/api/notifications/v1.0/notifications/eventTypes/%s/behaviorGroups" % eventId,
         tracker,
         "put",
         json=[],

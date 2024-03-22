@@ -8,7 +8,7 @@ rules:
       - action: action_notifications_setup
       - action: form_notifications
       - active_loop: form_notifications
-  
+
   - rule: Edit notifications
     steps:
       - intent: intent_notifications_edit
@@ -27,7 +27,7 @@ rules:
           - requested_slot: null
       - action: form_closing
       - active_loop: form_closing
-  
+
   - rule: End of notification form - contact admin
     condition:
       - active_loop: form_notifications
