@@ -30,7 +30,9 @@ advisor_categories = FuzzySlotMatch(
         FuzzySlotMatchOption(CATEGORY_SECURITY),
         FuzzySlotMatchOption(CATEGORY_AVAILABILITY),
         FuzzySlotMatchOption(CATEGORY_STABILITY),
-        FuzzySlotMatchOption(CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently", "newest"]),
+        FuzzySlotMatchOption(
+            CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently", "newest"]
+        ),
     ],
 )
 
@@ -180,7 +182,10 @@ class AdvisorRecommendationByType(FormValidationAction):
                     return self.error(dispatcher, events)
 
                 for category in content:
-                    if category["name"].lower() == insights_advisor_recommendation_category:
+                    if (
+                        category["name"].lower()
+                        == insights_advisor_recommendation_category
+                    ):
                         category_id = category["id"]
                         category_name = category["name"].lower()
                         break
