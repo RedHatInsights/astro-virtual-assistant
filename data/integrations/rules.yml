@@ -35,7 +35,7 @@ rules:
           - is_org_admin: true
     steps:
       - action: utter_integration_what
-      - intent: intent_integration_setup
+      - intent: intent_core_guide_me
       - action: form_integration_setup_init
       - action: form_integration_setup
       - active_loop: form_integration_setup
