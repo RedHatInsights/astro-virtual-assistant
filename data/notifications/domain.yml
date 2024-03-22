@@ -155,7 +155,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: "https://console.redhat.com/user-preferences/notifications?bundle={bundle}&app={service}"
+          url: "{base_console_url}/user-preferences/notifications?bundle={bundle}&app={service}"
   utter_notifications_edit_preferences_other:
     - text: "Your Organization Administrator has configured which notifications you can or can't receive. You will need to contact that person to request access to other events."
 
@@ -175,7 +175,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: https://console.redhat.com/settings/notifications/configure-events?name={event}
+          url: "{base_console_url}/settings/notifications/configure-events?name={event}"
   utter_notifications_edit_existing_group:
     - text: "Okay. The Notifications dashboard lets you attach and detach behavior groups to your events."
   utter_notifications_edit_no_groups:
@@ -193,4 +193,4 @@ responses:
         type: command
         command: redirect
         params:
-          url: https://console.redhat.com/settings/notifications/configure-events
+          url: "{base_console_url}/settings/notifications/configure-events"
