@@ -101,10 +101,10 @@ responses:
         and request access from your org admin.
   utter_integration_what:
     - text: >
-        Are you looking to set up an integration or learn more about how to do so?
+        Would you like me to show you where to learn more or walk you through it?
       buttons:
-        - title: Set Up an integration
-          payload: /intent_integration_setup
+        - title: Walk me through it
+          payload: /intent_core_guide_me
         - title: Learn more
           payload: /intent_core_learn_more
   utter_integration_learn_more_1:
