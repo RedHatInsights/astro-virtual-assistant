@@ -13,6 +13,29 @@ rules:
     steps:
       - intent: intent_notifications_edit
       - action: action_notifications_reset
-      # whatever action to set the slots to whats needed
+      - action: action_notifications_edit
       - action: form_notifications
       - active_loop: form_notifications
+
+  - rule: End of notification form
+    condition:
+      - active_loop: form_notifications
+    steps:
+      - action: form_notifications
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+  
+  - rule: End of notification form - contact admin
+    condition:
+      - active_loop: form_notifications
+      - slot_was_set:
+          - notifications_service_option: "contact admin"
+    steps:
+      - action: form_notifications
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_access_contact_admin
