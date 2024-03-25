@@ -30,9 +30,7 @@ service_match = FuzzySlotMatch(
     [
         FuzzySlotMatchOption("openshift", ["openshift", "open shift"]),
         FuzzySlotMatchOption("rhel", ["rhel", "red hat enterprise linux", "linux"]),
-        FuzzySlotMatchOption(
-            "console", ["core console", "console", "hcc", "platform"]
-        ),
+        FuzzySlotMatchOption("console", ["core console", "console", "hcc", "platform"]),
         FuzzySlotMatchOption(
             "unsure",
             [
@@ -174,7 +172,10 @@ class ValidateFormNotifications(FormValidationAction):
     def extract_notifications_bundle_option(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        if tracker.get_slot("requested_slot") != NOTIF_BUNDLE_OPT or tracker.get_slot(NOTIF_BUNDLE_OPT) == "learn":
+        if (
+            tracker.get_slot("requested_slot") != NOTIF_BUNDLE_OPT
+            or tracker.get_slot(NOTIF_BUNDLE_OPT) == "learn"
+        ):
             return {}
 
         resolved = resolve_slot_match(tracker.latest_message["text"], service_opt_match)
@@ -277,7 +278,7 @@ class ValidateFormNotifications(FormValidationAction):
     ) -> Dict[Text, Any]:
         if value == "unsure":
             return {NOTIF_BUNDLE: UNSURE_SERVICE}
-        
+
         response, result = await get_available_bundles(tracker)
         if not response.ok or not result:
             received_notifications_error(dispatcher, response, result)
@@ -293,7 +294,7 @@ class ValidateFormNotifications(FormValidationAction):
                     "display_name": bundle["displayName"],
                 }
                 return {NOTIF_BUNDLE: formatted}
-        
+
         return {NOTIF_BUNDLE: None}
 
     @staticmethod
@@ -473,7 +474,9 @@ class ValidateFormNotifications(FormValidationAction):
             event = tracker.get_slot(NOTIF_EVENT)
             bundle = tracker.get_slot(NOTIF_BUNDLE)
             if option == "attach":
-                dispatcher.utter_message(response="utter_notifications_edit_new_group", event=event["name"])
+                dispatcher.utter_message(
+                    response="utter_notifications_edit_new_group", event=event["name"]
+                )
             elif option == "create":
                 dispatcher.utter_message(
                     response="utter_notifications_edit_create_group",
@@ -529,7 +532,7 @@ class ValidateFormNotifications(FormValidationAction):
         elif bundle_opt == "manage preferences":
             updated_slots.remove(NOTIF_EVENT_OPT)
             updated_slots.remove(NOTIF_BEHAVIOR_OPT)
-        
+
         if tracker.get_slot(NOTIF_EVENT_OPT) == "disable":
             updated_slots.remove(NOTIF_BEHAVIOR_OPT)
 
@@ -537,7 +540,7 @@ class ValidateFormNotifications(FormValidationAction):
         if event and "id" in event and event["id"] == "unsure":
             updated_slots.remove(NOTIF_BEHAVIOR_OPT)
             updated_slots.remove(NOTIF_EVENT_OPT)
-            
+
         return updated_slots
 
 
