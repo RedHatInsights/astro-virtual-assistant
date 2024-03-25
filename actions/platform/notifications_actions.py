@@ -598,28 +598,37 @@ def received_notifications_error(dispatcher: CollectingDispatcher, response, res
 
 
 async def get_available_bundles(tracker: Tracker, name: Optional[str] = None):
-    params = "?includeApplications=false"
+    params = {
+        "includeApplications": "false",
+    }
     if name:
-        params += f"&bundleName={name}"
+        params["bundleName"] = name
     return await send_console_request(
         "notifications",
-        "/api/notifications/v1.0/notifications/facets/bundles%s" % params,
+        "/api/notifications/v1.0/notifications/facets/bundles",
         tracker,
+        params=params,
     )
 
 
 async def get_available_events_by_bundle(
     tracker: Tracker, bundleId: str, has_notifications_available: Optional[bool] = None
 ):
+    params = {
+        "limit": 20,
+        "offset": 0,
+        "sort_by": "application:ASC",
+        "bundleId": bundleId,
+    }
     # TODO: request this feature
     if has_notifications_available:
-        # params = "?hasNotifications=true"
+        # params["hasNotifications"] = True
         pass
     return await send_console_request(
         "notifications",
-        "/api/notifications/v1.0/notifications/eventTypes?bundleId=%s&limit=20&offset=0&sort_by=application:ASC"
-        % bundleId,
+        "/api/notifications/v1.0/notifications/eventTypes",
         tracker,
+        params=params,
     )
 
 
