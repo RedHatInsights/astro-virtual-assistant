@@ -14,7 +14,7 @@ stories:
   - story: User wants to set up a notification - 2
     steps:
       - user: |
-          setup notifications?
+          setup [notifications](core_services)?
         intent: intent_notifications_setup
       - action: action_notifications_reset
       - action: action_notifications_setup
