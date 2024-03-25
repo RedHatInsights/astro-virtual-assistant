@@ -17,7 +17,14 @@ slots:
   notifications_bundle_option:
     type: text
     influence_conversation: true
-    mappings: *custom_mapping
+    mappings:
+      - type: custom
+      - type: from_intent
+        value: "learn"
+        intent: intent_core_learn_more
+        conditions:
+          - active_loop: form_notifications
+            requested_slot: notifications_bundle_option
   notifications_event_option:
     type: text
     influence_conversation: true
@@ -115,7 +122,7 @@ responses:
         - title: "Manage my own preferences"
           payload: "manage preferences"
         - title: "Learn more about notifications"
-          payload: "learn"
+          payload: "learn more"
   utter_notifications_edit_events:
     - text: "Got it! You want to manage your organization's notifications."
   utter_notifications_edit_events_how:

@@ -174,7 +174,7 @@ class ValidateFormNotifications(FormValidationAction):
     def extract_notifications_bundle_option(
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
-        if tracker.get_slot("requested_slot") != NOTIF_BUNDLE_OPT:
+        if tracker.get_slot("requested_slot") != NOTIF_BUNDLE_OPT or tracker.get_slot(NOTIF_BUNDLE_OPT) == "learn":
             return {}
 
         resolved = resolve_slot_match(tracker.latest_message["text"], service_opt_match)
@@ -478,7 +478,7 @@ class ValidateFormNotifications(FormValidationAction):
             event = tracker.get_slot(NOTIF_EVENT)
             bundle = tracker.get_slot(NOTIF_BUNDLE)
             if option == "attach":
-                dispatcher.utter_message(response="utter_notifications_edit_new_group")
+                dispatcher.utter_message(response="utter_notifications_edit_new_group", event=event["name"])
                 events.append(SlotSet("requested_slot", None))
             elif option == "create":
                 dispatcher.utter_message(
