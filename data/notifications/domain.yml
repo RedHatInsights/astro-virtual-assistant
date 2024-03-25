@@ -42,9 +42,9 @@ forms:
   form_notifications:
     required_slots:
       - notifications_bundle_option
+      - notifications_event_option
       - notifications_bundle
       - notifications_event
-      - notifications_event_option
       - notifications_behavior_option
 
 actions:
