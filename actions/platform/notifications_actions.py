@@ -602,7 +602,7 @@ async def get_available_bundles(tracker: Tracker, name: Optional[str] = None):
     if name:
         params += f"&bundleName={name}"
     return await send_console_request(
-        "notifications-gw",
+        "notifications",
         "/api/notifications/v1.0/notifications/facets/bundles%s" % params,
         tracker,
     )
@@ -616,7 +616,7 @@ async def get_available_events_by_bundle(
         # params = "?hasNotifications=true"
         pass
     return await send_console_request(
-        "notifications-gw",
+        "notifications",
         "/api/notifications/v1.0/notifications/eventTypes?bundleId=%s&limit=20&offset=0&sort_by=application:ASC"
         % bundleId,
         tracker,
@@ -625,7 +625,7 @@ async def get_available_events_by_bundle(
 
 async def get_behavior_groups(tracker: Tracker, bundleId: str):
     return await send_console_request(
-        "notifications-gw",
+        "notifications",
         "/api/notifications/v1.0/notifications/bundles/%s/behaviorGroups" % bundleId,
         tracker,
     )
@@ -635,7 +635,7 @@ async def mute_event(tracker: Tracker, eventId: str):
     headers = Header()
     headers.add_header("Content-Type", "application/json")
     return await send_console_request(
-        "notifications-gw",
+        "notifications",
         "/api/notifications/v1.0/notifications/eventTypes/%s/behaviorGroups" % eventId,
         tracker,
         "put",
