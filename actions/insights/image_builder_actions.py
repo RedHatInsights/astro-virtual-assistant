@@ -90,12 +90,9 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
+        rhel_version = tracker.get_slot(RHEL_VERSION)
         if requested_slot == RHEL_VERSION:
-            rhel_version = tracker.get_slot(RHEL_VERSION)
-            if rhel_version == "RHEL 9":
-                events.append(SlotSet("requested_slot", None))
-                events.append(SlotSet(RHEL_VERSION_CONFIRM, True))
-            else:
+            if rhel_version == "RHEL 8":
                 dispatcher.utter_message(response="utter_image_builder_rhel_8_support")
                 dispatcher.utter_message(
                     response="utter_image_builder_rhel_8_confirmation"
@@ -103,11 +100,7 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
 
         if requested_slot == RHEL_VERSION_CONFIRM:
             rhel_version_confirmed = tracker.get_slot(RHEL_VERSION_CONFIRM)
-            if rhel_version_confirmed is True:
-                events.append(SlotSet("requested_slot", None))
-                events.append(SlotSet(RHEL_VERSION, "RHEL 8"))
-            else:
-                events.append(SlotSet("requested_slot", None))
+            if rhel_version_confirmed is False and rhel_version == "RHEL 8":
                 events.append(SlotSet(RHEL_VERSION, "RHEL 9"))
 
         return events
@@ -191,6 +184,12 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     async def enable_custom_repositories(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, version: str
     ):
+        if not version:
+            dispatcher.utter_message(
+                response="utter_image_builder_custom_content_error"
+            )
+            return
+
         response, result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1/popular_repositories/?offset=0&limit=20",
@@ -291,9 +290,6 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
         if requested_slot == CONTENT_REPOSITORY_VERSION:
             version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
             await self.enable_custom_repositories(dispatcher, tracker, version)
-            events.append(SlotSet(CONTENT_REPOSITORY, None))
-            events.append(SlotSet(CONTENT_REPOSITORY_VERSION, None))
-            events.append(SlotSet("requested_slot", None))
 
         return events
 
