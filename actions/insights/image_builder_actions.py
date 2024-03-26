@@ -100,10 +100,7 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
 
         if requested_slot == RHEL_VERSION_CONFIRM:
             rhel_version_confirmed = tracker.get_slot(RHEL_VERSION_CONFIRM)
-            if rhel_version_confirmed is True:
-                if rhel_version == "RHEL 8":
-                    events.append(SlotSet(RHEL_VERSION, "RHEL 8"))
-                else:
+            if rhel_version_confirmed is False and rhel_version == "RHEL 8":
                     events.append(SlotSet(RHEL_VERSION, "RHEL 9"))
 
         return events
