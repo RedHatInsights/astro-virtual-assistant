@@ -101,7 +101,7 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
         if requested_slot == RHEL_VERSION_CONFIRM:
             rhel_version_confirmed = tracker.get_slot(RHEL_VERSION_CONFIRM)
             if rhel_version_confirmed is False and rhel_version == "RHEL 8":
-                    events.append(SlotSet(RHEL_VERSION, "RHEL 9"))
+                events.append(SlotSet(RHEL_VERSION, "RHEL 9"))
 
         return events
 
@@ -189,7 +189,7 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
                 response="utter_image_builder_custom_content_error"
             )
             return
-        
+
         response, result = await send_console_request(
             "content-sources",
             "/api/content-sources/v1/popular_repositories/?offset=0&limit=20",
