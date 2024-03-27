@@ -100,21 +100,21 @@ responses:
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Change my personal information
-          payload: /intent_user_preferences
-        - title: Request access from my administrator
-          payload: /intent_access_request
-        - title: Show my critical vulnerabilities
-          payload: /insights_vulnerability_my_cves
+        - title: Help me with an access issue
+          payload: /intent_access_capabilities
+        - title: Set up notifications
+          payload: /intent_notifications_setup
+        - title: Create new integrations
+          payload: /intent_integration_setup
         - title: Get recommendations from Advisor
           payload: /intent_insights_advisor_recommendation_by_type
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Change my personal information
-          payload: /intent_user_preferences
-        - title: Show my critical vulnerabilities
-          payload: /insights_vulnerability_my_cves
+        - title: Set up notifications
+          payload: /intent_notifications_setup
+        - title: Create new integrations
+          payload: /intent_integration_setup
         - title: Get recommendations from Advisor
           payload: /intent_insights_advisor_recommendation_by_type
   utter_core_rephrase:
