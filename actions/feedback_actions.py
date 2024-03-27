@@ -38,6 +38,9 @@ type_slot_match = FuzzySlotMatch(
         FuzzySlotMatchOption(
             "bug",
             [
+                "Yes, it's a bug",
+                "yes",
+                "yes a bug",
                 "a bug",
                 "it's about a bug",
                 "an error",
@@ -49,6 +52,7 @@ type_slot_match = FuzzySlotMatch(
         FuzzySlotMatchOption(
             "general",
             [
+                "no",
                 "it's a feature",
                 "it's a suggestion",
                 "something else",
