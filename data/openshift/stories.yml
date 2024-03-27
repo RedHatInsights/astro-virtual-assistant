@@ -13,6 +13,8 @@ rules:
               - core_services: ocm
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
+      - action: form_closing
+      - active_loop: form_closing
 
   - rule: User asks about openshift - 2
     steps:
@@ -23,6 +25,8 @@ rules:
           - core_services: acs
       - action: utter_openshift_untrained
       - action: utter_openshift_acs
+      - action: form_closing
+      - active_loop: form_closing
 
   - rule: User asks about openshift - 3
     steps:
@@ -33,3 +37,5 @@ rules:
           - core_services: rosa
       - action: utter_openshift_untrained
       - action: utter_openshift_rosa
+      - action: form_closing
+      - active_loop: form_closing
