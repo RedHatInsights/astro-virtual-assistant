@@ -26,13 +26,22 @@ class FuzzySlotMatchOption:
         sub_options: Optional[FuzzySlotMatch] = None,
     ):
         self.value = value
-        self.synonyms = synonyms if synonyms is not None else [self.value]
+        self.synonyms = (
+            [s.lower() for s in synonyms]
+            if synonyms is not None
+            else [self.value.lower()]
+        )
         self.sub_options = sub_options
+
+
+def _sanitize_input(user_message: str) -> str:
+    return user_message.lower()
 
 
 def resolve_slot_match(
     user_message: str, slot_match: FuzzySlotMatch, accepted_rate=ACCEPTED_RATIO
 ) -> Dict[str, any]:
+    user_message = _sanitize_input(user_message)
     for options in slot_match.options:
         for value in options.synonyms:
             ratio = fuzz.QRatio(user_message, value)
