@@ -26,7 +26,11 @@ class FuzzySlotMatchOption:
         sub_options: Optional[FuzzySlotMatch] = None,
     ):
         self.value = value
-        self.synonyms = [s.lower() for s in synonyms] if synonyms is not None else [self.value.lower()]
+        self.synonyms = (
+            [s.lower() for s in synonyms]
+            if synonyms is not None
+            else [self.value.lower()]
+        )
         self.sub_options = sub_options
 
 

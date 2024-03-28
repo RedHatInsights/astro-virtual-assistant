@@ -2,17 +2,15 @@ import pytest
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 
 
-@pytest.mark.parametrize("user_message", ["rhel", "RHEL", "RhEl", "RHel", "rHeL", "rhel1", "rhel8", "rhel9"])
+@pytest.mark.parametrize(
+    "user_message", ["rhel", "RHEL", "RhEl", "RHel", "rHeL", "rhel1", "rhel8", "rhel9"]
+)
 def test_simple_slot_match(user_message: str):
     resolved = resolve_slot_match(
         user_message,
         FuzzySlotMatch(
-            "system",
-            [
-                FuzzySlotMatchOption("rhel"),
-                FuzzySlotMatchOption("foobar")
-            ]
-        )
+            "system", [FuzzySlotMatchOption("rhel"), FuzzySlotMatchOption("foobar")]
+        ),
     )
 
     assert resolved is not None
@@ -28,16 +26,19 @@ def test_sub_options_slot_match(user_message: str):
             "integration_type",
             [
                 FuzzySlotMatchOption("cloud"),
-                FuzzySlotMatchOption("communications", sub_options=FuzzySlotMatch(
-                    "communications_type",
-                    [
-                        FuzzySlotMatchOption("google"),
-                        FuzzySlotMatchOption("teams"),
-                        FuzzySlotMatchOption("slack"),
-                    ]
-                ))
-            ]
-        )
+                FuzzySlotMatchOption(
+                    "communications",
+                    sub_options=FuzzySlotMatch(
+                        "communications_type",
+                        [
+                            FuzzySlotMatchOption("google"),
+                            FuzzySlotMatchOption("teams"),
+                            FuzzySlotMatchOption("slack"),
+                        ],
+                    ),
+                ),
+            ],
+        ),
     )
 
     assert resolved is not None
@@ -52,8 +53,8 @@ def test_slot_match_with_synonyms():
         "system",
         [
             FuzzySlotMatchOption("rhel", ["rhel", "red hat"]),
-            FuzzySlotMatchOption("foobar", ["baz"])
-        ]
+            FuzzySlotMatchOption("foobar", ["baz"]),
+        ],
     )
 
     resolved = resolve_slot_match("rhel", setting)
