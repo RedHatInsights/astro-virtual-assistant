@@ -133,9 +133,7 @@ class ValidateFormFeedback(FormValidationAction):
                 if len(resolved) > 0:
                     return resolved
 
-        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
-            dispatcher, tracker, domain, TYPE
-        )
+        return {}
 
     @staticmethod
     def extract_feedback_where(
