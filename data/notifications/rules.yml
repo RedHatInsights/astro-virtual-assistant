@@ -1,5 +1,4 @@
 version: "3.1"
-
 # rules:
 #   - rule: Setting up a notification
 #     steps:
