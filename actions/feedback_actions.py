@@ -38,21 +38,20 @@ type_slot_match = FuzzySlotMatch(
         FuzzySlotMatchOption(
             "bug",
             [
-                "a bug",
-                "it's about a bug",
-                "an error",
-                "it's about an error",
+                "bug",
+                "error",
                 "issue",
-                "it's about an issue",
             ],
         ),
         FuzzySlotMatchOption(
             "general",
             [
-                "it's a feature",
-                "it's a suggestion",
-                "something else",
-                "it's about something else",
+                "feature",
+                "suggestion",
+                "different",
+                "something",
+                "else",
+                "general",
             ],
         ),
     ],
@@ -126,11 +125,13 @@ class ValidateFormFeedback(FormValidationAction):
         dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == TYPE:
-            resolved = resolve_slot_match(
-                tracker.latest_message["text"], type_slot_match
-            )
-            if len(resolved) > 0:
-                return resolved
+            user_input = tracker.latest_message["text"]
+
+            resolved = {}
+            for word in user_input.split(" "):
+                resolved = resolve_slot_match(word, type_slot_match)
+                if len(resolved) > 0:
+                    return resolved
 
         return {}
 

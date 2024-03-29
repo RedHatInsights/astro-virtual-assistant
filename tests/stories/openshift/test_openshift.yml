@@ -8,6 +8,8 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User asks about openshift - 2
     steps:
@@ -16,6 +18,8 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_acs
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User asks about openshift - 3
     steps:
@@ -24,6 +28,8 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_rosa
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User asks about openshift - 4
     steps:
@@ -32,6 +38,8 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User asks about openshift - 5
     steps:
@@ -40,6 +48,8 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_rosa
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User asks about openshift - 6
     steps:
@@ -48,3 +58,5 @@ stories:
         intent: intent_core_help
       - action: utter_openshift_untrained
       - action: utter_openshift_ocm
+      - action: form_closing
+      - active_loop: form_closing

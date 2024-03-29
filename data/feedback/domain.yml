@@ -27,14 +27,27 @@ slots:
     values:
       - general
       - bug
-    mappings: &custom_mapping
+    mappings:
       - type: custom
+      - type: from_intent
+        value: bug
+        intent: intent_core_yes
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_type
+      - type: from_intent
+        value: general
+        intent: intent_core_no
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_type
   feedback_where:
     type: categorical
     values:
       - console
       - conversation
-    mappings: *custom_mapping
+    mappings: &custom_mapping
+      - type: custom
   # How does the user want their data to be collected?
   # i.e. the bot or the pendo form
   feedback_collection:
