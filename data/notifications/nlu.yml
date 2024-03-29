@@ -1,32 +1,32 @@
-version: "3.1"
+# version: "3.1"
 
-nlu:
-  - intent: intent_notifications_setup
-    examples: |
-      - set up event alerting
-      - get alerts
-      - find out about events
-      - get notifications
-      - send notifications to others
-      - create a notification
-      - create an alert
-      - add an alert
-      - add an event
-      - add a notification
-      - set up notifications
+# nlu:
+#   - intent: intent_notifications_setup
+#     examples: |
+#       - set up event alerting
+#       - get alerts
+#       - find out about events
+#       - get notifications
+#       - send notifications to others
+#       - create a notification
+#       - create an alert
+#       - add an alert
+#       - add an event
+#       - add a notification
+#       - set up notifications
 
-  - intent: intent_notifications_edit
-    examples: |
-      - how do I edit notifications
-      - how do I notify my team of events
-      - update alert settings for my team
-      - how to change alert settings
-      - how do I remove a notification for my org
-      - i want to get notified about events
-      - how do I opt out of emails
-      - how do I change my notification preferences
-      - how do I mute notifications
-      - how do I mute alerts
-      - change notifications
-      - edit notification
-      - edit alert
+#   - intent: intent_notifications_edit
+#     examples: |
+#       - how do I edit notifications
+#       - how do I notify my team of events
+#       - update alert settings for my team
+#       - how to change alert settings
+#       - how do I remove a notification for my org
+#       - i want to get notified about events
+#       - how do I opt out of emails
+#       - how do I change my notification preferences
+#       - how do I mute notifications
+#       - how do I mute alerts
+#       - change notifications
+#       - edit notification
+#       - edit alert
