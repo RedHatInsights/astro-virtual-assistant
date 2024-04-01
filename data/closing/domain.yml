@@ -116,8 +116,7 @@ responses:
         Please talk below about our conversation.
   utter_closing_finally:
     - text: >
-        My team is training me so that I'm able to expand the ways I can help you. Your interactions and
-        feedback are key to my ability to grow and learn.
+        Your interactions and feedback are key to my ability to grow and learn.
   utter_ask_closing_anything_else:
     - text: Is there anything else I can help you with today?
       buttons: *buttons_yes_no
