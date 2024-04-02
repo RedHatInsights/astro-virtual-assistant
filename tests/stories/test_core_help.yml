@@ -6,11 +6,11 @@ stories:
       - user: |
           can you help me with my problem?
         intent: intent_core_help
-      - action: action_default_fallback
+      - action: utter_core_capabilities_main_org_admin
 
   - story: Help without entities 2
     steps:
       - user: |
           What is life?
         intent: intent_core_help
-      - action: action_default_fallback
+      - action: utter_core_capabilities_main_org_admin

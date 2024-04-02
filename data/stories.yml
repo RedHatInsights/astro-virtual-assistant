@@ -120,5 +120,4 @@ stories:
   - story: User wants help not covered in any other rule
     steps:
       - intent: intent_core_help
-      - action: action_default_fallback
-      - action: action_listen
+      - checkpoint: check_core_capabilities
