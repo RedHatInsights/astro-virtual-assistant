@@ -178,7 +178,8 @@ class ExecuteFormClosing(Action):
                 },
             )
 
-        dispatcher.utter_message(response="utter_closing_finally")
+            dispatcher.utter_message(response="utter_feedback_transparency")
+            dispatcher.utter_message(response="utter_closing_finally")
         return [
             SlotSet(key, None)
             for key in [
