@@ -22,6 +22,8 @@ CATEGORY_SECURITY = "security"
 CATEGORY_AVAILABILITY = "availability"
 CATEGORY_STABILITY = "stability"
 CATEGORY_NEW = "new"
+CATEGORY_CRITICAL = "critical"
+CATEGORY_WORKLOADS = "workload"
 
 advisor_categories = FuzzySlotMatch(
     "insights_advisor_recommendation_category",
@@ -33,6 +35,8 @@ advisor_categories = FuzzySlotMatch(
         FuzzySlotMatchOption(
             CATEGORY_NEW, [CATEGORY_NEW, "recent", "recently", "newest"]
         ),
+        FuzzySlotMatchOption(CATEGORY_CRITICAL),
+        FuzzySlotMatchOption(CATEGORY_WORKLOADS),
     ],
 )
 
@@ -172,6 +176,12 @@ class AdvisorRecommendationByType(FormValidationAction):
             if insights_advisor_recommendation_category == CATEGORY_NEW:
                 extra_filter_params = "sort=-publish_date"
                 category_name = CATEGORY_NEW
+            elif insights_advisor_recommendation_category == CATEGORY_CRITICAL:
+                extra_filter_params = "total_risk=4"
+                category_name = CATEGORY_CRITICAL
+            elif insights_advisor_recommendation_category == CATEGORY_WORKLOADS:
+                extra_filter_params = "filter[system_profile][sap_system]=true"
+                category_name = CATEGORY_WORKLOADS
             else:
                 # Find the id of the category
                 response, content = await send_console_request(

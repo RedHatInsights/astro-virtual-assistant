@@ -64,3 +64,7 @@ responses:
           payload: stability
         - title: New Recommendations
           payload: new
+        - title: Critical
+          payload: critical
+        - title: Workload
+          payload: workload
