@@ -81,6 +81,10 @@ async def send_console_request(
         logger.error(
             f"Exception while handling request: {method.upper()} {url}", exc_info=True
         )
+        bad_response = object()
+        bad_response.ok = False
+        bad_response.status = None
+
         if fetch_content:
-            return None, None
-        return None
+            return bad_response, None
+        return bad_response
