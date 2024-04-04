@@ -23,6 +23,7 @@ nlu:
       - we have an rfe to make
       - i want to submit my rfe
       - do you take suggestions for new capabilities?
+      - send feedback
 
   - intent: intent_feedback_bug
     examples: |

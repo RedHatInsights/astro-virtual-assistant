@@ -15,7 +15,7 @@ stories:
     steps:
       - user: |
           what's the weather?
-        intent: nlu_fallback
+        intent: intent_unknown_topic
       - slot_was_set:
         - is_org_admin: False
       - action: utter_unknown_topic
