@@ -195,7 +195,7 @@ responses:
         - title: "Create a new behavior group"
           payload: "create"
   utter_notifications_edit_create_group:
-    - text: "Great! I'm redirecting you to the Notifications dashboard. Navigate to **Create behavior group** in the Console, and select {event} event in step 3."
+    - text: "Great! I'm redirecting you to the Notifications dashboard. Navigate to the **Behavior group** tab, click **Create a new group** in the Console, and select {event} event in step 3."
       custom:
         type: command
         command: redirect

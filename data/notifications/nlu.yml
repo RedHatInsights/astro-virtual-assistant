@@ -30,3 +30,8 @@ nlu:
       - change notifications
       - edit notification
       - edit alert
+      - delete notifications
+      - turn off notifications
+      - disable notifications
+      - modify notifications
+      - how do I modify notifications
