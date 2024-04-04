@@ -125,6 +125,7 @@ nlu:
       - do you hate anyone
       - are you single
       - am I annoying you
+      - what's the weather?
 
   - synonym: agent
     examples: |
@@ -313,6 +314,7 @@ nlu:
       - I need to deploy
       - I would like to deploy
       - I would like help with my (core_services)
+      - can you help me with my problem?
 
   - intent: intent_core_here
     examples: |

@@ -3,9 +3,7 @@ version: "3.1"
 stories:
   - story: User wants to delete their data
     steps:
-      - user: |
-          I want to remove my messages, scared of CIA
-        intent: intent_data_deletion
+      - intent: intent_data_deletion
       - action: utter_data_deletion_privacy_statement
       - action: utter_data_deletion_open_a_ticket
       - action: utter_core_how_can_i_help
