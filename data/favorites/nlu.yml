@@ -1,0 +1,59 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_favorites_show
+    examples: |
+      - show me my favorites
+      - what are my favorites
+      - favorited services
+      - favorite pages
+      - where can I find my favorites
+      - access my favorites
+      - saved pages
+      - saved services
+      - I cant find my favorites
+      - bring me to the favorites page please
+      - redirect me to my starred pages
+      - where are my starred links
+      - show me my bookmarked services
+      - where are the pages i bookmarked in here?
+      - i'm not able to find the webpages that i added bookmarks to
+      - i am unable to locate the places i starred
+      - starred services
+      - bookmarked pages in the console
+      - what are favorites?
+      - what are starred pages?
+      - where are the pages i saved?
+      - manage my favorite services
+  
+  - intent: intent_favorites_add
+    examples: |
+      - add this to favorites
+      - add [rosa](core_services) to favorites
+      - add the [advisor](core_services) service
+      - favorite this page
+      - favorite the [advisor](core_services) page
+      - save this service for later
+      - star this page for me
+      - add a page to my favorites
+      - favorite this service
+      - add this service to my favorites
+      - how to bookmark a page within the console
+      - can you star my most visited services
+      - i want to add all my most visited pages to my favorites
+      - can you save my favorite pages for me?
+      - are you able to bookmark things for me?
+      - I love this page, can you save it for me?
+
+  - intent: intent_favorites_delete
+    examples: |
+      - remove this from favorites
+      - remove this service from my favorites
+      - remove [openshift](core_services) from favorites
+      - unfavorite this service
+      - unstar this service
+      - remove the star from this pages
+      - delete favorited service
+      - delete a page from my favorites
+      - remove all of my favorites
+      - delete [notifications](core_services) from my favorites
