@@ -3,6 +3,7 @@ version: "3.1"
 nlu:
   - intent: intent_notifications_setup
     examples: |
+      - notifications
       - set up event alerting
       - get alerts
       - find out about events
