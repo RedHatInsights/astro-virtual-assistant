@@ -163,7 +163,7 @@ responses:
   utter_user_complaint:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
   utter_user_preferences_all:
-    - text: You can change your personal information on redhat.com.
+    - text: You can change your personal information on [redhat.com](https://www.redhat.com).
   utter_user_preferences_specific:
     - text: "You can change your {preference} and other personal information on redhat.com."
   utter_user_preferences_login:
@@ -171,14 +171,14 @@ responses:
   utter_user_preferences_contact_support:
     - text: "Contact Red Hat Support at [access.redhat.com](https://access.redhat.com) for more information."
   utter_user_preferences_all_redirect:
-    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the [settings page](https://www.redhat.com/wapps/ugc/protected/personalInfo.html) in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
         params:
           url: https://www.redhat.com/wapps/ugc/protected/personalInfo.html
   utter_user_preferences_password_redirect:
-    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the [settings page](https://www.redhat.com/wapps/ugc/protected/password.html) in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
