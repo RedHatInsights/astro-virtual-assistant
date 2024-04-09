@@ -166,7 +166,7 @@ class ValidateFormNotifications(FormValidationAction):
         if len(resolved) > 0:
             return resolved
 
-        return {}
+        return {"requested_slot": None}
 
     @staticmethod
     def extract_notifications_bundle_option(
@@ -182,7 +182,7 @@ class ValidateFormNotifications(FormValidationAction):
         if len(resolved) > 0:
             return resolved
 
-        return {}
+        return {"requested_slot": None}
 
     @staticmethod
     def extract_notifications_event_option(
@@ -195,7 +195,7 @@ class ValidateFormNotifications(FormValidationAction):
         if len(resolved) > 0:
             return resolved
 
-        return {}
+        return {"requested_slot": None}
 
     @staticmethod
     async def extract_notifications_event(
@@ -252,7 +252,7 @@ class ValidateFormNotifications(FormValidationAction):
         if len(resolved) > 0:
             return resolved
 
-        return {}
+        return {"requested_slot": None}
 
     @staticmethod
     def extract_notifications_behavior_option(
@@ -267,7 +267,7 @@ class ValidateFormNotifications(FormValidationAction):
         if len(resolved) > 0:
             return resolved
 
-        return {}
+        return {"requested_slot": None}
 
     @staticmethod
     async def validate_notifications_bundle(

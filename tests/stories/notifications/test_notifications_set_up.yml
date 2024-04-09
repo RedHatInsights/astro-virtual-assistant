@@ -1,22 +1,18 @@
 version: "3.1"
 
-#stories:
-#  - story: User wants to set up a notification - 1
-#    steps:
-#      - user: |
-#          Get alerts
-#        intent: intent_notifications_setup
-#      - action: action_notifications_reset
-#      - action: action_notifications_setup
-#      - action: form_notifications
-#      - active_loop: form_notifications
-#
-#  - story: User wants to set up a notification - 2
-#    steps:
-#      - user: |
-#          setup [notifications](core_services)?
-#        intent: intent_notifications_setup
-#      - action: action_notifications_reset
-#      - action: action_notifications_setup
-#      - action: form_notifications
-#      - active_loop: form_notifications
+stories:
+ - story: User wants to set up a notification - 1
+   steps:
+     - intent: intent_notifications_setup
+     - action: action_notifications_reset
+     - action: action_notifications_setup
+     - action: form_notifications
+     - active_loop: form_notifications
+
+ - story: User wants to set up a notification - 2
+   steps:
+     - intent: intent_notifications_setup
+     - action: action_notifications_reset
+     - action: action_notifications_setup
+     - action: form_notifications
+     - active_loop: form_notifications
