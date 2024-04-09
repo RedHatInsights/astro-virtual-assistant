@@ -1,29 +1,10 @@
-from typing import List, Optional, Text
+from typing import Text
 from urllib.parse import urlparse
 
-from rasa_sdk import Tracker, FormValidationAction
+from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.types import DomainDict
 
 from common.requests import send_console_request
-
-
-async def all_required_slots_are_set(
-    form: FormValidationAction,
-    dispatcher: CollectingDispatcher,
-    tracker: Tracker,
-    domain: DomainDict,
-    ignore: Optional[List[Text]] = None,
-) -> bool:
-    for slot in await form.required_slots(
-        form.domain_slots(domain), dispatcher, tracker, domain
-    ):
-        if ignore is not None and slot in ignore:
-            continue
-        if tracker.get_slot(slot) is None:
-            return False
-
-    return True
 
 
 async def is_source_name_valid(tracker: Tracker, name: Text) -> bool:

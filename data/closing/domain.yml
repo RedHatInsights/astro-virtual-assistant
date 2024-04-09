@@ -7,6 +7,7 @@ intents:
 actions:
   - validate_form_closing
   - execute_form_closing
+  - validate_form_closing_anything_else
   - execute_form_closing_anything_else
   - action_skip_got_help
   - action_closing_feedback_type_bad_experience

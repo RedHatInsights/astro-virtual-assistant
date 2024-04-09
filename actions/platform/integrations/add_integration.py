@@ -1,19 +1,17 @@
 from abc import abstractmethod
 from typing import List, Dict, Text, Any
-from urllib.parse import urlparse
-
 from rasa_sdk import FormValidationAction, Tracker, Action
 from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
 from actions.platform.integrations import (
-    all_required_slots_are_set,
     is_source_name_valid,
     validate_integration_url,
 )
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
+from actions.actions import all_required_slots_are_set
 
 communication_slot_match = FuzzySlotMatch(
     "integration_setup_type",

@@ -5,14 +5,15 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import (
     SlotSet,
-    SessionStarted,
     UserUtteranceReverted,
     ActionReverted,
 )
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import FollowupAction
 
+from actions.actions import form_action_is_starting
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+from common.metrics import flow_started_count, Flow, flow_finished_count
 
 from common.rasa.tracker import get_email
 
@@ -199,9 +200,15 @@ class ValidateFormFeedback(FormValidationAction):
             return {WHERE: value}
         return {WHERE: None}
 
+    def flow_completed(self, sub_flow_name: str):
+        flow_finished_count(Flow.FEEDBACK, sub_flow_name=sub_flow_name)
+
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.FEEDBACK)
+
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -218,9 +225,11 @@ class ValidateFormFeedback(FormValidationAction):
             if feedback_where == "console" and feedback_type == "bug":
                 dispatcher.utter_message(response="utter_bug_redirect")
                 events.append(SlotSet("requested_slot", None))
+                self.flow_completed("bug")
                 return events + RESET_SLOTS
 
             elif feedback_where == "conversation":
+                self.flow_completed("conversation")
                 return (
                     events
                     + RESET_SLOTS
@@ -237,6 +246,7 @@ class ValidateFormFeedback(FormValidationAction):
             feedback_collection = tracker.get_slot(COLLECTION)
             if feedback_collection == "pendo":
                 dispatcher.utter_message(response="utter_feedback_collection_pendo")
+                self.flow_completed("pendo")
                 return events + [SlotSet("requested_slot", None)] + RESET_SLOTS
 
         if requested_slot == RESPONSE:
