@@ -30,12 +30,10 @@ class Flow(Enum):
 
 
 def flow_started_count(flow_name: Flow):
-    print(f"flow started {flow_name}")
-    _flows_started_count.labels(flow_name=str(flow_name)).inc()
+    _flows_started_count.labels(flow_name=flow_name.value).inc()
 
 
 def flow_finished_count(flow_name: Flow, sub_flow_name: Optional[str] = None):
-    print(f"flow finished {flow_name}")
     _flows_finished_count.labels(
-        flow_name=str(flow_name), sub_flow_name=sub_flow_name
+        flow_name=flow_name.value, sub_flow_name=sub_flow_name
     ).inc()

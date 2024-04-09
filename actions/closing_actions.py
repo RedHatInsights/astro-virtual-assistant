@@ -151,7 +151,7 @@ class ExecuteFormClosing(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         if tracker.get_slot("closing_feedback_type") is None:
-            flow_finished_count(Flow.CLOSING).inc()
+            flow_finished_count(Flow.CLOSING)
 
         if tracker.get_slot("closing_leave_feedback") is True:
             closing_feedback_type = (
