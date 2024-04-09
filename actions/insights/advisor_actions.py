@@ -11,6 +11,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, ActiveLoop
 from rasa_sdk.types import DomainDict
 
+from actions.actions import all_required_slots_are_set
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common import logging
 from common.requests import send_console_request
@@ -47,24 +48,6 @@ advisor_system = FuzzySlotMatch(
         FuzzySlotMatchOption("openshift"),
     ],
 )
-
-
-async def all_required_slots_are_set(
-    form: FormValidationAction,
-    dispatcher: CollectingDispatcher,
-    tracker: Tracker,
-    domain: DomainDict,
-    ignore: Optional[List[Text]] = None,
-) -> bool:
-    for slot in await form.required_slots(
-        form.domain_slots(domain), dispatcher, tracker, domain
-    ):
-        if ignore is not None and slot in ignore:
-            continue
-        if tracker.get_slot(slot) is None:
-            return False
-
-    return True
 
 
 class AdvisorRecommendationByCategoryInit(Action):
