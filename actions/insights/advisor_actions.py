@@ -14,6 +14,7 @@ from rasa_sdk.types import DomainDict
 from actions.actions import all_required_slots_are_set
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common import logging
+from common.metrics import flow_started_count, Flow, flow_finished_count
 from common.requests import send_console_request
 
 logger = logging.initialize_logging()
@@ -58,6 +59,7 @@ class AdvisorRecommendationByCategoryInit(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        flow_started_count(Flow.ADVISOR)
         return [
             SlotSet("insights_advisor_system_kind"),
             SlotSet("insights_advisor_recommendation_category"),
@@ -136,6 +138,7 @@ class AdvisorRecommendationByType(FormValidationAction):
         return {"insights_advisor_recommendation_category": slot_value}
 
     def error(self, dispatcher: CollectingDispatcher, events):
+        flow_finished_count(Flow.ADVISOR, "rhel/error")
         dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
         return events
 
@@ -146,6 +149,7 @@ class AdvisorRecommendationByType(FormValidationAction):
 
         if tracker.get_slot("insights_advisor_system_kind") == "openshift":
             dispatcher.utter_message(response="utter_advisor_for_openshift")
+            flow_finished_count(Flow.ADVISOR, "openshift")
             return events + [ActiveLoop(None), SlotSet("requested_slot")]
 
         if await all_required_slots_are_set(self, dispatcher, tracker, domain):
@@ -222,6 +226,7 @@ class AdvisorRecommendationByType(FormValidationAction):
                     f"You don't have any {category_name} recommendations right now."
                 )
 
+            flow_finished_count(Flow.ADVISOR, "rhel")
             dispatcher.utter_message(text=message)
 
         return events

@@ -25,6 +25,7 @@ class Flow(Enum):
     CLOSING = "closing"
     CLOSING_ANYTHING_ELSE = "closing_anything_else"
     FEEDBACK = "feedback"
+    ADVISOR = "advisor"
 
 
 def flow_started_count(flow_name: Flow):
