@@ -5,7 +5,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import (
     SlotSet,
-    SessionStarted,
     UserUtteranceReverted,
     ActionReverted,
 )

@@ -11,7 +11,7 @@ from rasa_sdk.events import (
 )
 from rasa_sdk.types import DomainDict
 
-from actions.actions import all_required_slots_are_set, form_action_is_starting
+from actions.actions import form_action_is_starting
 from common.metrics import flow_started_count, flow_finished_count, Flow
 
 

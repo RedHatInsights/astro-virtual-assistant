@@ -1,5 +1,3 @@
-from typing import Optional
-
 from prometheus_client import Counter
 from enum import Enum
 
