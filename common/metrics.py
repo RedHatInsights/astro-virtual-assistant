@@ -22,10 +22,11 @@ _flows_finished_count = Counter(
 
 
 class Flow(Enum):
+    ADVISOR = "advisor"
     CLOSING = "closing"
     CLOSING_ANYTHING_ELSE = "closing_anything_else"
     FEEDBACK = "feedback"
-    ADVISOR = "advisor"
+    VULNERABILITY = "vulnerability"
 
 
 def flow_started_count(flow_name: Flow):
