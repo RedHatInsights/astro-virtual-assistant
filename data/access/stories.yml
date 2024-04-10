@@ -20,6 +20,7 @@ stories:
   - story: User wants to contact their org admin
     steps:
       - intent: intent_access_contact_admin
+      - action: action_deactivate_loop
       - action: utter_access_contact_admin
 
   - story: User wants to check access but has contacted the org admin
