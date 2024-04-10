@@ -26,6 +26,8 @@ class Flow(Enum):
     CLOSING = "closing"
     CLOSING_ANYTHING_ELSE = "closing_anything_else"
     FEEDBACK = "feedback"
+    IMAGE_BUILDER_GETTING_STARTED = "image_builder_getting_started"
+    IMAGE_BUILDER_CUSTOM_CONTENT = "image_builder_custom_content"
     VULNERABILITY = "vulnerability"
 
 
