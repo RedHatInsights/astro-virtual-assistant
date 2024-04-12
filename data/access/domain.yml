@@ -57,6 +57,7 @@ actions:
   - validate_form_access_request
   - execute_form_access_request
   - action_access_request_send_message
+  - action_ask_form_access_request_access_request_confirmation
 
 forms:
   form_access_request:

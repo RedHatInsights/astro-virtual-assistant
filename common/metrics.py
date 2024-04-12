@@ -28,6 +28,7 @@ class Flow(Enum):
     FEEDBACK = "feedback"
     IMAGE_BUILDER_GETTING_STARTED = "image_builder_getting_started"
     IMAGE_BUILDER_CUSTOM_CONTENT = "image_builder_custom_content"
+    USER_ACCESS = "user_access"
     VULNERABILITY = "vulnerability"
 
 

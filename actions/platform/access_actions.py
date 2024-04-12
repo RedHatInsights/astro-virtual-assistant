@@ -5,8 +5,10 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.types import DomainDict
 
+from actions.actions import form_action_is_starting, form_action_is_finished
 from actions.insights.notifications import send_rbac_request_admin
 from common import logging
+from common.metrics import flow_started_count, Flow, flow_finished_count
 from common.rasa.tracker import get_decoded_user_identity
 
 logger = logging.initialize_logging()
@@ -64,6 +66,24 @@ class ExecuteFormAccessRequestAccess(Action):
             ]
 
 
+class AskFormAccessRequestRequestConfirmation(Action):
+    def name(self) -> Text:
+        return "action_ask_form_access_request_access_request_confirmation"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict):
+        if tracker.get_slot(_SLOT_REQUEST_MESSAGE) is not None:
+            dispatcher.utter_message(
+                response="utter_ask_access_request_confirmation_repeat"
+            )
+        dispatcher.utter_message(
+            response="utter_ask_access_request_confirmation_note"
+        )
+        dispatcher.utter_message(
+            response="utter_ask_access_request_confirmation_proceed"
+        )
+        return []
+
+
 class ValidateFormAccessRequestAccess(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_access_request"
@@ -88,17 +108,15 @@ class ValidateFormAccessRequestAccess(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> List[EventType]:
-        requested_slot = tracker.get_slot("requested_slot")
-        if requested_slot == _SLOT_REQUEST_MESSAGE:
-            dispatcher.utter_message(
-                response="utter_ask_access_request_confirmation_repeat"
-            )
-            dispatcher.utter_message(
-                response="utter_ask_access_request_confirmation_note"
-            )
-            dispatcher.utter_message(
-                response="utter_ask_access_request_confirmation_proceed"
-            )
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.USER_ACCESS)
+
+        events = await super().run(dispatcher, tracker, domain)
+
+        if await form_action_is_finished(self, dispatcher, tracker, domain):
+            flow_finished_count(Flow.USER_ACCESS)
+
+        return events
 
 
 class ActionAccessRequestSendMessage(Action):
