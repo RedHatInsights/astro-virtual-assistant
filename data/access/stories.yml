@@ -15,7 +15,8 @@ stories:
     steps:
       - action: utter_access_request
       - intent: intent_core_no
-      - checkpoint: check_closing
+      - action: form_closing
+      - active_loop: form_closing
 
   - story: User wants to contact their org admin
     steps:
