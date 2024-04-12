@@ -70,14 +70,14 @@ class AskFormAccessRequestRequestConfirmation(Action):
     def name(self) -> Text:
         return "action_ask_form_access_request_access_request_confirmation"
 
-    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict):
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ):
         if tracker.get_slot(_SLOT_REQUEST_MESSAGE) is not None:
             dispatcher.utter_message(
                 response="utter_ask_access_request_confirmation_repeat"
             )
-        dispatcher.utter_message(
-            response="utter_ask_access_request_confirmation_note"
-        )
+        dispatcher.utter_message(response="utter_ask_access_request_confirmation_note")
         dispatcher.utter_message(
             response="utter_ask_access_request_confirmation_proceed"
         )

@@ -23,16 +23,16 @@ async def form_action_is_starting(
 
 
 async def form_action_is_finished(
-        form: FormValidationAction,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
+    form: FormValidationAction,
+    dispatcher: CollectingDispatcher,
+    tracker: Tracker,
+    domain: DomainDict,
 ):
     requested_slot = tracker.get_slot("requested_slot")
     if (
-            requested_slot is None
-            and await all_required_slots_are_set(form, dispatcher, tracker, domain)
-            and tracker.active_loop_name == form.form_name()
+        requested_slot is None
+        and await all_required_slots_are_set(form, dispatcher, tracker, domain)
+        and tracker.active_loop_name == form.form_name()
     ):
         return True
 
