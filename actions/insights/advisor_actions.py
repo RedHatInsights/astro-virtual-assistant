@@ -112,7 +112,7 @@ class AdvisorRecommendationByType(FormValidationAction):
         user_input = tracker.latest_message["text"]
 
         if requested_slot == "insights_advisor_recommendation_category":
-            resolved = resolve_slot_match(user_input, advisor_categories)
+            resolved = self.resolve_recommendation_category(user_input)
             if len(resolved) > 0:
                 return resolved
 
@@ -120,11 +120,9 @@ class AdvisorRecommendationByType(FormValidationAction):
             requested_slot is None
             and tracker.get_slot("insights_advisor_recommendation_category") is None
         ):
-            resolved = {}
-            for word in user_input.split(" "):
-                resolved = resolve_slot_match(word, advisor_categories)
-                if len(resolved) > 0:
-                    return resolved
+            resolved = self.resolve_recommendation_category(user_input)
+            if len(resolved) > 0:
+                return resolved
 
         return {}
 
@@ -141,6 +139,14 @@ class AdvisorRecommendationByType(FormValidationAction):
         flow_finished_count(Flow.ADVISOR, "rhel/error")
         dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
         return events
+
+    def resolve_recommendation_category(self, user_input):
+        for word in user_input.split(" "):
+            resolved = resolve_slot_match(word, advisor_categories)
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
