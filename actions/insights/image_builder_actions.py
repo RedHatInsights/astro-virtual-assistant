@@ -5,15 +5,20 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import (
     ActionExecuted,
     SlotSet,
-    UserUtteranceReverted,
-    ActionReverted,
 )
 from rasa_sdk.types import DomainDict
 
+from actions.actions import form_action_is_starting
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 
 from common import logging
 from common.header import Header
+from common.metrics import (
+    flow_started_count,
+    Flow,
+    flow_finished_count,
+    action_custom_action_count,
+)
 from common.requests import send_console_request
 
 
@@ -87,6 +92,9 @@ class ValidateFormImageBuilderGettingStarted(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.IMAGE_BUILDER_GETTING_STARTED)
+
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -130,6 +138,8 @@ class ImageBuilderGettingStarted(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        flow_finished_count(Flow.IMAGE_BUILDER_GETTING_STARTED)
+
         rhel_version = tracker.get_slot(RHEL_VERSION)
         version_param = "rhel9"
         if rhel_version == "RHEL 8":
@@ -269,6 +279,9 @@ class ValidateFormImageBuilderCustomContent(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.IMAGE_BUILDER_CUSTOM_CONTENT)
+
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -318,6 +331,7 @@ class ImageBuilderCustomContent(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        flow_finished_count(Flow.IMAGE_BUILDER_CUSTOM_CONTENT)
         epel_version = tracker.get_slot(CONTENT_REPOSITORY_VERSION)
         version_param = "rhel9"
         if epel_version == "EPEL 8":
@@ -347,6 +361,7 @@ class ImageBuilderLaunch(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        action_custom_action_count.labels(action_type=self.name()).inc()
         provider = ""
         provider_lower = ""
         if len(tracker.latest_message["entities"]) > 0:
