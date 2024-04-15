@@ -7,7 +7,7 @@ stories:
           Can you help me get access?
         intent: intent_access_capabilities
       - action: utter_access_capabilities
-  
+
   - story: User has access issues - 2
     steps:
       - user: |
@@ -21,13 +21,14 @@ stories:
           How do i get access?
         intent: intent_access_capabilities
       - action: utter_access_capabilities
-  
-  
+
+
   - story: User has access issues - 4
     steps:
       - user: |
           Who do I ask for access?
         intent: intent_access_contact_admin
+      - action: action_deactivate_loop
       - action: utter_access_contact_admin
 
   - story: User wants access - does not want to contact admin
