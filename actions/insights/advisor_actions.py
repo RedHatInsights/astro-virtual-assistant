@@ -147,6 +147,7 @@ class AdvisorRecommendationByType(FormValidationAction):
                 return resolved
 
         return {}
+
     def openshift_error(self, dispatcher: CollectingDispatcher, events):
         flow_finished_count(Flow.ADVISOR, "openshift/error")
         dispatcher.utter_message(
