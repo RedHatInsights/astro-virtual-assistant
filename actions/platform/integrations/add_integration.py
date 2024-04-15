@@ -41,7 +41,7 @@ integrations_slot_match = FuzzySlotMatch(
     "integration_setup_kind",
     [
         FuzzySlotMatchOption("cloud"),
-        FuzzySlotMatchOption("red_hat", ["red hat", "redhat"]),
+        FuzzySlotMatchOption("red_hat", ["red hat", "redhat", "red-hat", "red hat"]),
         FuzzySlotMatchOption("communications", sub_options=communication_slot_match),
         FuzzySlotMatchOption(
             "reporting",
