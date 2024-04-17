@@ -8,7 +8,16 @@ intents:
 slots:
   favorites_service:
     type: text
-    influence_conversation: true
+    mappings:
+      - type: custom
+      - type: from_intent
+        value: "unsure"
+        intent: intent_core_learn_more
+        conditions:
+          - active_loop: form_favorites_add
+            requested_slot: favorites_service
+  favorites_options:
+    type: text
     mappings:
       - type: custom
 
@@ -20,6 +29,7 @@ forms:
   form_favorites_delete:
     required_slots:
       - favorites_service
+      - favorites_options
 
 actions:
   - action_favorites_reset
@@ -30,10 +40,12 @@ actions:
 responses:
   utter_favorites_show:
     - text: "You can access and manage your Favorites anytime from the [homepage](/) and the Services dropdown in the top left corner."
-  utter_favorites_how: &utter_favorites_how
-    - text: "You can favorite services from the [All Services](/allservices) page."
+  utter_favorites_how:
+    - text: "You can favorite services from the [All Services](/allservices) page by clicking the star icon."
 
   utter_favorites_add_start:
+    - text: "I can add services to your Favorites. Which service would you like to add?"
+  utter_favorites_add_specified:
     - text: "Sure, I'll add the {service} service to your Favorites."
   utter_favorites_add_success:
     - text: "I've favorited the {service} service to you!"
