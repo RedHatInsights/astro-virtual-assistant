@@ -4,15 +4,17 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-from typing import Any, Text, Dict, List, Optional
+from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, ActiveLoop
 from rasa_sdk.types import DomainDict
 
+from actions.actions import all_required_slots_are_set
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common import logging
+from common.metrics import flow_started_count, Flow, flow_finished_count
 from common.requests import send_console_request
 
 logger = logging.initialize_logging()
@@ -43,28 +45,10 @@ advisor_categories = FuzzySlotMatch(
 advisor_system = FuzzySlotMatch(
     "insights_advisor_system_kind",
     [
-        FuzzySlotMatchOption("rhel", ["rhel", "redhat"]),
+        FuzzySlotMatchOption("rhel", ["rhel", "redhat", "red-hat", "red hat"]),
         FuzzySlotMatchOption("openshift"),
     ],
 )
-
-
-async def all_required_slots_are_set(
-    form: FormValidationAction,
-    dispatcher: CollectingDispatcher,
-    tracker: Tracker,
-    domain: DomainDict,
-    ignore: Optional[List[Text]] = None,
-) -> bool:
-    for slot in await form.required_slots(
-        form.domain_slots(domain), dispatcher, tracker, domain
-    ):
-        if ignore is not None and slot in ignore:
-            continue
-        if tracker.get_slot(slot) is None:
-            return False
-
-    return True
 
 
 class AdvisorRecommendationByCategoryInit(Action):
@@ -75,6 +59,7 @@ class AdvisorRecommendationByCategoryInit(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        flow_started_count(Flow.ADVISOR)
         return [
             SlotSet("insights_advisor_system_kind"),
             SlotSet("insights_advisor_recommendation_category"),
@@ -127,7 +112,7 @@ class AdvisorRecommendationByType(FormValidationAction):
         user_input = tracker.latest_message["text"]
 
         if requested_slot == "insights_advisor_recommendation_category":
-            resolved = resolve_slot_match(user_input, advisor_categories)
+            resolved = self.resolve_recommendation_category(user_input)
             if len(resolved) > 0:
                 return resolved
 
@@ -135,11 +120,9 @@ class AdvisorRecommendationByType(FormValidationAction):
             requested_slot is None
             and tracker.get_slot("insights_advisor_recommendation_category") is None
         ):
-            resolved = {}
-            for word in user_input.split(" "):
-                resolved = resolve_slot_match(word, advisor_categories)
-                if len(resolved) > 0:
-                    return resolved
+            resolved = self.resolve_recommendation_category(user_input)
+            if len(resolved) > 0:
+                return resolved
 
         return {}
 
@@ -153,8 +136,17 @@ class AdvisorRecommendationByType(FormValidationAction):
         return {"insights_advisor_recommendation_category": slot_value}
 
     def error(self, dispatcher: CollectingDispatcher, events):
+        flow_finished_count(Flow.ADVISOR, "rhel/error")
         dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
         return events
+
+    def resolve_recommendation_category(self, user_input):
+        for word in user_input.split(" "):
+            resolved = resolve_slot_match(word, advisor_categories)
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
 
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
@@ -163,6 +155,7 @@ class AdvisorRecommendationByType(FormValidationAction):
 
         if tracker.get_slot("insights_advisor_system_kind") == "openshift":
             dispatcher.utter_message(response="utter_advisor_for_openshift")
+            flow_finished_count(Flow.ADVISOR, "openshift")
             return events + [ActiveLoop(None), SlotSet("requested_slot")]
 
         if await all_required_slots_are_set(self, dispatcher, tracker, domain):
@@ -239,6 +232,7 @@ class AdvisorRecommendationByType(FormValidationAction):
                     f"You don't have any {category_name} recommendations right now."
                 )
 
+            flow_finished_count(Flow.ADVISOR, "rhel")
             dispatcher.utter_message(text=message)
 
         return events

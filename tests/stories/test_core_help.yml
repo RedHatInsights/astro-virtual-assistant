@@ -1,16 +1,38 @@
 version: "3.1"
 
 stories:
-  - story: Help without entities 1
+  - story: Help without entities 1 (org admin)
     steps:
+      - slot_was_set:
+          - is_org_admin: True
       - user: |
           can you help me with my problem?
         intent: intent_core_help
       - action: utter_core_capabilities_main_org_admin
 
-  - story: Help without entities 2
+  - story: Help without entities 2 (org admin)
     steps:
+      - slot_was_set:
+          - is_org_admin: True
       - user: |
           What is life?
         intent: intent_core_help
       - action: utter_core_capabilities_main_org_admin
+
+  - story: Help without entities 1 (non org admin)
+    steps:
+      - slot_was_set:
+          - is_org_admin: False
+      - user: |
+          can you help me with my problem?
+        intent: intent_core_help
+      - action: utter_core_capabilities_main
+
+  - story: Help without entities 2 (non org admin)
+    steps:
+      - slot_was_set:
+          - is_org_admin: False
+      - user: |
+          What is life?
+        intent: intent_core_help
+      - action: utter_core_capabilities_main

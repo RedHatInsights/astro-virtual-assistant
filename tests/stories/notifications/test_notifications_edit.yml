@@ -1,23 +1,19 @@
 version: "3.1"
 
 stories:
-#  - story: User wants to edit a notification - 1
-#    steps:
-#      - user: |
-#          How do I mute alerts?
-#        intent: intent_notifications_edit
-#      - action: action_notifications_reset
-#      - action: action_notifications_edit
-#      - action: form_notifications
-#      - active_loop: form_notifications
-#
-#  - story: User wants to edit a notification - 2
-#    steps:
-#      # these entities are not helpful, but they are what it's reading
-#      - user: |
-#          How do I change my [notification]{"entity": "core_services", "value": "notifications"} [preferences](preference)?
-#        intent: intent_notifications_edit
-#      - action: action_notifications_reset
-#      - action: action_notifications_edit
-#      - action: form_notifications
-#      - active_loop: form_notifications
+ - story: User wants to edit a notification - 1
+   steps:
+     - intent: intent_notifications_edit
+     - action: action_notifications_reset
+     - action: action_notifications_edit
+     - action: form_notifications
+     - active_loop: form_notifications
+
+ - story: User wants to edit a notification - 2
+   steps:
+     # these entities are not helpful, but they are what it's reading
+     - intent: intent_notifications_edit
+     - action: action_notifications_reset
+     - action: action_notifications_edit
+     - action: form_notifications
+     - active_loop: form_notifications
