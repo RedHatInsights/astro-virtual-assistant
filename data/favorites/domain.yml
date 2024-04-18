@@ -56,7 +56,7 @@ responses:
         - title: "Remove a Favorite."
           payload: "/intent_favorites_delete"
         - title: "Something else."
-          payload: "/intent_core_learn_more"
+          payload: "/intent_core_other"
 
   utter_favorites_add_start:
     - text: "I can add services to your Favorites."
