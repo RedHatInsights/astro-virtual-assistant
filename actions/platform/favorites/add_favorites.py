@@ -17,6 +17,7 @@ from actions.platform.favorites import (
     AbstractFavoritesForm,
 )
 
+
 class AddFavoritesForm(AbstractFavoritesForm):
     def name(self) -> str:
         return "validate_form_favorites_add"
@@ -82,7 +83,7 @@ class AddFavoritesForm(AbstractFavoritesForm):
                     link=service["href"],
                     group=service["group"],
                 )
-                
+
             else:
                 dispatcher.utter_message(
                     response="utter_favorites_add_failed",

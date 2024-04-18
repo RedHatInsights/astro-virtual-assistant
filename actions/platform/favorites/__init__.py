@@ -57,7 +57,7 @@ class AbstractFavoritesForm(FormValidationAction):
             return {_FAVE_SERVICE: value}
 
         return {}
-    
+
     def create_suggestion_buttons(
         self,
         tracker: Tracker,

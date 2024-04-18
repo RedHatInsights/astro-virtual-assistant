@@ -24,6 +24,7 @@ from actions.platform.favorites import (
     AbstractFavoritesForm,
 )
 
+
 class DeleteFavoritesForm(AbstractFavoritesForm):
     def name(self) -> str:
         return "validate_form_favorites_delete"
@@ -75,7 +76,9 @@ class DeleteFavoritesForm(AbstractFavoritesForm):
                             group=service["group"],
                         )
 
-                        result = await modify_favorite_service(tracker, service, favorite=False)
+                        result = await modify_favorite_service(
+                            tracker, service, favorite=False
+                        )
                         if result.ok:
                             dispatcher.utter_message(
                                 response="utter_favorites_delete_success",
@@ -100,7 +103,7 @@ class DeleteFavoritesForm(AbstractFavoritesForm):
                     group=service["group"],
                 )
                 events.append(SlotSet(_FAVE_UNHAPPY, True))
-        
+
         elif tracker.get_slot(_FAVE_UNHAPPY):
             dispatcher.utter_message(response="utter_favorites_add_next")
 

@@ -13,7 +13,7 @@ slots:
       - type: from_intent
         value: "unsure"
         intent: intent_core_learn_more
-        conditions: 
+        conditions:
           - active_loop: form_favorites_add
             requested_slot: favorites_service
           - active_loop: form_favorites_delete
@@ -48,7 +48,7 @@ responses:
     - text: "You can favorite services from the [All Services](/allservices) page by clicking the star icon."
   utter_favorites_next:
     - text: "What would you like to do next?"
-      buttons: 
+      buttons:
         - title: "View my other Favorites."
           payload: "/intent_favorites_show"
         - title: "Favorite a service."
