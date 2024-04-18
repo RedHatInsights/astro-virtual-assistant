@@ -52,6 +52,12 @@
       "hostname": "rhsm-api-proxy.svc",
       "name": "service",
       "port": 8000
+    },
+    {
+      "app": "chrome-service",
+      "hostname": "chrome.svc",
+      "name": "service",
+      "port": 1337
     }
   ],
   "privateEndpoints": [
