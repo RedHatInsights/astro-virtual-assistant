@@ -58,6 +58,12 @@
       "hostname": "rhsm-api-proxy.svc",
       "name": "service",
       "port": 8000
+    },
+    {
+      "app": "ccx-insights-results-aggregator",
+      "hostname": "openshift-advisor",
+      "name": "aggregator",
+      "port": 8000
     }
   ],
   "kafka": {

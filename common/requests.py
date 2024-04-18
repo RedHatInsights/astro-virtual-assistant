@@ -37,6 +37,8 @@ async def send_console_request(
     endpoint = None
     if app_name == "advisor":
         endpoint = app.advisor_url
+    elif app_name == "advisor-openshift":
+        endpoint = app.advisor_openshift_url
     elif app_name == "notifications-gw":
         endpoint = app.notifications_gw_url
     elif app_name == "notifications":

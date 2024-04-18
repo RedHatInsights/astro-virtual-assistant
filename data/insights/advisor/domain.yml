@@ -36,6 +36,8 @@ responses:
     - text: "I am contacting Advisor to find your recommendations."
   utter_advisor_recommendation_pathways_error:
     - text: "I am sorry, I am having trouble contacting Advisor. Try visiting Advisor's dashboard [here](/insights/advisor/recommendations)."
+  utter_advisor_openshift_recommendation_error:
+    - text: "I am sorry, I am having trouble contacting Advisor for OpenShift. Try visiting Advisor for OpenShift dashboard [here](/openshift/insights/advisor/clusters)."
   utter_advisor_recommendation_pathways_total:
     - text: "You have {total} recommended pathways from Advisor. Here are {displayed} of them."
   utter_advisor_recommendation_pathways_closing:
