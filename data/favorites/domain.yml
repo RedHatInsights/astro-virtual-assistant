@@ -13,11 +13,13 @@ slots:
       - type: from_intent
         value: "unsure"
         intent: intent_core_learn_more
-        conditions:
+        conditions: 
           - active_loop: form_favorites_add
             requested_slot: favorites_service
-  favorites_options:
-    type: text
+          - active_loop: form_favorites_delete
+            requested_slot: favorites_service
+  favorites_unhappy:
+    type: bool
     mappings: &custom
       - type: custom
   favorites_suggestions:
@@ -32,7 +34,6 @@ forms:
   form_favorites_delete:
     required_slots:
       - favorites_service
-      - favorites_options
 
 actions:
   - action_favorites_reset
@@ -45,6 +46,17 @@ responses:
     - text: "You can access and manage your Favorites anytime from the [homepage](/) and the Services dropdown in the top left corner."
   utter_favorites_how:
     - text: "You can favorite services from the [All Services](/allservices) page by clicking the star icon."
+  utter_favorites_next:
+    - text: "What would you like to do next?"
+      buttons: 
+        - title: "View my other Favorites."
+          payload: "/intent_favorites_show"
+        - title: "Favorite a service."
+          payload: "/intent_favorites_add"
+        - title: "Remove a Favorite."
+          payload: "/intent_favorites_delete"
+        - title: "Something else."
+          payload: "/intent_core_learn_more"
 
   utter_favorites_add_start:
     - text: "I can add services to your Favorites."
@@ -68,8 +80,10 @@ responses:
     - text: "Type the name or URL of the servic you want to remove."
       buttons: *favorites_unknown_service
   utter_favorites_delete_specified:
-    - text: "Got it. I'll remove the {service} ({group}) service from your Favorites."
+    - text: "Got it. I'll remove the [{service}]({link}) ({group}) service from your Favorites."
   utter_favorites_delete_not_found:
-    - text: "The {service} wasn't in your Favorites."
+    - text: "The [{service}]({link}) ({group}) wasn't in your Favorites."
+  utter_favorites_delete_error:
+    - text: "I'm sorry. I couldn't remove the [{service}]({link}) ({group}) service from your Favorites."
   utter_favorites_delete_success:
-    - text: "{service} is no longer favorited."
+    - text: "The [{service}]({link}) ({group}) service is no longer favorited."

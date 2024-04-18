@@ -7,17 +7,15 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
 from actions.platform.chrome import (
-    add_service_to_favorites,
+    modify_favorite_service,
     get_user,
 )
 from actions.platform.favorites import (
     _FAVE_SERVICE,
     _FAVE_SUGGESTIONS,
+    _FAVE_UNHAPPY,
     AbstractFavoritesForm,
 )
-
-from common.requests import send_console_request
-
 
 class AddFavoritesForm(AbstractFavoritesForm):
     def name(self) -> str:
@@ -37,24 +35,15 @@ class AddFavoritesForm(AbstractFavoritesForm):
             if service == "unsure":
                 return events
             if service == None:
-                suggestions = tracker.get_slot(_FAVE_SUGGESTIONS)
-                if suggestions:
-                    buttons = []
-                    for suggestion in suggestions:
-                        suggest = suggestion["value"]
-                        buttons.append(
-                            {
-                                "title": f'{suggest["title"]} ({suggest["group"]})',
-                                "payload": suggest["href"],
-                            }
-                        )
+                buttons = self.create_suggestion_buttons(tracker)
 
+                if len(buttons) > 0:
                     dispatcher.utter_message(
                         response="utter_favorites_add_select", buttons=buttons
                     )
                 else:
                     dispatcher.utter_message(response="utter_favorites_add_select")
-                return events + [SlotSet(_FAVE_SERVICE)]
+                return events + [SlotSet(_FAVE_SERVICE), SlotSet(_FAVE_SUGGESTIONS)]
 
             # check that the service is not already favorited
             response, content = await get_user(tracker)
@@ -77,7 +66,7 @@ class AddFavoritesForm(AbstractFavoritesForm):
                             link=service["href"],
                             group=service["group"],
                         )
-                        return events
+                        return events + [SlotSet(_FAVE_UNHAPPY, True)]
 
             dispatcher.utter_message(
                 response="utter_favorites_add_specified",
@@ -85,7 +74,7 @@ class AddFavoritesForm(AbstractFavoritesForm):
                 link=service["href"],
                 group=service["group"],
             )
-            result = await add_service_to_favorites(tracker, service)
+            result = await modify_favorite_service(tracker, service)
             if result.ok:
                 dispatcher.utter_message(
                     response="utter_favorites_add_success",
@@ -93,6 +82,7 @@ class AddFavoritesForm(AbstractFavoritesForm):
                     link=service["href"],
                     group=service["group"],
                 )
+                
             else:
                 dispatcher.utter_message(
                     response="utter_favorites_add_failed",
@@ -100,6 +90,8 @@ class AddFavoritesForm(AbstractFavoritesForm):
                     link=service["href"],
                     group=service["group"],
                 )
+                events.append(SlotSet(_FAVE_UNHAPPY, True))
+                return events
 
         return events
 

@@ -14,7 +14,7 @@ from actions.platform.chrome import (
 )
 
 _FAVE_SERVICE = "favorites_service"
-_FAVE_OPTIONS = "favorites_options"
+_FAVE_UNHAPPY = "favorites_unhappy"
 _FAVE_SUGGESTIONS = "favorites_suggestions"
 
 
@@ -57,3 +57,21 @@ class AbstractFavoritesForm(FormValidationAction):
             return {_FAVE_SERVICE: value}
 
         return {}
+    
+    def create_suggestion_buttons(
+        self,
+        tracker: Tracker,
+    ):
+        suggestions = tracker.get_slot(_FAVE_SUGGESTIONS)
+        buttons = []
+        if suggestions:
+            for suggestion in suggestions:
+                suggest = suggestion["value"]
+                buttons.append(
+                    {
+                        "title": f'{suggest["title"]} ({suggest["group"]})',
+                        "payload": suggest["href"],
+                    }
+                )
+
+        return buttons

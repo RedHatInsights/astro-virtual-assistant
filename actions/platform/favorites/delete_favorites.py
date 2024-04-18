@@ -14,36 +14,19 @@ from actions.slot_match import (
 )
 from actions.platform.chrome import (
     create_service_options,
-    add_service_to_favorites,
+    modify_favorite_service,
     get_user,
 )
 from actions.platform.favorites import (
     _FAVE_SERVICE,
     _FAVE_SUGGESTIONS,
-    _FAVE_OPTIONS,
+    _FAVE_UNHAPPY,
     AbstractFavoritesForm,
 )
 
-from common.requests import send_console_request
-
-
-class RemoveFavoritesForm(AbstractFavoritesForm):
+class DeleteFavoritesForm(AbstractFavoritesForm):
     def name(self) -> str:
-        return "validate_form_favorites_remove"
-
-    async def extract_favorites_service(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
-    ) -> Dict[Text, Any]:
-        return await extract_favorites_service(dispatcher, tracker, domain)
-
-    @staticmethod
-    def validate_favorites_service(
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-    ) -> Dict[Text, Any]:
-        return validate_favorites_service(value)
+        return "validate_form_favorites_delete"
 
     async def run(
         self,
@@ -59,24 +42,15 @@ class RemoveFavoritesForm(AbstractFavoritesForm):
             if service == "unsure":
                 return events
             if service == None:
-                suggestions = tracker.get_slot(_FAVE_SUGGESTIONS)
-                if suggestions:
-                    buttons = []
-                    for suggestion in suggestions:
-                        suggest = suggestion["value"]
-                        buttons.append(
-                            {
-                                "title": f'{suggest["title"]} ({suggest["group"]})',
-                                "payload": suggest,
-                            }
-                        )
+                buttons = self.create_suggestion_buttons(tracker)
 
+                if len(buttons) > 0:
                     dispatcher.utter_message(
-                        response="utter_favorites_add_select", buttons=buttons
+                        response="utter_favorites_delete_select", buttons=buttons
                     )
                 else:
-                    dispatcher.utter_message(response="utter_favorites_add_select")
-                return events + [SlotSet(_FAVE_SERVICE)]
+                    dispatcher.utter_message(response="utter_favorites_delete_select")
+                return events + [SlotSet(_FAVE_SERVICE), SlotSet(_FAVE_SUGGESTIONS)]
 
             # check that the service is not already favorited
             response, content = await get_user(tracker)
@@ -93,35 +67,42 @@ class RemoveFavoritesForm(AbstractFavoritesForm):
                         favorite.get("favorite")
                         and favorite.get("pathname") == service["href"]
                     ):
+                        # let's delete it
                         dispatcher.utter_message(
-                            response="utter_favorites_add_already",
+                            response="utter_favorites_delete_specified",
                             service=service["title"],
                             link=service["href"],
                             group=service["group"],
                         )
+
+                        result = await modify_favorite_service(tracker, service, favorite=False)
+                        if result.ok:
+                            dispatcher.utter_message(
+                                response="utter_favorites_delete_success",
+                                service=service["title"],
+                                link=service["href"],
+                                group=service["group"],
+                            )
+                        else:
+                            dispatcher.utter_message(
+                                response="utter_favorites_delete_error",
+                                service=service["title"],
+                                link=service["href"],
+                                group=service["group"],
+                            )
+                            events.append(SlotSet(_FAVE_UNHAPPY, True))
                         return events
 
-            dispatcher.utter_message(
-                response="utter_favorites_add_specified",
-                service=service["title"],
-                link=service["href"],
-                group=service["group"],
-            )
-            result = await add_service_to_favorites(tracker, service)
-            if result.ok:
                 dispatcher.utter_message(
-                    response="utter_favorites_add_success",
+                    response="utter_favorites_delete_not_found",
                     service=service["title"],
                     link=service["href"],
                     group=service["group"],
                 )
-            else:
-                dispatcher.utter_message(
-                    response="utter_favorites_add_failed",
-                    service=service["title"],
-                    link=service["href"],
-                    group=service["group"],
-                )
+                events.append(SlotSet(_FAVE_UNHAPPY, True))
+        
+        elif tracker.get_slot(_FAVE_UNHAPPY):
+            dispatcher.utter_message(response="utter_favorites_add_next")
 
         return events
 

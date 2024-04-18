@@ -30,7 +30,6 @@ async def get_user(tracker):
     )
 
     response, content = resp
-    print(content)
 
     return response, json.loads(content)
 
@@ -84,8 +83,7 @@ async def get_generated_services(tracker):
     )
 
 
-async def add_service_to_favorites(tracker, service):
-    print(f"Adding service {service} to favorites")
+async def modify_favorite_service(tracker, service, favorite=True):
     if service is None or "href" not in service:
         return
     return await send_console_request(
@@ -94,7 +92,7 @@ async def add_service_to_favorites(tracker, service):
         tracker,
         method="post",
         json={
-            "favorite": True,
+            "favorite": favorite,
             "pathname": service["href"],
         },
         fetch_content=False,

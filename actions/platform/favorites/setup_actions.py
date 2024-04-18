@@ -9,7 +9,7 @@ from actions.platform.chrome import create_service_options
 from actions.platform.favorites import (
     _FAVE_SERVICE,
     _FAVE_SUGGESTIONS,
-    _FAVE_OPTIONS,
+    _FAVE_UNHAPPY,
 )
 
 
@@ -22,8 +22,8 @@ class ActionFavoritesReset(Action):
     ) -> List[Dict[Text, Any]]:
         return [
             SlotSet(_FAVE_SERVICE),
-            SlotSet(_FAVE_OPTIONS),
             SlotSet(_FAVE_SUGGESTIONS),
+            SlotSet(_FAVE_UNHAPPY),
         ]
 
 
@@ -54,7 +54,7 @@ class ActionFavoritesExtract(Action):
         if intent == "intent_favorites_add":
             dispatcher.utter_message(response="utter_favorites_add_start")
             dispatcher.utter_message(response="utter_favorites_add_select")
-        if intent == "intent_favorites_remove":
+        if intent == "intent_favorites_delete":
             dispatcher.utter_message(response="utter_favorites_delete_start")
             dispatcher.utter_message(response="utter_favorites_delete_select")
         return []
