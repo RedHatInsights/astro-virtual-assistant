@@ -1,10 +1,10 @@
-from common.requests import send_console_request
+import json
 
 from actions.slot_match import FuzzySlotMatchOption
 from common.requests import send_console_request
 
 unsure_option = FuzzySlotMatchOption(
-    "unsure",
+    {"href": "unsure", "title": "unsure", "group": "unsure"},
     [
         "not sure",
         "unsure",
@@ -19,6 +19,22 @@ unsure_option = FuzzySlotMatchOption(
     ],
 )
 
+
+async def get_user(tracker):
+    # struggles to be a json response, manually doing it here
+    resp = await send_console_request(
+        "chrome-service",
+        "/api/chrome-service/v1/user",
+        tracker,
+        "get",
+    )
+
+    response, content = resp
+    print(content)
+
+    return response, json.loads(content)
+
+
 async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
     response, content = await get_generated_services(tracker)
     if response.ok:
@@ -27,22 +43,26 @@ async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
         # failed to reach the chrome service
         return [unsure_option]
 
+
 def parse_generated_services(content):
     options = [unsure_option]
-    print(content)
     for category in content:
-        for link in category['links']:
+        for link in category["links"]:
+            group_title = link.get("title")
             if "isGroup" in link and link["isGroup"]:
-                for sublink in link['links']:
-                    synonyms = []
-                    value = {}
-                    if "href" in sublink:
-                        synonyms.append(sublink["href"])
-                    else:
-                        # needs to be here to add it as a favorite
+                for sublink in link["links"]:
+                    if "isExternal" in sublink and sublink["isExternal"]:
+                        # not really a service
                         continue
+                    synonyms = []
+                    value = {"group": group_title}
 
+                    if "href" not in sublink:
+                        # path needs to be here to be favorited
+                        continue
+                    synonyms.append(sublink["href"])
                     value["href"] = sublink["href"]
+
                     if "title" in sublink:
                         value["title"] = sublink["title"]
                         synonyms.append(sublink["title"])
@@ -54,6 +74,7 @@ def parse_generated_services(content):
                     options.append(FuzzySlotMatchOption(value, synonyms))
     return options
 
+
 async def get_generated_services(tracker):
     return await send_console_request(
         "chrome-service",
@@ -62,8 +83,6 @@ async def get_generated_services(tracker):
         "get",
     )
 
-async def get_user_favorites(tracker):
-    return await send_console_request(tracker, "GET", "/api/chrome-service/v1/user")
 
 async def add_service_to_favorites(tracker, service):
     print(f"Adding service {service} to favorites")

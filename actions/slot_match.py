@@ -58,3 +58,26 @@ def resolve_slot_match(
                 return resolved_child
 
     return {}
+
+
+def suggest_using_slot_match(
+    user_message: str, slot_match: FuzzySlotMatch, accepted_rate=ACCEPTED_RATIO
+) -> List[str]:
+    user_message = _sanitize_input(user_message)
+    suggestions = {}  # avoiding duplicates
+    for option in slot_match.options:
+        for synonym in option.synonyms:
+            if synonym == "unsure":
+                break
+            ratio = fuzz.QRatio(user_message, synonym)
+            if ratio >= accepted_rate:
+                # should find a more generic definition
+                suggestions[option.value["title"]] = {
+                    "value": option.value,
+                    "ratio": ratio,
+                }
+                break
+
+    suggestions = list(suggestions.values())
+    suggestions.sort(key=lambda x: x["ratio"], reverse=True)
+    return suggestions

@@ -25,7 +25,7 @@ nlu:
       - what are starred pages?
       - where are the pages i saved?
       - manage my favorite services
-  
+
   - intent: intent_favorites_add
     examples: |
       - add this to favorites

@@ -5,7 +5,12 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
-from actions.platform.chrome import get_user_favorites
+from actions.platform.chrome import create_service_options
+from actions.platform.favorites import (
+    _FAVE_SERVICE,
+    _FAVE_SUGGESTIONS,
+    _FAVE_OPTIONS,
+)
 
 
 class ActionFavoritesReset(Action):
@@ -16,9 +21,11 @@ class ActionFavoritesReset(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [
-            SlotSet("favorites_service"),
-            SlotSet("favorites_options"),
+            SlotSet(_FAVE_SERVICE),
+            SlotSet(_FAVE_OPTIONS),
+            SlotSet(_FAVE_SUGGESTIONS),
         ]
+
 
 class ActionFavoritesExtract(Action):
     def name(self) -> Text:
@@ -27,11 +34,27 @@ class ActionFavoritesExtract(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        specified_favorite = tracker.get_latest_entity_values("core_services")
-        print(specified_favorite)
-        # favorites = await get_user_info(tracker)
-        # if user_info is None or "data" not in user_info or "":
-        #     return []
-        # entities = tracker.latest_message.get("entities", [])
-        # for e in entities:
-        #     pass
+        intent = tracker.get_intent_of_latest_message()
+        specified_favorite = str(
+            next(tracker.get_latest_entity_values("core_services"), None)
+        )
+
+        if specified_favorite is not None:
+            options = await create_service_options(tracker)
+
+            resolved = resolve_slot_match(
+                specified_favorite, FuzzySlotMatch(_FAVE_SERVICE, options)
+            )
+            if len(resolved) > 0:
+                return [
+                    SlotSet(_FAVE_SERVICE, resolved[_FAVE_SERVICE]),
+                    SlotSet("requested_slot", _FAVE_SERVICE),
+                ]
+
+        if intent == "intent_favorites_add":
+            dispatcher.utter_message(response="utter_favorites_add_start")
+            dispatcher.utter_message(response="utter_favorites_add_select")
+        if intent == "intent_favorites_remove":
+            dispatcher.utter_message(response="utter_favorites_delete_start")
+            dispatcher.utter_message(response="utter_favorites_delete_select")
+        return []

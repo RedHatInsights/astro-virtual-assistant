@@ -17,7 +17,7 @@ rules:
       - action: action_favorites_extract
       - action: form_favorites_add
       - active_loop: form_favorites_add
-  
+
   - rule: Remove services from Favorites
     steps:
       - intent: intent_favorites_delete
@@ -38,7 +38,7 @@ rules:
       - action: utter_favorites_show
       - action: form_closing
       - active_loop: form_closing
-  
+
   - rule: Exit Favorites - Delete
     condition:
       - active_loop: form_favorites_delete
