@@ -49,13 +49,13 @@ responses:
   utter_favorites_next:
     - text: "What would you like to do next?"
       buttons:
-        - title: "View my other Favorites."
+        - title: "View my other Favorites"
           payload: "/intent_favorites_show"
-        - title: "Favorite a service."
+        - title: "Favorite a service"
           payload: "/intent_favorites_add"
-        - title: "Remove a Favorite."
+        - title: "Remove a Favorite"
           payload: "/intent_favorites_delete"
-        - title: "Something else."
+        - title: "Something else"
           payload: "/intent_core_other"
 
   utter_favorites_add_start:
