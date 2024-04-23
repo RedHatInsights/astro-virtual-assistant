@@ -58,13 +58,11 @@
       "hostname": "rhsm-api-proxy.svc",
       "name": "service",
       "port": 8000
-    }
-  ],
-  "privateEndpoints": [
+    },
     {
-      "app": "ccx-smart-proxy",
+      "app": "ccx-insights-results",
       "hostname": "openshift-advisor",
-      "name": "service",
+      "name": "aggregator",
       "port": 8000
     }
   ],

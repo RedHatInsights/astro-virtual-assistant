@@ -54,9 +54,9 @@
       "port": 8000
     },
     {
-      "app": "ccx-smart-proxy",
+      "app": "ccx-insights-results",
       "hostname": "openshift-advisor",
-      "name": "service",
+      "name": "aggregator",
       "port": 8000
     }
   ],
@@ -67,12 +67,6 @@
       "name":"actions",
       "port":10000,
       "tlsPort":0
-    },
-    {
-      "app": "ccx-smart-proxy",
-      "hostname": "openshift-advisor",
-      "name": "service",
-      "port": 8000
     }
   ],
   "kafka": {

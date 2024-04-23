@@ -75,7 +75,7 @@ logging_cloudwatch_log_stream = _config("AWS_LOG_STREAM", default=os.uname().nod
 
 advisor_url = _config("ENDPOINT__ADVISOR_BACKEND__API__URL", default=__endpoint_default)
 advisor_openshift_url = _config(
-    "PRIVATE_ENDPOINT__CCX_SMART_PROXY__SERVICE__URL",
+    "PRIVATE_ENDPOINT__CCX_INSIGHTS_RESULTS__AGGREGATOR__URL",
     default=__endpoint_default,
 )
 notifications_gw_url = _config(
