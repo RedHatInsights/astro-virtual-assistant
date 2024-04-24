@@ -20,7 +20,7 @@ rules:
       - slot_was_set:
           - requested_slot: null
       - action: utter_integration_what
-  
+
   - rule: End of notification troubleshoot - manage preferences and events
     condition:
       - active_loop: form_notifications_troubleshoot
@@ -33,7 +33,7 @@ rules:
           - requested_slot: null
       - action: form_notifications
       - active_loop: form_notifications
-  
+
   - rule: End of notification troubleshoot - learning
     condition:
       - active_loop: form_notifications_troubleshoot

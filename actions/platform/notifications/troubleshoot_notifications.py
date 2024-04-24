@@ -14,6 +14,7 @@ from actions.platform.notifications import (
     service_opt_match,
 )
 
+
 class ValidateFormNotificationsTroubleshoot(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_notifications_troubleshoot"
@@ -86,8 +87,12 @@ class ActionNotificationsTroubleshoot(Action):
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
 
         if is_org_admin:
-            dispatcher.utter_message(response="utter_notifications_troubleshoot_org_admin")
+            dispatcher.utter_message(
+                response="utter_notifications_troubleshoot_org_admin"
+            )
         else:
-            dispatcher.utter_message(response="utter_notifications_troubleshoot_non_admin")
-        
+            dispatcher.utter_message(
+                response="utter_notifications_troubleshoot_non_admin"
+            )
+
         return []
