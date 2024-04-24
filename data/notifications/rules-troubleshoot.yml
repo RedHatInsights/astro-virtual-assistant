@@ -1,0 +1,46 @@
+version: "3.1"
+
+rules:
+  - rule: Troubleshoot notifications
+    steps:
+      - intent: intent_notifications_troubleshoot
+      - action: action_notifications_reset
+      - action: action_notifications_troubleshoot
+      - action: form_notifications_troubleshoot
+      - active_loop: form_notifications_troubleshoot
+
+  - rule: End of notification troubleshoot - integration
+    condition:
+      - active_loop: form_notifications_troubleshoot
+      - slot_was_set:
+          - notifications_troubleshoot_to_integrations: True
+    steps:
+      - action: form_notifications_troubleshoot
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_integration_what
+  
+  - rule: End of notification troubleshoot - manage preferences and events
+    condition:
+      - active_loop: form_notifications_troubleshoot
+      - slot_was_set:
+          - notifications_troubleshoot_to_notifications: True
+    steps:
+      - action: form_notifications_troubleshoot
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_notifications
+      - active_loop: form_notifications
+  
+  - rule: End of notification troubleshoot - learning
+    condition:
+      - active_loop: form_notifications_troubleshoot
+    steps:
+      - action: form_notifications_troubleshoot
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
