@@ -46,7 +46,7 @@ actions_port = _config(
     "ACTIONS_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
 )
 internal_api_port = _config(
-    "INTERNAL_API_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
+    "INTERNAL_API_PORT", default=_config("PRIVATE_PORT", default=8083), cast=int
 )
 
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
