@@ -60,7 +60,7 @@
       "port": 8000
     },
     {
-      "app": "ccx-insights-results",
+      "app": "insights-results-aggregator",
       "hostname": "openshift-advisor",
       "name": "aggregator",
       "port": 8000
