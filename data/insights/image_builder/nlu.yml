@@ -27,6 +27,14 @@ nlu:
       - Add [nvidia](image_builder_content) with image builder
       - I want to add [content](image_builder_content) from  repository to my images
       - RHEL image w [custom content](image_builder_content)
+      - add a custom repo
+      - lets add a custom repo
+      - i want to add a repo
+      - i want to add a repository
+      - enable a repo
+      - enable a repository
+      - add a repository to rhel
+      - customize my rhel image
 
   - intent: intent_image_builder_launch
     examples: |
