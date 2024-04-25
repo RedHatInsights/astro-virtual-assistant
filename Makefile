@@ -1,4 +1,10 @@
-CONTAINER_EXEC ?= podman
+__CONTAINER_EXEC ?= podman
+
+ifeq (, $(shell which ${__CONTAINER_EXEC} 2> /dev/null))
+	__CONTAINER_EXEC := docker
+endif
+
+CONTAINER_EXEC ?= ${__CONTAINER_EXEC}
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
 export IS_RUNNING_LOCALLY=1
