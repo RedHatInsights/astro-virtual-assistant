@@ -20,7 +20,6 @@ objects:
       - content-sources-backend
       - sources-api
       - rhsm-api-proxy
-      - insights-results-smart-proxy
 
     inMemoryDb: true
     database:
