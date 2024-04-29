@@ -27,6 +27,6 @@ jobs:
       - name: Run build
         run: npm run build --prefix internal-ui
       - name: Check if latest is already set
-        run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
+        run: rm -rf internal/public && cp -R internal-ui/dist internal/public
       - name: Fail if there is anything to commit
         run: git diff-index HEAD || (echo "Run 'make internal-ui-update' to update latest internal ui code and commit") && false
