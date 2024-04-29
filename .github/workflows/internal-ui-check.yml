@@ -1,0 +1,35 @@
+name: Internal UI checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Run lint
+        run: npm run lint
+      - name: Run build
+        run: npm run build
+      - name: Copy and commit on main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main
+        run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
+      - name: Commit if there is anything to commit
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}[internal-ui push script]"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git diff-index --quiet HEAD || git commit -m 'Updating internal-ui build'
+          git push
