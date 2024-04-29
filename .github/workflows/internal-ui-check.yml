@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -26,13 +26,7 @@ jobs:
         run: npm run lint --prefix internal-ui
       - name: Run build
         run: npm run build --prefix internal-ui
-      - name: Copy and commit on main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
-      - name: Commit if there is anything to commit
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "${GITHUB_ACTOR}[internal-ui push script]"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git diff-index --quiet HEAD || git commit -m 'Updating internal-ui build'
-          git push
+      - name: Check if latest is already set
+        run: rm -rf internal/public && cp -R internal-ui/dist internal/public
+      - name: Fail if there is anything to commit
+        run: git diff --quiet HEAD -- internal/public || (echo "Run 'make internal-ui-update' to update latest internal ui code and commit" && false)
