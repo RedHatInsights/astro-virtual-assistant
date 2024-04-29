@@ -1,6 +1,8 @@
-from flask import Flask, Response, jsonify, request
-from sqlalchemy import and_, or_, true, asc
-from sqlalchemy.orm import sessionmaker
+from typing import Optional, List
+
+from flask import Flask, Response, jsonify, request, send_from_directory, redirect
+from sqlalchemy import and_, or_, true, asc, desc, func
+from sqlalchemy.orm import sessionmaker, aliased
 import json
 import hashlib
 
@@ -11,11 +13,18 @@ from internal.utils import read_arguments, export_csv
 from internal.database.db import DB
 from internal.database.models import Events
 
-
 API_PREFIX = "/api/v1"
 
-DATA_KEYS_TO_INCLUDE = {"message_id", "text", "timestamp"}
-
+REMOVE_PATHS = [
+    ("data", "event"),
+    ("data", "timestamp"),
+    ("data", "value", "email"),
+    ("data", "value", "identity"),
+    ("data", "metadata", "email"),
+    ("data", "metadata", "identity"),
+    ("data", "parse_data", "metadata", "email"),
+    ("data", "parse_data", "metadata", "identity"),
+]
 
 flask_app = Flask(__name__)
 db = DB()
@@ -26,12 +35,27 @@ logger = logging.initialize_logging()
 
 def start_internal_api():
     logger.info("Starting virtual assistant internal api...")
-    flask_app.run(host=app.hostname, port=app.internal_api_port)
+    flask_app.run(host="0.0.0.0", port=app.internal_api_port)
 
 
 @flask_app.route("/", methods=["GET"])
 def health_check():
     return jsonify({"status": "ok"})
+
+
+@flask_app.route(API_PREFIX + "/", methods=["GET"])
+def serve_root():
+    return redirect("./ui/index.html")
+
+
+@flask_app.route(API_PREFIX + "/ui", methods=["GET"])
+def serve_root_ui():
+    return redirect("./ui/index.html")
+
+
+@flask_app.route(API_PREFIX + "/ui/<path:path>", methods=["GET"])
+def serve_static(path):
+    return send_from_directory("public", path)
 
 
 # Returns messages from all conversations
@@ -47,52 +71,27 @@ def health_check():
 def get_messages():
     args = read_arguments()
     if isinstance(args, ValueError):
-        return Response(args, status=400)
+        return Response(str(args), status=400)
 
-    session = Session()
-    conditions = []
-    if args.type_name:
-        conditions.append(Events.type_name == args.type_name)
-    if args.start_date:
-        conditions.append(Events.timestamp > args.start_date)
-    if args.end_date:
-        conditions.append(Events.timestamp < args.end_date)
-    conditions = and_(true(), *conditions)
+    type_names = args.type_name or []
+    if args.unique is True:
+        type_names.append("user")
 
-    rows = (
-        session.query(
-            Events.sender_id,
-            Events.type_name,
-            Events.intent_name,
-            Events.action_name,
-            Events.data,
-        )
-        .where(conditions)
-        .order_by(asc(Events.timestamp))
-        .limit(args.limit)
-        .offset(args.offset)
-        .all()
+    raw_messages = _get_messages(
+        start_date=args.start_date,
+        end_date=args.end_date,
+        type_names=type_names,
+        limit=args.limit,
+        offset=args.offset,
+        cursor=args.cursor,
     )
 
-    message_list = []
-    for row in rows:
-        data_json = json.loads(row[4])  # data column needs to be parsed
-
-        # exclude commands if unique is true
-        if args.unique and (
-            "text" not in data_json
-            or data_json["text"] is None
-            or data_json["text"].startswith("/")
-        ):
-            continue
-
-        message = process_message(row)
-        message_list.append(message)
+    messages = list(map(lambda m: process_message(m), raw_messages))
 
     if args.format == "csv":
-        return export_csv(message_list)
+        return export_csv(messages)
 
-    return jsonify(message_list)
+    return jsonify(messages)
 
 
 # Returns complete conversation given a sender_id
@@ -103,59 +102,35 @@ def get_messages():
 #  - end_date (optional): only return messages sent before this date
 #  - type_name (optional): only return messages of this type
 #  - unique (optional): if true, only return unique messages (i.e. typed by the user, no commands)
-#  - offset (optional): offset the returned messages; default is 0
+#  - offset (optional): offset the returned messages; default is 0. If both offset and cursor are set the request fails
+#  - cursor (optional): only return messages after this id - used for cursor pagination. If both offset and cursor are set the request fails
 #  - format (optional): "csv" or "json" format; default is "json"
 @flask_app.route(API_PREFIX + "/messages/<sender_id>", methods=["GET"])
 def get_conversation_by_sender_id(sender_id):
     args = read_arguments()
     if isinstance(args, ValueError):
-        return Response(args, status=400)
+        return Response(str(args), status=400)
 
-    session = Session()
-    conditions = [Events.sender_id == sender_id]
-    if args.type_name:
-        conditions.append(Events.type_name == args.type_name)
-    if args.start_date:
-        conditions.append(Events.timestamp > args.start_date)
-    if args.end_date:
-        conditions.append(Events.timestamp < args.end_date)
-    conditions = and_(true(), *conditions)
+    type_names = args.type_name or []
+    if args.unique is True:
+        type_names.append("user")
 
-    session = Session()
-    rows = (
-        session.query(
-            Events.sender_id,
-            Events.type_name,
-            Events.intent_name,
-            Events.action_name,
-            Events.data,
-        )
-        .where(conditions)
-        .order_by(asc(Events.timestamp))
-        .limit(args.limit)
-        .offset(args.offset)
-        .all()
+    raw_messages = _get_messages(
+        sender_id=sender_id,
+        start_date=args.start_date,
+        end_date=args.end_date,
+        type_names=type_names,
+        limit=args.limit,
+        offset=args.offset,
+        cursor=args.cursor,
     )
 
-    message_list = []
-    for row in rows:
-        data_json = json.loads(row[4])  # data column needs to be parsed
-
-        # exclude commands if unique is true
-        if args.unique and (
-            "text" not in data_json
-            or data_json["text"] is None
-            or data_json["text"].startswith("/")
-        ):
-            continue
-
-        message = process_message(row)
-        message_list.append(message)
+    messages = list(map(lambda m: process_message(m), raw_messages))
 
     if args.format == "csv":
-        return export_csv(message_list)
+        return export_csv(messages)
 
-    return jsonify(message_list)
+    return jsonify(messages)
 
 
 # Returns list of sender_id
@@ -173,25 +148,38 @@ def get_senders():
         return Response(args, status=400)
 
     session = Session()
-    conditions = []
+
+    OuterEvent = aliased(Events)
+
+    conditions = [
+        OuterEvent.timestamp
+        == session.query(func.max(Events.timestamp))
+        .where(
+            OuterEvent.sender_id == Events.sender_id,
+            Events.type_name == "user",
+            Events.intent_name != "intent_core_session_start",
+            Events.intent_name != "session_start",
+        )
+        .subquery(),
+    ]
     if args.start_date:
-        conditions.append(Events.timestamp > args.start_date)
+        conditions.append(OuterEvent.timestamp > args.start_date)
     if args.end_date:
-        conditions.append(Events.timestamp < args.end_date)
+        conditions.append(OuterEvent.timestamp < args.end_date)
     if args.org_id and args.username:
         hash = hashlib.sha256(
             "{org_id}-{username}".format(
                 org_id=args.org_id, username=args.username
             ).encode()
         ).hexdigest()
-        conditions.append(Events.sender_id == hash)
+        conditions.append(OuterEvent.sender_id == hash)
     conditions = and_(true(), *conditions)
 
     rows = (
-        session.query(Events.sender_id)
+        session.query(OuterEvent.sender_id, OuterEvent.timestamp)
         .distinct()
         .where(conditions)
-        .order_by(asc(Events.sender_id))
+        .order_by(desc(OuterEvent.timestamp))
         .limit(args.limit)
         .offset(args.offset)
         .all()
@@ -199,7 +187,7 @@ def get_senders():
 
     sender_list = []
     for row in rows:
-        sender_list.append(row[0])
+        sender_list.append({"sender_id": row[0], "timestamp": row[1]})
 
     if args.format == "csv":
         return export_csv(sender_list)
@@ -207,30 +195,70 @@ def get_senders():
     return jsonify(sender_list)
 
 
-def process_message(row):
-    message = {}
-    message["sender_id"] = row[0]
-    message["type_name"] = row[1]
-    message["intent_name"] = row[2]
-    message["action_name"] = row[3]
-    data_column = json.loads(row[4])
+def _get_messages(
+    sender_id: Optional[str] = None,
+    start_date: Optional[float] = None,
+    end_date: Optional[float] = None,
+    type_names: Optional[List[str]] = None,
+    limit: int = 100,
+    offset: Optional[int] = None,
+    cursor: Optional[int] = None,
+):
+    session = Session()
+    conditions = []
 
-    for key in DATA_KEYS_TO_INCLUDE:
-        message[key] = None
-    message.update(
-        {k: data_column[k] for k in data_column.keys() & DATA_KEYS_TO_INCLUDE}
+    if sender_id is not None:
+        conditions.append(Events.sender_id == sender_id)
+
+    if start_date is not None:
+        conditions.append(Events.timestamp > start_date)
+
+    if end_date is not None:
+        conditions.append(Events.timestamp < end_date)
+
+    if type_names is not None and len(type_names) > 0:
+        conditions.append(Events.type_name.in_(type_names))
+
+    if offset is None and cursor is None:
+        offset = 0
+    elif offset is not None and cursor is not None:
+        raise ValueError("Should not specify both offset and cursor")
+
+    if cursor is not None:
+        conditions.append(Events.id < cursor)
+
+    query_builder = (
+        session.query(Events)
+        .where(and_(true(), *conditions))
+        .order_by(desc(Events.id))
+        .limit(limit)
     )
 
-    parse_data = data_column["parse_data"] if "parse_data" in data_column else None
-    if parse_data is not None:
-        message["entities"] = parse_data["entities"]
-        message["intent"] = parse_data["intent"]
-        message["intent_ranking"] = parse_data["intent_ranking"]
-        message["name"] = parse_data["name"] if "name" in parse_data else None
-    else:
-        # to be consistent
-        message["entities"] = []
-        message["intent"] = {}
-        message["intent_ranking"] = []
-        message["name"] = None
+    if offset is not None:
+        query_builder = query_builder.offset(offset)
+
+    return query_builder.all()
+
+
+def process_message(row):
+    message = {
+        "id": row.id,
+        "sender_id": row.sender_id,
+        "type_name": row.type_name,
+        "timestamp": row.timestamp,
+        "data": json.loads(row.data),
+    }
+
+    for path in REMOVE_PATHS:
+        current = message
+        for step in path[:-1]:
+            if step in current and isinstance(current[step], dict):
+                current = current[step]
+            else:
+                current = None
+                break
+
+        if current is not None and path[-1] in current:
+            current.pop(path[-1])
+
     return message
