@@ -18,26 +18,6 @@ nlu:
       - setup a notification
       - notif setup
       - make new notificatons
-      - can you help me set up notifications
-      - i need to setup notifs
-      - how do i get emails about stuff on the console
-      - set up email alerts
-      - get email notifications
-      - i want slack notifications
-      - opt in to notifications
-      - subscribe to notification emails
-      - slack notification opt in
-      - sign me up for weekly digest emails
-      - i need to get those daily digest emails please
-      - i want to get notifications about patch
-      - i want to receive email notifications, can you do that for me?
-      - help me get notifications in ms teams?
-      - i want email alerts
-      - i want to get updates in my microsoft teams account
-      - i'd like to receive alerts in gchat
-      - can i point notifications to google chat channel?
-      - eda notifications - how to
-      - get alerts in splunk
 
   - intent: intent_notifications_edit
     examples: |
