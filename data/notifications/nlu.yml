@@ -15,6 +15,9 @@ nlu:
       - add an event
       - add a notification
       - set up notifications
+      - setup a notification
+      - notif setup
+      - make new notificatons
 
   - intent: intent_notifications_edit
     examples: |
