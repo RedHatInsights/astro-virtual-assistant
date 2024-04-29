@@ -36,3 +36,26 @@ nlu:
       - disable notifications
       - modify notifications
       - how do I modify notifications
+
+  - intent: intent_notifications_troubleshoot
+    examples: |
+      - i'm not getting any notifications
+      - why am i not receiving email notifications
+      - my colleague got an email notification, but I did not
+      - I can't find my notifications
+      - notifications not working
+      - why did i stop receiving email notifications?
+      - my slack notifications stopped coming
+      - i'm not seeing my servicenow notifications any more
+      - did notifications stop working?
+      - something is wrong with my notifications
+      - one of my colleagues isnt getting emails
+      - my company's teams notifications are no longer coming through
+      - troubleshoot notifications problem
+      - missing notifications
+      - alerts are not coming through as expected
+      - why did my notifications to google chat stop
+      - alerts have been stopped
+      - we are having problems with notifications
+      - notifications issue
+      - issue occurring with account alerts

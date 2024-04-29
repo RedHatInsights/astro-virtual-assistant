@@ -3,6 +3,7 @@ version: "3.1"
 intents:
   - intent_notifications_setup
   - intent_notifications_edit
+  - intent_notifications_troubleshoot
 
 slots:
   notifications_bundle:
@@ -37,6 +38,14 @@ slots:
     type: bool
     influence_conversation: true
     mappings: *custom_mapping
+  notifications_troubleshoot_to_integrations: # send the user to the integrations form
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_troubleshoot_to_notifications: # send the user to the notifications form
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
 
 forms:
   form_notifications:
@@ -46,11 +55,16 @@ forms:
       - notifications_bundle
       - notifications_event
       - notifications_behavior_option
+  form_notifications_troubleshoot:
+    required_slots:
+      - notifications_bundle_option
 
 actions:
   - validate_form_notifications
+  - validate_form_notifications_troubleshoot
   - action_notifications_setup
   - action_notifications_edit
+  - action_notifications_troubleshoot
   - action_notifications_reset
 
 responses:
@@ -201,3 +215,23 @@ responses:
         command: redirect
         params:
           url: "{base_console_url}/settings/notifications/configure-events"
+
+  # Troubleshoot notifications
+  utter_notifications_troubleshoot_non_admin:
+    - text: "I'm sorry you're experiencing challenges with the Notifications service. What can I help you with?"
+      buttons: &notifications_capabilities_non_admin
+        - title: "Manage my notification preferences"
+          payload: "manage preferences"
+        - title: "Learn more about the Notifications service"
+          payload: "learn more"
+  utter_notifications_troubleshoot_org_admin:
+    - text: "I'm sorry you're experiencing challenges with the Notifications service. What can I help you with?"
+      buttons: &notifications_capabilities_org_admin
+        - title: "Manage my organization's notifications"
+          payload: "manage events"
+        - title: "Manage my integrations"
+          payload: "manage integrations"
+        - title: "Manage my notification preferences"
+          payload: "manage preferences"
+        - title: "Learn more about the Notifications service"
+          payload: "learn more"
