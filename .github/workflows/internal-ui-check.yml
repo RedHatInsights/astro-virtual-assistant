@@ -21,9 +21,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: internal-ui/package-lock.json
       - name: Run lint
-        run: npm run lint
+        run: npm run lint --prefix internal-ui
       - name: Run build
-        run: npm run build
+        run: npm run build --prefix internal-ui
       - name: Copy and commit on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
