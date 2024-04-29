@@ -29,4 +29,4 @@ jobs:
       - name: Check if latest is already set
         run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
       - name: Fail if there is anything to commit
-        run: git diff-index --quiet HEAD || (echo "Run 'make internal-ui-update' to update latest internal ui code and commit") && false
+        run: git diff-index HEAD || (echo "Run 'make internal-ui-update' to update latest internal ui code and commit") && false
