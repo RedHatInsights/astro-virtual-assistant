@@ -41,6 +41,7 @@ rules:
           - is_org_admin: True
     steps:
       - intent: intent_access_check_access
+      - action: action_deactivate_loop
       - action: utter_access_check_access_explain
       - action: form_closing
       - active_loop: form_closing
@@ -51,6 +52,13 @@ rules:
           - is_org_admin: False
     steps:
       - intent: intent_access_check_access
+      - action: action_deactivate_loop
       - action: utter_access_check_access_explain
       - action: utter_access_check_access_missing
       - action: utter_access_have_you_contacted_org_admin
+
+  - rule: Have you already contacted the org admin? no
+    steps:
+      - action: utter_access_have_you_contacted_org_admin
+      - intent: intent_core_no
+      - action: utter_access_contact_admin
