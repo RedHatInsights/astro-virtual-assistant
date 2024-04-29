@@ -58,3 +58,8 @@ drop-db:
 
 compose:
 	pipenv run ${COMPOSE_EXEC} up
+
+internal-ui-update:
+	npm install --prefix internal-ui
+	npm run build --prefix internal-ui
+	rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
