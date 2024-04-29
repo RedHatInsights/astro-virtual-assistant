@@ -140,6 +140,7 @@ export const useMessages = (senderId: string): MessageResponse => {
                 void loadMore(senderId, state.sessions[lastSessionIndex].messages[0].id, dispatch);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.isLoading, senderId]);
 
     return {

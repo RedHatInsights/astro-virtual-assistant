@@ -19,15 +19,18 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: internal-ui/package-lock.json
+      - name: Install deps
+        run: npm install --prefix internal-ui
       - name: Run lint
-        run: npm run lint
+        run: npm run lint --prefix internal-ui
       - name: Run build
-        run: npm run build
+        run: npm run build --prefix internal-ui
       - name: Copy and commit on main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public
       - name: Commit if there is anything to commit
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "${GITHUB_ACTOR}[internal-ui push script]"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
