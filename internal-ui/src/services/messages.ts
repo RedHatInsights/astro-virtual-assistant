@@ -9,7 +9,7 @@ const FilterTypeName: Array<ValidMessage["type_name"]> = [
 ];
 
 const getMessages = async (senderId: string, cursor?: number): Promise<Array<ValidMessage>> => {
-    const response = await axios.get(`/api/v1/messages/${senderId}`,{
+    const response = await axios.get(`../messages/${senderId}`,{
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
