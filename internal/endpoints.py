@@ -151,8 +151,7 @@ def get_senders():
 
     OuterEvent = aliased(Events)
 
-    conditions = [
-    ]
+    conditions = []
     if args.start_date:
         conditions.append(OuterEvent.timestamp > args.start_date)
     if args.end_date:
