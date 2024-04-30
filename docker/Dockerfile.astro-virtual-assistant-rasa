@@ -30,10 +30,10 @@ RUN python -m ensurepip --upgrade && \
 WORKDIR ${APP_ROOT}
 
 COPY Pipfile* ./
-COPY requirement-overwrite-api.txt ./
+COPY requirement-override-api.txt ./
 
 RUN pipenv install --categories "packages api-packages" && \
-    pipenv run pip install -r ./requirement-overwrite-api.txt && \
+    pipenv run pip install -r ./requirement-override-api.txt && \
     pipenv --clear
 
 ENV VIRTUAL_ENV=${APP_ROOT}/.venv
