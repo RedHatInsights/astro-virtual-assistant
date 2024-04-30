@@ -152,15 +152,17 @@ def get_senders():
     OuterEvent = aliased(Events)
 
     conditions = [
-        OuterEvent.timestamp
-        == session.query(func.max(Events.timestamp))
+        OuterEvent.id
+        == session.query(Events.id)
         .where(
             OuterEvent.sender_id == Events.sender_id,
             Events.type_name == "user",
             Events.intent_name != "intent_core_session_start",
             Events.intent_name != "session_start",
         )
-        .subquery(),
+        .order_by(desc(Events.id))
+        .limit(1)
+        .scalar_subquery(),
     ]
     if args.start_date:
         conditions.append(OuterEvent.timestamp > args.start_date)
@@ -176,10 +178,9 @@ def get_senders():
     conditions = and_(true(), *conditions)
 
     rows = (
-        session.query(OuterEvent.sender_id, OuterEvent.timestamp)
-        .distinct()
+        session.query(OuterEvent.sender_id, OuterEvent.timestamp, OuterEvent.id)
         .where(conditions)
-        .order_by(desc(OuterEvent.timestamp))
+        .order_by(desc(OuterEvent.id))
         .limit(args.limit)
         .offset(args.offset)
         .all()
