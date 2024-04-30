@@ -33,7 +33,7 @@ COPY Pipfile* ./
 COPY requirement-overwrite-api.txt ./
 
 RUN pipenv install --categories "packages api-packages" && \
-    pip install -r ./requirement-overwrite-api.txt && \
+    pipenv run pip install -r ./requirement-overwrite-api.txt && \
     pipenv --clear
 
 ENV VIRTUAL_ENV=${APP_ROOT}/.venv
