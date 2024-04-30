@@ -4,7 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 
 
 const getSenders = async (): Promise<Array<Sender>> => {
-    const response = await axios.get("/api/v1/senders");
+    const response = await axios.get("../senders");
     if (response.status === 200) {
         return response.data;
     }
