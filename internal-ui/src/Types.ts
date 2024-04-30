@@ -1,6 +1,5 @@
 export interface Sender {
     sender_id: string;
-    timestamp: number;
 }
 
 export interface Session {
