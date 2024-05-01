@@ -1,8 +1,0 @@
-version: "3.1"
-
-stories:
-  - story: User wants to know about API availability
-    steps:
-      - intent: intent_api_availability
-      - action: utter_api_capabilities
-      - checkpoint: check_closing
