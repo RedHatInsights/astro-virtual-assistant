@@ -1,0 +1,33 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to enable 2fa
+    steps:
+      - intent: intent_enable_2fa
+      - action: action_enable_2fa
+  - rule: User wants to enable 2fa for personal account
+    steps:
+      - intent: intent_enable_2fa_personal
+      - action: utter_enable_2fa_individual_1
+      - action: utter_enable_2fa_individual_2
+      - action: utter_enable_2fa_individual_3
+  - rule: Org Admin wants to enable 2fa for the whole org
+    steps:
+      - intent: intent_enable_2fa_org_admin_info
+      - action: utter_enable_org_2fa_info_1
+      - action: utter_enable_org_2fa_info_2
+      - action: utter_enable_org_2fa_confirmation
+  - rule: User gets redirected to 2fa form
+    steps:
+      - intent: intent_individual_2fa_form_redirect
+      - action: utter_individual_2fa_form_redirect
+      - action: form_closing
+      - active_loop: form_closing
+  - rule: Dispatches action to enable Org 2fa
+    steps:
+      - intent: intent_dispatch_action_enable_org_2fa
+      - action: action_enable_org_2fa
+      - action: utter_enable_org_2fa_success_1
+      - action: utter_enable_org_2fa_success_2
+      - action: form_closing
+      - active_loop: form_closing

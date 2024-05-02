@@ -124,6 +124,8 @@ objects:
             value: ${PROMETHEUS}
           - name: CONSOLEDOT_BASE_URL
             value: ${CONSOLEDOT_BASE_URL}
+          - name: ENVIRONMENT_NAME
+            value: ${ENVIRONMENT_NAME}
         resources:
           limits:
             cpu: 250m
@@ -249,3 +251,6 @@ parameters:
 - name: REST_WORKERS
   description: The number of workers in Sanic's REST API
   value: "2"
+- name: ENVIRONMENT_NAME
+  description: The name of the environment. Needs to be either stage or prod
+  value: "stage"

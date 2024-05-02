@@ -55,6 +55,8 @@ __endpoint_default = (
     __undefined if is_running_locally is False else console_dot_base_url
 )
 
+environment_name = _config("ENVIRONMENT_NAME", default="stage", cast=str)
+
 logging_cloudwatch_access_key_id = _config(
     "LOGGING_CLOUDWATCH_ACCESS_KEY_ID", default=__optional_when_locally
 )
