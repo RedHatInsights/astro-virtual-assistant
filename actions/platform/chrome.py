@@ -3,23 +3,6 @@ import json
 from actions.slot_match import FuzzySlotMatchOption
 from common.requests import send_console_request
 
-unsure_option = FuzzySlotMatchOption(
-    {"href": "unsure", "title": "unsure", "group": "unsure"},
-    [
-        "not sure",
-        "unsure",
-        "idk",
-        "I'm not sure",
-        "no clue",
-        "I have no idea",
-        "other",
-        "I don't know the name of the service",
-        "I don't know",
-        "other",
-    ],
-)
-
-
 async def get_user(tracker):
     # struggles to be a json response, manually doing it here
     resp = await send_console_request(
@@ -37,14 +20,23 @@ async def get_user(tracker):
 async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
     response, content = await get_generated_services(tracker)
     if response.ok:
-        return parse_generated_services(content)
+        services = parse_generated_services(content)
+
+        options = []
+        for service in services:
+            if "href" not in service:
+                # path needs to be here to be favorited
+                continue
+            options.append(convert_service_to_option(service))
+
+        return options
     else:
         # failed to reach the chrome service
-        return [unsure_option]
+        return []
 
 
 def parse_generated_services(content):
-    options = [unsure_option]
+    services = []
     for category in content:
         for link in category["links"]:
             group_title = link.get("title")
@@ -53,25 +45,17 @@ def parse_generated_services(content):
                     if "isExternal" in sublink and sublink["isExternal"]:
                         # not really a service
                         continue
-                    synonyms = []
-                    value = {"group": group_title}
+                    service = {"group": group_title}
 
-                    if "href" not in sublink:
-                        # path needs to be here to be favorited
-                        continue
-                    synonyms.append(sublink["href"])
-                    value["href"] = sublink["href"]
-
+                    if "href" in sublink:
+                        service["href"] = sublink["href"]
                     if "title" in sublink:
-                        value["title"] = sublink["title"]
-                        synonyms.append(sublink["title"])
+                        service["title"] = sublink["title"]
                     if "appId" in sublink:
-                        value["app_id"] = sublink["appId"]
-                        synonyms.append(sublink["appId"])
-                    if "alt_title" in sublink:
-                        synonyms += sublink["alt_title"]
-                    options.append(FuzzySlotMatchOption(value, synonyms))
-    return options
+                        service["app_id"] = sublink["appId"]
+                    service["alt_title"] = sublink.get("alt_title", [])
+                    services.append(service)
+    return services
 
 
 async def get_generated_services(tracker):
@@ -81,6 +65,21 @@ async def get_generated_services(tracker):
         tracker,
         "get",
     )
+
+def convert_service_to_option(service):
+    value = {"group": service["group"]}
+    synonyms = [service["href"]]
+    value["href"] = service["href"]
+
+    if "title" in service:
+        value["title"] = service["title"]
+        synonyms.append(service["title"])
+    if "appId" in service:
+        value["app_id"] = service["appId"]
+        synonyms.append(service["appId"])
+    if "alt_title" in service:
+        synonyms += service["alt_title"]
+    return FuzzySlotMatchOption(value, synonyms)
 
 
 async def modify_favorite_service(tracker, service, favorite=True):
