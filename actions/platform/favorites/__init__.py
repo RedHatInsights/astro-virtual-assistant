@@ -6,6 +6,7 @@ from rasa_sdk.types import DomainDict
 
 from actions.slot_match import (
     FuzzySlotMatch,
+    FuzzySlotMatchOption,
     resolve_slot_match,
     suggest_using_slot_match,
 )
@@ -16,6 +17,22 @@ from actions.platform.chrome import (
 _FAVE_SERVICE = "favorites_service"
 _FAVE_UNHAPPY = "favorites_unhappy"
 _FAVE_SUGGESTIONS = "favorites_suggestions"
+
+unsure_option = FuzzySlotMatchOption(
+    {"href": "unsure", "title": "unsure", "group": "unsure"},
+    [
+        "not sure",
+        "unsure",
+        "idk",
+        "I'm not sure",
+        "no clue",
+        "I have no idea",
+        "other",
+        "I don't know the name of the service",
+        "I don't know",
+        "other",
+    ],
+)
 
 
 class AbstractFavoritesForm(FormValidationAction):
@@ -33,7 +50,7 @@ class AbstractFavoritesForm(FormValidationAction):
 
         message = tracker.latest_message.get("text")
         options = await create_service_options(tracker)
-        match = FuzzySlotMatch(_FAVE_SERVICE, options)
+        match = FuzzySlotMatch(_FAVE_SERVICE, options + [unsure_option])
 
         resolved = resolve_slot_match(message, match)
         if len(resolved) > 0:

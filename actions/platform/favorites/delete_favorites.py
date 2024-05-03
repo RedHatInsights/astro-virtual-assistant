@@ -6,14 +6,7 @@ from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-from actions.slot_match import (
-    FuzzySlotMatch,
-    FuzzySlotMatchOption,
-    resolve_slot_match,
-    suggest_using_slot_match,
-)
 from actions.platform.chrome import (
-    create_service_options,
     modify_favorite_service,
     get_user,
 )
@@ -40,7 +33,7 @@ class DeleteFavoritesForm(AbstractFavoritesForm):
 
         if requested_slot == _FAVE_SERVICE:
             service = tracker.get_slot(_FAVE_SERVICE)
-            if service == "unsure":
+            if service["title"] == "unsure":
                 return events
             if service == None:
                 buttons = self.create_suggestion_buttons(tracker)

@@ -1,8 +1,8 @@
 from typing import List, Dict, Text, Any
 from urllib.parse import urlparse
 
-from rasa_sdk import FormValidationAction, Tracker, Action
-from rasa_sdk.events import SlotSet, EventType, ActiveLoop
+from rasa_sdk import Tracker
+from rasa_sdk.events import SlotSet, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
@@ -33,7 +33,7 @@ class AddFavoritesForm(AbstractFavoritesForm):
 
         if requested_slot == _FAVE_SERVICE:
             service = tracker.get_slot(_FAVE_SERVICE)
-            if service == "unsure":
+            if service["title"] == "unsure":
                 return events
             if service == None:
                 buttons = self.create_suggestion_buttons(tracker)

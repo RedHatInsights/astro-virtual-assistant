@@ -67,8 +67,6 @@ def suggest_using_slot_match(
     suggestions = {}  # avoiding duplicates
     for option in slot_match.options:
         for synonym in option.synonyms:
-            if synonym == "unsure":
-                break
             ratio = fuzz.QRatio(user_message, synonym)
             if ratio >= accepted_rate:
                 # should find a more generic definition
