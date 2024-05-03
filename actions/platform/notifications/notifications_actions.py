@@ -6,6 +6,18 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.types import DomainDict
 
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+from actions.platform.notifications import (
+    _SLOT_IS_ORG_ADMIN,
+    NOTIF_BUNDLE,
+    NOTIF_BUNDLE_OPT,
+    NOTIF_EVENT,
+    NOTIF_EVENT_OPT,
+    NOTIF_BEHAVIOR_OPT,
+    NOTIF_CONTACT_ADMIN,
+    NOTIF_TROUBLESHOOT_TO_INTEGRATIONS,
+    NOTIF_TROUBLESHOOT_TO_NOTIFICATIONS,
+    service_opt_match,
+)
 
 from common import logging
 from common.header import Header
@@ -13,15 +25,6 @@ from common.requests import send_console_request
 
 
 logger = logging.initialize_logging()
-
-# Slots
-_SLOT_IS_ORG_ADMIN = "is_org_admin"
-NOTIF_BUNDLE = "notifications_bundle"
-NOTIF_BUNDLE_OPT = "notifications_bundle_option"
-NOTIF_EVENT = "notifications_event"
-NOTIF_EVENT_OPT = "notifications_event_option"
-NOTIF_BEHAVIOR_OPT = "notifications_behavior_option"
-NOTIF_CONTACT_ADMIN = "notifications_contact_admin"
 
 UNSURE_SERVICE = {"id": "unsure", "name": "unsure", "display_name": "unsure"}
 
@@ -41,55 +44,6 @@ service_match = FuzzySlotMatch(
                 "no clue",
                 "I have no idea",
                 "other",
-            ],
-        ),
-    ],
-)
-
-# going to continue to test phrases
-service_opt_match = FuzzySlotMatch(
-    NOTIF_BUNDLE_OPT,
-    [
-        FuzzySlotMatchOption(
-            "manage events",
-            [
-                "manage events",
-                "Manage my organization's event settings",
-                "event settings",
-                "org events",
-            ],
-        ),
-        FuzzySlotMatchOption(
-            "manage preferences",
-            [
-                "manage preferences",
-                "manage my own notification preferences",
-                "manage preferences for my current notifications",
-                "preferences",
-                "pref",
-            ],
-        ),
-        FuzzySlotMatchOption(
-            "contact admin",
-            [
-                "contact admin",
-                "contact my org admin for me",
-                "contact my organization's admin",
-                "org admin",
-                "admin",
-            ],
-        ),
-        FuzzySlotMatchOption(
-            "learn",
-            [
-                "learn more about notifications",
-                "learn",
-                "help",
-                "docs",
-                "documentation",
-                "learn more",
-                "learn about notifications",
-                "learn about",
             ],
         ),
     ],
@@ -213,7 +167,7 @@ class ValidateFormNotifications(FormValidationAction):
         response, result = await get_available_events_by_bundle(tracker, bundle["id"])
         if not response.ok or not result:
             received_notifications_error(dispatcher, response, result)
-            return {}
+            return {"requested_slot": None}
         for event in result["data"]:
             possible_value = {
                 "id": event["id"],
@@ -282,7 +236,7 @@ class ValidateFormNotifications(FormValidationAction):
         response, result = await get_available_bundles(tracker)
         if not response.ok or not result:
             received_notifications_error(dispatcher, response, result)
-            return {NOTIF_BUNDLE: None}
+            return {NOTIF_BUNDLE: None, "requested_slot": None}
         if len(result) == 0:
             return {NOTIF_BUNDLE: None}
 
@@ -369,7 +323,7 @@ class ValidateFormNotifications(FormValidationAction):
                 )
                 if not response.ok or not result:
                     received_notifications_error(dispatcher, response, result)
-                    return events
+                    return events + [SlotSet("requested_slot", None)]
                 if len(result) == 0:
                     dispatcher.utter_message(
                         response="utter_notifications_edit_events_none_1",
@@ -486,7 +440,7 @@ class ValidateFormNotifications(FormValidationAction):
                 response, result = await get_behavior_groups(tracker, bundle["id"])
                 if not response.ok or not result:
                     received_notifications_error(dispatcher, response, result)
-                    return events
+                    return events + [SlotSet("requested_slot", None)]
 
                 if len(result) > 0:
                     response = await mute_event(tracker, event["id"])
@@ -558,6 +512,8 @@ class ActionNotificationsReset(Action):
             SlotSet(NOTIF_EVENT_OPT, None),
             SlotSet(NOTIF_BEHAVIOR_OPT, None),
             SlotSet(NOTIF_CONTACT_ADMIN, None),
+            SlotSet(NOTIF_TROUBLESHOOT_TO_INTEGRATIONS, None),
+            SlotSet(NOTIF_TROUBLESHOOT_TO_NOTIFICATIONS, None),
         ]
 
 

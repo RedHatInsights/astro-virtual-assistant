@@ -28,6 +28,26 @@ nlu:
       - help me connect to a webhook
       - cloud connection setup
       - install an integration
+      - slack endpoint creation
+      - connect to my company's slack
+      - make a connection to splunk
+      - create servicenow connection
+      - set up a cloud
+      - connect my azure cloud
+      - cloud integrations
+      - create a source
+      - can you help me with a source creation?
+      - add a new source
+      - add my snow
+      - connect to event-driven ansible
+      - integrate with service now
+      - connect my openshift container platform
+      - i need to add a new openshift container platform
+      - red hat integrations creation
+      - show me where to start a connection to openshift container platform
+      - sources
+      - set up an oracle cloud integration
+      - create aws cloud connection
 
   - intent: intent_integration_edit
     examples: |

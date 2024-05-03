@@ -51,7 +51,8 @@ responses:
         params:
           url: https://console.redhat.com/subscriptions/inventory
   utter_subscriptions_doc:
-    - custom:
+    - text: "I am opening the [Red Hat Subscription Central page](https://access.redhat.com/products/subscription-central) in a new tab. Return to this tab to continue our conversation."
+      custom:
         type: command
         command: redirect
         params:
