@@ -73,11 +73,22 @@ class ValidateFormClosing(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        # feedback_type is set by the feedback flow
         if (
             await form_action_is_starting(self, dispatcher, tracker, domain)
             and tracker.get_slot("closing_feedback_type") is None
         ):
             flow_started_count(Flow.CLOSING)
+            return [
+                SlotSet(key, None)
+                for key in [
+                    "closing_got_help",
+                    "closing_leave_feedback",
+                    "closing_feedback",
+                    "closing_skip_got_help",
+                    "closing_feedback_type",
+                ]
+            ]
 
         requested_slot = tracker.get_slot("requested_slot")
 
