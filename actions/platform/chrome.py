@@ -3,6 +3,7 @@ import json
 from actions.slot_match import FuzzySlotMatchOption
 from common.requests import send_console_request
 
+
 async def get_user(tracker):
     # struggles to be a json response, manually doing it here
     resp = await send_console_request(
@@ -65,6 +66,7 @@ async def get_generated_services(tracker):
         tracker,
         "get",
     )
+
 
 def convert_service_to_option(service):
     value = {"group": service["group"]}
