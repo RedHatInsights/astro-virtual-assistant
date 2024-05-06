@@ -20,6 +20,7 @@ objects:
       - content-sources-backend
       - sources-api
       - rhsm-api-proxy
+      - ccx-smart-proxy
 
     inMemoryDb: true
     database:
