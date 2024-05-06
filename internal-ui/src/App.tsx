@@ -50,6 +50,11 @@ function App() {
                                 Senders
                             </Link>
                         </NavItem>
+                        <NavItem itemId="messages" isActive={location.pathname.startsWith("/messages")}>
+                            <Link to={"messages"}>
+                                Messages
+                            </Link>
+                        </NavItem>
                     </NavList>
                 </Nav>
             </PageSidebarBody>

@@ -31,6 +31,10 @@ const router = createHashRouter([
                 path: "senders/:senderId",
                 element: <MessagesPage />
             },
+            {
+                path: "messages",
+                element: <MessagesPage />
+            }
         ]
     },
 ]);

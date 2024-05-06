@@ -21,18 +21,18 @@ export const MessagesPage = () => {
                 <BreadcrumbItem>
                     Home
                 </BreadcrumbItem>
-                <BreadcrumbItem>
+                {senderId && <BreadcrumbItem>
                     <Link to="/senders">Senders</Link>
-                </BreadcrumbItem>
+                </BreadcrumbItem>}
                 <BreadcrumbItem>
-                    {senderId}
+                    {senderId ?? "Messages"}
                 </BreadcrumbItem>
             </Breadcrumb>
         </PageSection>
         {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
             <ul>
                 {messagesQuery.sessions.map(s => (<>
-                        <SessionComponent key={s.timestamp} session={s} />
+                        <SessionComponent key={s.timestamp} session={s} displaySender={!senderId} />
                     <br/>
                 </>)
                 )}

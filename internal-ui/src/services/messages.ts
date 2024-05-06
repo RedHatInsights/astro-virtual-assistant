@@ -8,8 +8,11 @@ const FilterTypeName: Array<ValidMessage["type_name"]> = [
     "session_started"
 ];
 
-const getMessages = async (senderId: string, cursor?: number): Promise<Array<ValidMessage>> => {
-    const response = await axios.get(`../messages/${senderId}`,{
+
+const getMessages = async (senderId?: string, cursor?: number): Promise<Array<ValidMessage>> => {
+    const request = senderId ? `../messages/` : `../messages/${senderId}`;
+
+    const response = await axios.get(request,{
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
@@ -45,7 +48,7 @@ type ActionType = {
     messages: ReadonlyArray<ValidMessage>;
 };
 
-const initialLoad = async (senderId: string, dispatch: Dispatch<ActionType>) => {
+const initialLoad = async (senderId: string | undefined, dispatch: Dispatch<ActionType>) => {
     const messages = await getMessages(senderId);
     dispatch({
         kind: 'load_finished',
@@ -53,7 +56,7 @@ const initialLoad = async (senderId: string, dispatch: Dispatch<ActionType>) => 
     });
 }
 
-const loadMore = async (senderId: string, cursor: number, dispatch: Dispatch<ActionType>) => {
+const loadMore = async (senderId: string | undefined, cursor: number, dispatch: Dispatch<ActionType>) => {
     const messages = await getMessages(senderId, cursor);
     dispatch({
         kind: 'load_finished',
@@ -70,14 +73,17 @@ const addMessages = (sessions: ReadonlyArray<Session>, messages: ReadonlyArray<V
 
     const newSessions: Array<Session> = [];
     allMessages.forEach(m => {
-        if (newSessions.length === 0 || m.type_name === "session_started") {
+        const firstSessionFromSender = newSessions.findIndex(s => s.senderId === m.sender_id);
+
+        if (firstSessionFromSender === -1 || m.type_name === "session_started") {
             newSessions.unshift({
+                senderId: m.sender_id,
                 messages: [m],
                 timestamp: m.timestamp,
                 hasSessionStarted: m.type_name === "session_started"
             });
         } else {
-            newSessions[0].messages.push(m);
+            newSessions[firstSessionFromSender].messages.push(m);
         }
     });
 
@@ -118,7 +124,7 @@ const initialState: ReducerState = {
     sessions: []
 }
 
-export const useMessages = (senderId: string): MessageResponse => {
+export const useMessages = (senderId?: string): MessageResponse => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {

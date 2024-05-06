@@ -3,6 +3,7 @@ export interface Sender {
 }
 
 export interface Session {
+    senderId: string;
     timestamp: number;
     hasSessionStarted: boolean;
     messages: Array<ValidMessage>
