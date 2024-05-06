@@ -58,6 +58,18 @@
       "hostname": "chrome.svc",
       "name": "service",
       "port": 1337
+    },
+    {
+      "app": "ccx-smart-proxy",
+      "hostname": "openshift-advisor",
+      "name": "service",
+      "port": 8000
+    },
+    {
+      "app": "ccx-smart-proxy",
+      "hostname": "openshift-advisor",
+      "name": "service",
+      "port": 8000
     }
   ],
   "privateEndpoints": [
