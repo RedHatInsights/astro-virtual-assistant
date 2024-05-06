@@ -58,6 +58,12 @@
       "hostname": "openshift-advisor",
       "name": "service",
       "port": 8000
+    },
+    {
+      "app": "ccx-smart-proxy",
+      "hostname": "openshift-advisor",
+      "name": "service",
+      "port": 8000
     }
   ],
   "privateEndpoints": [
@@ -67,12 +73,6 @@
       "name":"actions",
       "port":10000,
       "tlsPort":0
-    },
-    {
-      "app": "ccx-smart-proxy",
-      "hostname": "openshift-advisor",
-      "name": "service",
-      "port": 8000
     }
   ],
   "kafka": {
