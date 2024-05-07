@@ -83,17 +83,17 @@ actions:
 
 responses:
   utter_pii_warning:
-    - text: "*You are about to utilize Red Hat's Hybrid Cloud Console virtual assistant chat tool. Please do not include any personal information or confidential information in your interaction with the virtual assistant. The tool is intended to assist with general queries. Please see [Red Hat Terms of use](https://www.redhat.com/en/about/terms-use) and [Privacy Statement](https://www.redhat.com/en/about/privacy-policy).*"
+    - text: "*You are about to use the Red Hat Hybrid Cloud Console virtual assistant chat tool. Please do not include any personal or confidential information in your interaction with the virtual assistant. The tool is intended to assist with general queries. Please see [Red Hat Terms of use](https://www.redhat.com/en/about/terms-use) and [Privacy Statement](https://www.redhat.com/en/about/privacy-policy).*"
   utter_core_first_time:
-    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
+    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see that this is your first conversation with me."
   utter_core_greeting:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console."
   utter_core_hello:
     - text: "Hello!"
     - text: "Hi!"
-    - text: "Hello! It is great chatting with you."
+    - text: "Hello! It's great chatting with you."
   utter_core_hello_first_time:
-    - text: "Hello! It is a pleasure to meet you."
+    - text: "Hello! It's a pleasure to meet you."
   utter_core_how_can_i_help:
     - text: "How can I help you today?"
     - text: "How can I help you?"
@@ -123,11 +123,11 @@ responses:
           payload: /intent_insights_advisor_recommendation_by_type
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
-    - text: "Sorry I didn't get that. Can you rephrase?"
-    - text: 'I don''t understand. Say "I need help" for information on what I can do.'
+    - text: "Sorry, I didn't get that. Can you rephrase?"
+    - text: 'I don't understand. Say "I need help" for information on what I can do.'
   utter_core_unknown_input:
     - text: >
-        I'm sorry. I did not understand that answer. Could you try again?
+        I'm sorry. I didn't understand that answer. Could you try again?
   utter_planned_features:
     - text: "I haven't been programmed to do that yet. I'm still learning!"
     - text: "I'm working on that feature. Check for it again later."
@@ -189,7 +189,7 @@ responses:
   utter_services_offline_no_incidents:
     - text: "All services seem to be operating normally."
   utter_services_offline_error:
-    - text: "I was unable to talk with [status.redhat.com](https://status.redhat.com) to fulfill your request."
+    - text: "I was unable to communicate with [status.redhat.com](https://status.redhat.com) to fulfill your request."
   utter_services_offline_incidents:
     - text: "I'm sorry, but we are experiencing {count} incident(s)."
   utter_services_offline_info:
@@ -197,6 +197,6 @@ responses:
   utter_services_offline_more_info:
     - text: "Visit [status.redhat.com](https://status.redhat.com) for more information on Red Hat outages and maintenance."
   utter_services_offline_further_info:
-    - text: "Visit [status.redhat.com](https://status.redhat.com) for further outage information."
+    - text: "Visit [status.redhat.com](https:/-`--`-`-------------------`/status.redhat.com) for further outage information."
   utter_unknown_topic:
     - text: "I am not able to assist with that topic."
