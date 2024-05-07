@@ -124,7 +124,7 @@ responses:
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
     - text: "Sorry, I didn't get that. Can you rephrase?"
-    - text: 'I don't understand. Say "I need help" for information on what I can do.'
+    - text: 'I don''t understand. Say "I need help" for information on what I can do.'
   utter_core_unknown_input:
     - text: >
         I'm sorry. I didn't understand that answer. Could you try again?
