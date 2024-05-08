@@ -23,12 +23,12 @@ async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
     if response.ok:
         services = parse_generated_services(content)
 
-        options = []
+        options = {}
         for service in services:
             if "href" not in service:
                 # path needs to be here to be favorited
                 continue
-            options.append(convert_service_to_option(service))
+            options[service["title"]] = convert_service_to_option(service)
 
         return options
     else:
@@ -81,7 +81,10 @@ def convert_service_to_option(service):
         synonyms.append(service["appId"])
     if "alt_title" in service:
         synonyms += service["alt_title"]
-    return FuzzySlotMatchOption(value, synonyms)
+    return {
+        "data": value,
+        "synonyms": synonyms,
+    }
 
 
 async def modify_favorite_service(tracker, service, favorite=True):

@@ -33,8 +33,6 @@ class AddFavoritesForm(AbstractFavoritesForm):
 
         if requested_slot == _FAVE_SERVICE:
             service = tracker.get_slot(_FAVE_SERVICE)
-            if service["title"] == "unsure":
-                return events
             if service == None:
                 buttons = self.create_suggestion_buttons(tracker)
 
@@ -45,6 +43,8 @@ class AddFavoritesForm(AbstractFavoritesForm):
                 else:
                     dispatcher.utter_message(response="utter_favorites_add_select")
                 return events + [SlotSet(_FAVE_SERVICE), SlotSet(_FAVE_SUGGESTIONS)]
+            if service["title"] == "unsure":
+                return events
 
             # check that the service is not already favorited
             response, content = await get_user(tracker)

@@ -18,9 +18,9 @@ _FAVE_SERVICE = "favorites_service"
 _FAVE_UNHAPPY = "favorites_unhappy"
 _FAVE_SUGGESTIONS = "favorites_suggestions"
 
-unsure_option = FuzzySlotMatchOption(
-    {"href": "unsure", "title": "unsure", "group": "unsure"},
-    [
+unsure_option = {
+    "data": {"href": "unsure", "title": "unsure", "group": "unsure"},
+    "synonyms": [
         "not sure",
         "unsure",
         "idk",
@@ -32,7 +32,7 @@ unsure_option = FuzzySlotMatchOption(
         "I don't know",
         "other",
     ],
-)
+}
 
 
 class AbstractFavoritesForm(FormValidationAction):
@@ -50,18 +50,25 @@ class AbstractFavoritesForm(FormValidationAction):
 
         message = tracker.latest_message.get("text")
         options = await create_service_options(tracker)
-        match = FuzzySlotMatch(_FAVE_SERVICE, options + [unsure_option])
-
+        options["unsure"] = unsure_option
+        fuzzy_options = [*map(lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]), options.values())]
+        match = FuzzySlotMatch(_FAVE_SERVICE, fuzzy_options)
         resolved = resolve_slot_match(message, match)
+        
         if len(resolved) > 0:
-            return resolved
+            return {_FAVE_SERVICE: options[resolved[_FAVE_SERVICE]]["data"]}
 
         suggestions = suggest_using_slot_match(message, match, accepted_rate=10)
 
-        if suggestions and len(suggestions) > 0:
-            suggestions = suggestions[:3]
+        if suggestions:
+            if "unsure" in suggestions:
+                suggestions.remove("unsure")
+            if len(suggestions) > 0:
+                suggestions = suggestions[:3]
 
-        return {_FAVE_SUGGESTIONS: suggestions}
+            return {_FAVE_SUGGESTIONS: [*map(lambda s: options[s["value"]]["data"], suggestions)]}
+        
+        return None
 
     @staticmethod
     def validate_favorites_service(
@@ -83,11 +90,12 @@ class AbstractFavoritesForm(FormValidationAction):
         buttons = []
         if suggestions:
             for suggestion in suggestions:
-                suggest = suggestion["value"]
+                if suggestion["title"] == "unsure":
+                    break
                 buttons.append(
                     {
-                        "title": f'{suggest["title"]} ({suggest["group"]})',
-                        "payload": suggest["href"],
+                        "title": f'{suggestion["title"]} ({suggestion["group"]})',
+                        "payload": suggestion["href"],
                     }
                 )
 

@@ -11,7 +11,7 @@ slots:
     mappings:
       - type: custom
       - type: from_intent
-        value: "unsure"
+        value: {"href": "unsure", "title": "unsure", "group": "unsure"}
         intent: intent_core_learn_more
         conditions:
           - active_loop: form_favorites_add
