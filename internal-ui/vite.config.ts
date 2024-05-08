@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/v1': "http://localhost:8083"
+      '/api/virtual-assistant/v1': {
+        target: "http://localhost:8083",
+        rewrite: path => path.replace(/^\/api\/virtual-assistant\/v1/, '/api/v1')
+      }
     },
   },
 })

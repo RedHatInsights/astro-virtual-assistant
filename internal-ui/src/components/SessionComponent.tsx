@@ -8,9 +8,10 @@ import ReactTimeAgo from 'react-time-ago'
 
 interface SessionProps {
     session: Session;
+    displaySender?: boolean;
 }
 
-export const SessionComponent: React.FunctionComponent<SessionProps> = ({session}) => {
+export const SessionComponent: React.FunctionComponent<SessionProps> = ({session, displaySender}) => {
 
     const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -22,6 +23,10 @@ export const SessionComponent: React.FunctionComponent<SessionProps> = ({session
             <CardTitle>
                 Started <ReactTimeAgo timeStyle="round-minute" date={new Date(session.timestamp * 1000)}/> {!session.hasSessionStarted && " (or before) "}
                 <Timestamp date={new Date(session.timestamp * 1000)} />
+                {displaySender ? (<>
+                    <br/> {session.senderId}
+                </>) : ''}
+
             </CardTitle>
         </CardHeader>
         <CardExpandableContent>

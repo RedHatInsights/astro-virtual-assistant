@@ -9,7 +9,7 @@ import en from 'javascript-time-ago/locale/en'
 TimeAgo.addDefaultLocale(en)
 
 import {
-    createHashRouter,
+    createHashRouter, redirect,
     RouterProvider,
 } from "react-router-dom";
 import {
@@ -17,12 +17,17 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import {MessagesPage} from "./pages/MessagesPage.tsx";
+import {TimelinePage} from "./pages/TimelinePage.tsx";
 
 const router = createHashRouter([
     {
         path: "/",
         element: <App />,
         children: [
+            {
+                index: true,
+                loader: async () => redirect('/timeline'),
+            },
             {
                 path: "senders",
                 element: <SendersPage />
@@ -31,6 +36,10 @@ const router = createHashRouter([
                 path: "senders/:senderId",
                 element: <MessagesPage />
             },
+            {
+                path: "timeline",
+                element: <TimelinePage />
+            }
         ]
     },
 ]);
