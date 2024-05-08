@@ -41,12 +41,15 @@ class ActionFavoritesExtract(Action):
 
         if specified_favorite is not None:
             options = await create_service_options(tracker)
-            fuzzy_options = [*map(lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]), options.values())]
+            fuzzy_options = [
+                *map(
+                    lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]),
+                    options.values(),
+                )
+            ]
             match = FuzzySlotMatch(_FAVE_SERVICE, fuzzy_options)
 
-            resolved = resolve_slot_match(
-                specified_favorite, match
-            )
+            resolved = resolve_slot_match(specified_favorite, match)
             if len(resolved) > 0:
                 return [
                     SlotSet(_FAVE_SERVICE, resolved[_FAVE_SERVICE]),

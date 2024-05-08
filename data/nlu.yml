@@ -352,6 +352,17 @@ nlu:
       - more info
       - give me the info
 
+  - intent: intent_core_unsure
+    examples: |
+      - not sure
+      - unsure
+      - idk
+      - I'm not sure
+      - no clue
+      - I have no idea
+      - other
+      - im not sure
+
   - intent: intent_core_guide_me
     examples: |
       - show me

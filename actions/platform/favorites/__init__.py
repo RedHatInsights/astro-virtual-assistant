@@ -18,22 +18,6 @@ _FAVE_SERVICE = "favorites_service"
 _FAVE_UNHAPPY = "favorites_unhappy"
 _FAVE_SUGGESTIONS = "favorites_suggestions"
 
-unsure_option = {
-    "data": {"href": "unsure", "title": "unsure", "group": "unsure"},
-    "synonyms": [
-        "not sure",
-        "unsure",
-        "idk",
-        "I'm not sure",
-        "no clue",
-        "I have no idea",
-        "other",
-        "I don't know the name of the service",
-        "I don't know",
-        "other",
-    ],
-}
-
 
 class AbstractFavoritesForm(FormValidationAction):
     def name(self) -> str:
@@ -50,24 +34,30 @@ class AbstractFavoritesForm(FormValidationAction):
 
         message = tracker.latest_message.get("text")
         options = await create_service_options(tracker)
-        options["unsure"] = unsure_option
-        fuzzy_options = [*map(lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]), options.values())]
+        fuzzy_options = [
+            *map(
+                lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]),
+                options.values(),
+            )
+        ]
         match = FuzzySlotMatch(_FAVE_SERVICE, fuzzy_options)
         resolved = resolve_slot_match(message, match)
-        
+
         if len(resolved) > 0:
             return {_FAVE_SERVICE: options[resolved[_FAVE_SERVICE]]["data"]}
 
         suggestions = suggest_using_slot_match(message, match, accepted_rate=10)
 
         if suggestions:
-            if "unsure" in suggestions:
-                suggestions.remove("unsure")
             if len(suggestions) > 0:
                 suggestions = suggestions[:3]
 
-            return {_FAVE_SUGGESTIONS: [*map(lambda s: options[s["value"]]["data"], suggestions)]}
-        
+            return {
+                _FAVE_SUGGESTIONS: [
+                    *map(lambda s: options[s["value"]]["data"], suggestions)
+                ]
+            }
+
         return None
 
     @staticmethod
@@ -77,7 +67,7 @@ class AbstractFavoritesForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if value == "unsure" or value == None or isinstance(value, dict):
+        if value == None or isinstance(value, dict):
             return {_FAVE_SERVICE: value}
 
         return {}
@@ -90,8 +80,6 @@ class AbstractFavoritesForm(FormValidationAction):
         buttons = []
         if suggestions:
             for suggestion in suggestions:
-                if suggestion["title"] == "unsure":
-                    break
                 buttons.append(
                     {
                         "title": f'{suggestion["title"]} ({suggestion["group"]})',

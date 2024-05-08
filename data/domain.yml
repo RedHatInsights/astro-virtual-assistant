@@ -12,6 +12,7 @@ intents:
   - intent_core_yes
   - intent_core_no
   - intent_core_other
+  - intent_core_unsure
   - intent_data_privacy_policy
   - intent_data_deletion
   - intent_send_complaint
