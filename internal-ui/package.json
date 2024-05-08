@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --base=/api/v1/ui",
+    "dev": "vite",
     "build": "tsc && vite build --base=./",
+    "proxy": "node proxy/proxy.js",
+    "proxy:dev": "nodemon -w proxy proxy/proxy.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -30,6 +32,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "nodemon": "^3.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   }

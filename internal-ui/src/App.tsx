@@ -45,14 +45,14 @@ function App() {
             <PageSidebarBody>
                 <Nav>
                     <NavList>
+                        <NavItem itemId="timeline" isActive={location.pathname.startsWith("/timeline")}>
+                            <Link to={"timeline"}>
+                                Timeline
+                            </Link>
+                        </NavItem>
                         <NavItem itemId="conversations" isActive={location.pathname.startsWith("/senders")}>
                             <Link to={"senders"}>
                                 Senders
-                            </Link>
-                        </NavItem>
-                        <NavItem itemId="messages" isActive={location.pathname.startsWith("/messages")}>
-                            <Link to={"messages"}>
-                                Messages
                             </Link>
                         </NavItem>
                     </NavList>

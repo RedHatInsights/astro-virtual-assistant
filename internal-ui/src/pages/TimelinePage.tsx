@@ -3,16 +3,13 @@ import {
     BreadcrumbItem, Button,
     PageSection,
 } from "@patternfly/react-core";
-import {Link, useParams} from "react-router-dom";
 import {useMessages} from "../services/messages.ts";
 import {LoadingPageSection} from "../components/LoadingPageSection.tsx";
 import {SessionComponent} from "../components/SessionComponent.tsx";
 
 
-export const MessagesPage = () => {
-
-    const {senderId} = useParams();
-    const messagesQuery = useMessages(senderId!);
+export const TimelinePage = () => {
+    const messagesQuery = useMessages();
     const isLoading = messagesQuery.isFirstLoad || messagesQuery.isLoading;
 
     return <>
@@ -22,17 +19,14 @@ export const MessagesPage = () => {
                     Home
                 </BreadcrumbItem>
                 <BreadcrumbItem>
-                    <Link to="/senders">Senders</Link>
-                </BreadcrumbItem>
-                <BreadcrumbItem>
-                    {senderId}
+                    Timeline
                 </BreadcrumbItem>
             </Breadcrumb>
         </PageSection>
         {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
             <ul>
                 {messagesQuery.sessions.map(s => (<>
-                        <SessionComponent key={s.timestamp} session={s} />
+                        <SessionComponent key={s.timestamp} session={s} displaySender />
                     <br/>
                 </>)
                 )}

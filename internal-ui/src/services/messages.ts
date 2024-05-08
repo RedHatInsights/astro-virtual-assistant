@@ -10,13 +10,13 @@ const FilterTypeName: Array<ValidMessage["type_name"]> = [
 
 
 const getMessages = async (senderId?: string, cursor?: number): Promise<Array<ValidMessage>> => {
-    const request = senderId ? `../messages/` : `../messages/${senderId}`;
+    const request = senderId ? `/api/virtual-assistant/v1/messages/${senderId}` : `/api/virtual-assistant/v1/messages`;
 
     const response = await axios.get(request,{
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
-            limit: 1000
+            limit: 200
         }
     });
     if (response.status === 200) {

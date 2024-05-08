@@ -8,7 +8,7 @@ import ReactTimeAgo from 'react-time-ago'
 
 interface SessionProps {
     session: Session;
-    displaySender: boolean;
+    displaySender?: boolean;
 }
 
 export const SessionComponent: React.FunctionComponent<SessionProps> = ({session, displaySender}) => {
