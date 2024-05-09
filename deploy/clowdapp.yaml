@@ -21,6 +21,7 @@ objects:
       - sources-api
       - rhsm-api-proxy
       - ccx-smart-proxy
+      - chrome-service
 
     inMemoryDb: true
     database:
