@@ -60,6 +60,12 @@
       "port": 8000
     },
     {
+      "app": "chrome-service",
+      "hostname": "chrome.svc",
+      "name": "service",
+      "port": 1337
+    },
+    {
       "app": "ccx-smart-proxy",
       "hostname": "openshift-advisor",
       "name": "service",

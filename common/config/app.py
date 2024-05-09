@@ -84,6 +84,9 @@ notifications_gw_url = _config(
 notifications_url = _config(
     "ENDPOINT__NOTIFICATIONS_BACKEND__SERVICE__URL", default=__endpoint_default
 )
+chrome_service_url = _config(
+    "ENDPOINT__CHROME_SERVICE__SERVICE__URL", default=__endpoint_default
+)
 
 sources_url = _config("ENDPOINT__SOURCES_API__SVC__URL", default=__endpoint_default)
 
