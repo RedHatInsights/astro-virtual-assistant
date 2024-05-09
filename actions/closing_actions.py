@@ -87,14 +87,6 @@ class ValidateFormClosing(FormValidationAction):
                         "closing_feedback_type",
                     ]
                 ]
-            else:
-                return [
-                    SlotSet(key, None)
-                    for key in [
-                        "closing_got_help",
-                        "closing_feedback",
-                    ]
-                ]
 
         requested_slot = tracker.get_slot("requested_slot")
 
