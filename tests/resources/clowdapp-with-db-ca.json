@@ -56,7 +56,7 @@
     {
       "app": "chrome-service",
       "hostname": "chrome.svc",
-      "name": "service",
+      "name": "api",
       "port": 1337
     },
     {
