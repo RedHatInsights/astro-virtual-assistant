@@ -59,3 +59,20 @@ nlu:
       - Who is my org admin?
       - Who is my organization's administrator?
       - Who do I ask for access?
+
+  - intent: intent_access_org_id
+    examples: |
+      - what's my org id
+      - where can i find my org id
+      - i need my org id
+      - can you give me my org id please
+      - org id
+      - hey can you please provide my organization identification number to me?
+      - organization identification number
+      - organization id number
+      - where do we keep our organization numbers?
+      - i need the number associated with my organization's account
+      - id for organization
+      - where can i locate my org identification #?
+      - location of org id?
+      - gimme my org's id
