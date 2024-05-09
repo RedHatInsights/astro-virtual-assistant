@@ -62,3 +62,10 @@ rules:
       - action: utter_access_have_you_contacted_org_admin
       - intent: intent_core_no
       - action: utter_access_contact_admin
+
+  - rule: User doesn't know their org id
+    steps:
+      - intent: intent_access_org_id
+      - action: action_access_org_id
+      - action: form_closing
+      - active_loop: form_closing

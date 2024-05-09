@@ -130,3 +130,16 @@ class ActionAccessRequestSendMessage(Action):
             SlotSet(_SLOT_ACCESS_REQUEST_URL, "N/A"),
             SlotSet(_SLOT_LEAVE_REQUEST_MESSAGE, True),
         ]
+
+
+class ActionAccessOrgID(Action):
+    def name(self) -> Text:
+        return "action_access_org_id"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        identity = get_decoded_user_identity(tracker)
+        org_id = identity["identity"]["org_id"]
+        dispatcher.utter_message(response="utter_access_org_id", org_id=org_id)
+        return []
