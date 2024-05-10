@@ -5,7 +5,7 @@ stories:
     steps:
       - user: |
           enable two fa
-      - intent: intent_enable_2fa
+        intent: intent_enable_2fa
       - action: action_enable_2fa_form_prefill
       - action: form_enable_2fa
       - active_loop: form_enable_2fa
@@ -14,7 +14,7 @@ stories:
     steps:
       - user: |
           please help me set up two factor arth for right now plzzzz
-      - intent: intent_enable_2fa
+        intent: intent_enable_2fa
       - action: action_enable_2fa_form_prefill
       - action: form_enable_2fa
       - active_loop: form_enable_2fa
@@ -23,7 +23,7 @@ stories:
     steps:
       - user: |
           2fa enabling help!
-      - intent: intent_enable_2fa
+        intent: intent_enable_2fa
       - action: action_enable_2fa_form_prefill
       - action: form_enable_2fa
       - active_loop: form_enable_2fa
@@ -32,7 +32,7 @@ stories:
     steps:
       - user: |
           please I want to do two device log in
-      - intent: intent_enable_2fa
+        intent: intent_enable_2fa
       - action: action_enable_2fa_form_prefill
       - action: form_enable_2fa
       - active_loop: form_enable_2fa
