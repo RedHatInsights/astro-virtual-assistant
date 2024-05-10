@@ -181,6 +181,14 @@ class ValidateFormFeedback(FormValidationAction):
         )
 
     @staticmethod
+    def extract_feedback_immediate_attention(
+        dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        return ValidateFormFeedback.break_form_if_not_extracted_requested_slot(
+            dispatcher, tracker, domain, IMMEDIATE_ATTENTION
+        )
+
+    @staticmethod
     def validate_feedback_type(
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -224,13 +232,7 @@ class ValidateFormFeedback(FormValidationAction):
 
         if requested_slot == WHERE:
             feedback_where = tracker.get_slot(WHERE)
-            if feedback_where == "console" and feedback_type == "bug":
-                dispatcher.utter_message(response="utter_bug_redirect")
-                events.append(SlotSet("requested_slot", None))
-                self.flow_completed("bug")
-                return events + RESET_SLOTS
-
-            elif feedback_where == "conversation":
+            if feedback_where == "conversation":
                 self.flow_completed("conversation")
                 return (
                     events
@@ -241,6 +243,23 @@ class ValidateFormFeedback(FormValidationAction):
                         SlotSet("closing_skip_got_help", True),
                         SlotSet("closing_leave_feedback", True),
                         SlotSet("closing_feedback_type", "this_conversation"),
+                    ]
+                )
+    
+        if requested_slot == IMMEDIATE_ATTENTION:
+            feedback_attention = tracker.get_slot(IMMEDIATE_ATTENTION)
+            if feedback_attention is True:
+                dispatcher.utter_message(response="utter_bug_redirect")
+                events.append(SlotSet("requested_slot", None))
+                self.flow_completed("bug")
+                return events + RESET_SLOTS
+            elif feedback_attention is False:
+                # should swap to general feedback- C9.2 to C10.3
+                return (
+                    events
+                    + [
+                        SlotSet(TYPE, "general"),
+                        SlotSet("requested_slot", WHERE),
                     ]
                 )
 
@@ -294,14 +313,15 @@ class ValidateFormFeedback(FormValidationAction):
             updated_slots.remove(COLLECTION)
             updated_slots.remove(RESPONSE)
             updated_slots.remove(USABILITY_STUDY)
-
-        if (
-            tracker.get_slot(TYPE) == "general"
-            and tracker.get_slot("feedback_where") == "conversation"
-        ):
-            updated_slots.remove(COLLECTION)
-            updated_slots.remove(RESPONSE)
-            updated_slots.remove(USABILITY_STUDY)
+            if tracker.get_slot(WHERE) == "conversation":
+                updated_slots.remove(IMMEDIATE_ATTENTION)
+        
+        if tracker.get_slot(TYPE) == "general":
+            if tracker.get_slot("feedback_where") == "conversation":
+                updated_slots.remove(COLLECTION)
+                updated_slots.remove(RESPONSE)
+                updated_slots.remove(USABILITY_STUDY)
+            updated_slots.remove(IMMEDIATE_ATTENTION)
 
         if tracker.get_slot(COLLECTION) == "pendo":
             updated_slots.remove(RESPONSE)
@@ -400,7 +420,8 @@ class ActionFeedbackUrgentSupport(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         return [
-            SlotSet("feedback_type", "bug"),
-            SlotSet("feedback_where", "console"),
-            SlotSet("requested_slot", "feedback_where"),
+            SlotSet(TYPE, "bug"),
+            SlotSet(WHERE, "console"),
+            SlotSet(IMMEDIATE_ATTENTION, True),
+            SlotSet("requested_slot", IMMEDIATE_ATTENTION),
         ]

@@ -16,6 +16,7 @@ forms:
     required_slots:
       - feedback_type
       - feedback_where
+      - feedback_immediate_attention
       - feedback_collection
       - feedback_response
       - feedback_usability_study
@@ -55,15 +56,13 @@ slots:
       - type: from_intent
         value: true
         intent: intent_core_yes
-        conditions:
+        conditions: &feedback_immediate_attention_conditions
           - active_loop: form_feedback
-            requested_slot: feedback_immediate_support
+            requested_slot: feedback_immediate_attention
       - type: from_intent
         value: false
         intent: intent_core_no
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_immediate_support
+        conditions: *feedback_immediate_attention_conditions
   # How does the user want their data to be collected?
   # i.e. the bot or the pendo form
   feedback_collection:
@@ -116,6 +115,13 @@ responses:
           payload: "console"
         - title: "This conversation"
           payload: "conversation"
+  utter_ask_feedback_immediate_attention:
+    - text: Does your issue require immediate attention?
+      buttons: &yes_no_buttons
+        - title: "Yes"
+          payload: "/intent_core_yes"
+        - title: "No"
+          payload: "/intent_core_no"
   utter_ask_feedback_collection:
     - text: "How would you like to provide your feedback?"
       buttons:
@@ -134,11 +140,7 @@ responses:
     - text: Thank you for providing feedback! Red Hat will use it to assess and improve its products, services and offerings.
   utter_ask_feedback_usability_study:
     - text: "Are you interested in participating in any interviews or usability studies that our User Experience Design group facilitates?"
-      buttons:
-        - title: "Yes"
-          payload: "/intent_core_yes"
-        - title: "No"
-          payload: "/intent_core_no"
+      buttons: *yes_no_buttons
   utter_feedback_usability_study_yes:
     - text: "Great! Our team will email you with any relevant questions and opportunities."
   utter_feedback_usability_study_no:
