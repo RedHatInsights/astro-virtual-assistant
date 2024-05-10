@@ -17,51 +17,36 @@ slots:
     mappings:
       - type: from_text
         conditions:
-        - active_loop: form_enable_2fa
-          requested_slot: org_or_account
-  personal_2fa_redirect_confirm:
+          - active_loop: form_enable_2fa
+            requested_slot: org_or_account
+  enable_2fa_continue:
     type: bool
     influence_conversation: true
     mappings:
       - type: from_intent
         value: true
         intent: intent_core_yes
-        conditions: &personal_2fa_redirect_confirm
+        conditions: &enable_2fa_continue
           - active_loop: form_enable_2fa
-            requested_slot: personal_2fa_redirect_confirm
+            requested_slot: enable_2fa_continue
       - type: from_intent
         value: false
         intent: intent_core_no
-        conditions: *personal_2fa_redirect_confirm
-  org_2fa_enable_confirm:
-    type: bool
-    influence_conversation: true
-    mappings:
-      - type: from_intent
-        value: true
-        intent: intent_core_yes
-        conditions: &org_2fa_enable_confirm
-          - active_loop: form_enable_2fa
-            requested_slot: org_2fa_enable_confirm
-      - type: from_intent
-        value: false
-        intent: intent_core_no
-        conditions: *org_2fa_enable_confirm
+        conditions: *enable_2fa_continue
 
 actions:
+  - action_enable_2fa_form_prefill
   - action_enable_2fa
-  - action_ask_form_enable_2fa_org_or_account
   - validate_form_enable_2fa
 
 forms:
   form_enable_2fa:
     required_slots:
       - org_or_account
-      - personal_2fa_redirect_confirm
-      - org_2fa_enable_confirm
+      - enable_2fa_continue
 
 responses:
-  utter_user_is_org_admin:
+  utter_ask_form_enable_2fa_org_or_account:
     - text: "It looks like you're an Org Admin. Do you want to enable two-factor authenticaiton for yourself or your entire org?"
       buttons:
         - title: Enable two-factor authentication for my account only
@@ -78,7 +63,7 @@ responses:
         3. In that section, there is a button named *Set up Authenticator application*.
         4. Once you click that button, you will be asked to reauthenticate.
         5. After you reauthenticate, you will be redirected to a form to set up two-factor authentication.
-  utter_ask_form_enable_2fa_personal_2fa_redirect_confirm:
+  utter_ask_form_enable_2fa_enable_2fa_continue:
     - text: "Do you wish to continue?"
       buttons:
         - title: Yes
@@ -96,13 +81,6 @@ responses:
     - text: "Enabling organizational two-factor authentication will require users to use a password and a one-time code to log in."
   utter_enable_org_2fa_info_2:
     - text: "When enabled, each user in your organization must install an authenticator application on a compatible mobile device in order to log in."
-  utter_ask_form_enable_2fa_org_2fa_enable_confirm:
-    - text: "Do you want to continue?"
-      buttons:
-        - title: Yes
-          payload: /intent_core_yes
-        - title: No
-          payload: /intent_core_no
   utter_manage_org_2fa_command:
     - custom:
         type: command
