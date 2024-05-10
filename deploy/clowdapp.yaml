@@ -253,4 +253,4 @@ parameters:
   value: "2"
 - name: ENVIRONMENT_NAME
   description: The name of the environment. Needs to be either stage or prod
-  value: "stage"
+  value: "prod"
