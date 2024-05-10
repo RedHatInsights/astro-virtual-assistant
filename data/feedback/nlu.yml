@@ -27,9 +27,6 @@ nlu:
 
   - intent: intent_feedback_bug
     examples: |
-      - Open a support case
-      - Open a case for me
-      - I want to open a support case
       - I want to open a case
       - I want to share a bug
       - I want to report a bug

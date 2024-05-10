@@ -166,13 +166,15 @@ nlu:
     examples: |
       - support case
       - can I speak to support?
-      - customer support
-      - Open a support case
-      - Give me a support case
+      - urgent help needed
       - i have an urgent issue and need support
       - urgent bug
       - i need help with an urgent issue
       - i have to make a support request
+      - Open a support case
+      - Open a case for me
+      - I want to open a support case
+      - I want to open a case
 
   - intent: intent_services_offline
     examples: |
