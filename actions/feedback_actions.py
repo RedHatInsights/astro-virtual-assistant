@@ -22,6 +22,7 @@ WHERE = "feedback_where"
 COLLECTION = "feedback_collection"
 RESPONSE = "feedback_response"
 USABILITY_STUDY = "feedback_usability_study"
+IMMEDIATE_ATTENTION = "feedback_immediate_attention"
 
 FEEDBACK_SLOTS = [
     TYPE,
@@ -29,6 +30,7 @@ FEEDBACK_SLOTS = [
     COLLECTION,
     RESPONSE,
     USABILITY_STUDY,
+    IMMEDIATE_ATTENTION,
 ]
 
 RESET_SLOTS = [SlotSet(key, None) for key in FEEDBACK_SLOTS]
@@ -387,4 +389,18 @@ class ActionFeedbackFormToClosingForm(Action):
         return [
             FollowupAction("form_closing"),
             SlotSet("feedback_form_to_closing_form", None),
+        ]
+
+
+class ActionFeedbackUrgentSupport(Action):
+    def name(self) -> Text:
+        return "action_feedback_urgent_support"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        return [
+            SlotSet("feedback_type", "bug"),
+            SlotSet("feedback_where", "console"),
+            SlotSet("requested_slot", "feedback_where"),
         ]

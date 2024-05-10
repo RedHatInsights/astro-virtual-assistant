@@ -9,6 +9,7 @@ actions:
   - execute_form_feedback
   - action_feedback_type_bug
   - action_feedback_form_to_closing_form
+  - action_feedback_urgent_support
 
 forms:
   form_feedback:
@@ -48,6 +49,21 @@ slots:
       - conversation
     mappings: &custom_mapping
       - type: custom
+  feedback_immediate_attention:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_immediate_support
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions:
+          - active_loop: form_feedback
+            requested_slot: feedback_immediate_support
   # How does the user want their data to be collected?
   # i.e. the bot or the pendo form
   feedback_collection:

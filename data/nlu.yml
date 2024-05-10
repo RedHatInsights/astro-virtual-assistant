@@ -158,10 +158,21 @@ nlu:
       - Where can I find an agent?
       - Give me a damn human being!!
       - is this chat live?
-      - customer support
       - can you have a real time conversatoin
       - do you have tech support
       - can i talk to a technical support agent
+  
+  - intent: intent_support
+    examples: |
+      - support case
+      - can I speak to support?
+      - customer support
+      - Open a support case
+      - Give me a support case
+      - i have an urgent issue and need support
+      - urgent bug
+      - i need help with an urgent issue
+      - i have to make a support request
 
   - intent: intent_services_offline
     examples: |
