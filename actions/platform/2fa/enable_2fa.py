@@ -42,7 +42,7 @@ org_or_account_choice = FuzzySlotMatch(
 )
 
 
-class ActionAskFormEnable2faOrgOrAccount(Action):
+class ActionEnable2faFormPrefill(Action):
     def name(self) -> Text:
         return "action_enable_2fa_form_prefill"
 
@@ -92,7 +92,10 @@ class Enable2fa(FormValidationAction):
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
         requested_slot = tracker.get_slot("requested_slot")
 
-        if tracker.get_slot(ORG_OR_ACCOUNT_SLOT) == "personal":
+        if (
+            requested_slot == None
+            and tracker.get_slot(ORG_OR_ACCOUNT_SLOT) == "personal"
+        ):
             dispatcher.utter_message(response="utter_enable_2fa_individual_1")
             dispatcher.utter_message(response="utter_enable_2fa_individual_2")
             return
@@ -109,7 +112,7 @@ class Enable2fa(FormValidationAction):
         return []
 
 
-class ActionEnableOrg2FaCommand(Action):
+class ActionEnable2fa(Action):
     def name(self) -> Text:
         return "action_enable_2fa"
 
