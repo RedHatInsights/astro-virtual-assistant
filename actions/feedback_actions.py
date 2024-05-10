@@ -245,7 +245,7 @@ class ValidateFormFeedback(FormValidationAction):
                         SlotSet("closing_feedback_type", "this_conversation"),
                     ]
                 )
-    
+
         if requested_slot == IMMEDIATE_ATTENTION:
             feedback_attention = tracker.get_slot(IMMEDIATE_ATTENTION)
             if feedback_attention is True:
@@ -255,13 +255,10 @@ class ValidateFormFeedback(FormValidationAction):
                 return events + RESET_SLOTS
             elif feedback_attention is False:
                 # should swap to general feedback- C9.2 to C10.3
-                return (
-                    events
-                    + [
-                        SlotSet(TYPE, "general"),
-                        SlotSet("requested_slot", WHERE),
-                    ]
-                )
+                return events + [
+                    SlotSet(TYPE, "general"),
+                    SlotSet("requested_slot", WHERE),
+                ]
 
         if requested_slot == COLLECTION:
             feedback_collection = tracker.get_slot(COLLECTION)
@@ -315,7 +312,7 @@ class ValidateFormFeedback(FormValidationAction):
             updated_slots.remove(USABILITY_STUDY)
             if tracker.get_slot(WHERE) == "conversation":
                 updated_slots.remove(IMMEDIATE_ATTENTION)
-        
+
         if tracker.get_slot(TYPE) == "general":
             if tracker.get_slot("feedback_where") == "conversation":
                 updated_slots.remove(COLLECTION)

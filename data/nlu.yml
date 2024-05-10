@@ -161,7 +161,7 @@ nlu:
       - can you have a real time conversatoin
       - do you have tech support
       - can i talk to a technical support agent
-  
+
   - intent: intent_support
     examples: |
       - support case

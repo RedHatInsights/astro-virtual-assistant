@@ -13,7 +13,7 @@ rules:
       - action: action_feedback_type_bug
       - action: form_feedback
       - active_loop: form_feedback
-  
+
   - rule: Urgent support
     steps:
       - intent: intent_support
