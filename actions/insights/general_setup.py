@@ -16,7 +16,7 @@ product_kind = FuzzySlotMatch(
     [
         FuzzySlotMatchOption("ansible"),
         FuzzySlotMatchOption("rhel", ["rhel", "enterprise", "linux"]),
-        FuzzySlotMatchOption("openshift", ["openshift", "open shift"]),
+        FuzzySlotMatchOption("openshift"),
     ],
 )
 
