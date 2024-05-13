@@ -1,0 +1,8 @@
+version: "3.1"
+
+stories:
+  - story: User wants to set up Insights - 1
+    steps:
+      - intent: intent_setup_insights
+      - action: form_setup_insights
+      - active_loop: form_setup_insights
