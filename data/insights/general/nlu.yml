@@ -1,0 +1,37 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_setup_insights
+    examples: |
+      - set up insights
+      - how to set up insights
+      - where can i install insights
+      - show me directions for getting insights up
+      - insights installation guidance
+      - how do i get started with insights
+      - install insights for me
+      - insights setup
+      - insights docuementation for installation?
+      - getting started with insights
+      - insights for rhel setup
+      - insights for advisor installation guide?
+      - insights for ansible help
+      - help me wit rhel insights activation
+      - activate insights for openshift please
+      - configure insights on linux
+      - ansible insights configuration assistance
+      - is there any manual for getting linux insights up and running
+      - help me with openshift insights
+      - insights for ansible
+      - rhel insights setup
+      - ansible insights set up
+      - openshift insights set up
+      - open shift insights set up
+      - linux insights set up
+      - setup insights ansible
+      - set up insights ansible
+      - setup insights openshift
+      - setup insights open shift
+      - set up insights openshift
+      - setup insights rhel
+      - set up insights rhel

@@ -1,0 +1,19 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to set up insights
+    steps:
+      - intent: intent_setup_insights
+      - action: form_setup_insights
+      - active_loop: form_setup_insights
+
+  - rule: Set up insights continued
+    condition:
+      - active_loop: form_setup_insights
+    steps:
+      - action: form_setup_insights
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
