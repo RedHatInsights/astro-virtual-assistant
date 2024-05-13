@@ -7,6 +7,7 @@ intents:
 actions:
   - validate_form_closing
   - execute_form_closing
+  - validate_form_closing_anything_else
   - execute_form_closing_anything_else
   - action_skip_got_help
   - action_closing_feedback_type_bad_experience
@@ -97,7 +98,7 @@ responses:
   utter_closing_got_help_no:
     - text: Thanks for sharing.
   utter_ask_closing_leave_feedback:
-    - text: Got it. Would you like to leave any additional feedback?
+    - text: Would you like to leave any additional feedback?
       buttons: &buttons_yes_no
         - title: Yes
           payload: /intent_core_yes
@@ -116,8 +117,7 @@ responses:
         Please talk below about our conversation.
   utter_closing_finally:
     - text: >
-        My team is training me so that I'm able to expand the ways I can help you. Your interactions and
-        feedback are key to my ability to grow and learn.
+        Your interactions and feedback are key to my ability to grow and learn.
   utter_ask_closing_anything_else:
     - text: Is there anything else I can help you with today?
       buttons: *buttons_yes_no

@@ -19,7 +19,9 @@ objects:
       - vulnerability-engine
       - content-sources-backend
       - sources-api
-      - swatch-api
+      - rhsm-api-proxy
+      - ccx-smart-proxy
+      - chrome-service
 
     inMemoryDb: true
     database:

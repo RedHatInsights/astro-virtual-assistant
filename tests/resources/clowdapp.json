@@ -47,8 +47,20 @@
       "port": 8080
     },
     {
-      "app": "swatch-api",
-      "hostname": "swatch.svc",
+      "app": "rhsm-api-proxy",
+      "hostname": "rhsm-api-proxy.svc",
+      "name": "service",
+      "port": 8000
+    },
+    {
+      "app": "chrome-service",
+      "hostname": "chrome.svc",
+      "name": "api",
+      "port": 1337
+    },
+    {
+      "app": "ccx-smart-proxy",
+      "hostname": "openshift-advisor",
       "name": "service",
       "port": 8000
     }

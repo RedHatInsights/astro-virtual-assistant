@@ -116,7 +116,7 @@ data:
               "type": "prometheus",
               "uid": "${datasource}"
             },
-            "description": "The proportion of sufficiently fast requests, as measured from the load balancer metrics. \"Sufficiently fast” is defined as < 500 ms.",
+            "description": "The proportion of sufficiently fast requests, as measured from the load balancer metrics. \"Sufficiently fast” is defined as < 1000 ms.",
             "fieldConfig": {
               "defaults": {
                 "color": {
@@ -169,13 +169,13 @@ data:
                 },
                 "editorMode": "code",
                 "exemplar": false,
-                "expr": "sum(rate(api_3scale_gateway_api_time_bucket{le=\"0500.0\", exported_service=\"virtual-assistant\"}[$__range:1m])) / sum(rate(api_3scale_gateway_api_time_bucket{le=\"+Inf\", exported_service=\"virtual-assistant\"}[$__range:1m]))",
+                "expr": "sum(rate(api_3scale_gateway_api_time_bucket{le=\"1000.0\", exported_service=\"virtual-assistant\"}[$__range:1m])) / sum(rate(api_3scale_gateway_api_time_bucket{le=\"+Inf\", exported_service=\"virtual-assistant\"}[$__range:1m]))",
                 "legendFormat": "__auto",
                 "range": true,
                 "refId": "A"
               }
             ],
-            "title": "Latency SLO <500ms (>90%)",
+            "title": "Latency SLO <1000ms (>90%)",
             "type": "stat"
           },
           {
@@ -183,7 +183,7 @@ data:
               "type": "prometheus",
               "uid": "${datasource}"
             },
-            "description": "The percentage of requests that result in an error or failure. Any HTTP status other than 400–599 is considered successful.",
+            "description": "The percentage of requests that result in an error or failure. Any HTTP status other than 500–599 is considered successful.",
             "fieldConfig": {
               "defaults": {
                 "color": {
@@ -236,7 +236,7 @@ data:
                 },
                 "editorMode": "code",
                 "exemplar": false,
-                "expr": "round(sum(rate(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\", status=~\"4xx|5xx\"}[$__range:1m]))\n   /\nsum(rate(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\"}[$__range:1m])), 0.0001)",
+                "expr": "round(sum(rate(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\", status=~\"5xx\"}[$__range:1m]))\n   /\nsum(rate(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\"}[$__range:1m])), 0.0001)",
                 "legendFormat": "__auto",
                 "range": true,
                 "refId": "A"
@@ -250,7 +250,7 @@ data:
               "type": "prometheus",
               "uid": "${datasource}"
             },
-            "description": "The proportion of sufficiently fast requests, as measured from the load balancer metrics. \"Sufficiently fast” is defined as < 500 ms.",
+            "description": "The proportion of sufficiently fast requests, as measured from the load balancer metrics. \"Sufficiently fast” is defined as < 2000 ms.",
             "fieldConfig": {
               "defaults": {
                 "color": {
@@ -303,13 +303,13 @@ data:
                 },
                 "editorMode": "code",
                 "exemplar": false,
-                "expr": "sum(rate(api_3scale_gateway_api_time_bucket{le=\"1000.0\", exported_service=\"virtual-assistant\"}[$__range:1m])) / sum(rate(api_3scale_gateway_api_time_bucket{le=\"+Inf\", exported_service=\"virtual-assistant\"}[$__range:1m]))",
+                "expr": "sum(rate(api_3scale_gateway_api_time_bucket{le=\"2000.0\", exported_service=\"virtual-assistant\"}[$__range:1m])) / sum(rate(api_3scale_gateway_api_time_bucket{le=\"+Inf\", exported_service=\"virtual-assistant\"}[$__range:1m]))",
                 "legendFormat": "__auto",
                 "range": true,
                 "refId": "A"
               }
             ],
-            "title": "Latency SLO <1000ms (>95%)",
+            "title": "Latency SLO <2000ms (>95%)",
             "type": "stat"
           },
           {

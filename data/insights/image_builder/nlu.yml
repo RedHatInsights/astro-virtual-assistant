@@ -27,6 +27,14 @@ nlu:
       - Add [nvidia](image_builder_content) with image builder
       - I want to add [content](image_builder_content) from  repository to my images
       - RHEL image w [custom content](image_builder_content)
+      - add a custom repo
+      - lets add a custom repo
+      - i want to add a repo
+      - i want to add a repository
+      - enable a repo
+      - enable a repository
+      - add a repository to rhel
+      - customize my rhel image
 
   - intent: intent_image_builder_launch
     examples: |
@@ -39,26 +47,3 @@ nlu:
       - How do I access my images
       - Where can I launch my RHEL images
       - I just used image builder, where are my images
-
-  - intent: intent_image_builder_rhel_9
-    examples: |
-      - RHEL 9
-      - 9
-      - the newest one
-
-  - intent: intent_image_builder_rhel_8
-    examples: |
-      - RHEL 8
-      - 8
-
-  - intent: intent_image_builder_custom_content_epel
-    examples: |
-      - epel
-
-  - intent: intent_image_builder_custom_content_epel_8
-    examples: |
-      - EPEL 8
-
-  - intent: intent_image_builder_custom_content_epel_9
-    examples: |
-      - EPEL 9

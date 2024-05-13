@@ -1,0 +1,237 @@
+version: "3.1"
+
+intents:
+  - intent_notifications_setup
+  - intent_notifications_edit
+  - intent_notifications_troubleshoot
+
+slots:
+  notifications_bundle:
+    type: text
+    influence_conversation: true
+    mappings: &custom_mapping
+      - type: custom
+  notifications_event:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_bundle_option:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+      - type: from_intent
+        value: "learn"
+        intent: intent_core_learn_more
+        conditions:
+          - active_loop: form_notifications
+            requested_slot: notifications_bundle_option
+  notifications_event_option:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_behavior_option:
+    type: text
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_contact_admin:
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_troubleshoot_to_integrations: # send the user to the integrations form
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
+  notifications_troubleshoot_to_notifications: # send the user to the notifications form
+    type: bool
+    influence_conversation: true
+    mappings: *custom_mapping
+
+forms:
+  form_notifications:
+    required_slots:
+      - notifications_bundle_option
+      - notifications_event_option
+      - notifications_bundle
+      - notifications_event
+      - notifications_behavior_option
+  form_notifications_troubleshoot:
+    required_slots:
+      - notifications_bundle_option
+
+actions:
+  - validate_form_notifications
+  - validate_form_notifications_troubleshoot
+  - action_notifications_setup
+  - action_notifications_edit
+  - action_notifications_troubleshoot
+  - action_notifications_reset
+
+responses:
+  utter_notifications_non_admin:
+    - text: "Only your organization administrator can create and configure notification events."
+  utter_notifications_learn:
+    - text: "Okay, I recommend these resources on the Notifications service."
+  utter_notifications_learn_dashboard:
+    - text: "[Notifications dashboard](/settings/notifications)"
+  utter_notifications_learn_docs:
+    - text: "[Documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
+  utter_notifications_bundle_which_event:
+    - text: "What event would you like to {option}?"
+  utter_notifications_error:
+    - text: "Sorry, I'm having trouble communicating with the Notifications service. Please try again later."
+
+  # Setup notifications
+  utter_notifications_setup:
+    - text: "It sounds like you want to configure an event notification for your organization."
+  utter_notifications_setup_non_admin_can_help:
+    - text: "I can help you modify your notification preferences or contact your org admin for you."
+      buttons:
+        - title: "Manage preferences for my current notifications"
+          payload: "manage preferences"
+        - title: "Contact my organization's admin for me"
+          payload: "contact orgadmin"
+  utter_notifications_setup_which_service:
+    - text: "Which service would you like to configure an event notification for?"
+      buttons:
+        - title: "OpenShift"
+          payload: "openshift"
+        - title: "RHEL"
+          payload: "rhel"
+        - title: "Core Console Services"
+          payload: "core console"
+        - title: "I'm not sure"
+          payload: "not sure"
+  utter_notifications_setup_not_sure_service:
+    - text: "Okay, here are some resources for you."
+  utter_notifications_setup_for_chosen_service:
+    - text: "Got it. Let's set up an {bundle} event."
+
+  # Edit notifications
+  utter_notifications_edit:
+    - text: "It sounds like you want to manage your notifications."
+  utter_notifications_edit_non_admin:
+    - text: "To manage your preferences, please choose a product."
+      buttons:
+        - title: "OpenShift"
+          payload: "openshift"
+        - title: "RHEL"
+          payload: "rhel"
+        - title: "Core Console Services"
+          payload: "core console"
+  utter_notifications_edit_non_admin_options:
+    - text: "Would you like to manage your preferences or contact your org admin for additional changes?"
+      buttons:
+        - title: "Manage my preferences"
+          payload: "manage preferences"
+        - title: "Contact my organization's admin"
+          payload: "contact admin"
+  utter_notifications_edit_selected_non_admin:
+    - text: "Great! I'll open up the page where you can manage preferences for {service}."
+  utter_notifications_edit_what:
+    - text: "Would you like to modify them for your whole organization or manage how you receive existing notifications?"
+      buttons:
+        - title: "Manage my organization's notifications"
+          payload: "manage events"
+        - title: "Manage my own preferences"
+          payload: "manage preferences"
+        - title: "Learn more about notifications"
+          payload: "learn more"
+  utter_notifications_edit_events:
+    - text: "Got it! You want to manage your organization's notifications."
+  utter_notifications_edit_events_how:
+    - text: "What would you like to change?"
+      buttons:
+        - title: "Set up a new event"
+          payload: "new"
+        - title: "Modify an existing event"
+          payload: "modify"
+        - title: "Disable an event"
+          payload: "disable"
+  utter_notifications_edit_events_which_service:
+    - text: "Great! I can help modify settings for the following services:"
+      buttons:
+        - title: "OpenShift"
+          payload: "openshift"
+        - title: "RHEL"
+          payload: "rhel"
+        - title: "Core Console Services"
+          payload: "core console"
+  utter_notifications_edit_events_for_service:
+    - text: "Okay. Which {bundle} event do you want to modify?"
+      buttons: []
+  utter_notifications_edit_events_none_1:
+    - text: "You don't have any active events for {bundle} yet."
+  utter_notifications_edit_events_none_2:
+    - text: "Visit the [Notifications dashboard](/settings/notifications/configure-events) for more information."
+  utter_notifications_edit_events_mute_success:
+    - text: "I have muted notifications for the {event} event."
+  utter_notifications_edit_events_mute_error:
+    - text: "I was unable to mute this event. Please try again later."
+  utter_notifications_edit_preferences_selected:
+    - text: "Great! I'll open up the page where you can manage preferences for {service}."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/user-preferences/notifications?bundle={bundle}&app={service}"
+  utter_notifications_edit_preferences_other_admin:
+    - text: "You need to add the event to your organization's notification events. Contact support for product information."
+  utter_notifications_edit_preferences_other:
+    - text: "Your Organization Administrator has configured which notifications you can or can't receive. You will need to contact that person to request access to other events."
+
+  # Behavior groups
+  utter_notifications_edit_selected_event:
+    - text: "How would you like to change {event}?"
+      buttons:
+        - title: "Attach an existing behavior group"
+          payload: "attach"
+        - title: "Create a new behavior group"
+          payload: "create"
+        - title: "Remove existing behavior groups"
+          payload: "remove"
+  utter_notifications_edit_new_group:
+    - text: "The Notifications dashboard has plenty of options for you. I'll open it in a new tab."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/notifications/configure-events?name={event}"
+  utter_notifications_edit_existing_group:
+    - text: "Okay. The Notifications dashboard lets you attach and detach behavior groups to your events."
+  utter_notifications_edit_no_groups:
+    - text: "You don't have any behavior groups attached to the {event} event yet."
+  utter_notifications_edit_no_groups_what:
+    - text: "What would you like to do?"
+      buttons:
+        - title: "Attach an existing behavior group"
+          payload: "attach"
+        - title: "Create a new behavior group"
+          payload: "create"
+  utter_notifications_edit_create_group:
+    - text: "Great! I'm redirecting you to the Notifications dashboard. Navigate to the **Behavior group** tab, click **Create a new group** in the Console, and select {event} event in step 3."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: "{base_console_url}/settings/notifications/configure-events"
+
+  # Troubleshoot notifications
+  utter_notifications_troubleshoot_non_admin:
+    - text: "I'm sorry you're experiencing challenges with the Notifications service. What can I help you with?"
+      buttons: &notifications_capabilities_non_admin
+        - title: "Manage my notification preferences"
+          payload: "manage preferences"
+        - title: "Learn more about the Notifications service"
+          payload: "learn more"
+  utter_notifications_troubleshoot_org_admin:
+    - text: "I'm sorry you're experiencing challenges with the Notifications service. What can I help you with?"
+      buttons: &notifications_capabilities_org_admin
+        - title: "Manage my organization's notifications"
+          payload: "manage events"
+        - title: "Manage my integrations"
+          payload: "manage integrations"
+        - title: "Manage my notification preferences"
+          payload: "manage preferences"
+        - title: "Learn more about the Notifications service"
+          payload: "learn more"

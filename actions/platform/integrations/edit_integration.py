@@ -1,8 +1,7 @@
 import json
 from abc import abstractmethod
 from json import JSONDecodeError
-from typing import Text, Dict, List, Any
-from urllib.parse import urlparse
+from typing import Text, Dict, List, Any, Optional
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.events import SlotSet, EventType
@@ -10,12 +9,12 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
 from actions.platform.integrations import (
-    all_required_slots_are_set,
     is_source_name_valid,
     validate_integration_url,
 )
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
 from common.requests import send_console_request
+from actions.actions import all_required_slots_are_set
 
 integration_edit_what_match = FuzzySlotMatch(
     "integration_edit_what",
@@ -44,6 +43,8 @@ integration_edit_data_what_valid = {
     "reporting": ["name", "url", "secret"],
     "webhook": ["name", "url", "secret"],
 }
+
+MAX_NUMBER_OF_INTEGRATIONS = 5
 
 
 class IntegrationEditInit(Action):
@@ -97,9 +98,19 @@ class IntegrationEdit(FormValidationAction):
         return {"integration_edit_what": slot_value}
 
 
-class AskIntegrationEditWhat(Action):
-    def name(self) -> Text:
-        return "action_ask_integration_edit_integration"
+class IntegrationButtonBuilder:
+
+    def integration_buttons(self, integrations: Dict):
+        buttons = []
+        for index, integration in enumerate(integrations):
+            buttons.append(
+                {
+                    "title": integration["name"],
+                    "payload": f"integration:{json.dumps(integration)}",
+                }
+            )
+
+        return buttons
 
     def notifications_type_to_group(self, integration):
         if integration["type"] == "webhook":
@@ -113,27 +124,34 @@ class AskIntegrationEditWhat(Action):
             if integration["sub_type"] in reporting_camel_subtypes:
                 return "reporting"
 
-    async def fetch_integrations(self, tracker: Tracker) -> (Dict, bool):
-        search = tracker.get_slot("integration_edit_integration_search")
+    async def fetch_integrations(
+        self, tracker: Tracker, enabled: Optional[bool] = None
+    ) -> (Dict, bool):
+        search = tracker.get_slot("integration_edit_integration_search") or ""
         integrations = []
 
         has_errors = False
 
         prepend_camel = lambda s: f"camel:{s}"
+        params = {
+            "name": search,
+            "type": [
+                "webhook",
+                *reporting_types,
+                *map(prepend_camel, reporting_camel_subtypes),
+                *map(prepend_camel, communications_camel_subtypes),
+            ],
+            "limit": MAX_NUMBER_OF_INTEGRATIONS,
+        }
+
+        if enabled is not None:
+            params["active"] = str(enabled)
 
         response, content = await send_console_request(
             "notifications",
             f"/api/integrations/v1.0/endpoints",
             tracker,
-            params={
-                "name": search,
-                "type": [
-                    "webhook",
-                    *reporting_types,
-                    *map(prepend_camel, reporting_camel_subtypes),
-                    *map(prepend_camel, communications_camel_subtypes),
-                ],
-            },
+            params=params,
         )
 
         if response.ok:
@@ -150,11 +168,19 @@ class AskIntegrationEditWhat(Action):
         else:
             has_errors = True
 
+        params = {
+            "filter[name][contains_i]": search,
+            "limit": MAX_NUMBER_OF_INTEGRATIONS,
+        }
+
+        if enabled is not None:
+            if enabled is True:
+                params["filter[paused_at][nil]"] = "1"
+            else:
+                params["filter[paused_at][not_nil]"] = "1"
+
         response, content = await send_console_request(
-            "sources",
-            f"/api/sources/v3.1/sources",
-            tracker,
-            params={"filter[name][contains_i]": search},
+            "sources", f"/api/sources/v3.1/sources", tracker, params=params
         )
 
         if response.ok:
@@ -176,18 +202,75 @@ class AskIntegrationEditWhat(Action):
         else:
             has_errors = True
 
-        return integrations, has_errors
+        return integrations[:5], has_errors
 
-    def utter_results(self, integrations: Dict, dispatcher: CollectingDispatcher):
-        buttons = []
-        for index, integration in enumerate(integrations):
+
+class AskIntegrationDisable(Action, IntegrationButtonBuilder):
+    def name(self) -> Text:
+        return "action_ask_form_integration_edit_disable_integration_edit_integration_search"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        integrations, has_errors = await self.fetch_integrations(tracker, enabled=True)
+
+        dispatcher.utter_message(
+            response="utter_form_integration_edit_disable_integration_edit_integration_search"
+        )
+
+        # Silently ignore errors this at this point, we are going to try again in the next message
+        if not has_errors and len(integrations) > 0:
+            buttons = self.integration_buttons(integrations)
             buttons.append(
                 {
-                    "title": integration["name"],
-                    "payload": f"integration:{json.dumps(integration)}",
+                    "title": "I want to do something else",
+                    "payload": "/intent_core_something_else",
                 }
             )
 
+            dispatcher.utter_message(
+                response="utter_integration_select_or_type", buttons=buttons
+            )
+
+        return []
+
+
+class AskIntegrationEnable(Action, IntegrationButtonBuilder):
+    def name(self) -> Text:
+        return "action_ask_form_integration_edit_enable_integration_edit_integration_search"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        integrations, has_errors = await self.fetch_integrations(tracker, enabled=False)
+
+        dispatcher.utter_message(
+            response="utter_form_integration_edit_enable_integration_edit_integration_search"
+        )
+
+        # Silently ignore errors this at this point, we are going to try again in the next message
+        if not has_errors and len(integrations) > 0:
+            buttons = self.integration_buttons(integrations)
+            buttons.append(
+                {
+                    "title": "I want to do something else",
+                    "payload": "/intent_core_something_else",
+                }
+            )
+
+            dispatcher.utter_message(
+                response="utter_integration_select_or_type", buttons=buttons
+            )
+
+        return []
+
+
+class AskIntegrationEditWhat(Action, IntegrationButtonBuilder):
+    def name(self) -> Text:
+        return "action_ask_integration_edit_integration"
+
+    def utter_results(self, integrations: Dict, dispatcher: CollectingDispatcher):
+        buttons = self.integration_buttons(integrations)
         buttons.append(
             {
                 "title": "I want to do something else",
@@ -201,15 +284,21 @@ class AskIntegrationEditWhat(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        integrations, has_errors = await self.fetch_integrations(tracker)
+        if tracker.latest_message["intent"]["name"] == "intent_core_something_else":
+            return []
 
+        enabled_integrations = None
         if tracker.active_loop_name == "form_integration_edit_disable":
-            integrations = [i for i in integrations if i["enabled"] is True]
+            enabled_integrations = True
         elif tracker.active_loop_name == "form_integration_edit_enable":
-            integrations = [i for i in integrations if i["enabled"] is False]
+            enabled_integrations = False
+
+        integrations, has_errors = await self.fetch_integrations(
+            tracker, enabled=enabled_integrations
+        )
 
         if len(integrations) > 0:
-            self.utter_results(integrations[:5], dispatcher)
+            self.utter_results(integrations, dispatcher)
         elif has_errors:
             dispatcher.utter_message(response="utter_integration_error_fetching")
         else:
@@ -268,9 +357,24 @@ class IntegrationEditCommon(FormValidationAction):
             tracker.get_slot("requested_slot") == "integration_edit_integration_search"
             and tracker.latest_message["intent"]["name"] != "intent_core_something_else"
         ):
-            return {
-                "integration_edit_integration_search": tracker.latest_message["text"]
-            }
+            message = tracker.latest_message["text"]
+            if tracker.latest_message["text"].startswith("integration:"):
+
+                integration_data = message[len("integration:") :]
+                try:
+                    integration = json.loads(integration_data)
+                    if (
+                        integration["type"] == "red_hat"
+                        or integration["type"] == "notifications"
+                    ):
+                        return {
+                            "integration_edit_integration_search": integration["name"],
+                            "integration_edit_integration": integration_data,
+                        }
+                finally:
+                    pass
+
+            return {"integration_edit_integration_search": message}
 
         return {}
 

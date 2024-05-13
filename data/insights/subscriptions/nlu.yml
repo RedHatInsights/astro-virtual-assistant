@@ -77,6 +77,11 @@ nlu:
       - How many subscriptions that are expiring soon?
       - what information do you have for my subs?
       - information on my subscriptions
+      - View my subscriptions
+      - view my organizations subscriptions
+      - show me my subscriptions
+      - Where can I see my subscriptions?
+      - Can you show me my subscriptions?
 
   - intent: intent_subscriptions_redirect
     examples: |
@@ -93,3 +98,8 @@ nlu:
       - Show subscriptions docs
       - Show subscriptions documentations
       - open the subs doc page
+      - View subscription documentation on the redhat portal
+      - View subscription documentation on the red-hat portal
+      - view subscription documentation on the portal
+      - view documentation on the red hat portal
+      - view subs documentation on the red hat portal

@@ -3,11 +3,6 @@ version: "3.1"
 intents:
   - intent_feedback_any
   - intent_feedback_bug
-  - intent_feedback_is_it_general
-  - intent_feedback_is_it_a_bug
-  - intent_feedback_where_console
-  - intent_feedback_where_conversation
-  - intent_feedback_collect_with_pendo
 
 actions:
   - validate_form_feedback
@@ -33,20 +28,9 @@ slots:
       - general
       - bug
     mappings:
-      - type: from_intent
-        value: general
-        intent: intent_feedback_is_it_general
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_type
+      - type: custom
       - type: from_intent
         value: bug
-        intent: intent_feedback_is_it_a_bug
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_type
-      - type: from_intent
-        value: general
         intent: intent_core_yes
         conditions:
           - active_loop: form_feedback
@@ -62,19 +46,8 @@ slots:
     values:
       - console
       - conversation
-    mappings:
-      - type: from_intent
-        value: console
-        intent: intent_feedback_where_console
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_where
-      - type: from_intent
-        value: conversation
-        intent: intent_feedback_where_conversation
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_where
+    mappings: &custom_mapping
+      - type: custom
   # How does the user want their data to be collected?
   # i.e. the bot or the pendo form
   feedback_collection:
@@ -82,19 +55,7 @@ slots:
     values:
       - assistant
       - pendo
-    mappings:
-      - type: from_intent
-        value: assistant
-        intent: intent_core_here
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_collection
-      - type: from_intent
-        value: pendo
-        intent: intent_feedback_collect_with_pendo
-        conditions:
-          - active_loop: form_feedback
-            requested_slot: feedback_collection
+    mappings: *custom_mapping
   feedback_response:
     type: text
     mappings:
@@ -127,25 +88,25 @@ responses:
     - text: "Is your feedback about an error or bug you've experienced?"
       buttons:
         - title: "Yes, it's about a bug"
-          payload: "/intent_feedback_is_it_a_bug"
+          payload: "It's about a bug"
         - title: "Something else"
-          payload: "/intent_feedback_is_it_general"
+          payload: "Something else"
   utter_feedback_type_bug:
     - text: I'm sorry about that.
   utter_ask_feedback_where_general:
     - text: Got it. Is your feedback about the console or about this conversation?
       buttons:
         - title: "The console"
-          payload: "/intent_feedback_where_console"
+          payload: "console"
         - title: "This conversation"
-          payload: "/intent_feedback_where_conversation"
+          payload: "conversation"
   utter_ask_feedback_collection:
     - text: "How would you like to provide your feedback?"
       buttons:
         - title: "Through this conversation"
-          payload: "/intent_core_here"
+          payload: "conversation"
         - title: "With our form"
-          payload: "/intent_feedback_collect_with_pendo"
+          payload: "pendo"
   utter_feedback_collection_pendo:
     - text: "Great! I'll open that form up for you. You can return to this conversation if you need any additional assistance."
       custom:
@@ -172,9 +133,9 @@ responses:
     - text: "Where did you encounter the bug?"
       buttons:
         - title: "The console"
-          payload: "/intent_feedback_where_console"
+          payload: "console"
         - title: "This conversation"
-          payload: "/intent_feedback_where_conversation"
+          payload: "conversation"
   utter_bug_redirect:
     - text: For urgent issues, I'll direct you to our support page for further assistance. If you want to continue our conversation, I'll be here!
       custom:

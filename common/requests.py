@@ -37,6 +37,8 @@ async def send_console_request(
     endpoint = None
     if app_name == "advisor":
         endpoint = app.advisor_url
+    elif app_name == "advisor-openshift":
+        endpoint = app.advisor_openshift_url
     elif app_name == "notifications-gw":
         endpoint = app.notifications_gw_url
     elif app_name == "notifications":
@@ -83,6 +85,10 @@ async def send_console_request(
         logger.error(
             f"Exception while handling request: {method.upper()} {url}", exc_info=True
         )
+        bad_response = object()
+        bad_response.ok = False
+        bad_response.status = None
+
         if fetch_content:
-            return None, None
-        return None
+            return bad_response, None
+        return bad_response

@@ -11,8 +11,6 @@ nlu:
       - What are the availability problems on my systems?
       - What stability issues do I have?
       - What are the stability issues on my systems?
-  - intent: insights_advisor_recommendation_pathways
-    examples: |
       - Are there any recommendations from Advisor?
       - Recommendations from Advisor
       - Advisor recommendations
@@ -33,3 +31,14 @@ nlu:
       - What is advisor telling me to do?
       - what recommendations do I have
       - advisor info
+      - What new issues do I have?
+      - Show me stability issues in Advisor
+      - Show me whats new in Advisor
+      - Show me new recommendations in Advisor
+      - Which issues were found most recently?
+      - Show me performance recommendations from Advisor
+      - What are the new problems on my systems?
+      - new recommendations Advisor
+      - new rhel advisor
+      - Any performance suggestions from Advisor?
+      - new suggestions from Advisor?

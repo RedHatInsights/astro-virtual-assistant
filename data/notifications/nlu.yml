@@ -1,0 +1,103 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_notifications_setup
+    examples: |
+      - notifications
+      - set up event alerting
+      - get alerts
+      - find out about events
+      - get notifications
+      - send notifications to others
+      - create a notification
+      - create an alert
+      - add an alert
+      - add an event
+      - add a notification
+      - set up notifications
+      - setup a notification
+      - notif setup
+      - make new notificatons
+      - can you help me set up notifications
+      - i need to setup notifs
+      - how do i get emails about stuff on the console
+      - set up email alerts
+      - get email notifications
+      - i want slack notifications
+      - opt in to notifications
+      - subscribe to notification emails
+      - slack notification opt in
+      - sign me up for weekly digest emails
+      - i need to get those daily digest emails please
+      - i want to get notifications about patch
+      - i want to receive email notifications, can you do that for me?
+      - help me get notifications in ms teams?
+      - i want email alerts
+      - i want to get updates in my microsoft teams account
+      - i'd like to receive alerts in gchat
+      - can i point notifications to google chat channel?
+      - eda notifications - how to
+      - get alerts in splunk
+
+  - intent: intent_notifications_edit
+    examples: |
+      - how do I edit notifications
+      - how do I notify my team of events
+      - update alert settings for my team
+      - how to change alert settings
+      - how do I remove a notification for my org
+      - i want to get notified about events
+      - how do I opt out of emails
+      - how do I change my notification preferences
+      - how do I mute notifications
+      - how do I mute alerts
+      - change notifications
+      - edit notification
+      - edit alert
+      - delete notifications
+      - turn off notifications
+      - disable notifications
+      - modify notifications
+      - how do I modify notifications
+      - notifications are annoying and i want them to be turned off
+      - can i change the frequency of notifications
+      - notifications daily digest turn off
+      - sign up for notifications weekly digest
+      - notification alert opt out
+      - unsubscribe from emails
+      - unsubscribe alerts
+      - stop the emails
+      - im getting way too many slack notifications
+      - how can i edit the frequency of gchat notifications
+      - can i change my notifications?
+      - change notification settings
+      - notification settings update
+      - update notifications
+      - update alert configuration
+      - there's too many notifications coming
+      - limit alerts to once per day
+      - limit my emails to once a day?
+      - is there a daily digest option for notifications?
+
+  - intent: intent_notifications_troubleshoot
+    examples: |
+      - i'm not getting any notifications
+      - why am i not receiving email notifications
+      - my colleague got an email notification, but I did not
+      - I can't find my notifications
+      - notifications not working
+      - why did i stop receiving email notifications?
+      - my slack notifications stopped coming
+      - i'm not seeing my servicenow notifications any more
+      - did notifications stop working?
+      - something is wrong with my notifications
+      - one of my colleagues isnt getting emails
+      - my company's teams notifications are no longer coming through
+      - troubleshoot notifications problem
+      - missing notifications
+      - alerts are not coming through as expected
+      - why did my notifications to google chat stop
+      - alerts have been stopped
+      - we are having problems with notifications
+      - notifications issue
+      - issue occurring with account alerts

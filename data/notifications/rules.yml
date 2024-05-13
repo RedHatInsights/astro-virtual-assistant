@@ -1,0 +1,41 @@
+version: "3.1"
+
+rules:
+  - rule: Setting up a notification
+    steps:
+      - intent: intent_notifications_setup
+      - action: action_notifications_reset
+      - action: action_notifications_setup
+      - action: form_notifications
+      - active_loop: form_notifications
+
+  - rule: Edit notifications
+    steps:
+      - intent: intent_notifications_edit
+      - action: action_notifications_reset
+      - action: action_notifications_edit
+      - action: form_notifications
+      - active_loop: form_notifications
+
+  - rule: End of notification form
+    condition:
+      - active_loop: form_notifications
+    steps:
+      - action: form_notifications
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: End of notification form - contact admin
+    condition:
+      - active_loop: form_notifications
+      - slot_was_set:
+          - notifications_contact_admin: True
+    steps:
+      - action: form_notifications
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_access_contact_admin

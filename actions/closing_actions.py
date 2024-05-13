@@ -11,6 +11,9 @@ from rasa_sdk.events import (
 )
 from rasa_sdk.types import DomainDict
 
+from actions.actions import form_action_is_starting
+from common.metrics import flow_started_count, flow_finished_count, Flow
+
 
 class ValidateFormClosing(FormValidationAction):
     def name(self) -> Text:
@@ -70,6 +73,21 @@ class ValidateFormClosing(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        # feedback_type is set by the feedback flow
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            if tracker.get_slot("closing_feedback_type") is None:
+                flow_started_count(Flow.CLOSING)
+                return [
+                    SlotSet(key, None)
+                    for key in [
+                        "closing_got_help",
+                        "closing_leave_feedback",
+                        "closing_feedback",
+                        "closing_skip_got_help",
+                        "closing_feedback_type",
+                    ]
+                ]
+
         requested_slot = tracker.get_slot("requested_slot")
 
         if requested_slot == "closing_got_help":
@@ -141,6 +159,9 @@ class ExecuteFormClosing(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        if tracker.get_slot("closing_feedback_type") is None:
+            flow_finished_count(Flow.CLOSING)
+
         if tracker.get_slot("closing_leave_feedback") is True:
             closing_feedback_type = (
                 tracker.get_slot("closing_feedback_type") or "general"
@@ -178,7 +199,8 @@ class ExecuteFormClosing(Action):
                 },
             )
 
-        dispatcher.utter_message(response="utter_closing_finally")
+            dispatcher.utter_message(response="utter_feedback_transparency")
+            dispatcher.utter_message(response="utter_closing_finally")
         return [
             SlotSet(key, None)
             for key in [
@@ -191,6 +213,19 @@ class ExecuteFormClosing(Action):
         ]
 
 
+class ValidateFormClosingAnythingElse(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_form_closing_anything_else"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.CLOSING_ANYTHING_ELSE)
+
+        return await super().run(dispatcher, tracker, domain)
+
+
 class ExecuteFormClosingAnythingElse(Action):
     def name(self) -> Text:
         return "execute_form_closing_anything_else"
@@ -198,6 +233,7 @@ class ExecuteFormClosingAnythingElse(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        flow_finished_count(Flow.CLOSING_ANYTHING_ELSE)
         closing_anything_else = tracker.get_slot("closing_anything_else")
         if closing_anything_else is True:
             dispatcher.utter_message(response="utter_core_how_can_i_help")

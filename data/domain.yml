@@ -12,6 +12,7 @@ intents:
   - intent_core_yes
   - intent_core_no
   - intent_core_other
+  - intent_core_unsure
   - intent_data_privacy_policy
   - intent_data_deletion
   - intent_send_complaint
@@ -85,45 +86,49 @@ responses:
   utter_pii_warning:
     - text: "*You are about to utilize Red Hat's Hybrid Cloud Console virtual assistant chat tool. Please do not include any personal information or confidential information in your interaction with the virtual assistant. The tool is intended to assist with general queries. Please see [Red Hat Terms of use](https://www.redhat.com/en/about/terms-use) and [Privacy Statement](https://www.redhat.com/en/about/privacy-policy).*"
   utter_core_first_time:
-    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see this is your first conversation with me."
+    - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see that this is your first conversation with me."
   utter_core_greeting:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console."
   utter_core_hello:
     - text: "Hello!"
     - text: "Hi!"
-    - text: "Hello! It is great chatting with you."
+    - text: "Hello! It's great chatting with you."
   utter_core_hello_first_time:
-    - text: "Hello! It is a pleasure to meet you."
+    - text: "Hello! It's a pleasure to meet you."
   utter_core_how_can_i_help:
     - text: "How can I help you today?"
     - text: "How can I help you?"
   utter_core_capabilities_main:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Change my personal information
-          payload: /intent_user_preferences
-        - title: Request access from my administrator
-          payload: /intent_access_request
+        - title: Help me with an access issue
+          payload: /intent_access_capabilities
         - title: Show my critical vulnerabilities
           payload: /insights_vulnerability_my_cves
+        # - title: Set up notifications
+        #   payload: /intent_notifications_setup
+        - title: Create new integrations
+          payload: /intent_integration_setup
         - title: Get recommendations from Advisor
-          payload: /insights_advisor_recommendation_pathways
+          payload: /intent_insights_advisor_recommendation_by_type
   utter_core_capabilities_main_org_admin:
     - text: "Here are a few things I can help you with.\nSelect an option below or type in your questions:"
       buttons:
-        - title: Change my personal information
-          payload: /intent_user_preferences
+        # - title: Set up notifications
+        #   payload: /intent_notifications_setup
         - title: Show my critical vulnerabilities
           payload: /insights_vulnerability_my_cves
+        - title: Create new integrations
+          payload: /intent_integration_setup
         - title: Get recommendations from Advisor
-          payload: /insights_advisor_recommendation_pathways
+          payload: /intent_insights_advisor_recommendation_by_type
   utter_core_rephrase:
     - text: "I'm sorry. I didn't understand that. Could you try to rephrase your question?"
-    - text: "Sorry I didn't get that. Can you rephrase?"
+    - text: "Sorry, I didn't get that. Can you rephrase?"
     - text: 'I don''t understand. Say "I need help" for information on what I can do.'
   utter_core_unknown_input:
     - text: >
-        I'm sorry. I did not understand that answer. Could you try again?
+        I'm sorry. I didn't understand that answer. Could you try again?
   utter_planned_features:
     - text: "I haven't been programmed to do that yet. I'm still learning!"
     - text: "I'm working on that feature. Check for it again later."
@@ -159,7 +164,7 @@ responses:
   utter_user_complaint:
     - text: I'm sorry that you had a bad experience. You can type in your feedback below and I'll share it with my team.
   utter_user_preferences_all:
-    - text: You can change your personal information on redhat.com.
+    - text: You can change your personal information on [redhat.com](https://www.redhat.com).
   utter_user_preferences_specific:
     - text: "You can change your {preference} and other personal information on redhat.com."
   utter_user_preferences_login:
@@ -167,14 +172,14 @@ responses:
   utter_user_preferences_contact_support:
     - text: "Contact Red Hat Support at [access.redhat.com](https://access.redhat.com) for more information."
   utter_user_preferences_all_redirect:
-    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the [settings page](https://www.redhat.com/wapps/ugc/protected/personalInfo.html) in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
         params:
           url: https://www.redhat.com/wapps/ugc/protected/personalInfo.html
   utter_user_preferences_password_redirect:
-    - text: "I am opening the settings page in a new tab. Return to this tab to continue our conversation."
+    - text: "I am opening the [settings page](https://www.redhat.com/wapps/ugc/protected/password.html) in a new tab. Return to this tab to continue our conversation."
       custom:
         type: command
         command: redirect
@@ -185,7 +190,7 @@ responses:
   utter_services_offline_no_incidents:
     - text: "All services seem to be operating normally."
   utter_services_offline_error:
-    - text: "I was unable to talk with [status.redhat.com](https://status.redhat.com) to fulfill your request."
+    - text: "I was unable to communicate with [status.redhat.com](https://status.redhat.com) to fulfill your request."
   utter_services_offline_incidents:
     - text: "I'm sorry, but we are experiencing {count} incident(s)."
   utter_services_offline_info:

@@ -31,7 +31,5 @@ stories:
 
   - story: User wants to launch their images with their provider
     steps:
-      - user: |
-          Launch my rhel image with my provider
-        intent: intent_image_builder_launch
+      - intent: intent_image_builder_launch
       - action: action_image_builder_launch

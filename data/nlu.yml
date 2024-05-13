@@ -24,6 +24,12 @@ nlu:
       - Tell me about you
       - Tell me about yourself
       - Tell me what you can do
+      - What are your capabilities?
+      - What are your abilities?
+      - What capabilities do you have?
+      - What abilities do you have?
+      - What are my options?
+      - What are the options?
 
   - intent: intent_core_yes
     examples: |
@@ -125,6 +131,7 @@ nlu:
       - do you hate anyone
       - are you single
       - am I annoying you
+      - what's the weather?
 
   - synonym: agent
     examples: |
@@ -313,6 +320,7 @@ nlu:
       - I need to deploy
       - I would like to deploy
       - I would like help with my (core_services)
+      - can you help me with my problem?
 
   - intent: intent_core_here
     examples: |
@@ -343,6 +351,17 @@ nlu:
       - want to know more
       - more info
       - give me the info
+
+  - intent: intent_core_unsure
+    examples: |
+      - not sure
+      - unsure
+      - idk
+      - I'm not sure
+      - no clue
+      - I have no idea
+      - other
+      - im not sure
 
   - intent: intent_core_guide_me
     examples: |

@@ -46,7 +46,7 @@ actions_port = _config(
     "ACTIONS_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
 )
 internal_api_port = _config(
-    "INTERNAL_API_PORT", default=_config("PRIVATE_PORT", default=0), cast=int
+    "INTERNAL_API_PORT", default=_config("PRIVATE_PORT", default=8083), cast=int
 )
 
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
@@ -74,6 +74,10 @@ logging_cloudwatch_log_stream = _config("AWS_LOG_STREAM", default=os.uname().nod
 
 
 advisor_url = _config("ENDPOINT__ADVISOR_BACKEND__API__URL", default=__endpoint_default)
+advisor_openshift_url = _config(
+    "ENDPOINT__CCX_SMART_PROXY__SERVICE__URL",
+    default=__endpoint_default,
+)
 notifications_gw_url = _config(
     "ENDPOINT__NOTIFICATIONS_GW__SERVICE__URL", default=__endpoint_default
 )
@@ -81,7 +85,7 @@ notifications_url = _config(
     "ENDPOINT__NOTIFICATIONS_BACKEND__SERVICE__URL", default=__endpoint_default
 )
 chrome_service_url = _config(
-    "ENDPOINT__CHROME_SERVICE__SERVICE__URL", default=__endpoint_default
+    "ENDPOINT__CHROME_SERVICE__API__URL", default=__endpoint_default
 )
 
 sources_url = _config("ENDPOINT__SOURCES_API__SVC__URL", default=__endpoint_default)
@@ -92,7 +96,7 @@ vulnerability_url = _config(
 content_sources_url = _config(
     "ENDPOINT__CONTENT_SOURCES_BACKEND__SERVICE__URL", default=__endpoint_default
 )
-rhsm_url = _config("ENDPOINT__SWATCH_API__SERVICE__URL", default=__endpoint_default)
+rhsm_url = _config("ENDPOINT__RHSM_API_PROXY__SERVICE__URL", default=__endpoint_default)
 
 actions_url = _config(
     "PRIVATE_ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL", default="http://localhost:5055"

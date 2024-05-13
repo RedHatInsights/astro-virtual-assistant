@@ -1,7 +1,10 @@
+version: "3.1"
+
 intents:
   - intent_integration_setup
   - intent_core_learn_more
   - intent_core_guide_me
+  - intent_integration_troubleshoot
 
 actions:
   - validate_form_integration_setup
@@ -100,10 +103,10 @@ responses:
         and request access from your org admin.
   utter_integration_what:
     - text: >
-        Are you looking to set up an integration or learn more about how to do so?
+        Would you like me to show you where to learn more or walk you through it?
       buttons:
-        - title: Set Up an integration
-          payload: /intent_integration_setup
+        - title: Walk me through it
+          payload: /intent_core_guide_me
         - title: Learn more
           payload: /intent_core_learn_more
   utter_integration_learn_more_1:
@@ -356,8 +359,11 @@ responses:
     - text: >
         The url you entered does not start with `https://`.
 
-  utter_integration_troubleshoot:
+  utter_integration_troubleshoot_1:
     - text: >
-        I'm not able to help you troubleshoot integration errors at this time. Please review
+        I'm not able to help you troubleshoot integration errors at this time.
+  utter_integration_troubleshoot_2:
+    - text: >
+        Please review
         [our integrations](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#assembly-installing-configuring-insights-for-splunk_integrations) 
         documentation -- each integration has its own section on troubleshooting common errors.

@@ -1,19 +1,23 @@
 from abc import abstractmethod
 from typing import List, Dict, Text, Any
-from urllib.parse import urlparse
-
 from rasa_sdk import FormValidationAction, Tracker, Action
 from rasa_sdk.events import SlotSet, EventType, ActiveLoop
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
 from actions.platform.integrations import (
-    all_required_slots_are_set,
     is_source_name_valid,
     validate_integration_url,
 )
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+from common.metrics import (
+    flow_started_count,
+    Flow,
+    flow_finished_count,
+    integration_created_count,
+)
 from common.requests import send_console_request
+from actions.actions import all_required_slots_are_set, form_action_is_starting
 
 communication_slot_match = FuzzySlotMatch(
     "integration_setup_type",
@@ -37,7 +41,7 @@ integrations_slot_match = FuzzySlotMatch(
     "integration_setup_kind",
     [
         FuzzySlotMatchOption("cloud"),
-        FuzzySlotMatchOption("red_hat", ["red hat", "redhat"]),
+        FuzzySlotMatchOption("red_hat", ["red hat", "redhat", "red-hat", "red hat"]),
         FuzzySlotMatchOption("communications", sub_options=communication_slot_match),
         FuzzySlotMatchOption(
             "reporting",
@@ -82,6 +86,9 @@ class IntegrationSetup(FormValidationAction):
         tracker: "Tracker",
         domain: "DomainDict",
     ) -> List[EventType]:
+        if await form_action_is_starting(self, dispatcher, tracker, domain):
+            flow_started_count(Flow.INTEGRATIONS_SETUP)
+
         events = await super().run(dispatcher, tracker, domain)
         if tracker.get_slot("requested_slot") == "integration_setup_kind":
             resolved_match = resolve_slot_match(
@@ -90,12 +97,16 @@ class IntegrationSetup(FormValidationAction):
             if len(resolved_match) > 0:
                 for resolved_slot in resolved_match:
                     events.append(SlotSet(resolved_slot, resolved_match[resolved_slot]))
+                if resolved_match["integration_setup_kind"] == "cloud":
+                    flow_finished_count(Flow.INTEGRATIONS_SETUP, sub_flow_name="cloud")
+
             else:
                 dispatcher.utter_message(response="utter_integration_kind_not_found")
                 events.append(SlotSet("requested_slot", None))
                 events.append(ActiveLoop(None))
                 events.append(SlotSet("requested_slot", "integration_setup_kind"))
                 events.append(ActiveLoop("form_integration_setup"))
+                flow_finished_count(Flow.INTEGRATIONS_SETUP, sub_flow_name="none")
 
         return events
 
@@ -146,6 +157,12 @@ class IntegrationSetupCommon(FormValidationAction):
         )
 
     @abstractmethod
+    def sub_flow_name(self) -> Text:
+        raise NotImplementedError(
+            f"sub_flow_name was not implemented in {self.__class__.__name__}"
+        )
+
+    @abstractmethod
     async def process_data(
         self,
         tracker: Tracker,
@@ -168,6 +185,20 @@ class IntegrationSetupCommon(FormValidationAction):
         tracker: "Tracker",
         domain: "DomainDict",
     ) -> List[EventType]:
+        if (
+            tracker.get_slot("requested_slot") == "integration_setup_walk_me"
+            and tracker.latest_message["intent"]["name"] == "intent_core_learn_more"
+        ):
+            flow_finished_count(
+                Flow.INTEGRATIONS_SETUP, sub_flow_name=self.sub_flow_name()
+            )
+
+        if (
+            tracker.get_slot("requested_slot") == "integration_setup_create_other"
+            and tracker.latest_message["intent"]["name"] == "intent_core_yes"
+        ):
+            flow_started_count(Flow.INTEGRATIONS_SETUP)
+
         next_events = await super().run(dispatcher, tracker, domain)
 
         for event in next_events:
@@ -191,6 +222,9 @@ class IntegrationSetupCommon(FormValidationAction):
                 self, dispatcher, tracker, domain, ["integration_setup_create_other"]
             )
         ):
+            flow_finished_count(
+                Flow.INTEGRATIONS_SETUP, sub_flow_name=self.sub_flow_name()
+            )
             return await self.process_data(tracker, dispatcher, next_events)
 
         return next_events
@@ -336,6 +370,9 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
     def walk_template(self) -> Text:
         return "utter_integration_setup_redhat_go"
 
+    def sub_flow_name(self) -> Text:
+        return "red_hat"
+
     async def validate_integration_setup_name(
         self,
         slot_value: Any,
@@ -343,7 +380,7 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if is_source_name_valid(tracker, slot_value):
+        if await is_source_name_valid(tracker, slot_value):
             return {"integration_setup_name": slot_value}
         else:
             dispatcher.utter_message(response="utter_integration_name_used")
@@ -389,6 +426,7 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
         )
 
         if response.ok:
+            integration_created_count(self.sub_flow_name())
             dispatcher.utter_message(
                 response="utter_integration_setup_redhat_walk_success"
             )
@@ -470,6 +508,9 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
     def walk_template(self) -> Text:
         return "utter_integration_setup_communications_go"
 
+    def sub_flow_name(self) -> Text:
+        return "communications"
+
     async def process_data(
         self,
         tracker: Tracker,
@@ -502,6 +543,7 @@ class IntegrationSetupCommunications(IntegrationSetupCommon):
         )
 
         if response.ok:
+            integration_created_count(self.sub_flow_name())
             dispatcher.utter_message(
                 response="utter_integration_setup_communications_success",
                 integration_type_name=get_communications_integration_type_name(
@@ -562,14 +604,14 @@ class AskForIntegrationSetupWalkMe(Action):
     ) -> List[EventType]:
         if tracker.active_loop_name == "form_integration_setup_communications":
             dispatcher.utter_message(
-                response="utter_form_integration_setup_reporting_integration_setup_walk_me",
+                response="utter_form_integration_setup_communications_integration_setup_walk_me",
                 integration_type_display_name=self.get_communication_integration_type_display_name(
                     tracker
                 ),
             )
         elif tracker.active_loop_name == "form_integration_setup_reporting":
             dispatcher.utter_message(
-                response="utter_form_integration_setup_communications_integration_setup_walk_me",
+                response="utter_form_integration_setup_reporting_integration_setup_walk_me",
                 integration_type_display_name=self.get_reporting_integration_type_display_name(
                     tracker
                 ),
@@ -584,6 +626,9 @@ class IntegrationSetupReporting(IntegrationSetupCommon):
 
     def walk_template(self) -> Text:
         return "utter_integration_setup_communications_go"
+
+    def sub_flow_name(self) -> Text:
+        return "reporting"
 
     def get_integration_type(self, raw_type: str) -> Text:
         if raw_type == "ansible":
@@ -636,6 +681,7 @@ class IntegrationSetupReporting(IntegrationSetupCommon):
         )
 
         if response.ok:
+            integration_created_count(self.sub_flow_name())
             dispatcher.utter_message(
                 response="utter_integration_setup_reporting_success",
                 integration_type_name=get_reporting_integration_type_name(
@@ -682,6 +728,9 @@ class IntegrationSetupWebhook(IntegrationSetupCommon):
     def walk_template(self) -> Text:
         return "utter_integration_setup_webhook_go"
 
+    def sub_flow_name(self) -> Text:
+        return "webhook"
+
     async def process_data(
         self,
         tracker: Tracker,
@@ -713,6 +762,7 @@ class IntegrationSetupWebhook(IntegrationSetupCommon):
         )
 
         if response.ok:
+            integration_created_count(self.sub_flow_name())
             dispatcher.utter_message(response="utter_integration_setup_webhook_success")
         else:
             dispatcher.utter_message(response="utter_integration_setup_error")

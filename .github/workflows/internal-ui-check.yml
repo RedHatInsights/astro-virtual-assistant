@@ -1,0 +1,32 @@
+name: Internal UI checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: internal-ui/package-lock.json
+      - name: Install deps
+        run: npm install --prefix internal-ui
+      - name: Run lint
+        run: npm run lint --prefix internal-ui
+      - name: Run build
+        run: npm run build --prefix internal-ui
+      - name: Check if latest is already set
+        run: rm -rf internal/public && cp -R internal-ui/dist internal/public
+      - name: Fail if there is anything to commit
+        run: git diff --quiet HEAD -- internal/public || (echo "Run 'make internal-ui-update' to update latest internal ui code and commit" && false)

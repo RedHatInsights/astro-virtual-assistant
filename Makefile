@@ -1,4 +1,10 @@
-CONTAINER_EXEC ?= podman
+__CONTAINER_EXEC ?= podman
+
+ifeq (, $(shell which ${__CONTAINER_EXEC} 2> /dev/null))
+	__CONTAINER_EXEC := docker
+endif
+
+CONTAINER_EXEC ?= ${__CONTAINER_EXEC}
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
 export IS_RUNNING_LOCALLY=1
@@ -52,3 +58,8 @@ drop-db:
 
 compose:
 	pipenv run ${COMPOSE_EXEC} up
+
+internal-ui-update:
+	npm install --prefix internal-ui
+	npm run build --prefix internal-ui
+	rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public

@@ -6,6 +6,7 @@ intents:
   - intent_access_troubleshooting
   - intent_access_contact_admin
   - intent_access_check_access
+  - intent_access_org_id
 
 entities: []
 
@@ -57,6 +58,8 @@ actions:
   - validate_form_access_request
   - execute_form_access_request
   - action_access_request_send_message
+  - action_ask_form_access_request_access_request_confirmation
+  - action_access_org_id
 
 forms:
   form_access_request:
@@ -137,3 +140,7 @@ responses:
     - text: >
         Access within the console is based on the roles and permissions included in your User Groups. To check your
         access and permissions, visit [My User Access](https://console.redhat.com/iam/my-user-access).```
+
+  utter_access_org_id:
+    - text: >
+        Your Org ID is {org_id}. You can also find it by clicking on your name at the top right of the screen.

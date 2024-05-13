@@ -1,12 +1,22 @@
 version: "3.1"
 
 stories:
-  - story: User asks for advisor recommendations
+  - story: User asks for advisor recommendations - 1
     steps:
       - user: |
           What suggestions is [advisor](core_services) giving me?
-        intent: insights_advisor_recommendation_pathways
-      - action: utter_advisor_recommendation_pathways
-      - action: action_advisor_api_pathway
-      - action: form_closing
-      - active_loop: form_closing
+        intent: intent_insights_advisor_recommendation_by_type
+      - action: action_deactivate_loop
+      - action: form_insights_advisor_recommendation_by_category_init
+      - action: form_insights_advisor_recommendation_by_category
+      - active_loop: form_insights_advisor_recommendation_by_category
+
+  - story: User asks for advisor recommendations - 2
+    steps:
+      - user: |
+          new recommendations from [advisor](core_services)
+        intent: intent_insights_advisor_recommendation_by_type
+      - action: action_deactivate_loop
+      - action: form_insights_advisor_recommendation_by_category_init
+      - action: form_insights_advisor_recommendation_by_category
+      - active_loop: form_insights_advisor_recommendation_by_category

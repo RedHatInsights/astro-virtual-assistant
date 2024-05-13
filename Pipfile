@@ -27,10 +27,10 @@ google = "*"
 pyyaml = "*"
 
 [api-packages]
-rasa = "==3.6.15"
+rasa = "==3.6.20"
 
 [action-packages]
-rasa-sdk = "==3.7.1"
+rasa-sdk = "==3.8.0"
 
 [internal-packages]
 flask = ">=3.0.0"
