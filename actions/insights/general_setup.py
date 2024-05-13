@@ -15,7 +15,7 @@ product_kind = FuzzySlotMatch(
     "insights_product_kind",
     [
         FuzzySlotMatchOption("ansible"),
-        FuzzySlotMatchOption("rhel", ["rhel", "redhat", "red-hat", "red hat"]),
+        FuzzySlotMatchOption("rhel", ["rhel", "enterprise", "linux"]),
         FuzzySlotMatchOption("openshift", ["openshift", "open shift"]),
     ],
 )

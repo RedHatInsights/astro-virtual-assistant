@@ -26,12 +26,14 @@ nlu:
       - rhel insights setup
       - ansible insights set up
       - openshift insights set up
-      - open shift insights set up
       - linux insights set up
       - setup insights ansible
       - set up insights ansible
       - setup insights openshift
-      - setup insights open shift
       - set up insights openshift
       - setup insights rhel
       - set up insights rhel
+      - enterprise insights setup
+      - setup enterprise insights
+      - linux insights setup
+      - setup insights linux
