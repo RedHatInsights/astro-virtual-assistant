@@ -6,6 +6,7 @@ intents:
   - intent_out_of_scope
   - intent_unknown_topic
   - intent_live_chat
+  - intent_support
   - intent_services_offline
   - intent_core_session_start
   - intent_core_hello

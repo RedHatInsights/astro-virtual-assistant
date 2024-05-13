@@ -14,6 +14,13 @@ rules:
       - action: form_feedback
       - active_loop: form_feedback
 
+  - rule: Urgent support
+    steps:
+      - intent: intent_support
+      - action: action_feedback_urgent_support
+      - action: form_feedback
+      - active_loop: form_feedback
+
   - rule: Finished general feedback
     condition:
       - active_loop: form_feedback
