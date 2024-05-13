@@ -31,12 +31,9 @@ class InsightsGeneralSetup(FormValidationAction):
         requested_slot = tracker.get_slot("requested_slot")
         user_input = tracker.latest_message["text"]
 
-        if requested_slot == "insights_product_kind":
-            resolved = self.resolve_insights_product_kind(user_input)
-            if len(resolved) > 0:
-                return resolved
-
-        if requested_slot is None and tracker.get_slot("insights_product_kind") is None:
+        if (requested_slot == "insights_product_kind") or (
+            requested_slot is None and tracker.get_slot("insights_product_kind") is None
+        ):
             resolved = self.resolve_insights_product_kind(user_input)
             if len(resolved) > 0:
                 return resolved
