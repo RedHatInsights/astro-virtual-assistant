@@ -58,10 +58,15 @@ responses:
   utter_enable_2fa_individual_2:
     - text: >
         Here is how the process works:
+
         1. I will open a link to sso.redhat.com for you.
-        2. In that page, there will be a section named *Two-factor authentication*.
-        3. In that section, there is a button named *Set up Authenticator application*.
+
+        2. In that page, there will be a section named **Two-factor authentication**.
+
+        3. In that section, there is a button named **Set up Authenticator application**.
+
         4. Once you click that button, you will be asked to reauthenticate.
+
         5. After you reauthenticate, you will be redirected to a form to set up two-factor authentication.
   utter_ask_form_enable_2fa_enable_2fa_continue:
     - text: "Do you wish to continue?"
