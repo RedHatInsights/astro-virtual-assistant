@@ -1,0 +1,25 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_enable_2fa
+    examples: |
+      - Enable 2FA
+      - I want to set up 2fa
+      - turn on 2fa
+      - do you have two factor auth available?
+      - I want to confirm my logins through my cell phone
+      - logins through cell phone
+      - i need better security, can you set up something to text my phone when i log in
+      - need better security
+      - send text to my phone when logging in
+      - text my phone when i log in
+      - my company is now requiring all logins to have two device signin
+      - two device signin
+      - 2 device signin
+      - two device login
+      - want to make my org use two device sign in process
+      - my company needs two factor authorization enabled on this site
+      - we have to use 2fa, can you help
+      - use 2-factor authorization to sign in
+      - 2 factor authorization
+      - team has to use 2 factor authentication now. are you able to do that for me

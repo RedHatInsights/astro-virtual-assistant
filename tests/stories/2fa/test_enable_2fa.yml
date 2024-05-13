@@ -1,0 +1,30 @@
+version: "3.1"
+
+stories:
+  - story: User wants to enable 2fa authorization - 1
+    steps:
+      - intent: intent_enable_2fa
+      - action: action_enable_2fa_form_prefill
+      - action: form_enable_2fa
+      - active_loop: form_enable_2fa
+
+  - story: User wants to enable 2fa authorization - 2
+    steps:
+      - intent: intent_enable_2fa
+      - action: action_enable_2fa_form_prefill
+      - action: form_enable_2fa
+      - active_loop: form_enable_2fa
+
+  - story: User wants to enable 2fa authorization - 3
+    steps:
+      - intent: intent_enable_2fa
+      - action: action_enable_2fa_form_prefill
+      - action: form_enable_2fa
+      - active_loop: form_enable_2fa
+
+  - story: User wants to enable 2fa authorization - 4
+    steps:
+      - intent: intent_enable_2fa
+      - action: action_enable_2fa_form_prefill
+      - action: form_enable_2fa
+      - active_loop: form_enable_2fa
