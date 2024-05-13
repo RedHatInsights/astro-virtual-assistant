@@ -45,7 +45,7 @@ advisor_categories = FuzzySlotMatch(
 advisor_system = FuzzySlotMatch(
     "insights_advisor_system_kind",
     [
-        FuzzySlotMatchOption("rhel", ["rhel", "redhat", "red-hat", "red hat"]),
+        FuzzySlotMatchOption("rhel", ["rhel", "enterprise", "linux"]),
         FuzzySlotMatchOption("openshift"),
     ],
 )
