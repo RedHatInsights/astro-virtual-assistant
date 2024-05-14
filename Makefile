@@ -13,6 +13,7 @@ include make/Makefile.variables.mk
 include make/Makefile.test.mk
 include make/Makefile.lint.mk
 include make/Makefile.train.mk
+include make/Makefile.generate.mk
 include make/Makefile.hyperopt.mk
 
 # install and train the project
