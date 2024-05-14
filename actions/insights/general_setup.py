@@ -22,6 +22,18 @@ product_kind = FuzzySlotMatch(
 )
 
 
+class ActionSetupInsightsFormInit(Action):
+    def name(self) -> Text:
+        return "action_setup_insights_form_init"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        return [
+            SlotSet("insights_product_kind", None),
+        ]
+
+
 class InsightsGeneralSetup(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_setup_insights"
@@ -80,15 +92,3 @@ class InsightsGeneralSetup(FormValidationAction):
                 )
 
         return events
-
-
-class ActionSetupInsightsFormCleanup(Action):
-    def name(self) -> Text:
-        return "action_setup_insights_form_cleanup"
-
-    async def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
-    ) -> List[Dict[Text, Any]]:
-        return [
-            SlotSet("insights_product_kind", None),
-        ]

@@ -4,6 +4,7 @@ rules:
   - rule: User wants to set up insights
     steps:
       - intent: intent_setup_insights
+      - action: action_setup_insights_form_init
       - action: form_setup_insights
       - active_loop: form_setup_insights
 
@@ -15,6 +16,5 @@ rules:
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
-      - action: action_setup_insights_form_cleanup
       - action: form_closing
       - active_loop: form_closing
