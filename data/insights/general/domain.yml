@@ -5,6 +5,7 @@ intents:
 
 actions:
   - validate_form_setup_insights
+  - action_setup_insights_form_cleanup
 
 slots:
   insights_product_kind:

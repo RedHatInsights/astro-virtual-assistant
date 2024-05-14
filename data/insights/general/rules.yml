@@ -15,5 +15,6 @@ rules:
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
+      - action: action_setup_insights_form_cleanup
       - action: form_closing
       - active_loop: form_closing
