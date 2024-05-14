@@ -3,16 +3,13 @@ version: "3.1"
 intents:
   - intent_product_description
 
-entities:
-  - product
-
 actions:
   - action_product_description
 
 responses:
   utter_product_description:
-    - text: "{product}: {description}"
+    - text: "Here's a quick description of {product}: {description}"
   utter_product_description_more:
-    - text: "To learn more about {product}, visit their [dashboard]{link}"
+    - text: "To learn more about {product}, visit their [dashboard]({href})."
   utter_product_description_error:
     - text: "I'm having trouble finding information about {product}. Please try again later."

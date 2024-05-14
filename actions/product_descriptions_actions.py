@@ -11,10 +11,9 @@ from rasa_sdk.events import (
 from rasa_sdk.types import DomainDict
 
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
+from actions.platform.chrome import create_service_options
 
 from common import logging
-from common.header import Header
-from common.requests import send_console_request
 
 logger = logging.initialize_logging()
 
@@ -28,69 +27,62 @@ class ProductDescription(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        product = next(tracker.get_latest_entity_values("product"), None)
+        product = next(tracker.get_latest_entity_values("services_generated"), None)
         print(product)
 
-        if product:
-            response, result = await send_console_request(
-                "chrome-service",
-                "/api/chrome-service/v1/static/stable/prod/services/services.json",
-                tracker
-            )
-            print("result: ", result)
+        # remove console.redhat.com/ from the product name
+        product = product.replace("console.redhat.com", "")
 
-            if not response.ok or not result:
+        if product:
+            options = await create_service_options(tracker)
+            if not options:
                 dispatcher.utter_message(
-                    response="utter_image_builder_custom_content_error"
-                )
-                logger.debug(
-                    "Failed to get a response from the content-sources API: status {}; result {}".format(
-                        response.status, result
-                    )
+                    response="utter_product_description_error",
+                    product=product,
                 )
                 return
-            
-            service_match_options = []
-            service_dict = {}
+            fuzzy_options = [
+                *map(
+                    lambda o: FuzzySlotMatchOption(o["data"]["title"], o["synonyms"]),
+                    options.values(),
+                )
+            ]
+            match = FuzzySlotMatch("slot", fuzzy_options)
+            resolved = resolve_slot_match(product, match)
 
-            for service in result:
-                if service["title"] and service["description"]:
-                    service_match_options.append(
-                        FuzzySlotMatchOption(
-                            service["title"],
-                        )
+            if len(resolved) > 0:
+                if resolved["slot"] not in options or "data" not in options[resolved["slot"]]:
+                    dispatcher.utter_message(
+                        response="utter_product_description_error",
+                        product=product,
                     )
-                    service_dict[service["title"]] = service["description"]
-                if service["links"]:
-                    for link in service["links"]:
-                        if "title" in link and "description" in link:
-                            service_match_options.append(
-                                FuzzySlotMatchOption(
-                                    link["title"],
-                                )
-                            )
-                            service_dict[link["title"]] = link["description"]
+                    return
+                details = options[resolved["slot"]]["data"]
+                
+                if "title" not in details or "description" not in details:
+                    dispatcher.utter_message(
+                        response="utter_product_description_error",
+                        product=product,
+                    )
+                    return
+                dispatcher.utter_message(
+                    response="utter_product_description",
+                    product=details["title"],
+                    description=details["description"],
+                )
 
-            service_match = FuzzySlotMatch(
-                "",
-                service_match_options,
-            )
-
-            print("service_match: ", service_match_options)
-
-            print("service_dict: ", service_dict)
-
-            resolved = resolve_slot_match(product, service_match, accepted_rate=60)
-
-            print("resolved: ", resolved)
-
-            # if response.status_code == 200:
-            #     product_description = response.json()["description"]
-            #     dispatcher.utter_message(text=product_description)
-            # else:
-            #     dispatcher.utter_message(
-            #         text=f"Sorry, I couldn't find any description for {product}"
-            #     )
+                if "href" in details:
+                    dispatcher.utter_message(
+                        response="utter_product_description_more",
+                        product=details["title"],
+                        href=details["href"],
+                    )
+            else:
+                # can I send the bot to the next likelist intent?
+                dispatcher.utter_message(
+                    response="utter_product_description_error",
+                    product=product,
+                )
 
         return [
             ActionExecuted(self.name()),

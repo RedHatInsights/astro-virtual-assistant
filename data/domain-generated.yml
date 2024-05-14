@@ -1,0 +1,598 @@
+version: '3.1'
+
+entities:
+- services_generated
+
+slots:
+  services_generated:
+    type: categorical
+    values:
+    - Remediations
+    - /insights/remediations
+    - console.redhat.com/insights/remediations
+    - Remediate
+    - playbook
+    - fix
+    - solve
+    - find it fix it
+    - fifi
+    - cloud connector
+    - insights
+    - automation
+    - Ansible
+    - patch
+    - Tasks
+    - /insights/tasks
+    - console.redhat.com/insights/tasks
+    - Tasks
+    - tasks
+    - task
+    - CentOS Conversion
+    - centos conversion
+    - Pre Conversion Analysis
+    - pre conversion analysis
+    - Pre-Conversion Analysis
+    - pre-conversion analysis
+    - Convert to RHEL
+    - convert to rhel
+    - C2R
+    - c2r
+    - CentOS
+    - centos
+    - Centos
+    - centOS
+    - upgrade
+    - update
+    - insights
+    - automation
+    - leapp
+    - migrate
+    - version
+    - '9.0'
+    - '8.0'
+    - convert
+    - conversion
+    - migration
+    - Automation Hub
+    - /ansible/automation-hub/
+    - console.redhat.com/ansible/automation-hub/
+    - Automation Analytics
+    - /ansible/automation-analytics/reports
+    - console.redhat.com/ansible/automation-analytics/reports
+    - Inventory
+    - /ansible/inventory
+    - console.redhat.com/ansible/inventory
+    - Register Systems
+    - /ansible/registration
+    - console.redhat.com/ansible/registration
+    - Tasks
+    - /ansible/tasks
+    - console.redhat.com/ansible/tasks
+    - Admin Dashboard
+    - /ansible/lightspeed-admin-dashboard
+    - console.redhat.com/ansible/lightspeed-admin-dashboard
+    - Overview
+    - /openshift/overview
+    - console.redhat.com/openshift/overview
+    - Clusters
+    - /openshift
+    - console.redhat.com/openshift
+    - Organizations
+    - /quay/organization
+    - console.redhat.com/quay/organization
+    - Trusted Profile Analyzer
+    - /application-services/trusted-content
+    - console.redhat.com/application-services/trusted-content
+    - software supply chain
+    - vulnerability
+    - security
+    - risk management
+    - oss
+    - trusted
+    - content
+    - CRDA
+    - VEX
+    - SBOM
+    - source code
+    - remediation
+    - software composition
+    - Images
+    - /insights/image-builder
+    - console.redhat.com/insights/image-builder
+    - Images
+    - image
+    - image builder
+    - my images
+    - gold image
+    - template image
+    - vm template
+    - image template
+    - blueprint
+    - image
+    - builder
+    - images
+    - build
+    - image-builder
+    - insights
+    - Build image
+    - image builder
+    - gold image
+    - blueprint
+    - template image
+    - vm template
+    - image template
+    - vmware template
+    - packer build
+    - packer template
+    - RHEL AMI
+    - RHEL machine image
+    - azure
+    - aws
+    - build
+    - assemble
+    - image-builder
+    - Repositories
+    - /quay/repository
+    - console.redhat.com/quay/repository
+    - Images
+    - /edge/manage-images
+    - console.redhat.com/edge/manage-images
+    - Users
+    - /iam/user-access/users
+    - console.redhat.com/iam/user-access/users
+    - role based access management
+    - user management
+    - user access
+    - identity management
+    - users
+    - roles
+    - groups
+    - permissions
+    - access
+    - admin
+    - administrator
+    - editor
+    - authorization
+    - viewer
+    - rbac
+    - Groups
+    - /iam/user-access/groups
+    - console.redhat.com/iam/user-access/groups
+    - Authentication Factors
+    - /iam/authentication-policy/authentication-factors
+    - console.redhat.com/iam/authentication-policy/authentication-factors
+    - Service Accounts
+    - /application-services/service-accounts
+    - console.redhat.com/application-services/service-accounts
+    - Integrations
+    - /settings/integrations
+    - console.redhat.com/settings/integrations
+    - providers
+    - cloud providers
+    - cloud sources
+    - Red Hat sources
+    - integrations
+    - cloud integrations
+    - cloud connection
+    - aws
+    - Amazon
+    - Google
+    - cloud
+    - IBM
+    - Microsoft
+    - secrets
+    - Azure
+    - Oracle
+    - Infrastructure
+    - prediction
+    - cost
+    - subscriptions
+    - account
+    - credentials
+    - Notifications
+    - /settings/notifications
+    - console.redhat.com/settings/notifications
+    - Images
+    - /insights/image-builder
+    - console.redhat.com/insights/image-builder
+    - Images
+    - image
+    - image builder
+    - my images
+    - gold image
+    - template image
+    - vm template
+    - image template
+    - blueprint
+    - image
+    - builder
+    - images
+    - build
+    - image-builder
+    - insights
+    - Build image
+    - image builder
+    - gold image
+    - blueprint
+    - template image
+    - vm template
+    - image template
+    - vmware template
+    - packer build
+    - packer template
+    - RHEL AMI
+    - RHEL machine image
+    - azure
+    - aws
+    - build
+    - assemble
+    - image-builder
+    - Inventory
+    - /insights/inventory
+    - console.redhat.com/insights/inventory
+    - Groups
+    - /insights/inventory/groups
+    - console.redhat.com/insights/inventory/groups
+    - group
+    - groups
+    - Group
+    - Groups
+    - Clusters
+    - /openshift
+    - console.redhat.com/openshift
+    - Inventory
+    - /ansible/inventory
+    - console.redhat.com/ansible/inventory
+    - Subscriptions Inventory
+    - /subscriptions/inventory
+    - console.redhat.com/subscriptions/inventory
+    - Advisories
+    - /insights/patch/advisories
+    - console.redhat.com/insights/patch/advisories
+    - Errata
+    - errata
+    - patch
+    - updates
+    - insights
+    - Repositories
+    - /insights/content
+    - console.redhat.com/insights/content
+    - Content
+    - custom content
+    - my content
+    - my repos
+    - repos
+    - repo
+    - repositories
+    - repository
+    - insights
+    - repository sets
+    - popular
+    - Red hat repositories
+    - Snapshots
+    - compare
+    - custom content
+    - Red hat repositories
+    - popular
+    - nvidia
+    - epel
+    - add repositories
+    - introspect
+    - content
+    - dnf
+    - yum
+    - Systems
+    - /insights/patch/systems
+    - console.redhat.com/insights/patch/systems
+    - Patch
+    - content
+    - advisories
+    - insights
+    - Rhel
+    - patch
+    - updates
+    - update
+    - systems
+    - upgrade
+    - Advisor
+    - /insights/advisor/recommendations
+    - console.redhat.com/insights/advisor/recommendations
+    - advisor
+    - Rules
+    - rules
+    - rule
+    - Rule
+    - insights
+    - security
+    - stability
+    - performance
+    - incidents
+    - recommendations
+    - configuration
+    - pathways
+    - critical
+    - upgrade
+    - upgrade risk
+    - incident
+    - recommendation
+    - pathway
+    - Drift
+    - /insights/drift
+    - console.redhat.com/insights/drift
+    - Policies
+    - /insights/policies
+    - console.redhat.com/insights/policies
+    - policies
+    - facts
+    - conditions
+    - trigger
+    - notifications
+    - alerts
+    - insights
+    - notify
+    - integration
+    - conditions
+    - alerts
+    - events
+    - raise alerts on system configuration changes
+    - Advisor
+    - /openshift/insights/advisor/recommendations
+    - console.redhat.com/openshift/insights/advisor/recommendations
+    - Insights Advisor
+    - OpenShift Advisor
+    - Advisor
+    - advisor
+    - Recommendations
+    - Proactive support
+    - Proactive support
+    - risk
+    - support
+    - update
+    - update risk
+    - update
+    - issues
+    - remediation
+    - cluster state
+    - recommendation
+    - cluster health
+    - remote health
+    - proactive
+    - support
+    - fix
+    - problem
+    - issue
+    - Vulnerability
+    - /openshift/insights/vulnerability/cves
+    - console.redhat.com/openshift/insights/vulnerability/cves
+    - Advisor
+    - /ansible/advisor/recommendations
+    - console.redhat.com/ansible/advisor/recommendations
+    - Rules
+    - recommendations
+    - Configuration
+    - security
+    - stability
+    - performance
+    - advisor
+    - incidents
+    - pathways
+    - critical
+    - upgrade
+    - upgrade risk
+    - incident
+    - recommendation
+    - pathway
+    - Drift
+    - /ansible/drift
+    - console.redhat.com/ansible/drift
+    - Policies
+    - /ansible/policies
+    - console.redhat.com/ansible/policies
+    - Policies
+    - Policy
+    - notifications
+    - notify
+    - integration
+    - conditions
+    - alerts
+    - events
+    - raise alerts on system configuration changes
+    - Advisories
+    - /insights/patch/advisories
+    - console.redhat.com/insights/patch/advisories
+    - Errata
+    - errata
+    - patch
+    - updates
+    - insights
+    - Advisor
+    - /insights/advisor/recommendations
+    - console.redhat.com/insights/advisor/recommendations
+    - advisor
+    - Rules
+    - rules
+    - rule
+    - Rule
+    - insights
+    - security
+    - stability
+    - performance
+    - incidents
+    - recommendations
+    - configuration
+    - pathways
+    - critical
+    - upgrade
+    - upgrade risk
+    - incident
+    - recommendation
+    - pathway
+    - Vulnerability
+    - /insights/vulnerability/cves
+    - console.redhat.com/insights/vulnerability/cves
+    - Compliance
+    - /insights/compliance/reports
+    - console.redhat.com/insights/compliance/reports
+    - security
+    - policies
+    - SCAP
+    - policy
+    - insights
+    - regulatory
+    - regulations
+    - OpenSCAP
+    - PCI
+    - HIPAA
+    - DSS
+    - CSI
+    - C2S
+    - rules
+    - DISA STIG
+    - PCI-DSS
+    - NIST
+    - OSPP
+    - Malware
+    - /insights/malware/signatures
+    - console.redhat.com/insights/malware/signatures
+    - Remediations
+    - /insights/remediations
+    - console.redhat.com/insights/remediations
+    - Remediate
+    - playbook
+    - fix
+    - solve
+    - find it fix it
+    - fifi
+    - cloud connector
+    - insights
+    - automation
+    - Ansible
+    - patch
+    - Vulnerability
+    - /openshift/insights/vulnerability/cves
+    - console.redhat.com/openshift/insights/vulnerability/cves
+    - Remediations
+    - /ansible/remediations
+    - console.redhat.com/ansible/remediations
+    - Organizations
+    - /quay/organization
+    - console.redhat.com/quay/organization
+    - Trusted Profile Analyzer
+    - /application-services/trusted-content
+    - console.redhat.com/application-services/trusted-content
+    - software supply chain
+    - vulnerability
+    - security
+    - risk management
+    - oss
+    - trusted
+    - content
+    - CRDA
+    - VEX
+    - SBOM
+    - source code
+    - remediation
+    - software composition
+    - Advanced Cluster Security
+    - /application-services/acs/overview
+    - console.redhat.com/application-services/acs/overview
+    - Subscriptions Usage
+    - /subscriptions/usage/rhel
+    - console.redhat.com/subscriptions/usage/rhel
+    - Resource Optimization
+    - /insights/ros
+    - console.redhat.com/insights/ros
+    - Subscriptions Usage
+    - /subscriptions/usage/openshift
+    - console.redhat.com/subscriptions/usage/openshift
+    - Cost Management
+    - /openshift/cost-management
+    - console.redhat.com/openshift/cost-management
+    - Overview
+    - /subscriptions/overview
+    - console.redhat.com/subscriptions/overview
+    - Subscriptions Inventory
+    - /subscriptions/inventory
+    - console.redhat.com/subscriptions/inventory
+    - Hybrid Committed Spend
+    - /subscriptions/hybrid-committed-spend
+    - console.redhat.com/subscriptions/hybrid-committed-spend
+    - Manifests
+    - /subscriptions/manifests
+    - console.redhat.com/subscriptions/manifests
+    - Remote Host Configuration (RHC)
+    - /insights/connector
+    - console.redhat.com/insights/connector
+    - Remote host configuration
+    - remote host configuration
+    - connect systems
+    - connection options
+    - connect settings
+    - settings
+    - Register
+    - rhc
+    - RHC
+    - rhcd
+    - Activation Keys
+    - /insights/connector/activation-keys
+    - console.redhat.com/insights/connector/activation-keys
+    - Subscription key
+    - sca
+    - simple content access
+    - activate
+    - register
+    - AK
+    - repositories
+    - system purpose
+    - sla
+    - content
+    - Register Systems
+    - /insights/registration
+    - console.redhat.com/insights/registration
+    - register rhel
+    - Register RHEL
+    - rhel
+    - RHEL
+    - Staleness and Deletion
+    - /insights/inventory/staleness-and-deletion
+    - console.redhat.com/insights/inventory/staleness-and-deletion
+    - Register Systems
+    - /ansible/registration
+    - console.redhat.com/ansible/registration
+    - Integrations
+    - /settings/integrations
+    - console.redhat.com/settings/integrations
+    - providers
+    - cloud providers
+    - cloud sources
+    - Red Hat sources
+    - integrations
+    - cloud integrations
+    - cloud connection
+    - aws
+    - Amazon
+    - Google
+    - cloud
+    - IBM
+    - Microsoft
+    - secrets
+    - Azure
+    - Oracle
+    - Infrastructure
+    - prediction
+    - cost
+    - subscriptions
+    - account
+    - credentials
+    - Notifications
+    - /settings/notifications
+    - console.redhat.com/settings/notifications
+    - ROSA Hands-on Experience
+    - /openshift/services/rosa/demo/
+    - console.redhat.com/openshift/services/rosa/demo/
+    - Developer Sandbox
+    - /openshift/sandbox
+    - console.redhat.com/openshift/sandbox
+    mappings:
+    - type: from_entity
+      entity: services_generated
