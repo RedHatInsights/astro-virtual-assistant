@@ -4,6 +4,7 @@ rules:
   - rule: User wants to set up insights
     steps:
       - intent: intent_setup_insights
+      - action: action_setup_insights_form_init
       - action: form_setup_insights
       - active_loop: form_setup_insights
 
