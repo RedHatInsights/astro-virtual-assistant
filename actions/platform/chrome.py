@@ -35,6 +35,7 @@ async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
         # failed to reach the chrome service
         return []
 
+
 async def create_list_of_services(tracker) -> list[str]:
     response, content = await get_generated_services(tracker)
     if response.ok:

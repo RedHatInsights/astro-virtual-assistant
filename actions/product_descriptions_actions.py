@@ -17,6 +17,7 @@ from common import logging
 
 logger = logging.initialize_logging()
 
+
 class ProductDescription(Action):
     def name(self) -> Text:
         return "action_product_description"
@@ -51,14 +52,17 @@ class ProductDescription(Action):
             resolved = resolve_slot_match(product, match)
 
             if len(resolved) > 0:
-                if resolved["slot"] not in options or "data" not in options[resolved["slot"]]:
+                if (
+                    resolved["slot"] not in options
+                    or "data" not in options[resolved["slot"]]
+                ):
                     dispatcher.utter_message(
                         response="utter_product_description_error",
                         product=product,
                     )
                     return
                 details = options[resolved["slot"]]["data"]
-                
+
                 if "title" not in details or "description" not in details:
                     dispatcher.utter_message(
                         response="utter_product_description_error",
