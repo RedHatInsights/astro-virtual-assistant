@@ -36,18 +36,11 @@ async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
         return []
 
 
-async def create_list_of_services(tracker) -> list[str]:
+async def create_list_of_services(tracker) -> list:
     response, content = await get_generated_services(tracker)
     if response.ok:
         services = parse_generated_services(content)
-        # include all alt_title, sublink[href], title
-        list = []
-        for service in services:
-            list.append(service["title"])
-            list.append(service["href"])
-            list.append("console.redhat.com" + service["href"])
-            list += service["alt_title"]
-        return list
+        return services
     else:
         # failed to reach the chrome service
         print("Failed to reach the chrome service")

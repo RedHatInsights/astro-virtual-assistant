@@ -20,6 +20,20 @@ def mock_tracker():
     return tracker
 
 
+def ignore_services_without_descriptions(services: list[str]):
+    return [service for service in services if "description" in service]
+
+
+def create_entity_list(services: list[str]):
+    list = []
+    for service in services:
+        list.append(service["title"])
+        list.append(service["href"])
+        list.append("console.redhat.com" + service["href"])
+        list += service["alt_title"]
+    return list
+
+
 async def add_services_to_domain(services: list[str]):
     import sys
     import ruamel.yaml
@@ -70,6 +84,8 @@ async def add_services_to_description_nlu(services: list[str]):
 async def main():
     tracker = mock_tracker()
     services = await create_list_of_services(tracker)
+    services = ignore_services_without_descriptions(services)
+    services = create_entity_list(services)
     await add_services_to_domain(services)
     await add_services_to_description_nlu(services)
 

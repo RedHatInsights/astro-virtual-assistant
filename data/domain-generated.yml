@@ -53,9 +53,6 @@ slots:
       - convert
       - conversion
       - migration
-      - Automation Hub
-      - /ansible/automation-hub/
-      - console.redhat.com/ansible/automation-hub/
       - Automation Analytics
       - /ansible/automation-analytics/reports
       - console.redhat.com/ansible/automation-analytics/reports
@@ -155,9 +152,6 @@ slots:
       - authorization
       - viewer
       - rbac
-      - Groups
-      - /iam/user-access/groups
-      - console.redhat.com/iam/user-access/groups
       - Authentication Factors
       - /iam/authentication-policy/authentication-factors
       - console.redhat.com/iam/authentication-policy/authentication-factors
