@@ -82,8 +82,6 @@ actions:
   - action_user_preferences
 
 responses:
-  utter_pii_warning:
-    - text: "*You are about to utilize Red Hat's Hybrid Cloud Console virtual assistant chat tool. Please do not include any personal information or confidential information in your interaction with the virtual assistant. The tool is intended to assist with general queries. Please see [Red Hat Terms of use](https://www.redhat.com/en/about/terms-use) and [Privacy Statement](https://www.redhat.com/en/about/privacy-policy).*"
   utter_core_first_time:
     - text: "Hi, I'm your virtual assistant for the Hybrid Cloud Console. I see that this is your first conversation with me."
   utter_core_greeting:

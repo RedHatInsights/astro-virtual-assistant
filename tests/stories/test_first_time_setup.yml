@@ -7,7 +7,6 @@ stories:
           - first_time_greeting: True
           - is_org_admin: False
       - intent: intent_core_session_start
-      - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
@@ -17,7 +16,6 @@ stories:
           - first_time_greeting: True
           - is_org_admin: False
       - intent: intent_core_session_start
-      - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
@@ -27,6 +25,5 @@ stories:
           - first_time_greeting: False
           - is_org_admin: False
       - intent: intent_core_session_start
-      - action: utter_pii_warning
       - action: utter_core_greeting
       - action: utter_core_how_can_i_help
