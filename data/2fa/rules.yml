@@ -4,7 +4,7 @@ rules:
   - rule: Enable 2fa
     steps:
       - intent: intent_enable_2fa
-      - action: action_enable_2fa_form_prefill
+      - action: action_enable_disable_2fa_form_prefill
       - action: form_enable_2fa
       - active_loop: form_enable_2fa
 
@@ -17,5 +17,24 @@ rules:
       - slot_was_set:
           - requested_slot: null
       - action: action_enable_2fa
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: Disable 2fa
+    steps:
+      - intent: intent_disable_2fa
+      - action: action_enable_disable_2fa_form_prefill
+      - action: form_disable_2fa
+      - active_loop: form_disable_2fa
+
+  - rule: Disable 2fa continued
+    condition:
+      - active_loop: form_disable_2fa
+    steps:
+      - action: form_disable_2fa
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_disable_2fa
       - action: form_closing
       - active_loop: form_closing

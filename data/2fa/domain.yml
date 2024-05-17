@@ -2,11 +2,7 @@ version: "3.1"
 
 intents:
   - intent_enable_2fa
-  - intent_enable_2fa_personal
-  - intent_enable_2fa_org_admin_info
-  - intent_individual_2fa_form_redirect
-  - intent_enable_2fa_org_admin_setup
-  - intent_dispatch_action_enable_org_2fa
+  - intent_disable_2fa
 
 entities: []
 
@@ -19,6 +15,9 @@ slots:
         conditions:
           - active_loop: form_enable_2fa
             requested_slot: org_or_account
+          - active_loop: form_disable_2fa
+            requested_slot: org_or_account
+
   enable_2fa_continue:
     type: bool
     influence_conversation: true
@@ -34,24 +33,52 @@ slots:
         intent: intent_core_no
         conditions: *enable_2fa_continue
 
+  disable_2fa_continue:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &disable_2fa_continue
+          - active_loop: form_disable_2fa
+            requested_slot: disable_2fa_continue
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *disable_2fa_continue
+
 actions:
-  - action_enable_2fa_form_prefill
+  - action_enable_disable_2fa_form_prefill
   - action_enable_2fa
   - validate_form_enable_2fa
+  - action_disable_2fa
+  - validate_form_disable_2fa
 
 forms:
   form_enable_2fa:
     required_slots:
       - org_or_account
       - enable_2fa_continue
+  form_disable_2fa:
+    required_slots:
+      - org_or_account
+      - disable_2fa_continue
 
 responses:
   utter_ask_form_enable_2fa_org_or_account:
-    - text: "It looks like you're an Org Admin. Do you want to enable two-factor authenticaiton for yourself or your entire org?"
+    - text: "It looks like you're an Org Admin. Do you want to enable two-factor authentication for yourself or your entire org?"
       buttons:
         - title: Enable two-factor authentication for my account only
           payload: personal
         - title: Enable two-factor authentication for my org
+          payload: org
+  utter_ask_form_disable_2fa_org_or_account:
+    - text: "It looks like you're and Org Admin. Do you want to remove two-factor authentication for yourself or remove the requirement for your entire org?"
+      buttons:
+        - title: Disable two-factor authentication for my account only
+          payload: personal
+        - title: Disable two-factor authentication for my org
           payload: org
   utter_enable_2fa_individual_1:
     - text: "I can provide information on how to set up two factor authentication for your personal account."
@@ -63,8 +90,26 @@ responses:
         3. In that section, there is a button named **Set up Authenticator application**.
         4. Once you click that button, you will be asked to reauthenticate.
         5. After you reauthenticate, you will be redirected to a form to set up two-factor authentication.
+  utter_disable_2fa_individual_1:
+    - text: "I can provide information on how to disable two factor authentication for your personal account."
+  utter_disable_2fa_individual_2:
+    - text: |
+        Here is how the process works:
+        1. I will open a link to sso.redhat.com for you.
+        2. In that page, there will be a section named **Two-factor authentication**.
+        3. In that section, it will show you a list of your devices with two-factor authentication enabled.
+        4. There is a button named **Delete** for each of your devices.
+        5. Once you click this button, it will ask you to confirm.
+        6. After you confirm, your two-factor authentication will be disabled for your particular device.
   utter_ask_form_enable_2fa_enable_2fa_continue:
     - text: "Do you wish to continue?"
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_ask_form_disable_2fa_disable_2fa_continue:
+    - text: "Do you want to continue?"
       buttons:
         - title: Yes
           payload: /intent_core_yes
@@ -81,6 +126,8 @@ responses:
     - text: "Enabling organizational two-factor authentication will require users to use a password and a one-time code to log in."
   utter_enable_org_2fa_info_2:
     - text: "When enabled, each user in your organization must install an authenticator application on a compatible mobile device in order to log in."
+  utter_disable_org_2fa_info:
+    - text: "This will allow your users to remove a layer of security and increase the risk of unauthorized access to their accounts."
   utter_manage_org_2fa_command:
     - custom:
         type: command
@@ -92,3 +139,5 @@ responses:
     - text: "Two-factor authentication has been enabled successfully. Users will be required to set up two-factor authentication the next time they attempt to log in."
   utter_enable_org_2fa_success_2:
     - text: "They can chat with me if they need help setting up two-factor authentication or visit [our documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
+  utter_disable_org_2fa_success:
+    - text: "The two-factor authentication requirement has been removed successfully."
