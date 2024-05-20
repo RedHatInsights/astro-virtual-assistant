@@ -28,6 +28,14 @@ nlu:
 
   - intent: intent_favorites_add
     examples: |
+      - favorite something
+      - i want to favorite
+      - add a favorite
+      - i want to add a favorite
+      - favorite an app
+      - favorite a service
+      - star an app
+      - star a service
       - add this to favorites
       - add [rosa](core_services) to favorites
       - add the [advisor](core_services) service
@@ -47,6 +55,8 @@ nlu:
 
   - intent: intent_favorites_delete
     examples: |
+      - remove a favorite
+      - i want to remove a favorite
       - remove this from favorites
       - remove this service from my favorites
       - remove [openshift](core_services) from favorites
