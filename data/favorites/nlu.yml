@@ -57,6 +57,7 @@ nlu:
     examples: |
       - remove a favorite
       - i want to remove a favorite
+      = delete a favorite
       - remove this from favorites
       - remove this service from my favorites
       - remove [openshift](core_services) from favorites
