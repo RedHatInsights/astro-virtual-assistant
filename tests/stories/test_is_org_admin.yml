@@ -18,10 +18,9 @@ stories:
           - first_time_greeting: True
       - slot_was_set:
           - is_org_admin: True
-      - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main_org_admin
-  
+
   - story: Non-org admin goes to the bot for the first time
     steps:
       - intent: intent_core_session_start
@@ -29,7 +28,6 @@ stories:
           - first_time_greeting: True
       - slot_was_set:
           - is_org_admin: False
-      - action: utter_pii_warning
       - action: utter_core_first_time
       - action: utter_core_capabilities_main
 
@@ -41,7 +39,7 @@ stories:
       - slot_was_set:
           - is_org_admin: True
       - action: utter_core_capabilities_main_org_admin
-  
+
   - story: Non-org admin wants to know what the bot can do
     steps:
       - user: |
