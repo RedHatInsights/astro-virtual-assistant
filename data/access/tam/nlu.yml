@@ -1,0 +1,20 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_access_request_tam
+    examples: |
+      - I need access to a customer account
+      - can i request access to my customers account
+      - I am a TAM
+      - Request for customer account access
+      - I need to access a customer account
+      - Customer account access
+
+  - intent: intent_access_request_tam_approval
+    examples: |
+      - how do I approve an access request
+      - I need to approve a TAM access request
+      - approve access request for TAM
+      - give access to TAM
+      - give TAM access
+      - A TAM needs access from me

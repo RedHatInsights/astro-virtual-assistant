@@ -1,0 +1,95 @@
+version: "3.1"
+
+intents:
+  - intent_access_request_tam
+  - intent_access_request_tam_approval
+
+entities: []
+
+slots:
+  access_request_tam_account_id:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_access_request_tam
+            requested_slot: access_request_tam_account_id
+  access_request_tam_org_id:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_access_request_tam
+            requested_slot: access_request_tam_org_id
+  access_request_tam_duration:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_access_request_tam
+            requested_slot: access_request_tam_duration
+  access_request_tam_confirmation:
+    type: bool
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions:
+          - active_loop: form_access_request_tam
+            requested_slot: access_request_tam_confirmation
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions:
+          - active_loop: form_access_request_tam
+            requested_slot: access_request_tam_confirmation
+  
+actions:
+  - validate_form_access_request_tam
+  - action_access_request_tam_clear
+  - execute_form_access_request_tam
+
+forms:
+  form_access_request_tam:
+    required_slots:
+      - access_request_tam_account_id
+      - access_request_tam_org_id
+      - access_request_tam_duration
+      - access_request_tam_confirmation
+
+responses:
+  utter_access_request_tam_can_help:
+    - text: I can help make a custom access request.
+  utter_ask_access_request_tam_account_id:
+    - text: Please provide the customer's Account ID.
+  utter_ask_access_request_tam_org_id:
+    - text: What is their Org ID?
+  utter_ask_access_request_tam_duration:
+    - text: How long do you need access for? Select a preset below.
+      buttons:
+        - title: 3 days
+          payload: 3 days
+        - title: 1 week
+          payload: 1 week
+        - title: 2 weeks
+          payload: 2 weeks
+  utter_access_request_tam_roles_note:
+    - text: This request will grant you access to all roles in the customer account. For more granular access, use the form [here](/internal/access-requests).
+  utter_ask_access_request_tam_confirmation:
+    - text: Are you sure you want to request access to customer account {account_id}?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_access_request_tam_success:
+    - text: Your request for access to customer account {account_id} has been submitted. The customer will be notified shortly.
+  utter_access_request_tam_error:
+    - text: There was an error processing your request. Please try again later.
+  utter_access_request_tam_more_info:
+    - text: Future requests can also be made using the form [here](/internal/access-requests).
+  
+  utter_access_request_tam_approval_1:
+    - text: You can view pending access requests in the [User Access dashboard](/iam/user-access/access-requests).
+  utter_access_request_tam_approval_2:
+    - text: If no requests are pending, ask the TAM to resubmit their request.
