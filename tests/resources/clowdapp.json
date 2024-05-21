@@ -63,6 +63,12 @@
       "hostname": "openshift-advisor",
       "name": "service",
       "port": 8000
+    },
+    {
+      "app": "rbac-service",
+      "hostname": "rbac-service.svc",
+      "name": "service",
+      "port": 8000
     }
   ],
   "privateEndpoints": [
