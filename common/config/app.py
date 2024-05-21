@@ -89,9 +89,7 @@ notifications_url = _config(
 chrome_service_url = _config(
     "ENDPOINT__CHROME_SERVICE__API__URL", default=__endpoint_default
 )
-rbac_url = _config(
-    "ENDPOINT__RBAC_SERVICE__SERVICE__URL", default=__endpoint_default
-)
+rbac_url = _config("ENDPOINT__RBAC_SERVICE__SERVICE__URL", default=__endpoint_default)
 
 sources_url = _config("ENDPOINT__SOURCES_API__SVC__URL", default=__endpoint_default)
 
