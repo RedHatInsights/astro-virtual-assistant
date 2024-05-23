@@ -26,7 +26,7 @@ def get_user_identity(tracker: Tracker) -> Optional[Text]:
 
 
 def __get_mocked_user_identity() -> Text:
-    return "eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiJhY2NvdW50MTIzIiwib3JnX2lkIjoib3JnMTIzIiwidHlwZSI6IlVzZXIiLCJ1c2VyIjp7ImlzX29yZ19hZG1pbiI6dHJ1ZSwgImVtYWlsIjoidXNlckBzb21ld2hlcmUiLCAidXNlcl9pZCI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImFzdHJvIn0sImludGVybmFsIjp7Im9yZ19pZCI6Im9yZzEyMyJ9fX0="
+    return "eyJpZGVudGl0eSI6IHsiYWNjb3VudF9udW1iZXIiOiJhY2NvdW50MTIzIiwib3JnX2lkIjoib3JnMTIzIiwidHlwZSI6IlVzZXIiLCJ1c2VyIjp7ImlzX2ludGVybmFsIjp0cnVlLCAiaXNfb3JnX2FkbWluIjp0cnVlLCAiZW1haWwiOiJ1c2VyQHNvbWV3aGVyZSIsICJ1c2VyX2lkIjoiMTIzNDU2Nzg5MCIsInVzZXJuYW1lIjoiYXN0cm8ifSwiaW50ZXJuYWwiOnsib3JnX2lkIjoib3JnMTIzIn19fQ=="
 
 
 def get_decoded_user_identity(tracker: Tracker) -> Optional[Dict[Text, Any]]:
@@ -65,7 +65,7 @@ def get_is_internal(tracker: Tracker) -> bool:
 
     try:
         # Default to true if running locally
-        return decode_identity["identity"]["user"]["internal"]
+        return decoded_identity["identity"]["user"]["is_internal"]
     except Exception as e:
         print(f"An Exception occured while handling retrieving is_internal: {e}")
 
