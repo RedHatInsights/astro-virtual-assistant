@@ -46,7 +46,7 @@ slots:
   
 actions:
   - validate_form_access_request_tam
-  - action_access_request_tam_clear
+  - action_access_request_tam_reset
   - execute_form_access_request_tam
 
 forms:
@@ -76,14 +76,14 @@ responses:
   utter_access_request_tam_roles_note:
     - text: This request will grant you access to all roles in the customer account. For more granular access, use the form [here](/internal/access-requests).
   utter_ask_access_request_tam_confirmation:
-    - text: Are you sure you want to request access to customer account {account_id}?
+    - text: Are you sure you want to request access to customer account {access_request_tam_account_id}?
       buttons:
         - title: Yes
           payload: /intent_core_yes
         - title: No
           payload: /intent_core_no
   utter_access_request_tam_success:
-    - text: Your request for access to customer account {account_id} has been submitted. The customer will be notified shortly.
+    - text: Your request for access to customer account {access_request_tam_account_id} has been submitted. The customer will be notified shortly.
   utter_access_request_tam_error:
     - text: There was an error processing your request. Please try again later.
   utter_access_request_tam_more_info:
@@ -92,4 +92,4 @@ responses:
   utter_access_request_tam_approval_1:
     - text: You can view pending access requests in the [User Access dashboard](/iam/user-access/access-requests).
   utter_access_request_tam_approval_2:
-    - text: If no requests are pending, ask the TAM to resubmit their request.
+    - text: If no requests are pending, ask your TAM to resubmit their request.
