@@ -191,7 +191,11 @@ def format_access_request_tam(
 
 async def send_rbac_tam_request(tracker: Tracker, body: Dict[str, Any]):
     if app.is_running_locally:
-        logger.info("Called send_rbac_tam_request in local envionment with body: {}".format(body))
+        logger.info(
+            "Called send_rbac_tam_request in local envionment with body: {}".format(
+                body
+            )
+        )
 
         from unittest.mock import Mock
 
