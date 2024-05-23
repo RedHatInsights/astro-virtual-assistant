@@ -36,6 +36,17 @@ async def create_service_options(tracker) -> list[FuzzySlotMatchOption]:
         return []
 
 
+async def create_list_of_services(tracker) -> list:
+    response, content = await get_generated_services(tracker)
+    if response.ok:
+        services = parse_generated_services(content)
+        return services
+    else:
+        # failed to reach the chrome service
+        print("Failed to reach the chrome service")
+        return []
+
+
 def parse_generated_services(content):
     services = []
     for category in content:
@@ -54,6 +65,8 @@ def parse_generated_services(content):
                         service["title"] = sublink["title"]
                     if "appId" in sublink:
                         service["app_id"] = sublink["appId"]
+                    if "description" in sublink:
+                        service["description"] = sublink["description"]
                     service["alt_title"] = sublink.get("alt_title", [])
                     services.append(service)
     return services
@@ -81,6 +94,8 @@ def convert_service_to_option(service):
         synonyms.append(service["appId"])
     if "alt_title" in service:
         synonyms += service["alt_title"]
+    if "description" in service:
+        value["description"] = service["description"]
     return {
         "data": value,
         "synonyms": synonyms,
