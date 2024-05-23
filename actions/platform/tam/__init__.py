@@ -14,17 +14,12 @@ _DURATIONS = ["3 days", "1 week", "2 weeks"]
 durations_match = FuzzySlotMatch(
     "access_request_tam_duration",
     [
-        FuzzySlotMatchOption(
-            "3 days", ["days", "3", "three"]
-        ),
-        FuzzySlotMatchOption(
-            "1 week", ["week", "1", "one"]
-        ),
-        FuzzySlotMatchOption(
-            "2 weeks", ["weeks", "2", "two"]
-        ),
+        FuzzySlotMatchOption("3 days", ["days", "3", "three"]),
+        FuzzySlotMatchOption("1 week", ["week", "1", "one"]),
+        FuzzySlotMatchOption("2 weeks", ["weeks", "2", "two"]),
     ],
 )
+
 
 def get_start_end_date_from_duration(duration: str) -> Tuple[str, str]:
     from datetime import date, timedelta

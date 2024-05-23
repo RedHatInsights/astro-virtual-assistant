@@ -43,7 +43,7 @@ slots:
         conditions:
           - active_loop: form_access_request_tam
             requested_slot: access_request_tam_confirmation
-  
+
 actions:
   - validate_form_access_request_tam
   - action_access_request_tam_reset
@@ -90,7 +90,7 @@ responses:
     - text: There was an error processing your request. Please try again later.
   utter_access_request_tam_more_info:
     - text: Future requests can also be made using the form [here](/internal/access-requests).
-  
+
   utter_access_request_tam_approval_1:
     - text: You can view pending access requests in the [User Access dashboard](/iam/user-access/access-requests).
   utter_access_request_tam_approval_2:

@@ -5,18 +5,18 @@ rules:
     steps:
       - intent: intent_access_request_tam
       - slot_was_set:
-          - is_internal : True
+          - is_internal: True
       - action: action_access_request_tam_reset
       - action: utter_access_request_tam_can_help
       - action: form_access_request_tam
       - active_loop: form_access_request_tam
-  
+
   # same as 'User wants to approve a TAM access request'
   - rule: TAM flow requested by customer
     steps:
       - intent: intent_access_request_tam
       - slot_was_set:
-          - is_internal : False
+          - is_internal: False
       - action: utter_access_request_tam_approval_1
       - action: utter_access_request_tam_approval_2
       - action: form_closing

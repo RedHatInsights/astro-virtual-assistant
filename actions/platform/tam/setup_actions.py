@@ -4,9 +4,8 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
-from actions.platform.tam import (
-    _TAM_SLOTS
-)
+from actions.platform.tam import _TAM_SLOTS
+
 
 class ActionAccessRequestTAMReset(Action):
     def name(self) -> Text:
