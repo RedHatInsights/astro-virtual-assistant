@@ -14,5 +14,4 @@ class ActionAccessRequestTAMReset(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
-        print("Resetting TAM slots")
         return [SlotSet(slot, None) for slot in _TAM_SLOTS]

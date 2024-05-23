@@ -10,6 +10,7 @@ from rasa_sdk.types import DomainDict
 from actions.slot_match import resolve_slot_match
 from common.requests import send_console_request
 from common.config import app
+from common import logging
 
 from actions.platform.tam import (
     _TAM_ACCOUNT_ID,
@@ -20,6 +21,10 @@ from actions.platform.tam import (
     durations_match,
     get_start_end_date_from_duration,
 )
+
+from common.metrics import flow_started_count, Flow, flow_finished_count
+
+logger = logging.initialize_logging()
 
 
 class AccessRequestTAM(FormValidationAction):
@@ -186,7 +191,7 @@ def format_access_request_tam(
 
 async def send_rbac_tam_request(tracker: Tracker, body: Dict[str, Any]):
     if app.is_running_locally:
-        print("called send_rbac_tam_request in local envionment with body: ", body)
+        logger.info("Called send_rbac_tam_request in local envionment with body: {}".format(body))
 
         from unittest.mock import Mock
 
