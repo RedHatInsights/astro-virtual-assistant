@@ -6,13 +6,14 @@ from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
 from common import metrics
-from common.rasa.tracker import get_current_url, get_is_org_admin
+from common.rasa.tracker import get_current_url, get_is_org_admin, get_is_internal
 
 from common.config import app
 
 _SLOT_FIRST_TIME_GREETING = "first_time_greeting"
 _SLOT_CURRENT_URL = "current_url"
 _SLOT_IS_ORG_ADMIN = "is_org_admin"
+_SLOT_IS_INTERNAL = "is_internal"
 _SLOT_BASE_CONSOLE_URL = "base_console_url"
 
 _INTENT_CORE_SESSION_START = "intent_core_session_start"
@@ -63,5 +64,9 @@ class ActionPreProcess(Action):
         base_console_url = tracker.get_slot(_SLOT_BASE_CONSOLE_URL)
         if base_console_url != app.console_dot_base_url:
             results.append(SlotSet(_SLOT_BASE_CONSOLE_URL, app.console_dot_base_url))
+
+        is_internal = get_is_internal(tracker)
+        if is_internal and is_internal != tracker.get_slot(_SLOT_IS_INTERNAL):
+            results.append(SlotSet(_SLOT_IS_INTERNAL, is_internal))
 
         return results

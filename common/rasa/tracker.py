@@ -60,6 +60,16 @@ def get_is_org_admin(tracker: Tracker) -> bool:
 
     return False
 
+def get_is_internal(tracker: Tracker) -> bool:
+    decoded_identity = get_decoded_user_identity(tracker)
+
+    try:
+        # Default to true if running locally
+        return decode_identity["identity"]["user"]["internal"]
+    except Exception as e:
+        print(f"An Exception occured while handling retrieving is_internal: {e}")
+
+    return False
 
 def get_email(tracker: Tracker) -> Optional[Text]:
     latest_user_event = get_last_user_message(tracker)

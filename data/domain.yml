@@ -71,6 +71,11 @@ slots:
     influence_conversation: true
     mappings:
       - type: custom
+  is_internal:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
 
   base_console_url:
     type: text
