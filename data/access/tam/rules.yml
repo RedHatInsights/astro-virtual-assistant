@@ -27,7 +27,8 @@ rules:
       - active_loop: form_access_request_tam
       - action: form_access_request_tam
       - active_loop: null
-      - action: execute_form_access_request
+      - action: execute_form_access_request_tam
+      - action: utter_access_request_tam_more_info
 
   - rule: User wants to approve a TAM access request
     steps:

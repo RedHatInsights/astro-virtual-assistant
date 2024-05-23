@@ -82,6 +82,8 @@ responses:
           payload: /intent_core_yes
         - title: No
           payload: /intent_core_no
+  utter_access_request_tam_stopped:
+    - text: Okay, I won't send this access request.
   utter_access_request_tam_success:
     - text: Your request for access to customer account {access_request_tam_account_id} has been submitted. The customer will be notified shortly.
   utter_access_request_tam_error:

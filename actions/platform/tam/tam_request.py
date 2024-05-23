@@ -8,15 +8,17 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
 from actions.slot_match import resolve_slot_match
+from common.requests import send_console_request
+from common.config import app
 
 from actions.platform.tam import (
     _TAM_ACCOUNT_ID,
     _TAM_ORG_ID,
     _TAM_DURATION,
     _TAM_CONFIRMATION,
-    _TAM_SLOTS,
     _DURATIONS,
-    durations_match
+    durations_match,
+    get_start_end_date_from_duration
 )
 
 class AccessRequestTAM(FormValidationAction):
@@ -84,7 +86,7 @@ class AccessRequestTAM(FormValidationAction):
         events = await super().run(dispatcher, tracker, domain)
         requested_slot = tracker.get_slot("requested_slot")
 
-        if requested_slot == _TAM_CONFIRMATION:
+        if requested_slot == _TAM_DURATION:
             dispatcher.utter_message(response="utter_access_request_tam_roles_note")
         
         return events
@@ -101,12 +103,74 @@ class ExecuteTAMRequest(Action):
         duration = tracker.get_slot(_TAM_DURATION)
         confirmation = tracker.get_slot(_TAM_CONFIRMATION)
 
-        dispatcher.utter_message(
-            response="utter_access_request_tam_confirmation",
-            account_id=account_id,
-            org_id=org_id,
-            duration=duration,
-            confirmation=confirmation
-        )
+        if not confirmation:
+            dispatcher.utter_message(response="utter_access_request_tam_stopped")
+            return []
+
+        start_date, end_date = get_start_end_date_from_duration(duration)
         
+        response, content = await get_roles_for_tam(tracker)
+        if not response.ok or "data" not in content:
+            dispatcher.utter_message(response="utter_access_request_tam_error")
+            return []
+        
+        roles = format_roles_list_for_tam(content["data"])
+
+        body = format_access_request_tam(account_id, org_id, start_date, end_date, roles)
+
+        response = await send_rbac_tam_request(tracker, body)
+        if not response.ok:
+            dispatcher.utter_message(response="utter_access_request_tam_error")
+            return []
+        
+        dispatcher.utter_message(
+            response="utter_access_request_tam_success"
+        )
+
         return []
+
+
+async def get_roles_for_tam(tracker):
+    return await send_console_request(
+        "rbac",
+        "/api/rbac/v1/roles/?system=true&limit=9999&order_by=display_name&add_fields=groups_in_count",
+        tracker,
+        method="get",
+        fetch_content=True
+    )
+
+def format_roles_list_for_tam(data: List[Dict[str, Any]]):
+    names = []
+    for role in data:
+        names.append(role.get("name"))
+    return names
+
+def format_access_request_tam(account_id: str, org_id: str, start_date: str, end_date: str, roles: List[str]):
+    return {
+        "target_account": account_id,
+        "target_org": org_id,
+        "start_date": start_date,
+        "end_date": end_date,
+        "roles": roles
+    }
+
+async def send_rbac_tam_request(tracker: Tracker, body: Dict[str, Any]):
+    if app.is_running_locally:
+        print("called send_rbac_tam_request in local envionment with body: ", body)
+        
+        from unittest.mock import Mock
+        
+        mock_response = Mock()
+        mock_response.ok = True
+
+        return mock_response
+    
+    # POST https://console.stage.redhat.com/api/rbac/v1/cross-account-requests/
+    return await send_console_request(
+        "rbac",
+        "/api/rbac/v1/cross-account-requests/",
+        tracker,
+        method="post",
+        json=body,
+        fetch_content=False
+    )

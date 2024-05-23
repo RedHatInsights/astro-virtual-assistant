@@ -1,3 +1,4 @@
+from typing import Tuple
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption
 
 _TAM_ACCOUNT_ID = "access_request_tam_account_id"
@@ -24,3 +25,18 @@ durations_match = FuzzySlotMatch(
         ),
     ],
 )
+
+def get_start_end_date_from_duration(duration: str) -> Tuple[str, str]:
+    from datetime import date, timedelta
+
+    start_date = date.today()
+    end_date = start_date
+
+    if duration == "3 days":
+        end_date += timedelta(days=3)
+    elif duration == "1 week":
+        end_date += timedelta(weeks=1)
+    elif duration == "2 weeks":
+        end_date += timedelta(weeks=2)
+
+    return start_date.strftime("%m/%d/%Y"), end_date.strftime("%m/%d/%Y")
