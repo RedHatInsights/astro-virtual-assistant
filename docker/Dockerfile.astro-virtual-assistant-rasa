@@ -48,6 +48,7 @@ COPY ./data ./data
 COPY *.yml ./
 COPY ./app.py ./app.py
 COPY ./openapi.json ./openapi.json
+COPY ./logging-config.yml ./logging-config.yml
 
 # Stop rasa from reporting anonymous usage telemetry
 RUN rasa telemetry disable
@@ -58,4 +59,4 @@ RUN rm -r .rasa
 
 USER 1001
 
-ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml", "--debug"]
+ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml", "--debug", "--logging-config-file", "logging-config.yml"]

@@ -1,0 +1,21 @@
+version: 1
+disable_existing_loggers: false
+formatters:
+  console_formatter:
+#    class: logstash_formatter.LogstashFormatterV1
+    format: "%(asctime)s %(threadName)s %(levelname)s %(name)s --- %(message)s"
+#    format: "{\"time\": \"%(asctime)s\", \"name\": \"[%(name)s]\", \"levelname\": \"%(levelname)s\", \"message\": \"%(message)s\"}"
+handlers:
+  console_handler:
+    level: DEBUG
+    formatter: console_formatter
+    class: logging.StreamHandler
+    stream  : ext://sys.stdout
+loggers:
+  root:
+    handlers: [console_handler]
+    level: DEBUG
+  rasa:
+    handlers: [console_handler]
+    level: DEBUG
+    propagate: 0
