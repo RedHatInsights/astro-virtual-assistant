@@ -1,0 +1,58 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_access_request_tam
+    examples: |
+      - I need access to a customer account
+      - can i request access to my customers account
+      - I am a TAM
+      - Request for customer account access
+      - I need to access a customer account
+      - Customer account access
+      - I need access to a customer account
+      - can you give me permissions to the account of a customer
+      - i need to be able to see what my customer is seeing in their instance of the console
+      - i want to see what customer can see, please assist
+      - give me permissions for customer account
+      - tam needing account access to help customer
+      - tam requesting access to customer account
+      - im a technical account manager can you help me get access to my customers accounts please
+      - technical account manager here requesting access
+      - can technical account managers get access to customer accounts
+      - provide me privileges to get into another account
+      - i need advance privileges for my client's console
+      - provide me with heightened access for client account
+      - requesting temporary heightened privileges since i'm a technical account
+      - tam portal
+      - where is tam request tool
+      - i need the tam tool
+      - tam tool
+      - where is the tam tool
+
+  - intent: intent_access_request_tam_approval
+    examples: |
+      - how do I approve an access request
+      - I need to approve a TAM access request
+      - approve access request for TAM
+      - give access to TAM
+      - give TAM access
+      - A TAM needs access from me
+      - give access to a technical account manager
+      - deny access request from red hat TAM
+      - i'm a customer that wants to give access to a tam
+      - i need to provide heightened access to my technical account manager and team
+      - i would like to give temporary permissions for red hat to see my account
+      - can i possibly give red hat access to my account so they can see what i am seeing
+      - enable permissions for our account manager
+      - view current access requests from red hat customer support
+      - can you inform me on locating requests from technical account manager
+      - where can i see the red hat requests to access my account
+      - pending user access requests
+      - please let me know where i can action on my user access requests
+      - i have a technical account manager who has submitted an access request and i would like to deny it because the access window is too long
+      - view tam requests
+      - view my access requests
+      - what pending requests for access do i have open right now
+      - i want to provide access to my account
+      - i want to enable my tam to view my console
+      - i permit red hat to have access to my account
