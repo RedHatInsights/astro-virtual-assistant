@@ -5,16 +5,16 @@ from .config import app
 
 
 def initialize_logging():
-    if app.namespace is not None:
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(LogstashFormatterV1())
-        logging.root.setLevel(app.log_level)
-        logging.root.addHandler(handler)
-    else:
-        logging.basicConfig(
-            level=app.log_level,
-            format="%(threadName)s %(levelname)s %(name)s - %(message)s",
-        )
+    # if app.namespace is not None:
+    #     handler = logging.StreamHandler(sys.stdout)
+    #     handler.setFormatter(LogstashFormatterV1())
+    #     logging.root.setLevel(app.log_level)
+    #     logging.root.addHandler(handler)
+    # else:
+    logging.basicConfig(
+        level=app.log_level,
+        format="%(asctime)s %(threadName)s %(levelname)s %(name)s --- %(message)s",
+    )
 
     # if all(
     #     (
