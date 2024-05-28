@@ -58,4 +58,4 @@ RUN rm -r .rasa
 
 USER 1001
 
-ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml"]
+ENTRYPOINT ["python", "app.py", "run", "--endpoints", "endpoints.yml", "--debug"]
