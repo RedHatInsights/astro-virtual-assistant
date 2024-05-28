@@ -19,6 +19,7 @@ rules:
           - is_internal: False
       - action: utter_access_request_tam_approval_1
       - action: utter_access_request_tam_approval_2
+      - action: utter_access_request_tam_approval_3
       - action: form_closing
       - active_loop: form_closing
 
@@ -35,5 +36,6 @@ rules:
       - intent: intent_access_request_tam_approval
       - action: utter_access_request_tam_approval_1
       - action: utter_access_request_tam_approval_2
+      - action: utter_access_request_tam_approval_3
       - action: form_closing
       - active_loop: form_closing

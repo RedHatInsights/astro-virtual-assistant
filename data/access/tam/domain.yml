@@ -94,4 +94,6 @@ responses:
   utter_access_request_tam_approval_1:
     - text: You can view pending access requests in the [User Access dashboard](/iam/user-access/access-requests).
   utter_access_request_tam_approval_2:
+    - text: Please note, a technical account manager (TAM) must place a request for temporary access before customers can take any action.
+  utter_access_request_tam_approval_3:
     - text: If no requests are pending, ask your TAM to resubmit their request.
