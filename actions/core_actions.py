@@ -5,7 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import Action
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 
-from common import metrics
+from common import metrics, logging
 from common.rasa.tracker import get_current_url, get_is_org_admin
 
 from common.config import app
@@ -16,6 +16,8 @@ _SLOT_IS_ORG_ADMIN = "is_org_admin"
 _SLOT_BASE_CONSOLE_URL = "base_console_url"
 
 _INTENT_CORE_SESSION_START = "intent_core_session_start"
+
+logger = logging.initialize_logging()
 
 
 class ActionBack(Action):
@@ -40,6 +42,7 @@ class ActionPreProcess(Action):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        logger.info(f"Received {len(tracker.events)} events in tracker")
         metrics.action_custom_action_count.labels(action_type=self.name()).inc()
 
         results = []
