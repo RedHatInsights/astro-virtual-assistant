@@ -46,4 +46,4 @@ COPY ./run_actions.py ./run_actions.py
 
 USER 1001
 
-ENTRYPOINT ["python", "run_actions.py", "--actions", "actions"]
+ENTRYPOINT ["python", "run_actions.py", "--actions", "actions", "--debug"]
