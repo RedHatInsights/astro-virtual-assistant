@@ -69,7 +69,7 @@ class ActionPreProcess(Action):
             results.append(SlotSet(_SLOT_BASE_CONSOLE_URL, app.console_dot_base_url))
 
         is_internal = get_is_internal(tracker)
-        if is_internal and is_internal != tracker.get_slot(_SLOT_IS_INTERNAL):
+        if is_internal != tracker.get_slot(_SLOT_IS_INTERNAL):
             results.append(SlotSet(_SLOT_IS_INTERNAL, is_internal))
 
         return results
