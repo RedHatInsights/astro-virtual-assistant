@@ -22,12 +22,6 @@ _app_logger = None
 def initialize_logging():
     global _app_logger
     if _app_logger is None:
-        # Configure logs before Rasa takes over
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(VirtualAssistantLogFormatter())
-        logging.root.setLevel(app.log_level)
-        logging.root.addHandler(handler)
-
         if all(
             (
                 app.logging_cloudwatch_access_key_id,
