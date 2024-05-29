@@ -47,4 +47,4 @@ COPY ./logging-config.yml ./logging-config.yml
 
 USER 1001
 
-ENTRYPOINT ["python", "run_actions.py", "--actions", "actions", "--debug", "--logging-config_file", "logging-config.yml"]
+ENTRYPOINT ["python", "run_actions.py", "--actions", "actions", "--logging-config_file", "logging-config.yml"]
