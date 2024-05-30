@@ -86,7 +86,7 @@ responses:
   utter_favorites_delete_start:
     - text: "Let's remove a service from your Favorites."
   utter_favorites_delete_select:
-    - text: "Type the name or URL of the servic you want to remove."
+    - text: "Type the name or URL of the service you want to remove."
       buttons: *favorites_unknown_service
   utter_favorites_delete_specified:
     - text: "Got it. I'll remove the [{service}]({link}) ({group}) service from your Favorites."
