@@ -3,6 +3,8 @@ version: "3.1"
 intents:
   - intent_enable_2fa
   - intent_disable_2fa
+  - intent_2fa_general
+  - intent_revoke_2fa_help
 
 entities: []
 
@@ -141,3 +143,9 @@ responses:
     - text: "They can chat with me if they need help setting up two-factor authentication or visit [our documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
   utter_disable_org_2fa_success:
     - text: "The two-factor authentication requirement has been removed successfully."
+  utter_2fa_docs:
+    - text: "Check out our [two-factor authentication documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
+  utter_revoke_2fa_help_1:
+    - text: "If you can't get into your device for two-factor authentication, you'll need to revoke two-factor authentication. All requests to revoke two-factor authentication must be made by phone to Red Hat Customer Service."
+  utter_revoke_2fa_help_2:
+    - text: "You can find all the Red Hat Customer Service [numbers here](https://access.redhat.com/support/contact/customerService)."
