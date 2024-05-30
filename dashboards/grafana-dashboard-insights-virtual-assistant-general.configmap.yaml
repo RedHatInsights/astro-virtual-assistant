@@ -27,7 +27,6 @@ data:
         "editable": true,
         "fiscalYearStartMonth": 0,
         "graphTooltip": 0,
-        "id": 658685,
         "links": [],
         "liveNow": false,
         "panels": [
@@ -60,7 +59,8 @@ data:
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -91,9 +91,11 @@ data:
                 "fields": "",
                 "values": false
               },
-              "textMode": "auto"
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
             },
-            "pluginVersion": "9.3.8",
+            "pluginVersion": "10.4.1",
             "targets": [
               {
                 "datasource": {
@@ -127,7 +129,8 @@ data:
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -158,9 +161,11 @@ data:
                 "fields": "",
                 "values": false
               },
-              "textMode": "auto"
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
             },
-            "pluginVersion": "9.3.8",
+            "pluginVersion": "10.4.1",
             "targets": [
               {
                 "datasource": {
@@ -194,7 +199,8 @@ data:
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "red",
@@ -225,9 +231,11 @@ data:
                 "fields": "",
                 "values": false
               },
-              "textMode": "auto"
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
             },
-            "pluginVersion": "9.3.8",
+            "pluginVersion": "10.4.1",
             "targets": [
               {
                 "datasource": {
@@ -261,7 +269,8 @@ data:
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -292,9 +301,11 @@ data:
                 "fields": "",
                 "values": false
               },
-              "textMode": "auto"
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
             },
-            "pluginVersion": "9.3.8",
+            "pluginVersion": "10.4.1",
             "targets": [
               {
                 "datasource": {
@@ -313,17 +324,71 @@ data:
             "type": "stat"
           },
           {
-            "collapsed": false,
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "Total number of requests for each status code",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                },
+                "decimals": 0,
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": []
+            },
             "gridPos": {
-              "h": 1,
-              "w": 24,
+              "h": 9,
+              "w": 12,
               "x": 0,
               "y": 15
             },
-            "id": 10,
-            "panels": [],
-            "title": "Requests",
-            "type": "row"
+            "id": 8,
+            "options": {
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto"
+            },
+            "pluginVersion": "10.4.1",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "sum by (status) (increase(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\", status=~\"2xx|4xx|5xx\"}[$__range:1m]))",
+                "legendFormat": "{{label_name}}",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Request Count",
+            "type": "gauge"
           },
           {
             "datasource": {
@@ -338,6 +403,7 @@ data:
                   "mode": "palette-classic"
                 },
                 "custom": {
+                  "axisBorderShow": false,
                   "axisCenteredZero": false,
                   "axisColorMode": "text",
                   "axisLabel": "Requests per second",
@@ -351,6 +417,7 @@ data:
                     "tooltip": false,
                     "viz": false
                   },
+                  "insertNulls": false,
                   "lineInterpolation": "linear",
                   "lineWidth": 1,
                   "pointSize": 5,
@@ -372,7 +439,8 @@ data:
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     }
                   ]
                 },
@@ -381,16 +449,16 @@ data:
               "overrides": []
             },
             "gridPos": {
-              "h": 10,
-              "w": 16,
+              "h": 9,
+              "w": 24,
               "x": 0,
-              "y": 16
+              "y": 24
             },
             "id": 7,
             "options": {
               "legend": {
                 "calcs": [],
-                "displayMode": "table",
+                "displayMode": "list",
                 "placement": "bottom",
                 "showLegend": true
               },
@@ -453,55 +521,104 @@ data:
                 "refId": "D"
               }
             ],
-            "title": "Request Rate",
+            "title": "Virtual assistant Request Rate",
             "type": "timeseries"
+          },
+          {
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 33
+            },
+            "id": 16,
+            "panels": [],
+            "title": "API",
+            "type": "row"
           },
           {
             "datasource": {
               "type": "prometheus",
               "uid": "${datasource}"
             },
-            "description": "Total number of requests for each status code",
+            "description": "CPU usage across all virtual-assistant-api pods per minute",
             "fieldConfig": {
               "defaults": {
                 "color": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
+                  "mode": "palette-classic"
                 },
-                "decimals": 0,
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 2,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "stepBefore",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
                 "mappings": [],
+                "max": 1,
+                "min": 0,
                 "thresholds": {
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
                     }
                   ]
                 },
-                "unit": "none"
+                "unit": "percentunit"
               },
               "overrides": []
             },
             "gridPos": {
-              "h": 10,
-              "w": 8,
-              "x": 16,
-              "y": 16
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 34
             },
-            "id": 8,
+            "id": 12,
             "options": {
-              "orientation": "auto",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": false
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
               },
-              "showThresholdLabels": false,
-              "showThresholdMarkers": true
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
             },
-            "pluginVersion": "9.3.8",
             "targets": [
               {
                 "datasource": {
@@ -510,18 +627,551 @@ data:
                 },
                 "editorMode": "code",
                 "exemplar": false,
-                "expr": "sum by (status) (increase(api_3scale_gateway_api_status{exported_service=\"virtual-assistant\", status=~\"2xx|4xx|5xx\"}[$__range:1m]))",
-                "legendFormat": "{{label_name}}",
+                "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{container=\"virtual-assistant-api\"}) by (pod) * 1000",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
                 "range": true,
-                "refId": "A"
+                "refId": "B"
               }
             ],
-            "title": "Request Count",
-            "type": "gauge"
+            "title": "CPU Load",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "Memory usage across all virtual-assistant-api pods",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "decbytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 43
+            },
+            "id": 15,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "container_memory_working_set_bytes{container=\"virtual-assistant-api\"}",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Memory Load",
+            "type": "timeseries"
+          },
+          {
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 52
+            },
+            "id": 17,
+            "panels": [],
+            "title": "Actions",
+            "type": "row"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "CPU usage across all virtual-assistant-api pods per minute",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 2,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "stepBefore",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 53
+            },
+            "id": 19,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{container=\"virtual-assistant-actions\"}) by (pod) * 1000",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "CPU Load",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "Memory usage across all virtual-assistant-api pods",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "decbytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 62
+            },
+            "id": 20,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "container_memory_working_set_bytes{container=\"virtual-assistant-actions\"}",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Memory Load",
+            "type": "timeseries"
+          },
+          {
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 71
+            },
+            "id": 18,
+            "panels": [],
+            "title": "Internal",
+            "type": "row"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "CPU usage across all virtual-assistant-api pods per minute",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 2,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "stepBefore",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 72
+            },
+            "id": 21,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{container=\"virtual-assistant-internal\"}) by (pod) * 1000",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "CPU Load",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${datasource}"
+            },
+            "description": "Memory usage across all virtual-assistant-api pods",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "decbytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 81
+            },
+            "id": 22,
+            "options": {
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "container_memory_working_set_bytes{container=\"virtual-assistant-internal\"}",
+                "format": "time_series",
+                "hide": false,
+                "instant": false,
+                "legendFormat": "{{pod}}",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Memory Load",
+            "type": "timeseries"
           }
         ],
-        "schemaVersion": 37,
-        "style": "dark",
+        "refresh": "",
+        "schemaVersion": 39,
         "tags": [],
         "templating": {
           "list": [
@@ -529,7 +1179,7 @@ data:
               "current": {
                 "selected": false,
                 "text": "crcs02ue1-prometheus",
-                "value": "crcs02ue1-prometheus"
+                "value": "PDD8BE47D10408F45"
               },
               "hide": 0,
               "includeAll": false,
@@ -553,9 +1203,9 @@ data:
         "timezone": "",
         "title": "Virtual Assistant (Astro)",
         "uid": "GpSvWU4Sk",
-        "version": 17,
+        "version": 18,
         "weekStart": ""
-      }
+    }
 kind: ConfigMap
 metadata:
   name: grafana-dashboard-insights-virtual-assistant-general

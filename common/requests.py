@@ -53,6 +53,8 @@ async def send_console_request(
         endpoint = app.rhsm_url
     elif app_name == "chrome-service":
         endpoint = app.chrome_service_url
+    elif app_name == "rbac":
+        endpoint = app.rbac_url
     else:
         print(f"Invalid app: {app_name}")
         raise ValueError(f"Invalid app_name used: {app_name}")

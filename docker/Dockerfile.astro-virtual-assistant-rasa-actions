@@ -43,7 +43,8 @@ COPY ./actions ./actions
 COPY ./common ./common
 COPY *.yml ./
 COPY ./run_actions.py ./run_actions.py
+COPY ./logging-config.yml ./logging-config.yml
 
 USER 1001
 
-ENTRYPOINT ["python", "run_actions.py", "--actions", "actions"]
+ENTRYPOINT ["python", "run_actions.py", "--actions", "actions", "--logging-config_file", "logging-config.yml"]

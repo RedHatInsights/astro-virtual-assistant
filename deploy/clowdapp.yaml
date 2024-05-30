@@ -22,7 +22,7 @@ objects:
       - rhsm-api-proxy
       - ccx-smart-proxy
       - chrome-service
-      - rbac-service
+      - rbac
 
     inMemoryDb: true
     database:

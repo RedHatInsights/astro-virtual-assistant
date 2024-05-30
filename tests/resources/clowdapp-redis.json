@@ -72,7 +72,7 @@
       "port": 8000
     },
     {
-      "app": "rbac-service",
+      "app": "rbac",
       "hostname": "rbac-service.svc",
       "name": "service",
       "port": 8000

@@ -117,9 +117,12 @@ class ConsoleInput(InputChannel):
                 # Use internal API instead of an HTTP request.
                 # Copied from https://github.com/RasaHQ/rasa/blob/68ce281aeec352876afb2baf74844e95b0c69ff4/rasa/server.py#L718-L741
 
-                tracker = await request.app.ctx.agent.processor.get_tracker(sender_id)
-                state = tracker.current_state(EventVerbosity.AFTER_RESTART)
-                is_first_visit = "name" not in state["latest_message"]["intent"]
+                # RHCLOUD-32861 Disable this feature to check if this directly plays into the alert issues
+
+                # tracker = await request.app.ctx.agent.processor.get_tracker(sender_id)
+                # state = tracker.current_state(EventVerbosity.AFTER_RESTART)
+                # is_first_visit = "name" not in state["latest_message"]["intent"]
+                is_first_visit = False
 
                 return response.json({"first_visit": is_first_visit})
             except Exception as e:
