@@ -42,3 +42,36 @@ nlu:
       - remove 2fa now
       - turn off 2fa
       - switch off 2fa
+
+  - intent: intent_revoke_2fa_help
+    examples: |
+      - What if I can't access my authenticator
+      - What happens if I lose my login device
+      - can't access my authenticator
+      - lost login device
+      - my 2fa device has changed
+      - lost 2fa device
+      - lost two factor authenticator device
+      - lost two factor auth device
+      - two factor auth device changed
+      - can't access 2fa device
+      - can't access two factor device
+
+  - intent: intent_2fa_general
+    examples: |
+      - General information about 2FA
+      - Tell me about 2FA
+      - What is two-factor authentication
+      - How does 2FA work
+      - 2FA docs
+      - 2FA documentation
+      - two factor auth docs
+      - two factor authentication docs
+      - two factor auth documentation
+      - How does two factor auth work
+      - What is 2fa
+      - 2fa
+      - two-factor authentication
+      - two-factor auth
+      - two factor auth
+      - two factor authentication
