@@ -1,0 +1,17 @@
+version: "3.1"
+
+intents:
+  - intent_service_accounts_general
+  - intent_apis_support_service_accounts
+
+entities: []
+
+slots: {}
+
+actions: []
+
+responses:
+  utter_service_accounts_general:
+    - text: "You can find more information on service accounts under this [knowledgebase article](https://access.redhat.com/articles/7036194)."
+  utter_service_accounts_api_catalog:
+    - text: "APIs that support service accounts are listed in our API catalog page. You can check out the catalog [here](https://developers.redhat.com/api-catalog)."

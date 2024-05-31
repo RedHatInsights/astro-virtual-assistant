@@ -1,0 +1,16 @@
+version: "3.1"
+
+rules:
+  - rule: User wants general information about service accounts (S18)
+    steps:
+      - intent: intent_service_accounts_general
+      - action: utter_service_accounts_general
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: APIs that work with service accounts (S19)
+    steps:
+      - intent: intent_apis_support_service_accounts
+      - action: utter_service_accounts_api_catalog
+      - action: form_closing
+      - active_loop: form_closing
