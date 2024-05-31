@@ -18,6 +18,7 @@ import {
 } from '@tanstack/react-query'
 import {MessagesPage} from "./pages/MessagesPage.tsx";
 import {TimelinePage} from "./pages/TimelinePage.tsx";
+import {UniqueMessagesPage} from "./pages/UniqueMessagesPage.tsx";
 
 const router = createHashRouter([
     {
@@ -39,6 +40,10 @@ const router = createHashRouter([
             {
                 path: "timeline",
                 element: <TimelinePage />
+            },
+            {
+                path: "unique",
+                element: <UniqueMessagesPage />
             }
         ]
     },
