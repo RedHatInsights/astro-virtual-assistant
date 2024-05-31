@@ -1,0 +1,31 @@
+version: "3.1"
+
+nlu:
+  - intent: intent_service_accounts_general
+    examples: |
+      - What are service accounts
+      - What kind of access and permissions are there
+      - Are activities performed by service accounts logged
+      - What kind of alerts are there
+      - What kind of notifications are there
+      - What does authentication and authorization look like
+      - How is sensitive information stored
+      - How is lifecycle management
+      - Where can I manage service accounts
+      - Logging and auditing
+      - Encryption and data protection
+      - Integration with IAM systems
+      - Take me to service accounts documentation
+      - Backup and recovery
+      - service accounts
+
+  - intent: intent_apis_support_service_accounts
+    examples: |
+      - What API work with service accounts
+      - What APIs work with service accounts
+      - I'm trying to find out what APIs I can use with my service accounts
+      - Where can I see a list of APIs for service accounts
+      - Show me all the APIs for service accounts
+      - API support service accounts
+      - Which api support service account
+      - service accounts api
