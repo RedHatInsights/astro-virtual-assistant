@@ -55,9 +55,9 @@ function App() {
                                 Senders
                             </Link>
                         </NavItem>
-                        <NavItem itemId="unique" isActive={location.pathname.startsWith("/unique")}>
-                            <Link to={"unique"}>
-                                Unique Messages
+                        <NavItem itemId="messages" isActive={location.pathname.startsWith("/messages")}>
+                            <Link to={"messages"}>
+                                Messages
                             </Link>
                         </NavItem>
                     </NavList>

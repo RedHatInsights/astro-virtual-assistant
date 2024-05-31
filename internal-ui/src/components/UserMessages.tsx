@@ -6,12 +6,12 @@ interface MessagesProps {
     messages: Array<MessageUser>;
 }
 
-export const UniqueMessages: React.FunctionComponent<MessagesProps> = ({ messages }) => {
+export const UserMessages: React.FunctionComponent<MessagesProps> = ({ messages }) => {
     return <Table
         isStriped
         isStickyHeader
     >
-        <Caption>User Messages</Caption>
+        <Caption>Messages</Caption>
         <Thead>
             <Tr>
                 <Th>Message</Th>

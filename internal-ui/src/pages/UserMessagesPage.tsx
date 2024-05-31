@@ -8,10 +8,10 @@ import {Link} from "react-router-dom";
 import {MessageUser, Session} from "../Types.ts";
 import {useMessages} from "../services/messages.ts";
 import {LoadingPageSection} from "../components/LoadingPageSection.tsx";
-import { UniqueMessages } from "../components/UniqueMessages.tsx";
+import { UserMessages } from "../components/UserMessages.tsx";
 
 
-export const UniqueMessagesPage = () => {
+export const UserMessagesPage = () => {
 
     const messagesQuery = useMessages();
     const isLoading = messagesQuery.isFirstLoad || messagesQuery.isLoading;
@@ -33,13 +33,13 @@ export const UniqueMessagesPage = () => {
                     Home
                 </BreadcrumbItem>
                 <BreadcrumbItem>
-                    <Link to="/unique">Unique Messages</Link>
+                    <Link to="/messages">Messages</Link>
                 </BreadcrumbItem>
             </Breadcrumb>
         </PageSection>
         {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
             <ul>
-                <UniqueMessages messages={filterMessagesFromSessions(messagesQuery.sessions)} />
+                <UserMessages messages={filterMessagesFromSessions(messagesQuery.sessions)} />
             </ul>
             <Button onClick={() => messagesQuery.loadMore()} isLoading={isLoading} isDisabled={isLoading}>Load more</Button>
         </PageSection>}
