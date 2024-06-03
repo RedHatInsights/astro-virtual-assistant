@@ -5,6 +5,7 @@ import {useReducer, useEffect, Dispatch} from 'react';
 const FilterTypeName: Array<ValidMessage["type_name"]> = [
     "bot",
     "user",
+    "slot",
     "session_started"
 ];
 
