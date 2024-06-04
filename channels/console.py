@@ -45,29 +45,29 @@ class ConsoleInput(InputChannel):
         @custom_webhook.route("/talk", methods=["POST"])
         async def receive(request: Request) -> HTTPResponse:
             insights_request_id = request.headers.get("x-rh-insights-request-id")
-            logger.debug(f'[{insights_request_id}] Serving request to /talk')
+            logger.debug(f"[{insights_request_id}] Serving request to /talk")
 
-            logger.debug(f'[{insights_request_id}]Extracting identity header')
+            logger.debug(f"[{insights_request_id}]Extracting identity header")
             identity = self.extract_identity(request)
             if not identity:
                 return response.json(
                     {"error": "No x-rh-identity header present"}, status=400
                 )
 
-            logger.debug(f'[{insights_request_id}]Decoding identity')
+            logger.debug(f"[{insights_request_id}]Decoding identity")
             # base64 decode the identity header
             identity_dict = decode_identity(identity)
 
-            logger.debug(f'[{insights_request_id}]Fetching is_org status')
+            logger.debug(f"[{insights_request_id}]Fetching is_org status")
             is_org_admin = self.extract_is_org_admin(identity_dict)
 
-            logger.debug(f'[{insights_request_id}]Extracting current url')
+            logger.debug(f"[{insights_request_id}]Extracting current url")
             current_url = self.extract_current_url(request)  # not a required field
 
-            logger.debug(f'[{insights_request_id}]Extracting email')
+            logger.debug(f"[{insights_request_id}]Extracting email")
             email = self.extract_email(identity_dict)
 
-            logger.debug(f'[{insights_request_id}]Getting sender id')
+            logger.debug(f"[{insights_request_id}]Getting sender id")
             sender_id = self.get_sender(identity_dict)
             if not sender_id:
                 return response.json(
@@ -77,21 +77,21 @@ class ConsoleInput(InputChannel):
                     status=400,
                 )
 
-            logger.debug(f'[{insights_request_id}]Sender id resolved to {sender_id}')
+            logger.debug(f"[{insights_request_id}]Sender id resolved to {sender_id}")
 
             if not request.json:
                 return response.json({"error": "Invalid body"}, status=400)
 
-            logger.debug(f'[{insights_request_id}] Fetching message')
+            logger.debug(f"[{insights_request_id}] Fetching message")
             message = request.json.get("message")
             if not message:
                 return response.json({"error": "Invalid json body"}, status=400)
 
             input_channel = self.name()
 
-            logger.debug(f'[{insights_request_id}] Creating collector')
+            logger.debug(f"[{insights_request_id}] Creating collector")
             collector = CollectingOutputChannel()
-            logger.debug(f'[{insights_request_id}] Collector created - sending message')
+            logger.debug(f"[{insights_request_id}] Collector created - sending message")
 
             try:
                 await on_new_message(
@@ -105,7 +105,7 @@ class ConsoleInput(InputChannel):
                         ),
                     )
                 )
-                logger.debug(f'Got response')
+                logger.debug(f"Got response")
             except CancelledError:
                 logger.error("Message handling timed out for user message.")
             except Exception as e:
@@ -116,7 +116,9 @@ class ConsoleInput(InputChannel):
 
                 logger.debug("Message: %s", message)
 
-            logger.debug(f'About to end /talk with x-rh-insights-request-id: {insights_request_id}')
+            logger.debug(
+                f"About to end /talk with x-rh-insights-request-id: {insights_request_id}"
+            )
             return response.json(collector.messages)
 
         @custom_webhook.route("/session/status", methods=["GET"])
