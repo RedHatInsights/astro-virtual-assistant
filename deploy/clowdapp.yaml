@@ -251,7 +251,7 @@ parameters:
   value: "1 0 * * *"
 - name: REST_WORKERS
   description: The number of workers in Sanic's REST API
-  value: "2"
+  value: "1"
 - name: ENVIRONMENT_NAME
   description: The name of the environment. Needs to be either stage or prod
   value: "prod"
