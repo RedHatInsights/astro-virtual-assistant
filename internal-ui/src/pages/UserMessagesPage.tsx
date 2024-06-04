@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Breadcrumb,
     BreadcrumbItem, Button,
@@ -9,24 +10,22 @@ import {MessageUserWithSessionData, Session} from "../Types.ts";
 import {useMessages} from "../services/messages.ts";
 import {LoadingPageSection} from "../components/LoadingPageSection.tsx";
 import { UserMessages } from "../components/UserMessages.tsx";
-import React from "react";
-
 
 export const UserMessagesPage = () => {
 
     const messagesQuery = useMessages();
     const isLoading = messagesQuery.isFirstLoad || messagesQuery.isLoading;
 
+    // filters
     const [searchValue, setSearchValue] = React.useState('');
-
     const [isExternal, setIsExternal] = React.useState<boolean>(false);
 
     const updateFilters = (isExternal: boolean, searchValue: string) => {
         setIsExternal(isExternal);
         setSearchValue(searchValue);
     }
-
-    const filterMessagesFromSessions = (sessions: ReadonlyArray<Session>) => {
+    
+    const filterMessagesFromSessions = React.useCallback((sessions: ReadonlyArray<Session>) => {
         const mess: MessageUserWithSessionData[] = [];
         sessions.forEach(s => {
             let is_internal = false;
@@ -43,16 +42,32 @@ export const UserMessagesPage = () => {
                 return;
             }
 
-            s.messages.forEach(m => {
-                if (m.type_name === "user" && !m.data.text.startsWith("/")) {
-                    const with_session_data = m as MessageUserWithSessionData;
-                    with_session_data.is_internal = is_internal;
-                    mess.push(with_session_data)
+            const filtered = s.messages.filter(m => {
+                if (m.type_name !== "user" || m.data.text.startsWith("/")) {
+                    return false;
                 }
+
+                if (searchValue !== "") {
+                    return m.data.parse_data.intent.name.includes(searchValue) || m.data.text.includes(searchValue); 
+                }
+                return true;
+            });
+
+            filtered.forEach(m => {
+                const with_session_data = m as MessageUserWithSessionData;
+                with_session_data.is_internal = is_internal;
+                mess.push(with_session_data);
             });
         });
-        return mess;
-    }
+
+        setFilteredMessages(mess);
+    }, [isExternal, searchValue]);
+
+    const [filteredMessages, setFilteredMessages] = React.useState<MessageUserWithSessionData[]>([]);
+
+    React.useEffect(() => {
+        filterMessagesFromSessions(messagesQuery.sessions);
+    }, [messagesQuery.sessions, isExternal, searchValue, filterMessagesFromSessions]);
 
     return <>
         <PageSection>
@@ -67,7 +82,7 @@ export const UserMessagesPage = () => {
         </PageSection>
         {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
             <ul>
-                <UserMessages messages={filterMessagesFromSessions(messagesQuery.sessions)} isExternal={isExternal} searchValue={searchValue} updateFilters={updateFilters} />
+                <UserMessages messages={filteredMessages} isExternal={isExternal} searchValue={searchValue} updateFilters={updateFilters} />
             </ul>
             <br />
             <Button onClick={() => messagesQuery.loadMore()} isLoading={isLoading} isDisabled={isLoading}>Load more</Button>

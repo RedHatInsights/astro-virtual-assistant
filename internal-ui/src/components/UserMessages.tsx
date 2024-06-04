@@ -2,6 +2,7 @@ import { SearchInput, Checkbox } from "@patternfly/react-core";
 import {MessageUser} from "../Types.ts";
 import {Table, Caption, Thead, Tr, Td, Th, Tbody} from "@patternfly/react-table";
 import {Link} from "react-router-dom";
+import { useEffect } from "react";
 
 interface MessagesProps {
     messages: Array<MessageUser>;
@@ -44,7 +45,7 @@ export const UserMessages: React.FunctionComponent<MessagesProps> = ({ messages,
         </Thead>
         <Tbody>
             {messages.map(message => (
-                <Tr key={message.sender_id}>
+                <Tr key={message.data.message_id}>
                     <Td>{message.data.text}</Td>
                     <Td>{message.data.parse_data.intent.name}</Td>
                     <Td>{message.data.parse_data.intent.confidence}</Td>
