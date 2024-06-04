@@ -173,7 +173,7 @@ async def get_roles_for_tam(tracker):
 def format_roles_list_for_tam(data: List[Dict[str, Any]]):
     names = []
     for role in data:
-        names.append(role.get("name"))
+        names.append(role.get("display_name"))
     return names
 
 
