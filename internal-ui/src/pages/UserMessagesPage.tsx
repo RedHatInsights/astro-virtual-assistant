@@ -9,6 +9,7 @@ import {MessageUserWithSessionData, Session} from "../Types.ts";
 import {useMessages} from "../services/messages.ts";
 import {LoadingPageSection} from "../components/LoadingPageSection.tsx";
 import { UserMessages } from "../components/UserMessages.tsx";
+import React from "react";
 
 
 export const UserMessagesPage = () => {
@@ -16,15 +17,32 @@ export const UserMessagesPage = () => {
     const messagesQuery = useMessages();
     const isLoading = messagesQuery.isFirstLoad || messagesQuery.isLoading;
 
+    const [searchValue, setSearchValue] = React.useState('');
+
+    const [isExternal, setIsExternal] = React.useState<boolean>(false);
+
+    const updateFilters = (isExternal: boolean, searchValue: string) => {
+        setIsExternal(isExternal);
+        setSearchValue(searchValue);
+    }
+
     const filterMessagesFromSessions = (sessions: ReadonlyArray<Session>) => {
         const mess: MessageUserWithSessionData[] = [];
         sessions.forEach(s => {
             let is_internal = false;
             s.messages.forEach(m => {
-                if (m.type_name === "slot" && m.data.name === "is_internal" && m.data.value === true) {
-                    is_internal = true;
+                if (m.type_name === "slot" && m.data.name === "is_internal") {
+                    if (m.data.value === true) {
+                        is_internal = true;
+                    }
+                    return;
                 }
             });
+
+            if (isExternal && is_internal) {
+                return;
+            }
+
             s.messages.forEach(m => {
                 if (m.type_name === "user" && !m.data.text.startsWith("/")) {
                     const with_session_data = m as MessageUserWithSessionData;
@@ -49,8 +67,9 @@ export const UserMessagesPage = () => {
         </PageSection>
         {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
             <ul>
-                <UserMessages messages={filterMessagesFromSessions(messagesQuery.sessions)} />
+                <UserMessages messages={filterMessagesFromSessions(messagesQuery.sessions)} isExternal={isExternal} searchValue={searchValue} updateFilters={updateFilters} />
             </ul>
+            <br />
             <Button onClick={() => messagesQuery.loadMore()} isLoading={isLoading} isDisabled={isLoading}>Load more</Button>
         </PageSection>}
     </>;
