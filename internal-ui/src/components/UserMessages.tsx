@@ -2,7 +2,6 @@ import { SearchInput, Checkbox } from "@patternfly/react-core";
 import {MessageUser} from "../Types.ts";
 import {Table, Caption, Thead, Tr, Td, Th, Tbody} from "@patternfly/react-table";
 import {Link} from "react-router-dom";
-import { useEffect } from "react";
 
 interface MessagesProps {
     messages: Array<MessageUser>;
