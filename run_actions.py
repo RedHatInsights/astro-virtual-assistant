@@ -38,6 +38,9 @@ def main():
     if app.actions_port:
         sys.argv.extend(["--port", str(app.actions_port)])
 
+    if app.log_level == "DEBUG":
+        sys.argv.extend(["--debug"])
+
     rasa_sdk_main()
 
 

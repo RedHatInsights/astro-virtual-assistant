@@ -13,3 +13,5 @@ loggers:
   rasa:
     handlers: [va_handler]
     propagate: 0
+  "astro-virtual-assistant":
+    handlers: [va_handler]

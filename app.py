@@ -63,6 +63,9 @@ def main():
     if app.api_port != DEFAULT_RASA_PORT:
         sys.argv.extend(["--port", str(app.api_port)])
 
+    if app.log_level == "DEBUG":
+        sys.argv.extend(["--debug"])
+
     rasa_main()
 
 
