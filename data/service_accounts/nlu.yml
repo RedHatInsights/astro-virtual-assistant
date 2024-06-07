@@ -29,3 +29,16 @@ nlu:
       - API support service accounts
       - Which api support service account
       - service accounts api
+
+  - intent: intent_update_api_integrations
+    examples: |
+      - I want to update my API integrations
+      - Use service account to update API integrations
+      - Change API integration
+      - Can I make a request to update API integrations
+      - Basic auth and service accounts
+      - update api integrations
+      - service account update api integrations
+      - request update api integration
+      - basic auth update api integration
+      - modify api integrations
