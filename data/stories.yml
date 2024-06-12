@@ -39,6 +39,7 @@ stories:
           - intent: nlu_fallback
           - intent: intent_unknown_topic
           - intent: intent_core_yes
+          - intent: intent_core_no
       - action: utter_unknown_topic
       - checkpoint: check_core_capabilities
 
