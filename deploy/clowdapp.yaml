@@ -80,11 +80,10 @@ objects:
         resources:
           limits:
             cpu: 1500m
-            memory: 3Gi
+            memory: 1.6Gi
           requests:
             cpu: 1000m
-            memory: 2Gi
-
+            memory: 1.2Gi
     - name: actions
       minReplicas: ${{MIN_REPLICAS}}
       webServices:
@@ -130,10 +129,10 @@ objects:
         resources:
           limits:
             cpu: 250m
-            memory: 256Mi
+            memory: 120Mi
           requests:
             cpu: 100m
-            memory: 128Mi
+            memory: 80Mi
 
     - name: internal
       minReplicas: ${{MIN_REPLICAS}}
@@ -181,10 +180,10 @@ objects:
         resources:
           limits:
             cpu: 250m
-            memory: 256Mi
+            memory: 120Mi
           requests:
             cpu: 100m
-            memory: 128Mi
+            memory: 80Mi
     jobs:
     - name: db-cleaner
       schedule: ${CLEANER_SCHEDULE}
