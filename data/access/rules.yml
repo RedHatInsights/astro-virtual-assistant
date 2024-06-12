@@ -69,3 +69,11 @@ rules:
       - action: action_access_org_id
       - action: form_closing
       - active_loop: form_closing
+  
+  - rule: Have you already contacted the org admin? yes
+    steps:
+      - action: utter_access_have_you_contacted_org_admin
+      - intent: intent_core_yes
+      - action: utter_access_have_you_contacted_org_admin_yes
+      - action: form_closing
+      - active_loop: form_closing
