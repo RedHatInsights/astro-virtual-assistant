@@ -14,3 +14,19 @@ rules:
       - action: utter_service_accounts_api_catalog
       - action: form_closing
       - active_loop: form_closing
+
+  - rule: User wants to update API integrations (S20)
+    steps:
+      - intent: intent_update_api_integrations
+      - action: form_update_api_integration
+      - active_loop: form_update_api_integration
+
+  - rule: User wants to update API integration continued (S20)
+    condition:
+      - active_loop: form_update_api_integration
+    steps:
+      - action: form_update_api_integration
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_form_update_api_integration_check

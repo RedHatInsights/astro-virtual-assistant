@@ -3,15 +3,132 @@ version: "3.1"
 intents:
   - intent_service_accounts_general
   - intent_apis_support_service_accounts
+  - intent_update_api_integrations
 
 entities: []
 
-slots: {}
+slots:
+  docs_or_walkthrough:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_update_api_integration
+            requested_slot: docs_or_walkthrough
 
-actions: []
+  has_service_account_creds:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &has_service_account_creds
+          - active_loop: form_update_api_integration
+            requested_slot: has_service_account_creds
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *has_service_account_creds
+
+  need_another_integration:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        value: true
+        intent: intent_core_yes
+        conditions: &need_another_integration
+          - active_loop: form_update_api_integration
+            requested_slot: need_another_integration
+      - type: from_intent
+        value: false
+        intent: intent_core_no
+        conditions: *need_another_integration
+
+actions:
+  - validate_form_update_api_integration
+  - action_form_update_api_integration_check
+
+forms:
+  form_update_api_integration:
+    required_slots:
+      - docs_or_walkthrough
+      - has_service_account_creds
+      - need_another_integration
 
 responses:
   utter_service_accounts_general:
     - text: "You can find more information on service accounts under this [knowledgebase article](https://access.redhat.com/articles/7036194)."
   utter_service_accounts_api_catalog:
     - text: "APIs that support service accounts are listed in our API catalog page. You can check out the catalog [here](https://developers.redhat.com/api-catalog)."
+  utter_ask_form_update_api_integration_docs_or_walkthrough:
+    - text: |
+        In order to update your API configurations to use Service Accounts, you'll need to obtain an access token.
+        I can provide you with information on how to do this, or walk you through the steps.
+        How would you like to proceed?
+      buttons:
+        - title: Documentation Only
+          payload: docs
+        - title: Walkthrough
+          payload: walkthrough
+  utter_ask_form_update_api_integration_has_service_account_creds:
+    - text: |
+        Before we update your API integration, let's make sure you have your service account credentials.
+        These provide a secure way for your application to connect to our APIs.
+        Do you have your service account's client ID and secret ready?
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_ask_form_update_api_integration_need_another_integration:
+    - text: "That's it! Do you need help with another integration?"
+      buttons:
+        - title: Yes
+          payload: /intent_core_yes
+        - title: No
+          payload: /intent_core_no
+  utter_docs_only_redirect:
+    - text: "I am opening the API documentation page in a new tab."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: https://developers.redhat.com/api-catalog
+  utter_no_service_account_creds:
+    - text: |
+        Ok. Please get them and come back when you are ready.
+        If you need the client ID, visit [console.redhat.com/iam/service-accounts](console.redhat.com/iam/service-accounts).
+        If you need to reset your credentials for the secret, you can do that through the interface too.
+  utter_got_service_account_creds_1:
+    - text: "We'll use something called the Client Credentials Grant flow to get an access token from Red Hat Single Sign-On. This method is designed for applications without a direct user interaction."
+  utter_got_service_account_creds_2:
+    - text: "Ready to get your access token? Here's the command you can copy and paste, but I'll explain it part by part."
+  utter_got_service_account_creds_3:
+    - text: |
+        `curl   -d "client_id=yyyy"   -d "client_secret=xxx"   -d "grant_type=client_credentials"   "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token" -d "scope=api.console"`
+  utter_got_service_account_creds_4:
+    - text: |
+        **Replace Placeholders**:
+        Make sure to replace `yyyy` with your service account's client ID and `xxx` with its client secret.
+
+        **Parameters referece**:
+        - `client_id` and `client_secret`: These identify your application to Red Hat SSO.
+        - `grant_type`: Specifies you want the Client Credentials Grant.
+        - `scope`: Defines the API permissions you need.
+  utter_got_service_account_creds_5:
+    - text: "Red Hat SSO will respond with a JSON object containing an access token. You can use this to make authenticated requests to APIs."
+  utter_got_service_account_creds_6:
+    - text: |
+        Now you'll want to test your integration. Here's an example call using the Ingress API.
+
+        Remember to replace `${access_token}` with the actual token you received.
+  utter_got_service_account_creds_7:
+    - text: |
+        `curl 'https://console.redhat.com/api/ingress/v1' -H 'accept: application/json' -H "Authorization: Bearer ${access_token}"`
+  utter_got_service_account_creds_8:
+    - text: |
+        One final and important note:
+          Access tokens expire after 15 minutes. You'll need to repeat the token request process roughly every 10 minutes to keep a fresh token. This is a standard security practice.
