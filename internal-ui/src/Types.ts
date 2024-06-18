@@ -75,7 +75,7 @@ export interface MessageSlot extends MessageBase<"slot"> {
     data: {
         metadata: MetadataBase,
         name: string;
-        value: AstroData
+        value: string | boolean | number | null;
     }
 }
 
@@ -94,6 +94,12 @@ export interface MessageUser extends MessageBase<"user"> {
     }
 }
 
+export interface MessageUserWithSessionData extends MessageUser {
+    is_internal: boolean;
+    sender_id: string;
+    session_timestamp: number;
+}
+
 export interface MessageUserFeaturization extends MessageBase<"user_featurization"> {
     data: {
         metadata: MetadataBase
@@ -101,7 +107,7 @@ export interface MessageUserFeaturization extends MessageBase<"user_featurizatio
 }
 
 export type Message = MessageAction | MessageActionExecutionRejected | MessageActiveLoop | MessageBot | MessageRestart | MessageSessionStarted | MessageSlot | MessageUser | MessageUserFeaturization;
-export type ValidMessage = MessageBot | MessageUser | MessageSessionStarted;
+export type ValidMessage = MessageBot | MessageUser | MessageSlot | MessageSessionStarted;
 
 
 interface MetadataBase {
@@ -112,6 +118,7 @@ interface MetadataBase {
 interface AstroData {
     current_url: string;
     is_org_admin: boolean;
+    is_internal: boolean;
 }
 
 interface Intent {

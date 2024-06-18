@@ -5,6 +5,7 @@ import {useReducer, useEffect, Dispatch} from 'react';
 const FilterTypeName: Array<ValidMessage["type_name"]> = [
     "bot",
     "user",
+    "slot",
     "session_started"
 ];
 
@@ -16,7 +17,7 @@ const getMessages = async (senderId?: string, cursor?: number): Promise<Array<Va
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
-            limit: 200
+            limit: 1000
         }
     });
     if (response.status === 200) {
