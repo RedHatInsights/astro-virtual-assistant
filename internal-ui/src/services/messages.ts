@@ -17,7 +17,7 @@ const getMessages = async (senderId?: string, cursor?: number): Promise<Array<Va
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
-            limit: 200
+            limit: 1000
         }
     });
     if (response.status === 200) {
