@@ -48,7 +48,7 @@ export const UserMessagesPage = () => {
                 }
 
                 if (searchValue !== "") {
-                    return m.data.parse_data.intent.name.includes(searchValue) || m.data.text.includes(searchValue) || m.sender_id.includes(searchValue); 
+                    return m.data.parse_data.intent.name.includes(searchValue.toLowerCase()) || m.data.text.toLowerCase().includes(searchValue.toLowerCase()) || m.sender_id.includes(searchValue); 
                 }
                 return true;
             });
