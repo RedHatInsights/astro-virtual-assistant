@@ -2,14 +2,19 @@ import React from "react";
 import {
     Breadcrumb,
     BreadcrumbItem, Button,
+    Checkbox,
     PageSection,
+    PageSectionVariants,
+    SearchInput,
+    Split,
+    SplitItem,
 } from "@patternfly/react-core";
 import {Link} from "react-router-dom";
 
 import {MessageUserWithSessionData, Session} from "../Types.ts";
 import {useMessages} from "../services/messages.ts";
 import {LoadingPageSection} from "../components/LoadingPageSection.tsx";
-import { UserMessages } from "../components/UserMessages.tsx";
+import { UserMessagesTable } from "../components/UserMessagesTable.tsx";
 
 export const UserMessagesPage = () => {
 
@@ -19,11 +24,6 @@ export const UserMessagesPage = () => {
     // filters
     const [searchValue, setSearchValue] = React.useState('');
     const [isExternal, setIsExternal] = React.useState<boolean>(false);
-
-    const updateFilters = (isExternal: boolean, searchValue: string) => {
-        setIsExternal(isExternal);
-        setSearchValue(searchValue);
-    }
     
     const filterMessagesFromSessions = React.useCallback((sessions: ReadonlyArray<Session>) => {
         const mess: MessageUserWithSessionData[] = [];
@@ -48,7 +48,7 @@ export const UserMessagesPage = () => {
                 }
 
                 if (searchValue !== "") {
-                    return m.data.parse_data.intent.name.includes(searchValue) || m.data.text.includes(searchValue); 
+                    return m.data.parse_data.intent.name.includes(searchValue) || m.data.text.includes(searchValue) || m.sender_id.includes(searchValue); 
                 }
                 return true;
             });
@@ -80,12 +80,34 @@ export const UserMessagesPage = () => {
                 </BreadcrumbItem>
             </Breadcrumb>
         </PageSection>
-        {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <PageSection>
-            <ul>
-                <UserMessages messages={filteredMessages} isExternal={isExternal} searchValue={searchValue} updateFilters={updateFilters} />
-            </ul>
+        {messagesQuery.isFirstLoad ? <LoadingPageSection /> : <>
+        <PageSection variant={PageSectionVariants.light}>
+            <Split hasGutter>
+                <SplitItem >
+                    <SearchInput
+                        placeholder="Search by intent, message, or sender id"
+                        value={searchValue}
+                        onChange={(_event, value) => setSearchValue(value)}
+                        onClear={() => setSearchValue('')}
+                    />
+                </SplitItem>
+                <SplitItem isFilled></SplitItem>
+                <SplitItem>
+                    <div style={{paddingTop: "10px"}}>
+                        <Checkbox
+                            id="toggle-external-only"
+                            label="External Only"
+                            isChecked={isExternal}
+                            onChange={(_event, checked) => setIsExternal(checked)}
+                        />
+                    </div>
+                </SplitItem>
+            </Split>
+        </PageSection>
+        <PageSection>
+            <UserMessagesTable messages={filteredMessages} />
             <br />
             <Button onClick={() => messagesQuery.loadMore()} isLoading={isLoading} isDisabled={isLoading}>Load more</Button>
-        </PageSection>}
+        </PageSection></>}
     </>;
 };
