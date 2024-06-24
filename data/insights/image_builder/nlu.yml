@@ -11,7 +11,8 @@ nlu:
       - Download rhel
       - Download RHEL for me
       - Help me with RHEL
-      - RHEL images
+      - RHEL image setup
+      - setup RHEL images
       - Setup me some images
       - Image builder please
       - can you help me build an image
