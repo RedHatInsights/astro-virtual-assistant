@@ -83,6 +83,8 @@ nlu:
       - good morning!
       - Sup robot
       - Hello assistat
+      - Hatty! nice ta meet ya
+      - nice to meet you
 
   - intent: intent_planned_features
     examples: |
@@ -175,6 +177,16 @@ nlu:
       - Open a case for me
       - I want to open a support case
       - I want to open a case
+      - I need to chat with support team
+      - i need to chat with the support
+      - i want to raise a case with redhat for help
+      - i want to raise a case
+      - open support case
+      - i need to submit a support ticket
+      - submit a support ticket
+      - i need to do a support ticket
+      - open a ticket
+      - i need to open a ticket
 
   - intent: intent_services_offline
     examples: |
@@ -260,6 +272,11 @@ nlu:
       - I hate talking to bots
       - this is sad
       - bad bot
+      - you're not good
+      - so you are useless
+      - bad troubleshooting bot
+      - why can't you help me
+      - u r useless
 
   - intent: intent_are_you_ai
     examples: |
@@ -284,6 +301,11 @@ nlu:
       - what is supervised learning?
       - ai test
       - are you real?
+      - are you an LLM?
+      - do you use LLM?
+      - LLM's are better
+      - who are you?
+      - what are you?
 
   - intent: intent_user_preferences
     examples: |
@@ -307,6 +329,14 @@ nlu:
       - i need to reset my [password](preference)
       - [password](preference) reset 
       - reset my [username](preference) please
+      - how do I like my current account with gmail account so i can login gmail?
+      - how do I login in with gmail?
+      - how do I login in with gmail instead?
+      - Setup login with [email](preference)
+      - How do I login with [email](preference)?
+      - link my [email](preference) to my account
+      - link external account
+      - link an external account
 
   - intent: intent_core_help
     examples: |
