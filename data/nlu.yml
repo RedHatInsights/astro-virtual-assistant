@@ -301,13 +301,19 @@ nlu:
       - How do I change my [name](preference)?
       - I want to change my [personal information](preference).
       - I want to update my [password](preference)
+      - change my login information
+      - change my login info
+      - i want to change my login
+      - i want to change my login info
       - Change my [phone number](preference)
       - Update my [login](preference)
       - Reset my [password](preference).
+      - reset my login
       - Change my [password](preference).
       - Change my [username](preference)
       - Update my [email](preference).
       - Rename my [display name](preference)
+      - rename my account
       - Where do I change my [email](preference)?
       - Where can I reset my [password](preference)?
       - Where can I change my [username](preference)?
@@ -317,6 +323,7 @@ nlu:
       - i need to reset my [password](preference)
       - [password](preference) reset 
       - reset my [username](preference) please
+      - reset login
 
   - intent: intent_core_help
     examples: |
