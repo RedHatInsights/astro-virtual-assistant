@@ -28,6 +28,11 @@ nlu:
       - Give me access
       - Give me access to [policies](core_services)
       - Request access from my administrator
+      - I need access to [advisor](core_services)
+      - I need access
+      - request access
+      - request access for me
+      - get me access
 
   - intent: intent_access_check_access
     examples: |
@@ -51,6 +56,11 @@ nlu:
       - im not able to view any more
       - my access isnt working any more for [policies](core_services)
       - did someone revoke my access, i can't see it
+      - how do I know if I have access
+      - how do I know if I have permission
+      - why do I not have access!!!
+      - troubleshoot acccess
+      - troubleshoot my access
 
   - intent: intent_access_contact_admin
     examples: |
@@ -59,6 +69,15 @@ nlu:
       - Who is my org admin?
       - Who is my organization's administrator?
       - Who do I ask for access?
+      - how do I contact my org admin?
+      - how do I contact my organization's administrator?
+      - get in touch with my admin
+      - who is my admin?
+      - who is my administrator?
+      - who do I ask for access?
+      - who do I contact for access?
+      - who do I contact for permissions?
+      - who do I contact for access to [policies](core_services)
 
   - intent: intent_access_org_id
     examples: |

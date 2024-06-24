@@ -74,11 +74,11 @@ responses:
     - text: "It sounds like you're having access issues. I can currently assist with:"
       buttons:
         - title: Requesting access for you
-          payload: Request access for me
+          payload: /intent_access_request
         - title: Troubleshooting your access
-          payload: Troubleshoot my access
+          payload: /intent_access_check_access
         - title: Contact your organization's administrator
-          payload: Contact my org admin
+          payload: /intent_access_contact_admin
   utter_access_request:
     - text: >
         To access you'll need an org admin for your account to grant you permission.
