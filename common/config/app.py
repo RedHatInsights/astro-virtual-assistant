@@ -52,7 +52,9 @@ internal_api_port = _config(
 
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
 __optional_when_locally = __undefined if is_running_locally is False else None
-fail_fast_on_dependencies = _config("FAIL_FAST_ON_DEPENDENCIES", default=True, cast=bool)
+fail_fast_on_dependencies = _config(
+    "FAIL_FAST_ON_DEPENDENCIES", default=True, cast=bool
+)
 
 __endpoint_default = __undefined
 if is_running_locally:
