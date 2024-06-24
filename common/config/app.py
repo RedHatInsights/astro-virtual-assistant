@@ -17,6 +17,7 @@ dev_sso_refresh_token_url = _config(
     default=None,
 )
 
+not_set_base_url = "https://not-set.com"
 console_dot_base_url = _config(
     "CONSOLEDOT_BASE_URL", default="https://console.redhat.com"
 )
@@ -51,9 +52,14 @@ internal_api_port = _config(
 
 is_running_locally = _config("IS_RUNNING_LOCALLY", default=False, cast=bool)
 __optional_when_locally = __undefined if is_running_locally is False else None
-__endpoint_default = (
-    __undefined if is_running_locally is False else console_dot_base_url
-)
+fail_fast_on_dependencies = _config("FAIL_FAST_ON_DEPENDENCIES", default=True, cast=bool)
+
+__endpoint_default = __undefined
+if is_running_locally:
+    __endpoint_default = console_dot_base_url
+elif fail_fast_on_dependencies is False:
+    __endpoint_default = not_set_base_url
+    print(f"Dependencies are not required, using {__endpoint_default} as default.")
 
 environment_name = _config("ENVIRONMENT_NAME", default="stage", cast=str)
 
