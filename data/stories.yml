@@ -74,14 +74,6 @@ stories:
           - is_org_admin: False
       - action: utter_core_capabilities_main
 
-  - story: User wants to speak with an agent
-    steps:
-      - intent: intent_live_chat
-      - action: utter_live_chat
-      - action: action_skip_got_help
-      - action: form_closing
-      - active_loop: form_closing
-
   - story: Data privacy policy
     steps:
       - intent: intent_data_privacy_policy
