@@ -65,6 +65,8 @@ objects:
             value: ${CLOWDER_ENABLED}
           - name: LOG_LEVEL
             value: ${LOG_LEVEL}
+          - name: FAIL_FAST_ON_DEPENDENCIES
+            value: ${FAIL_FAST_ON_DEPENDENCIES}
           - name: TRACKER_STORE_TYPE
             value: ${TRACKER_STORE_TYPE}
           - name: LOCK_STORE_TYPE
@@ -118,6 +120,8 @@ objects:
             value: ${CLOWDER_ENABLED}
           - name: LOG_LEVEL
             value: ${LOG_LEVEL}
+          - name: FAIL_FAST_ON_DEPENDENCIES
+            value: ${FAIL_FAST_ON_DEPENDENCIES}
           - name: TRACKER_STORE_TYPE
             value: ${TRACKER_STORE_TYPE}
           - name: PROMETHEUS
@@ -207,6 +211,8 @@ parameters:
   value: "1"
 - name: LOG_LEVEL
   value: INFO
+- name: FAIL_FAST_ON_DEPENDENCIES
+  value: "true"
 - description: Determines Clowder deployment
   name: CLOWDER_ENABLED
   value: "true"
