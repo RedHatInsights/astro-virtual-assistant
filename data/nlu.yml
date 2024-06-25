@@ -142,28 +142,6 @@ nlu:
       - support
       - IT support
 
-  - intent: intent_live_chat
-    examples: |
-      - speak to agent
-      - agent
-      - human
-      - person
-      - support agent
-      - support tech
-      - support engineer
-      - I want to talk to a human
-      - I need an agent
-      - Can you take me to a person?
-      - Do you offer live chat?
-      - Do you support live chat?
-      - Can I speak to an agent?
-      - Where can I find an agent?
-      - Give me a damn human being!!
-      - is this chat live?
-      - can you have a real time conversatoin
-      - do you have tech support
-      - can i talk to a technical support agent
-
   - intent: intent_support
     examples: |
       - support case
@@ -187,6 +165,25 @@ nlu:
       - i need to do a support ticket
       - open a ticket
       - i need to open a ticket
+      - speak to agent
+      - agent
+      - human
+      - person
+      - support agent
+      - support tech
+      - support engineer
+      - I want to talk to a human
+      - I need an agent
+      - Can you take me to a person?
+      - Do you offer live chat?
+      - Do you support live chat?
+      - Can I speak to an agent?
+      - Where can I find an agent?
+      - Give me a damn human being!!
+      - is this chat live?
+      - can you have a real time conversatoin
+      - do you have tech support
+      - can i talk to a technical support agent
 
   - intent: intent_services_offline
     examples: |

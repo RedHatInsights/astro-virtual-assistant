@@ -5,7 +5,6 @@ intents:
   - intent_planned_features
   - intent_out_of_scope
   - intent_unknown_topic
-  - intent_live_chat
   - intent_support
   - intent_services_offline
   - intent_core_session_start
@@ -148,8 +147,6 @@ responses:
     - text: "If you choose to open a ticket to delete your data, I will work with the privacy team to ensure our conversations are removed."
   utter_data_deletion_cancel:
     - text: "Got it. You're always welcome to ask again if you change your mind."
-  utter_live_chat:
-    - text: "I don't support live chat, but you can leave feedback for my team to review."
   utter_are_you_ai_1:
     - text: "I won't get too far into the technical details. As a virtual assistant, I use supervised learning to understand your queries."
   utter_are_you_ai_2:
