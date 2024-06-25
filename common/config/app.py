@@ -17,7 +17,7 @@ dev_sso_refresh_token_url = _config(
     default=None,
 )
 
-not_set_base_url = "https://not-set.com"
+not_set_base_url = "https://example.com"
 console_dot_base_url = _config(
     "CONSOLEDOT_BASE_URL", default="https://console.redhat.com"
 )
