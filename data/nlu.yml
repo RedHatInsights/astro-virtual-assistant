@@ -249,6 +249,16 @@ nlu:
       - i dont want you to save this conversation log
       - remove conversation log from your storage
       - please get rid of my conversations in your logs
+      - delete my messages
+      - remove my messages
+      - clear my messages
+      - we never had this conversation
+      - delete this conversation
+      - clear our chat
+      - how do i remove my messages?
+      - how do i make you go away?
+      - delete our chat
+      - delete our messages from your system
 
   - intent: intent_send_complaint
     examples: |
@@ -313,13 +323,19 @@ nlu:
       - How do I change my [name](preference)?
       - I want to change my [personal information](preference).
       - I want to update my [password](preference)
+      - change my login information
+      - change my login info
+      - i want to change my login
+      - i want to change my login info
       - Change my [phone number](preference)
       - Update my [login](preference)
       - Reset my [password](preference).
+      - reset my login
       - Change my [password](preference).
       - Change my [username](preference)
       - Update my [email](preference).
       - Rename my [display name](preference)
+      - rename my account
       - Where do I change my [email](preference)?
       - Where can I reset my [password](preference)?
       - Where can I change my [username](preference)?
@@ -329,6 +345,7 @@ nlu:
       - i need to reset my [password](preference)
       - [password](preference) reset 
       - reset my [username](preference) please
+      - reset login
       - how do I like my current account with gmail account so i can login gmail?
       - how do I login in with gmail?
       - how do I login in with gmail instead?
