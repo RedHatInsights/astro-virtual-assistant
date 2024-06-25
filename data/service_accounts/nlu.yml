@@ -42,3 +42,15 @@ nlu:
       - request update api integration
       - basic auth update api integration
       - modify api integrations
+
+  - intent: intent_create_service_account
+    examples: |
+      - Create a service account
+      - create service acc
+      - I need a service account
+      - want a service account
+      - i want to create a service account
+      - service acc create
+      - i need a new service account
+      - new service account
+      - want new service acc

@@ -1,6 +1,21 @@
 version: "3.1"
 
 rules:
+  - rule: User wants to create service account (S16)
+    steps:
+      - intent: intent_create_service_account
+      - action: form_create_service_account
+      - active_loop: form_create_service_account
+
+  - rule: User wants to create service account continued (S16)
+    steps:
+      - action: form_create_service_account
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing
+
   - rule: User wants general information about service accounts (S18)
     steps:
       - intent: intent_service_accounts_general
