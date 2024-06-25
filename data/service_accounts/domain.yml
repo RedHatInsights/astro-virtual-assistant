@@ -48,14 +48,14 @@ slots:
         intent: intent_core_no
         conditions: *need_another_integration
 
-  new_or_existing:
+  service_account_new_or_existing:
     type: text
     influence_conversation: true
     mappings:
       - type: from_text
         conditions:
           - active_loop: form_create_service_account
-            requested_slot: new_or_existing
+            requested_slot: service_account_new_or_existing
 
   service_account_name:
     type: text
@@ -103,7 +103,7 @@ forms:
       - need_another_integration
   form_create_service_account:
     required_slots:
-      - new_or_existing
+      - service_account_new_or_existing
       - service_account_name
       - service_account_description
       - create_another_service_account
@@ -182,7 +182,7 @@ responses:
     - text: |
         One final and important note:
           Access tokens expire after 15 minutes. You'll need to repeat the token request process roughly every 10 minutes to keep a fresh token. This is a standard security practice.
-  utter_ask_form_create_service_account_new_or_existing:
+  utter_ask_form_create_service_account_service_account_new_or_existing:
     - text: |
         I can help you create a service account. You can also check the existing accounts associated with your org to see if there is one that meets your needs and use case.
       buttons:

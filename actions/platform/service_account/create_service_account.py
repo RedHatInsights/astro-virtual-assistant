@@ -12,13 +12,13 @@ from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slo
 
 logger = logging.initialize_logging()
 
-NEW_OR_EXISTING = "new_or_existing"
+NEW_OR_EXISTING = "service_account_new_or_existing"
 SERVICE_ACCOUNT_NAME = "service_account_name"
 SERVICE_ACCOUNT_DESCRIPTION = "service_account_description"
 CREATE_ANOTHER_SERVICE_ACCOUNT = "create_another_service_account"
 
 new_or_existing_choice = FuzzySlotMatch(
-    "new_or_existing",
+    "service_account_new_or_existing",
     [
         FuzzySlotMatchOption("new"),
         FuzzySlotMatchOption("existing"),
@@ -30,7 +30,7 @@ class CreateServiceAccount(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_create_service_account"
 
-    async def extract_new_or_existing(
+    async def extract_service_account_new_or_existing(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         if tracker.get_slot("requested_slot") == NEW_OR_EXISTING:
@@ -45,7 +45,7 @@ class CreateServiceAccount(FormValidationAction):
 
         return {}
 
-    async def validate_new_or_existing(
+    async def validate_service_account_new_or_existing(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -83,7 +83,6 @@ class CreateServiceAccount(FormValidationAction):
         if requested_slot == SERVICE_ACCOUNT_DESCRIPTION:
             service_account_name = tracker.get_slot(SERVICE_ACCOUNT_NAME)
             service_account_description = tracker.get_slot(SERVICE_ACCOUNT_DESCRIPTION)
-            print("descripiton...", service_account_description)
             if service_account_description and len(service_account_description) <= 0:
                 dispatcher.utter_message(
                     response="utter_service_account_description_validation_issue"
