@@ -175,6 +175,8 @@ objects:
             value: ${CLOWDER_ENABLED}
           - name: LOG_LEVEL
             value: ${LOG_LEVEL}
+          - name: FAIL_FAST_ON_DEPENDENCIES
+            value: ${FAIL_FAST_ON_DEPENDENCIES}
           - name: TRACKER_STORE_TYPE
             value: ${TRACKER_STORE_TYPE}
           - name: PROMETHEUS
