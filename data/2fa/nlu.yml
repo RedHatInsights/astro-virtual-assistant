@@ -75,3 +75,22 @@ nlu:
       - two-factor auth
       - two factor auth
       - two factor authentication
+
+  - intent: intent_setup_recovery_codes
+    examples: |
+      - I want to set up recovery codes
+      - Where can I create recovery codes
+      - Can you make recovery codes for me
+      - I need recovery codes
+      - Do you have recovery codes
+      - Help me find recovery codes for my account
+      - recovery codes
+      - Give me codes I can use in the case I get logged out of my account
+      - logged out of my account
+      - emergency codes
+      - Do you provide codes I can use in case of emergency
+      - codes for emergency
+      - Please show me where I can set up emergency log in codes
+      - Are you able to create codes I can use to log in case I get locked out of my account
+      - I want to make backup codes
+      - backup codes

@@ -15,3 +15,11 @@ stories:
       - action: utter_2fa_docs
       - action: form_closing
       - active_loop: form_closing
+
+  - story: User wants to set up recovery codes
+    steps:
+      - intent: intent_setup_recovery_codes
+      - action: utter_setup_recovery_codes_1
+      - action: utter_setup_recovery_codes_2
+      - action: form_closing
+      - active_loop: form_closing

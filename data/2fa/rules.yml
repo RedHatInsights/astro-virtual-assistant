@@ -53,3 +53,11 @@ rules:
       - action: utter_2fa_docs
       - action: form_closing
       - active_loop: form_closing
+
+  - rule: Set up recovery codes (IAM5)
+    steps:
+      - intent: intent_setup_recovery_codes
+      - action: utter_setup_recovery_codes_1
+      - action: utter_setup_recovery_codes_2
+      - action: form_closing
+      - active_loop: form_closing
