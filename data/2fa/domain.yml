@@ -5,6 +5,7 @@ intents:
   - intent_disable_2fa
   - intent_2fa_general
   - intent_revoke_2fa_help
+  - intent_setup_recovery_codes
 
 entities: []
 
@@ -149,3 +150,12 @@ responses:
     - text: "If you can't get into your device for two-factor authentication, you'll need to revoke two-factor authentication. All requests to revoke two-factor authentication must be made by phone to Red Hat Customer Service."
   utter_revoke_2fa_help_2:
     - text: "You can find all the Red Hat Customer Service [numbers here](https://access.redhat.com/support/contact/customerService)."
+  utter_setup_recovery_codes_1:
+    - text: "I'll take you to the recovery codes setup page. Click **set up recovery codes** at the bottom of the page. You'll have to log in again for increased account security."
+  utter_setup_recovery_codes_2:
+    - text: "I'll still be here when you're done."
+      custom:
+        type: command
+        command: redirect
+        params:
+          url: https://sso.redhat.com/auth/realms/redhat-external/account/#/security/signing-in
