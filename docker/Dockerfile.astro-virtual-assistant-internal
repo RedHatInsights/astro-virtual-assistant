@@ -9,11 +9,8 @@ ENV PYTHON_VERSION=3.9 \
     PIPENV_VERBOSITY=-1 \
     APP_ROOT=/opt/virtual-assistant
 
-# install postgresql from postgresql.org RPM if not building on RHSM system
-RUN FULL_RHEL=$(microdnf repolist --enabled | grep rhel-8) ; \
-    if [ -z "$FULL_RHEL" ] ; then \
-        rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm ; \
-    fi
+# install postgresql from postgresql.org
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
 # Install Python 3.9
 RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq postgresql15" && \
