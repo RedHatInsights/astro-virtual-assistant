@@ -26,6 +26,11 @@ IMAGE="quay.io/cloudservices/virtual-assistant-actions"
 DOCKERFILE="docker/Dockerfile.astro-virtual-assistant-rasa-actions"
 source $CICD_ROOT/build.sh
 
+# Build and Deploy Virtual Assistant Internal image
+IMAGE="quay.io/cloudservices/virtual-assistant-internal"
+DOCKERFILE="docker/Dockerfile.astro-virtual-assistant-internal"
+source $CICD_ROOT/build.sh
+
 # Deploy to an ephemeral environment
 source $CICD_ROOT/deploy_ephemeral_env.sh
 
