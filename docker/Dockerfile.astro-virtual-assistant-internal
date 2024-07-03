@@ -13,17 +13,19 @@ ENV PYTHON_VERSION=3.9 \
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
 # Install Python 3.9
-RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq postgresql15-libs libicu lz4 systemd systemd-sysv" && \
-    microdnf --nodocs -y upgrade && \
-    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
-    microdnf -y clean all --enablerepo='*'
+#RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq postgresql15-libs libicu lz4 systemd systemd-sysv" && \
+#    microdnf --nodocs -y upgrade && \
+#    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
+#    rpm -V $INSTALL_PKGS && \
+#    microdnf -y clean all --enablerepo='*'
+
+RUN cat /etc/yum.repos.d/*
 
 RUN microdnf clean all
 RUN microdnf makecache
 RUN microdnf repolist
 RUN microdnf repoquery  --available | grep postgresql15
 
-RUN cat /etc/yum.repos.d/pgdg-redhat-all.repo
+#RUN cat /etc/yum.repos.d/pgdg-redhat-all.repo
 RUN curl https://download.postgresql.org/pub/repos/yum/15/redhat/rhel-8-x86_64/  | grep postgresql15
 RUN rpm -i https://download.postgresql.org/pub/repos/yum/15/redhat/rhel-8-x86_64/postgresql15-15.7-3PGDG.rhel8.x86_64.rpm
