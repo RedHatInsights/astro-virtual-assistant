@@ -18,15 +18,6 @@ stories:
       - action: action_user_preferences
       - action: form_closing
       - active_loop: form_closing
-  
-  - story: User wants to change their login
-    steps:
-      - user: |
-          I want to change my [login]{"entity": "preference"}.
-        intent: intent_user_preferences
-      - action: action_user_preferences
-      - action: form_closing
-      - active_loop: form_closing
 
   - story: User wants to change their email
     steps:

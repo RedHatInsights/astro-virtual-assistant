@@ -29,7 +29,5 @@ stories:
       - action: utter_are_you_ai_3
       - action: utter_are_you_ai_4
       - action: utter_are_you_ai_handoff
-      - user: |
-          Show me what you can do
-        intent: intent_core_capabilities
+      - intent: intent_core_capabilities
       - action: utter_core_capabilities_main

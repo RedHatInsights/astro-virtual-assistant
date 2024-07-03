@@ -72,6 +72,8 @@ nlu:
       - What subscriptions do I have?
       - do I have any expiring subscriptions?
       - How many active subscriptions do I have?
+      - how many subs
+      - how many subscriptions
       - Show me active subs
       - Show me expiring subs
       - Show me expired subs
