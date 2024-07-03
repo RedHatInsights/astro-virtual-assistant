@@ -15,7 +15,6 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/
 RUN microdnf repolist
 RUN microdnf repoquery  --available | grep postgresql15
 
-RUN cat /var/log/dnf.log
 RUN cat /etc/yum.repos.d/pgdg-redhat-all.repo
 RUN curl https://download.postgresql.org/pub/repos/yum/15/redhat/rhel-8-x86_64/  | grep postgresql15
 RUN rpm -i https://download.postgresql.org/pub/repos/yum/15/redhat/rhel-8-x86_64/postgresql15-15.7-3PGDG.rhel8.x86_64.rpm
