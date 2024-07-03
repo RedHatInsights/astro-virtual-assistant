@@ -12,11 +12,12 @@ ENV PYTHON_VERSION=3.9 \
 # install postgresql from postgresql.org
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
+RUN microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install postgresql15
+
 # Install Python 3.9
 RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shadow-utils jq postgresql15" && \
-    microdnf clean all && \
     microdnf --nodocs -y upgrade && \
-    microdnf -y --refresh --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
+    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     microdnf -y clean all --enablerepo='*'
 
