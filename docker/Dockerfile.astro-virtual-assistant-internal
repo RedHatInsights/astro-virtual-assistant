@@ -13,3 +13,4 @@ ENV PYTHON_VERSION=3.9 \
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
 RUN microdnf repolist
+RUN microdnf repoquery  --available | grep postgresql
