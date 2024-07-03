@@ -47,6 +47,7 @@ nlu:
       - how do I connect my rhel system to red hat
       - Is it possible to up rhel connction to red hat directly?
       - officially connect rhel system with red hat
+      - connect my rhel system
 
   - intent: intent_activate_subscription
     examples: |

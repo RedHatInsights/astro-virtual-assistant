@@ -6,13 +6,14 @@ nlu:
       - Access issue
       - Access denied
       - Access error
-      - Can you help me get access?
+      - i am having a problem, access denied
       - I am getting an access issue
       - I am getting an access error
       - I am getting an access denied error...
       - I can't view my data.
       - I was able to view this page before, but now I can't.
       - I can't access my data.
+      - i can't access something
       - Why can't I access my data?
       - What do I do if I can't access something?
       - how do I get access?
@@ -25,6 +26,8 @@ nlu:
       - I want access to
       - I need access to the console.
       - Requesting access for me
+      - Can you help me get access?
+      - can you get me access?
       - Give me access
       - Give me access to [policies](core_services)
       - Request access from my administrator

@@ -11,6 +11,10 @@ nlu:
       - What do you do?
       - What kind of things can you do?
       - What are some examples of things you can do?
+      - what can you help me with
+      - what can you do for me
+      - what can you do
+      - you do what exactly?
       - What services can you help me with?
       - What products can you assist me with?
       - Show me what kind of things can you do
@@ -82,6 +86,7 @@ nlu:
       - hello, whats your name?
       - good morning!
       - Sup robot
+      - sup bot
       - Hello assistat
       - Hatty! nice ta meet ya
       - nice to meet you

@@ -5,6 +5,8 @@ nlu:
     examples: |
       - What APIs do you have available
       - Where is your API documentation
+      - Where can I find documentation about your APIs?
+      - Where can I find the API documentation
       - API catalog
       - Can you show me your api docs
       - I want to see more about APIs
@@ -13,6 +15,7 @@ nlu:
       - I want to see the API doc for playbook dispatcher
       - Can you provide me the api docs
       - Can you tell me about the api catalog?
+      - Can you provide me the api docs for the [advisor](core_services) service?
       - I want to integrate
       - how do i connect my app to the console
       - connect to api
