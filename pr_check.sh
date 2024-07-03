@@ -13,8 +13,8 @@ IQE_FILTER_EXPRESSION=""
 IQE_CJI_TIMEOUT="30m"
 
 # Install bonfire repository/initialize
-#CICD_URL=https://raw.githubusercontent.com/RedHatInsights/bonfire/master/cicd
-#curl -s $CICD_URL/bootstrap.sh > .cicd_bootstrap.sh && source .cicd_bootstrap.sh
+CICD_URL=https://raw.githubusercontent.com/RedHatInsights/bonfire/master/cicd
+curl -s $CICD_URL/bootstrap.sh > .cicd_bootstrap.sh && source .cicd_bootstrap.sh
 
 ## Build Virtual Assistant image based on the latest commit
 #IMAGE="quay.io/cloudservices/virtual-assistant-api"
