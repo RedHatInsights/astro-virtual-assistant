@@ -9,6 +9,7 @@ nlu:
       - I need help
       - What can you do?
       - What do you do?
+      - What can we do?
       - What kind of things can you do?
       - What are some examples of things you can do?
       - What services can you help me with?
@@ -17,6 +18,7 @@ nlu:
       - Show me what do you do
       - Show me what can you help me with
       - Show me what you can do
+      - Show me what we can do
       - What are you able to do?
       - What are you capable of doing?
       - How can you help?
@@ -24,12 +26,16 @@ nlu:
       - Tell me about you
       - Tell me about yourself
       - Tell me what you can do
+      - Tell me what we can do
+      - Tell me our options
       - What are your capabilities?
       - What are your abilities?
       - What capabilities do you have?
       - What abilities do you have?
       - What are my options?
       - What are the options?
+      - What are our options?
+      - What can be done?
 
   - intent: intent_core_yes
     examples: |
