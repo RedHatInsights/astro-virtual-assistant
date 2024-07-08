@@ -6,6 +6,7 @@ stories:
       - user: |
           Where can I find documentations around your API?
         intent: intent_api_availability
+      - action: action_deactivate_loop
       - action: utter_api_capabilities
       - action: form_closing
       - active_loop: form_closing
@@ -15,6 +16,7 @@ stories:
       - user: |
           API documentations
         intent: intent_api_availability
+      - action: action_deactivate_loop
       - action: utter_api_capabilities
       - action: form_closing
       - active_loop: form_closing
@@ -24,6 +26,7 @@ stories:
       - user: |
           Can you provide me the api docs for the [advisor](core_services) service?
         intent: intent_api_availability
+      - action: action_deactivate_loop
       - action: utter_api_capabilities
       - action: form_closing
       - active_loop: form_closing
@@ -33,6 +36,7 @@ stories:
       - user: |
           api docs
         intent: intent_api_availability
+      - action: action_deactivate_loop
       - action: utter_api_capabilities
       - action: form_closing
       - active_loop: form_closing
