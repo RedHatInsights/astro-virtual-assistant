@@ -81,7 +81,7 @@ responses:
           payload: /intent_access_contact_admin
   utter_access_request:
     - text: >
-        To access you'll need an org admin for your account to grant you permission.
+        To gain access, you'll need an org admin for your account to grant you permission.
         You can contact them directly, or we can do it for you.
         Would you like me to request access to your Organization Administrators?
       buttons: &buttons_yes_no
