@@ -194,11 +194,36 @@ objects:
     - name: db-cleaner
       schedule: ${CLEANER_SCHEDULE}
       suspend: ${{CLEANER_SUSPEND}}
+      concurrencyPolicy: Forbid
+      restartPolicy: Never
       podSpec:
-        image: ${INTERNAL_IMAGE_NAME}:${IMAGE_TAG}
-        restartPolicy: Never
-        command:
-          - ./internal/cronjob/db-cleaner.sh
+        image: quay.io/cloudservices/postgresql-rds:15
+        volumes:
+          - name: virtual-assistant-db-cleaner-volume
+            configMap:
+              name: virtual-assistant-db-cleaner-config
+        volumeMounts:
+          - name: virtual-assistant-db-cleaner-volume
+            mountPath: /virtual-assistant-db-cleaner
+        command: [ 'sh', '/virtual-assistant-db-cleaner/clean.sh' ]
+        env:
+          - name: PGHOST
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-db
+                key: ${DB_SECRET_HOSTNAME_KEY}
+          - name: PGDATABASE
+            value: ${DB_NAME}
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-db
+                key: ${DB_SECRET_USERNAME_KEY}
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-db
+                key: ${DB_SECRET_PASSWORD_KEY}
         resources:
           limits:
             cpu: 200m
@@ -207,6 +232,17 @@ objects:
             cpu: 100m
             memory: 128Mi
 
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: virtual-assistant-db-cleaner-config
+  data:
+    clean.sh: |
+      cat /virtual-assistant-db-cleaner/clean.sql | psql
+    clean.sql: |
+      \timing
+      DELETE FROM events WHERE timestamp < EXTRACT(EPOCH FROM (NOW() - interval '180 days'));
+      VACUUM ANALYZE events;
 parameters:
 - description: Minimum number of replicas required
   name: MIN_REPLICAS
@@ -256,6 +292,18 @@ parameters:
   value: 'false'
 - name: CLEANER_SCHEDULE
   value: "1 0 * * *"
+- name: DB_NAME
+  description: Database name used by the db-cleaner CronJob
+  value: virtual_assistant
+- name: DB_SECRET_HOSTNAME_KEY
+  description: Key of the hostname field in the virtual-assistant-db secret
+  value: db.host
+- name: DB_SECRET_PASSWORD_KEY
+  description: Key of the password field in the virtual-assistant-dbdb secret
+  value: db.password
+- name: DB_SECRET_USERNAME_KEY
+  description: Key of the username field in the virtual-assistant-db secret
+  value: db.user
 - name: REST_WORKERS
   description: The number of workers in Sanic's REST API
   value: "1"
