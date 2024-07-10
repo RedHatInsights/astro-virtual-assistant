@@ -158,13 +158,13 @@ responses:
     - text: "Ready to get your access token? Here's the command you can copy and paste, but I'll explain it part by part."
   utter_got_service_account_creds_3:
     - text: |
-        `curl   -d "client_id=yyyy"   -d "client_secret=xxx"   -d "grant_type=client_credentials"   "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token" -d "scope=api.console"`
+        `curl   -d "client_id=yyy"   -d "client_secret=xxx"   -d "grant_type=client_credentials"   "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token" -d "scope=api.console"`
   utter_got_service_account_creds_4:
     - text: |
         **Replace Placeholders**:
-        Make sure to replace `yyyy` with your service account's client ID and `xxx` with its client secret.
+        Make sure to replace `yyy` with your service account's client ID and `xxx` with its client secret.
 
-        **Parameters referece**:
+        **Parameters reference**:
         - `client_id` and `client_secret`: These identify your application to Red Hat SSO.
         - `grant_type`: Specifies you want the Client Credentials Grant.
         - `scope`: Defines the API permissions you need.
