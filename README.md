@@ -14,7 +14,7 @@ by running:
 
 ```bash
 pipenv install --dev
-pipenv run make install 
+make install 
 ```
 
 This will install [rasa](https://rasa.com/docs/rasa/) inside the virtual environment created by
