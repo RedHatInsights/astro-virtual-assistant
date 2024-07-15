@@ -141,12 +141,12 @@ responses:
         - title: No
           payload: /intent_core_no
   utter_docs_only_redirect:
-    - text: "I am opening the API documentation page in a new tab."
+    - text: "I am opening the documentation page in a new tab."
       custom:
         type: command
         command: redirect
         params:
-          url: https://developers.redhat.com/api-catalog
+          url: https://access.redhat.com/articles/7036194
   utter_no_service_account_creds:
     - text: |
         Ok. Please get them and come back when you are ready.
@@ -196,7 +196,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: console.redhat.com/iam/service-accounts/
+          url: iam/service-accounts/
   utter_ask_form_create_service_account_service_account_name:
     - text: |
         Please enter the name of the service account you want to create.
