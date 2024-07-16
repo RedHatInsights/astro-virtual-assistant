@@ -1,6 +1,6 @@
 import React from 'react';
-import { CalendarMonth, Title, CalendarMonthInlineProps, Flex } from '@patternfly/react-core';
-import { Tabs, Tab, TabTitleText, Checkbox} from '@patternfly/react-core';
+import { CalendarMonth } from '@patternfly/react-core';
+import { Checkbox } from '@patternfly/react-core';
 import {
   Card,
   CardBody,
@@ -65,11 +65,11 @@ export const SelectFilters = () => {
           />
            <Checkbox
             label="Org Admin"
-            id="all-checkbox"
+            id="org-admin-checkbox"
           />
           <Checkbox
             label="Non-Org Admin"
-            id="all-checkbox"
+            id="non-org-admin-checkbox"
           />
         </CardBody>
     </Card>
@@ -136,3 +136,5 @@ export const SelectFilters = () => {
       </Card>
     );
   };
+
+ 

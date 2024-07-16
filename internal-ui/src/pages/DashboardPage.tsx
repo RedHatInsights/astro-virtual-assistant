@@ -16,7 +16,7 @@ export const DashboardPage: React.FunctionComponent = () => {
         <>
             <PageSection>
                 <Breadcrumb>
-                    <BreadcrumbItem component={Link} to="/">Home</BreadcrumbItem>
+                    <BreadcrumbItem>Home</BreadcrumbItem>
                     <BreadcrumbItem component={Link} to="/dashboard">Dashboard</BreadcrumbItem>
                 </Breadcrumb>
             </PageSection>
@@ -33,6 +33,7 @@ export const DashboardPage: React.FunctionComponent = () => {
                 <GridItem><SessionReviewCount/></GridItem>
                 <GridItem><AverageNumberofConversations/></GridItem>
                 <GridItem><AverageUserStatistics/></GridItem>
+                <GridItem><UniqueUsers/></GridItem>
                 </Grid>
               </div>
             </div>
