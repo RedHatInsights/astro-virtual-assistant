@@ -196,7 +196,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: iam/service-accounts/
+          url: /iam/service-accounts/
   utter_ask_form_create_service_account_service_account_name:
     - text: |
         Please enter the name of the service account you want to create.
