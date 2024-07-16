@@ -16,6 +16,8 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
+
+import {DashboardPage} from "./pages/DashboardPage.tsx"
 import {MessagesPage} from "./pages/MessagesPage.tsx";
 import {TimelinePage} from "./pages/TimelinePage.tsx";
 import {UserMessagesPage} from "./pages/UserMessagesPage.tsx";
@@ -27,7 +29,12 @@ const router = createHashRouter([
         children: [
             {
                 index: true,
-                loader: async () => redirect('/timeline'),
+                loader: async () => redirect('/dashboard'),
+            },
+            {
+                path: "dashboard",
+                element: <DashboardPage />
+                
             },
             {
                 path: "senders",
