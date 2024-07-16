@@ -45,6 +45,11 @@ function App() {
             <PageSidebarBody>
                 <Nav>
                     <NavList>
+                    <NavItem itemId="dashboard" isActive={location.pathname.startsWith("/dashboard")}>
+                            <Link to={"dashboard"}>
+                               Dashboard
+                            </Link>
+                            </NavItem>
                         <NavItem itemId="timeline" isActive={location.pathname.startsWith("/timeline")}>
                             <Link to={"timeline"}>
                                 Timeline
