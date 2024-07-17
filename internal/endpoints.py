@@ -77,7 +77,7 @@ def get_messages():
     if args.unique is True:
         type_names.append("user")
 
-    raw_messages = _get_messages(
+    raw_messages, count = _get_messages(
         start_date=args.start_date,
         end_date=args.end_date,
         type_names=type_names,
@@ -90,8 +90,13 @@ def get_messages():
 
     if args.format == "csv":
         return export_csv(messages)
+    
+    response = {
+        "count": count,
+        "messages": messages
+    }
 
-    return jsonify(messages)
+    return jsonify(response)
 
 
 # Returns complete conversation given a sender_id
@@ -115,7 +120,7 @@ def get_conversation_by_sender_id(sender_id):
     if args.unique is True:
         type_names.append("user")
 
-    raw_messages = _get_messages(
+    raw_messages, count = _get_messages(
         sender_id=sender_id,
         start_date=args.start_date,
         end_date=args.end_date,
@@ -129,8 +134,13 @@ def get_conversation_by_sender_id(sender_id):
 
     if args.format == "csv":
         return export_csv(messages)
+    
+    response = {
+        "count": count,
+        "messages": messages
+    }
 
-    return jsonify(messages)
+    return jsonify(response)
 
 
 # Returns list of sender_id
@@ -165,13 +175,15 @@ def get_senders():
         conditions.append(OuterEvent.sender_id == hash)
     conditions = and_(true(), *conditions)
 
-    rows = (
+    query_builder = (
         session.query(OuterEvent.sender_id)
         .distinct()
         .where(conditions)
-        .limit(args.limit)
-        .offset(args.offset)
-        .all()
+    )
+    count = query_builder.count()
+    rows = (
+        query_builder.limit(args.limit)
+        .offset(args.offset).all()
     )
 
     sender_list = []
@@ -180,8 +192,13 @@ def get_senders():
 
     if args.format == "csv":
         return export_csv(sender_list)
+    
+    response = {
+        "senders": sender_list,
+        "count": count
+    }
 
-    return jsonify(sender_list)
+    return jsonify(response)
 
 
 def _get_messages(
@@ -220,13 +237,15 @@ def _get_messages(
         session.query(Events)
         .where(and_(true(), *conditions))
         .order_by(desc(Events.id))
-        .limit(limit)
     )
+    count = query_builder.count()
 
     if offset is not None:
         query_builder = query_builder.offset(offset)
+    
+    messages = query_builder.limit(limit).all()
 
-    return query_builder.all()
+    return messages, count
 
 
 def process_message(row):
