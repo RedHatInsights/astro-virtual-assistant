@@ -10,6 +10,8 @@ const FilterTypeName: Array<ValidMessage["type_name"]> = [
 ];
 
 
+const REQUEST_LIMIT = 1000
+
 const getMessages = async (senderId?: string, cursor?: number): Promise<Array<ValidMessage>> => {
     const request = senderId ? `/api/virtual-assistant/v1/messages/${senderId}` : `/api/virtual-assistant/v1/messages`;
 
@@ -17,11 +19,11 @@ const getMessages = async (senderId?: string, cursor?: number): Promise<Array<Va
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
-            limit: 1000
+            limit: REQUEST_LIMIT
         }
     });
     if (response.status === 200) {
-        return response.data;
+        return response.data.messages;
     }
 
     throw new Error('Invalid request');
