@@ -90,11 +90,8 @@ def get_messages():
 
     if args.format == "csv":
         return export_csv(messages)
-    
-    response = {
-        "count": count,
-        "messages": messages
-    }
+
+    response = {"count": count, "messages": messages}
 
     return jsonify(response)
 
@@ -134,11 +131,8 @@ def get_conversation_by_sender_id(sender_id):
 
     if args.format == "csv":
         return export_csv(messages)
-    
-    response = {
-        "count": count,
-        "messages": messages
-    }
+
+    response = {"count": count, "messages": messages}
 
     return jsonify(response)
 
@@ -175,16 +169,9 @@ def get_senders():
         conditions.append(OuterEvent.sender_id == hash)
     conditions = and_(true(), *conditions)
 
-    query_builder = (
-        session.query(OuterEvent.sender_id)
-        .distinct()
-        .where(conditions)
-    )
+    query_builder = session.query(OuterEvent.sender_id).distinct().where(conditions)
     count = query_builder.count()
-    rows = (
-        query_builder.limit(args.limit)
-        .offset(args.offset).all()
-    )
+    rows = query_builder.limit(args.limit).offset(args.offset).all()
 
     sender_list = []
     for row in rows:
@@ -192,11 +179,8 @@ def get_senders():
 
     if args.format == "csv":
         return export_csv(sender_list)
-    
-    response = {
-        "senders": sender_list,
-        "count": count
-    }
+
+    response = {"senders": sender_list, "count": count}
 
     return jsonify(response)
 
@@ -234,15 +218,13 @@ def _get_messages(
         conditions.append(Events.id < cursor)
 
     query_builder = (
-        session.query(Events)
-        .where(and_(true(), *conditions))
-        .order_by(desc(Events.id))
+        session.query(Events).where(and_(true(), *conditions)).order_by(desc(Events.id))
     )
     count = query_builder.count()
 
     if offset is not None:
         query_builder = query_builder.offset(offset)
-    
+
     messages = query_builder.limit(limit).all()
 
     return messages, count
