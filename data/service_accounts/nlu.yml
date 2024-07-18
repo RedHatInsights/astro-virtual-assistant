@@ -29,6 +29,11 @@ nlu:
       - API support service accounts
       - Which api support service account
       - service accounts api
+      - APIs for service accounts
+      - APIs for service account
+      - APIs compatible with service accounts
+      - API compatible with service accounts
+      - APIs compatible with service account
 
   - intent: intent_update_api_integrations
     examples: |
@@ -54,3 +59,4 @@ nlu:
       - i need a new service account
       - new service account
       - want new service acc
+      - create service account
