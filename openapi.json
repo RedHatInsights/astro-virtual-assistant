@@ -112,12 +112,8 @@
                             "$ref": "#/components/schemas/Buttons"
                         }
                     },
-                    "customJSON": {
-                        "type": "object",
-                        "nullable": true,
-                        "items": {
-                            "$ref": "#/components/schemas/CustomJSON"
-                        }
+                    "custom": {
+                        "$ref": "#/components/schemas/Custom"
                     }
                 }
             },
@@ -132,8 +128,9 @@
                     }
                 }
             },
-            "CustomJSON": {
+            "Custom": {
                 "type": "object",
+		"nullable": true,
                 "properties": {
                     "type": {
                         "type": "string"
@@ -142,7 +139,8 @@
                         "type": "string"
                     },
                     "params": {
-                        "type": "object"
+                        "type": "object",
+			"nullable": true
                     }
                 }
             }
