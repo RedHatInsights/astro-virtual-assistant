@@ -10,6 +10,8 @@ const FilterTypeName: Array<ValidMessage["type_name"]> = [
 ];
 
 
+const REQUEST_LIMIT = 1000;
+
 const getMessages = async (senderId?: string, cursor?: number): Promise<Array<ValidMessage>> => {
     const request = senderId ? `/api/virtual-assistant/v1/messages/${senderId}` : `/api/virtual-assistant/v1/messages`;
 
@@ -17,15 +19,60 @@ const getMessages = async (senderId?: string, cursor?: number): Promise<Array<Va
         params: {
             cursor: cursor,
             type_name: FilterTypeName.join(','),
-            limit: 1000
+            limit: REQUEST_LIMIT
         }
     });
     if (response.status === 200) {
-        return response.data;
+        return response.data.messages;
     }
 
     throw new Error('Invalid request');
 };
+
+export const getMessagesInRange = async (senderId?: string, start?: number, end?: number): Promise<Array<ValidMessage>> => {
+    const request = senderId ? `/api/virtual-assistant/v1/messages/${senderId}` : `/api/virtual-assistant/v1/messages`;
+    const sendRequest = async (start?: number, end?: number, offset?: number, limit?: number): Promise<RequestedMessageResponse> => {
+        const response = await axios.get(request,{
+            params: {
+                start_date: start,
+                end_date: end,
+                type_name: FilterTypeName.join(','),
+                offset: offset,
+                limit: limit
+            }
+        });
+        
+        return {
+            messages: response.data.messages,
+            count: response.data.count,
+            status: response.status
+        };
+    };
+
+    const messages = [];
+    let count = 0;
+    let offset = 0;
+
+    do {
+        const response = await sendRequest(start, end, offset, REQUEST_LIMIT);
+        if (response.status != 200) {
+            throw new Error('Invalid request');
+        }
+        count = response.count;
+        messages.push(...response.messages);
+        offset += REQUEST_LIMIT;
+        await new Promise(resolve => setTimeout(resolve, 100)); // sleep for 100ms
+    }
+    while (offset < count);
+
+    return messages;
+}
+
+interface RequestedMessageResponse {
+    messages: Array<ValidMessage>;
+    count: number;
+    status: number;
+}
 
 interface MessageResponse {
     isFirstLoad: boolean;
