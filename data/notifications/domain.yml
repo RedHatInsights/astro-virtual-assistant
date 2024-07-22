@@ -163,7 +163,7 @@ responses:
   utter_notifications_edit_events_none_1:
     - text: "You don't have any active events for {bundle} yet."
   utter_notifications_edit_events_none_2:
-    - text: "Visit the [Notifications dashboard](/settings/notifications/configure-events) for more information."
+    - text: "Visit the [Notifications dashboard](/settings/notifications/configure-events?bundle={bundle}) for more information."
   utter_notifications_edit_events_mute_success:
     - text: "I have muted notifications for the {event} event."
   utter_notifications_edit_events_mute_error:
@@ -196,7 +196,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: "{base_console_url}/settings/notifications/configure-events?name={event}"
+          url: "{base_console_url}/settings/notifications/configure-events?bundle={bundle}&name={event}"
   utter_notifications_edit_existing_group:
     - text: "Okay. The Notifications dashboard lets you attach and detach behavior groups to your events."
   utter_notifications_edit_no_groups:
@@ -214,7 +214,7 @@ responses:
         type: command
         command: redirect
         params:
-          url: "{base_console_url}/settings/notifications/configure-events"
+          url: "{base_console_url}/settings/notifications/configure-events?bundle={bundle}"
 
   # Troubleshoot notifications
   utter_notifications_troubleshoot_non_admin:

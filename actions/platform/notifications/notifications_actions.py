@@ -315,11 +315,9 @@ class ValidateFormNotifications(FormValidationAction):
                 dispatcher.utter_message(response="utter_notifications_learn_docs")
                 events.append(SlotSet("requested_slot", None))
             else:
-                has_notifications_available = None
-                if option == "manage preferences":
-                    has_notifications_available = True
+                exclude_muted_types = option == "manage preferences"
                 response, result = await get_available_events_by_bundle(
-                    tracker, bundle["id"], has_notifications_available
+                    tracker, bundle["id"], exclude_muted_types
                 )
                 if not response.ok or not result:
                     received_notifications_error(dispatcher, response, result)
@@ -330,7 +328,8 @@ class ValidateFormNotifications(FormValidationAction):
                         bundle=bundle["display_name"],
                     )
                     dispatcher.utter_message(
-                        response="utter_notifications_edit_events_none_2"
+                        response="utter_notifications_edit_events_none_2",
+                        bundle=bundle["name"],
                     )
                     events.append(SlotSet("requested_slot", None))
                     return events
@@ -429,12 +428,15 @@ class ValidateFormNotifications(FormValidationAction):
             bundle = tracker.get_slot(NOTIF_BUNDLE)
             if option == "attach":
                 dispatcher.utter_message(
-                    response="utter_notifications_edit_new_group", event=event["name"]
+                    response="utter_notifications_edit_new_group",
+                    event=event["name"],
+                    bundle=bundle["name"],
                 )
             elif option == "create":
                 dispatcher.utter_message(
                     response="utter_notifications_edit_create_group",
                     event=event["display_name"],
+                    bundle=bundle["name"],
                 )
             elif option == "remove":
                 response, result = await get_behavior_groups(tracker, bundle["id"])
@@ -582,18 +584,15 @@ async def get_available_bundles(tracker: Tracker):
 
 
 async def get_available_events_by_bundle(
-    tracker: Tracker, bundleId: str, has_notifications_available: Optional[bool] = None
+    tracker: Tracker, bundleId: str, exclude_muted_types: Optional[bool] = False
 ):
     params = {
         "limit": 20,
         "offset": 0,
         "sort_by": "application:ASC",
         "bundleId": bundleId,
+        "excludeMutedTypes": str(exclude_muted_types),
     }
-    # TODO: request this feature
-    if has_notifications_available:
-        # params["hasNotifications"] = True
-        pass
     return await send_console_request(
         "notifications",
         "/api/notifications/v1.0/notifications/eventTypes",
