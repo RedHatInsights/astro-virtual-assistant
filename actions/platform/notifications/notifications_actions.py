@@ -330,7 +330,8 @@ class ValidateFormNotifications(FormValidationAction):
                         bundle=bundle["display_name"],
                     )
                     dispatcher.utter_message(
-                        response="utter_notifications_edit_events_none_2"
+                        response="utter_notifications_edit_events_none_2",
+                        bundle=bundle["name"],
                     )
                     events.append(SlotSet("requested_slot", None))
                     return events
@@ -429,12 +430,15 @@ class ValidateFormNotifications(FormValidationAction):
             bundle = tracker.get_slot(NOTIF_BUNDLE)
             if option == "attach":
                 dispatcher.utter_message(
-                    response="utter_notifications_edit_new_group", event=event["name"]
+                    response="utter_notifications_edit_new_group",
+                    event=event["name"],
+                    bundle=bundle["name"],
                 )
             elif option == "create":
                 dispatcher.utter_message(
                     response="utter_notifications_edit_create_group",
                     event=event["display_name"],
+                    bundle=bundle["name"],
                 )
             elif option == "remove":
                 response, result = await get_behavior_groups(tracker, bundle["id"])
