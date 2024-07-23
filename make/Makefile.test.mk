@@ -17,9 +17,12 @@ test-rasa: test-stories test-data test-nlu
 test-data:
 	${RASA_EXEC} data validate ${RASA_DOMAIN_ARG}
 
-test-nlu:
+test-nlu-all:
 	${RASA_EXEC} data split nlu --out .astro/train_test_split
 	${RASA_EXEC} test nlu --nlu .astro/train_test_split ${RASA_DOMAIN_ARG}
+
+test-nlu-examples:
+	${RASA_EXEC} test nlu --nlu tests/nlu/examples.yml ${RASA_DOMAIN_ARG}
 
 test-stories-nlu:
 	${PYTHON_EXEC} tests/extract_stories_nlu.py
