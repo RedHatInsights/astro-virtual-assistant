@@ -44,3 +44,9 @@ nlu:
       - new suggestions from Advisor?
       - tell me advisor recommendations for red hat enterprise linux
       - linux recommendations from advisor
+      - I would like to see my advisor
+  - intent: intent_insights_advisor_update_risk
+    examples: |
+      - Is there any update risk?
+      - I want to check my cluster update risk
+      - Review advisor update risk

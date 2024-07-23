@@ -2,11 +2,13 @@ version: "3.1"
 
 intents:
   - intent_insights_advisor_recommendation_by_type
+  - intent_insights_advisor_update_risk
 
 actions:
   - action_advisor_api_pathway
   - validate_form_insights_advisor_recommendation_by_category
   - form_insights_advisor_recommendation_by_category_init
+  - form_insights_advisor_update_risk
 
 slots:
   insights_advisor_system_kind:
@@ -24,13 +26,19 @@ slots:
       - availability
       - stability
     mappings: *custom_mapping
+  insights_openshift_advisor_category:
+    type: categorical
+    values:
+      - recommendation
+      - cluster
+    mappings: *custom_mapping
 
 forms:
   form_insights_advisor_recommendation_by_category:
     required_slots:
       - insights_advisor_system_kind
       - insights_advisor_recommendation_category
-
+      - insights_openshift_advisor_category
 responses:
   utter_advisor_recommendation_pathways:
     - text: "I am contacting Advisor to find your recommendations."
@@ -70,3 +78,10 @@ responses:
           payload: critical
         - title: Workload
           payload: workload
+  utter_ask_insights_openshift_advisor_category:
+    - text: What type of OpenShift advisor are you looking for?
+      buttons:
+        - title: Recommendations
+          payload: recommendation
+        - title: Clusters
+          payload: cluster
