@@ -55,10 +55,18 @@ nlu:
     examples: |
       - n
       - nah
+      - nope
       - no
+      - No
+      - Nooo
+      - no way
+      - no thanks
+      - no thank you
       - i don't think so
       - nay
       - nvm
+      - not really
+      - not at all
 
   - intent: intent_core_other
     examples: |
@@ -430,6 +438,7 @@ nlu:
       - I have no idea
       - other
       - im not sure
+      - who knows!
 
   - intent: intent_core_guide_me
     examples: |

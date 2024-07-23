@@ -18,19 +18,6 @@ nlu:
       - What do I do if I can't access something?
       - how do I get access?
       - How can I access?
-
-  - intent: intent_access_request
-    examples: |
-      - I want access to [policies](core_services)
-      - I want access
-      - I want access to
-      - I need access to the console.
-      - Requesting access for me
-      - Can you help me get access?
-      - can you get me access?
-      - Give me access
-      - Give me access to [policies](core_services)
-      - Request access from my administrator
       - i dont have access to [inventory](core_services) in redhat insights
       - I dont have access to redhat insights
       - i dont have access to insights
@@ -42,12 +29,65 @@ nlu:
       - problems accessing my system
       - I need access to [advisor](core_services)
       - I need access
+      - I want access to [policies](core_services)
+      - I want access
+      - I want access to
+      - I need access to the console.
+      - i want heightened access
+      - i need more access
+      - i need higher permissions than I currently have
+      - how can i get heightened permissions for my console account
+      - get me access
+      - I can't access the console.
+      - Why can't I view this?
+      - Why don't I have access to this?
+      - I can't view this page.
+      - update my perms so i can see [advisor](core_services)
+      - why do I not have access!!!
+      - I dont have access to [inventory](core_services) in redhat insights
+      - access needed
+      - provide me org admin level access please
+      - i get system not found when trying to access my system
+      - can I get access to view [advisor](core_services)
+      - hey admin. I need some access. Thanks!
+      - i dont have permissions
+      - missing permissions
+      - need permissions
+      - need perms
+      - I require additional perms
+      - i need this role
+      - can you help me get a role
+      - missing role permissions
+      - missing role
+      - i need permissions for role
+      - i need the admin role
+      - who can give me higher access on the console
+      - how can i tell my org admin i need more access
+      - can you help me get permissions from my org admin?
+      - can you request access to my org admin
+      - Can you help me get access?
+      - can you get me access?
+      - Give me access
+      - Give me access to [policies](core_services)
+
+  - intent: intent_access_request
+    examples: |
+      - Requesting access for me
+      - Requesting access for you
+      - Request access from my administrator
+      - a request for access
+      - Access request
+      - Access request for me
       - request access
       - request access for me
-      - get me access
 
   - intent: intent_access_check_access
     examples: |
+      - troubleshooting access
+      - troubleshooting my access
+      - troubleshooting my access to [policies](core_services)
+      - check my access
+      - check my access to [policies](core_services)
       - Do I have access?
       - Do I have access to [policies](core_services)
       - Do I have permissions?
@@ -58,19 +98,13 @@ nlu:
       - Do i have access to [advisor](core_services)
       - Do I have access to [notifications](core_services)
       - Do I have access to settings?
-      - I can't access the console.
-      - Why can't I view this?
-      - Why don't I have access to this?
-      - I can't view this page.
       - i'm unable to see [notifications](core_services)
       - can't see the pages i need to see
-      - update my perms so i can see [advisor](core_services)
       - im not able to view any more
       - my access isnt working any more for [policies](core_services)
       - did someone revoke my access, i can't see it
       - how do I know if I have access
       - how do I know if I have permission
-      - why do I not have access!!!
       - troubleshoot acccess
       - troubleshoot my access
 
@@ -78,6 +112,7 @@ nlu:
     examples: |
       - Contact my org admin
       - Contact your organization's administrator
+      - Contact your org admin
       - Who is my org admin?
       - Who is my organization's administrator?
       - Who do I ask for access?
@@ -90,6 +125,13 @@ nlu:
       - who do I contact for access?
       - who do I contact for permissions?
       - who do I contact for access to [policies](core_services)
+      - send a message to my organization administrator
+      - how can i see who the org admin is?
+      - how can I see who the org admins are for my account?
+      - where can i view muy org administrator
+      - locate my admin
+      - find my admin
+      - can you find my admin to give me this role?
 
   - intent: intent_access_org_id
     examples: |
@@ -109,3 +151,5 @@ nlu:
       - gimme my org's id
       - i need account number
       - what's my account number
+      - what is my organization id number
+      - what is my organization id #
