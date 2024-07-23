@@ -77,3 +77,26 @@ rules:
       - action: utter_access_have_you_contacted_org_admin_yes
       - action: form_closing
       - active_loop: form_closing
+
+  - rule: User is having access issues
+    steps:
+      - intent: intent_access_capabilities
+      - action: utter_access_capabilities
+
+  - rule: User wants to request access
+    steps:
+      - intent: intent_access_request
+      - action: utter_access_request
+
+  - rule: User wants to request access - No
+    steps:
+      - action: utter_access_request
+      - intent: intent_core_no
+      - action: form_closing
+      - active_loop: form_closing
+
+  - rule: User wants to contact their org admin
+    steps:
+      - intent: intent_access_contact_admin
+      - action: action_deactivate_loop
+      - action: utter_access_contact_admin
