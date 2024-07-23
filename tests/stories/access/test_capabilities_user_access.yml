@@ -33,9 +33,7 @@ stories:
 
   - story: User wants access - does not want to contact admin
     steps:
-      - user: |
-          I want access to foobar
-        intent: intent_access_request
+      - intent: intent_access_request
       - action: utter_access_request
       - user: >
           No
@@ -45,9 +43,7 @@ stories:
 
   - story: User wants access - contacts admin
     steps:
-      - user: |
-          I want access to foobar
-        intent: intent_access_request
+      - intent: intent_access_request
       - action: utter_access_request
       - user: |
           Yes

@@ -12,7 +12,7 @@ validate: test-data
 
 test: test-rasa test-python
 
-test-rasa: test-stories test-data test-nlu
+test-rasa: test-stories test-data test-nlu-all
 
 test-data:
 	${RASA_EXEC} data validate ${RASA_DOMAIN_ARG}
