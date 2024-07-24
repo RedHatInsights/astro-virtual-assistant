@@ -21,12 +21,13 @@ def main():
         for name in files:
             if name.endswith(".yml"):
                 test_stories = yaml.load(open(f"{root}/{name}"), Loader=yaml.Loader)
-                for test_story in test_stories.get("stories"):
-                    for step in test_story.get("steps"):
-                        if "user" in step and "intent" in step:
-                            add_intent(
-                                nlu, step.get("intent"), step.get("user").strip()
-                            )
+                if test_stories is not None:
+                    for test_story in test_stories.get("stories"):
+                        for step in test_story.get("steps"):
+                            if "user" in step and "intent" in step:
+                                add_intent(
+                                    nlu, step.get("intent"), step.get("user").strip()
+                                )
 
     Path(".astro/nlu-from-stories").mkdir(parents=True, exist_ok=True)
 
