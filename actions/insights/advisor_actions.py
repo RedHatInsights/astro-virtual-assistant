@@ -49,8 +49,8 @@ advisor_openshift_categories = FuzzySlotMatch(
     "insights_openshift_advisor_category",
     [
         FuzzySlotMatchOption(OPENSHIFT_CATEGORY_RECOMMENDATION),
-        FuzzySlotMatchOption(OPENSHIFT_CATEGORY_CLUSTER)
-    ]
+        FuzzySlotMatchOption(OPENSHIFT_CATEGORY_CLUSTER),
+    ],
 )
 
 advisor_system = FuzzySlotMatch(
@@ -84,7 +84,7 @@ class AdvisorUpdateRisk(Action):
         return "form_insights_advisor_update_risk"
 
     async def run(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
         flow_started_count(Flow.ADVISOR)
         return [
@@ -162,7 +162,7 @@ class AdvisorRecommendationByType(FormValidationAction):
         return {"insights_advisor_recommendation_category": slot_value}
 
     async def extract_insights_openshift_advisor_category(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
     ) -> Dict[Text, Any]:
         requested_slot = tracker.get_slot("requested_slot")
         user_input = tracker.latest_message["text"]
@@ -173,8 +173,8 @@ class AdvisorRecommendationByType(FormValidationAction):
                 return resolved
 
         if (
-                requested_slot is None
-                and tracker.get_slot("insights_openshift_advisor_category") is None
+            requested_slot is None
+            and tracker.get_slot("insights_openshift_advisor_category") is None
         ):
             resolved = self.resolve_openshift_category(user_input)
             if len(resolved) > 0:
@@ -183,11 +183,11 @@ class AdvisorRecommendationByType(FormValidationAction):
         return {}
 
     async def validate_insights_openshift_advisor_category(
-            self,
-            slot_value: Any,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: DomainDict,
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
     ) -> Dict[Text, Any]:
         return {"insights_advisor_recommendation_category": slot_value}
 
@@ -301,19 +301,19 @@ class AdvisorRecommendationByType(FormValidationAction):
     async def process_openshift_advisor(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
     ) -> List[Dict[Text, Any]]:
-        category = tracker.get_slot(
-            "insights_openshift_advisor_category"
-        )
+        category = tracker.get_slot("insights_openshift_advisor_category")
 
         if category == "recommendation":
-            return await self.openshift_recommendation(dispatcher, tracker, domain, events)
+            return await self.openshift_recommendation(
+                dispatcher, tracker, domain, events
+            )
         elif category == "cluster":
             return await self.openshift_clusters(dispatcher, tracker, domain, events)
 
         flow_finished_count(Flow.ADVISOR, "openshift")
 
     async def openshift_clusters(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
     ) -> List[Dict[Text, Any]]:
 
         response, content = await send_console_request(
@@ -328,9 +328,14 @@ class AdvisorRecommendationByType(FormValidationAction):
         if len(content["data"]) > 0:
             clusters = content["data"]
             print(clusters)
-            clusters.sort(key=lambda r: [r["last_checked_at"]] if "last_checked_at" in r else [], reverse=True)
+            clusters.sort(
+                key=lambda r: [r["last_checked_at"]] if "last_checked_at" in r else [],
+                reverse=True,
+            )
 
-            message = f"Here are your most recent clusters from OpenShift for Advisor.\n"
+            message = (
+                f"Here are your most recent clusters from OpenShift for Advisor.\n"
+            )
             index = 1
             for cluster in clusters[0:3]:
                 message += f" {index}. [{cluster['cluster_name']}](/openshift/insights/advisor/clusters/{cluster['cluster_id']})\n"
@@ -344,9 +349,8 @@ class AdvisorRecommendationByType(FormValidationAction):
         dispatcher.utter_message(text=message)
         return events
 
-
     async def openshift_recommendation(
-            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
     ) -> List[Dict[Text, Any]]:
 
         response, content = await send_console_request(
