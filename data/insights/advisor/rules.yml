@@ -9,6 +9,14 @@ rules:
       - action: form_insights_advisor_recommendation_by_category
       - active_loop: form_insights_advisor_recommendation_by_category
 
+  - rule: User wants to check their advisor update risks
+    steps:
+      - intent: intent_insights_advisor_update_risk
+      - action: action_deactivate_loop
+      - action: form_insights_advisor_update_risk
+      - action: form_insights_advisor_recommendation_by_category
+      - active_loop: form_insights_advisor_recommendation_by_category
+
   - rule: Finished recommendation by type
     condition:
       - active_loop: form_insights_advisor_recommendation_by_category

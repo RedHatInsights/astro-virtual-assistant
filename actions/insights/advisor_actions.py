@@ -42,6 +42,17 @@ advisor_categories = FuzzySlotMatch(
     ],
 )
 
+OPENSHIFT_CATEGORY_RECOMMENDATION = "recommendation"
+OPENSHIFT_CATEGORY_CLUSTER = "cluster"
+
+advisor_openshift_categories = FuzzySlotMatch(
+    "insights_openshift_advisor_category",
+    [
+        FuzzySlotMatchOption(OPENSHIFT_CATEGORY_RECOMMENDATION),
+        FuzzySlotMatchOption(OPENSHIFT_CATEGORY_CLUSTER),
+    ],
+)
+
 advisor_system = FuzzySlotMatch(
     "insights_advisor_system_kind",
     [
@@ -63,6 +74,23 @@ class AdvisorRecommendationByCategoryInit(Action):
         return [
             SlotSet("insights_advisor_system_kind"),
             SlotSet("insights_advisor_recommendation_category"),
+            SlotSet("insights_openshift_advisor_category"),
+        ]
+
+
+class AdvisorUpdateRisk(Action):
+
+    def name(self) -> Text:
+        return "form_insights_advisor_update_risk"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        flow_started_count(Flow.ADVISOR)
+        return [
+            SlotSet("insights_advisor_system_kind", "openshift"),
+            SlotSet("insights_advisor_recommendation_category"),
+            SlotSet("insights_openshift_advisor_category", "cluster"),
         ]
 
 
@@ -133,6 +161,36 @@ class AdvisorRecommendationByType(FormValidationAction):
     ) -> Dict[Text, Any]:
         return {"insights_advisor_recommendation_category": slot_value}
 
+    async def extract_insights_openshift_advisor_category(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict
+    ) -> Dict[Text, Any]:
+        requested_slot = tracker.get_slot("requested_slot")
+        user_input = tracker.latest_message["text"]
+
+        if requested_slot == "insights_openshift_advisor_category":
+            resolved = self.resolve_openshift_category(user_input)
+            if len(resolved) > 0:
+                return resolved
+
+        if (
+            requested_slot is None
+            and tracker.get_slot("insights_openshift_advisor_category") is None
+        ):
+            resolved = self.resolve_openshift_category(user_input)
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
+
+    async def validate_insights_openshift_advisor_category(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        return {"insights_advisor_recommendation_category": slot_value}
+
     def rhel_error(self, dispatcher: CollectingDispatcher, events):
         flow_finished_count(Flow.ADVISOR, "rhel/error")
         dispatcher.utter_message(response="utter_advisor_recommendation_pathways_error")
@@ -141,6 +199,14 @@ class AdvisorRecommendationByType(FormValidationAction):
     def resolve_recommendation_category(self, user_input):
         for word in user_input.split(" "):
             resolved = resolve_slot_match(word, advisor_categories)
+            if len(resolved) > 0:
+                return resolved
+
+        return {}
+
+    def resolve_openshift_category(self, user_input):
+        for word in user_input.split(" "):
+            resolved = resolve_slot_match(word, advisor_openshift_categories)
             if len(resolved) > 0:
                 return resolved
 
@@ -235,6 +301,58 @@ class AdvisorRecommendationByType(FormValidationAction):
     async def process_openshift_advisor(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
     ) -> List[Dict[Text, Any]]:
+        category = tracker.get_slot("insights_openshift_advisor_category")
+
+        if category == "recommendation":
+            return await self.openshift_recommendation(
+                dispatcher, tracker, domain, events
+            )
+        elif category == "cluster":
+            return await self.openshift_clusters(dispatcher, tracker, domain, events)
+
+        flow_finished_count(Flow.ADVISOR, "openshift")
+
+    async def openshift_clusters(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
+    ) -> List[Dict[Text, Any]]:
+
+        response, content = await send_console_request(
+            "advisor-openshift",
+            f"/api/insights-results-aggregator/v2/clusters",
+            tracker,
+        )
+
+        if not response.ok:
+            return self.openshift_error(dispatcher, events)
+
+        if len(content["data"]) > 0:
+            clusters = content["data"]
+            print(clusters)
+            clusters.sort(
+                key=lambda r: [r["last_checked_at"]] if "last_checked_at" in r else [],
+                reverse=True,
+            )
+
+            message = (
+                f"Here are your most recent clusters from OpenShift for Advisor.\n"
+            )
+            index = 1
+            for cluster in clusters[0:3]:
+                message += f" {index}. [{cluster['cluster_name']}](/openshift/insights/advisor/clusters/{cluster['cluster_id']})\n"
+                index += 1
+
+            dashboard_link = f"/openshift/insights/advisor/clusters"
+            message += f"\nYou can see additional clusters on the [OpenShift for Advisor dashboard]({dashboard_link})."
+        else:
+            message = f"You don't have any cluster data right now."
+
+        dispatcher.utter_message(text=message)
+        return events
+
+    async def openshift_recommendation(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
+    ) -> List[Dict[Text, Any]]:
+
         response, content = await send_console_request(
             "advisor-openshift",
             f"/api/insights-results-aggregator/v2/rule?impacting=true",
@@ -258,7 +376,6 @@ class AdvisorRecommendationByType(FormValidationAction):
         else:
             message = f"You don't have any recommendations right now."
 
-        flow_finished_count(Flow.ADVISOR, "openshift")
         dispatcher.utter_message(text=message)
 
         return events
@@ -291,6 +408,10 @@ class AdvisorRecommendationByType(FormValidationAction):
         if insights_advisor_system_kind == "openshift":
             updated_slots = domain_slots.copy()
             updated_slots.remove("insights_advisor_recommendation_category")
+            return updated_slots
+        elif insights_advisor_system_kind == "rhel":
+            updated_slots = domain_slots.copy()
+            updated_slots.remove("insights_openshift_advisor_category")
             return updated_slots
 
         return domain_slots
