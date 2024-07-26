@@ -31,6 +31,7 @@ slots:
     values:
       - recommendation
       - cluster
+      - workload
     mappings: *custom_mapping
 
 forms:
@@ -85,3 +86,5 @@ responses:
           payload: recommendation
         - title: Clusters
           payload: cluster
+        - title: Workloads
+          payload: workload
