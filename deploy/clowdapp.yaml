@@ -211,19 +211,22 @@ objects:
             valueFrom:
               secretKeyRef:
                 name: virtual-assistant-db
-                key: ${DB_SECRET_HOSTNAME_KEY}
+                key: db.host
           - name: PGDATABASE
-            value: ${DB_NAME}
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-db
+                key: db.name
           - name: PGUSER
             valueFrom:
               secretKeyRef:
                 name: virtual-assistant-db
-                key: ${DB_SECRET_USERNAME_KEY}
+                key: db.user
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
                 name: virtual-assistant-db
-                key: ${DB_SECRET_PASSWORD_KEY}
+                key: db.password
         resources:
           limits:
             cpu: 200m
@@ -292,18 +295,6 @@ parameters:
   value: 'false'
 - name: CLEANER_SCHEDULE
   value: "1 0 * * *"
-- name: DB_NAME
-  description: Database name used by the db-cleaner CronJob
-  value: virtual_assistant
-- name: DB_SECRET_HOSTNAME_KEY
-  description: Key of the hostname field in the virtual-assistant-db secret
-  value: db.host
-- name: DB_SECRET_PASSWORD_KEY
-  description: Key of the password field in the virtual-assistant-dbdb secret
-  value: db.password
-- name: DB_SECRET_USERNAME_KEY
-  description: Key of the username field in the virtual-assistant-db secret
-  value: db.user
 - name: REST_WORKERS
   description: The number of workers in Sanic's REST API
   value: "1"
