@@ -309,9 +309,9 @@ class AdvisorRecommendationByType(FormValidationAction):
             return await self.openshift_recommendation(
                 dispatcher, tracker, domain, events
             )
-        elif category == "cluster":
+        elif category == OPENSHIFT_CATEGORY_CLUSTER:
             return await self.openshift_clusters(dispatcher, tracker, domain, events)
-        elif category == "workload":
+        elif category == OPENSHIFT_CATEGORY_WORKLOAD:
             return await self.openshift_workload(dispatcher, tracker, domain, events)
 
         flow_finished_count(Flow.ADVISOR, "openshift")
