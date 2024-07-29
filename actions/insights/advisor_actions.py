@@ -44,12 +44,14 @@ advisor_categories = FuzzySlotMatch(
 
 OPENSHIFT_CATEGORY_RECOMMENDATION = "recommendation"
 OPENSHIFT_CATEGORY_CLUSTER = "cluster"
+OPENSHIFT_CATEGORY_WORKLOAD = "workload"
 
 advisor_openshift_categories = FuzzySlotMatch(
     "insights_openshift_advisor_category",
     [
         FuzzySlotMatchOption(OPENSHIFT_CATEGORY_RECOMMENDATION),
         FuzzySlotMatchOption(OPENSHIFT_CATEGORY_CLUSTER),
+        FuzzySlotMatchOption(OPENSHIFT_CATEGORY_WORKLOAD),
     ],
 )
 
@@ -90,7 +92,7 @@ class AdvisorUpdateRisk(Action):
         return [
             SlotSet("insights_advisor_system_kind", "openshift"),
             SlotSet("insights_advisor_recommendation_category"),
-            SlotSet("insights_openshift_advisor_category", "cluster"),
+            SlotSet("insights_openshift_advisor_category", OPENSHIFT_CATEGORY_CLUSTER),
         ]
 
 
@@ -307,8 +309,10 @@ class AdvisorRecommendationByType(FormValidationAction):
             return await self.openshift_recommendation(
                 dispatcher, tracker, domain, events
             )
-        elif category == "cluster":
+        elif category == OPENSHIFT_CATEGORY_CLUSTER:
             return await self.openshift_clusters(dispatcher, tracker, domain, events)
+        elif category == OPENSHIFT_CATEGORY_WORKLOAD:
+            return await self.openshift_workload(dispatcher, tracker, domain, events)
 
         flow_finished_count(Flow.ADVISOR, "openshift")
 
@@ -327,7 +331,6 @@ class AdvisorRecommendationByType(FormValidationAction):
 
         if len(content["data"]) > 0:
             clusters = content["data"]
-            print(clusters)
             clusters.sort(
                 key=lambda r: [r["last_checked_at"]] if "last_checked_at" in r else [],
                 reverse=True,
@@ -345,6 +348,42 @@ class AdvisorRecommendationByType(FormValidationAction):
             message += f"\nYou can see additional clusters on the [OpenShift for Advisor dashboard]({dashboard_link})."
         else:
             message = f"You don't have any cluster data right now."
+
+        dispatcher.utter_message(text=message)
+        return events
+
+    async def openshift_workload(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict, events
+    ) -> List[Dict[Text, Any]]:
+
+        response, content = await send_console_request(
+            "advisor-openshift",
+            f"/api/insights-results-aggregator/v2/namespaces/dvo",
+            tracker,
+        )
+
+        if not response.ok and content["status"] != "ok":
+            return self.openshift_error(dispatcher, events)
+
+        if len(content["workloads"]) > 0:
+            workloads = content["workloads"]
+            workloads.sort(
+                key=lambda r: r.get("metadata", {}).get("last_checked_at"),
+                reverse=True,
+            )
+
+            message = (
+                f"Here are your most recent workloads from OpenShift for Advisor.\n"
+            )
+            index = 1
+            for workload in workloads[0:3]:
+                message += f" {index}. [{workload['cluster']['display_name']}](/openshift/insights/advisor/workloads/{workload['cluster']['uuid']}/{workload['namespace']['uuid']})\n"
+                index += 1
+
+            dashboard_link = f"/openshift/insights/advisor/workloads"
+            message += f"\nYou can see additional workloads on the [OpenShift for Advisor dashboard]({dashboard_link})."
+        else:
+            message = f"You don't have any workload data right now."
 
         dispatcher.utter_message(text=message)
         return events
