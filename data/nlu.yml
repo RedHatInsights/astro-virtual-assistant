@@ -335,14 +335,20 @@ nlu:
 
   - intent: intent_user_preferences
     examples: |
+      - How do I change my [personal information](preference)?
       - How do I change my [email address](preference)?
       - How do I change my [name](preference)?
+      - How do I change my [password](preference)?
+      - How do I change my [login](preference)?
+      - How do I change my [phone number](preference)?
       - I want to change my [personal information](preference).
+      - I want to change my [password](preference)
+      - I want to change my [login](preference)
+      - I want to change my [email](preference)
+      - I want to change my [phone number](preference)
       - I want to update my [password](preference)
-      - change my login information
-      - change my login info
-      - i want to change my login
-      - i want to change my login info
+      - change my [login](preference) information
+      - change my [login](preference) info
       - Change my [phone number](preference)
       - Update my [login](preference)
       - Reset my [password](preference).
