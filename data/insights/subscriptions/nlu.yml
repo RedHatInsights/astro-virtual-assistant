@@ -66,6 +66,8 @@ nlu:
       - renew my subscription
       - I need to renew my subscription
       - how do i renew my subscription
+      - subscription key not visible
+      - how to renew my subscription
 
   - intent: intent_check_subscriptions
     examples: |

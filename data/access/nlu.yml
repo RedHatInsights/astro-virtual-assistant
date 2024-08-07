@@ -132,6 +132,8 @@ nlu:
       - locate my admin
       - find my admin
       - can you find my admin to give me this role?
+      - how do I get permission for tasks
+      - please provision access to tasks in rh cloud console
 
   - intent: intent_access_org_id
     examples: |
