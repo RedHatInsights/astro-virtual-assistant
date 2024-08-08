@@ -138,12 +138,6 @@ responses:
         params:
           enable_org_2fa: "{enable_org_2fa}"
           environment: "{environment}"
-  utter_enable_org_2fa_success_1:
-    - text: "Two-factor authentication has been enabled successfully. Users will be required to set up two-factor authentication the next time they attempt to log in."
-  utter_enable_org_2fa_success_2:
-    - text: "They can chat with me if they need help setting up two-factor authentication or visit [our documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
-  utter_disable_org_2fa_success:
-    - text: "The two-factor authentication requirement has been removed successfully."
   utter_2fa_docs:
     - text: "Check out our [two-factor authentication documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
   utter_revoke_2fa_help_1:
