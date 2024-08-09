@@ -130,8 +130,6 @@ class ActionEnable2fa(Action):
                     enable_org_2fa="true",
                     environment=app.environment_name,
                 )
-                dispatcher.utter_message(response="utter_enable_org_2fa_success_1")
-                dispatcher.utter_message(response="utter_enable_org_2fa_success_2")
             if org_or_account_2fa == "personal":
                 dispatcher.utter_message(response="utter_individual_2fa_form_redirect")
 
@@ -212,7 +210,6 @@ class ActionDisable2fa(Action):
                     enable_org_2fa="false",
                     environment=app.environment_name,
                 )
-                dispatcher.utter_message(response="utter_disable_org_2fa_success")
             if org_or_account_2fa == "personal":
                 dispatcher.utter_message(response="utter_individual_2fa_form_redirect")
 
