@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CalendarMonth,
   Checkbox,
@@ -10,67 +10,70 @@ import {
   ChartDonut,
   ChartPie,
   ChartArea,
-  ChartScatter,
-  ChartThemeColor,
-  ChartVoronoiContainer,
-  ChartBar
+
 } from '@patternfly/react-charts';
 import { getMessagesInRange } from '../services/messages';
 import { Message } from '../Types';
+
 
 export const DashboardComponent = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [uniqueSessionsCount, setUniqueSessionsCount] = useState(10);
-  const [uniqueSenders, setUniqueSenders] =useState(10);
-  const [totalSessions, setTotalSessions] = useState(60);
-  const [averageFlows, setAverageFlows] = useState(1000);
-  const [thumbsUp, setThumbsUpCount] = useState(50);
-  const [thumbsDown, setThumbsDownCount] = useState(40);
-  const [toggleState, setToggleState] = useState({
-    showAll: true,  
+  const [uniqueSessionsCount, setUniqueSessionsCount] = useState(0);
+  const [uniqueSenders, setUniqueSenders] =useState(0);
+  const [totalConversations, setTotalConversations] = useState(0);
+  const [thumbsUp, setThumbsUpCount] = useState(0);
+  const [thumbsDown, setThumbsDownCount] = useState(0);
+  const [toggleState, setToggleState] = useState({ 
     showInternal: false,
     showExternal: false
   });
 
   useEffect(() => {
-    if (startDate && endDate) {
-      const fetchMessages = async () => {
-        const sessionMessages = await getMessagesInRange(undefined, Math.floor(startDate.getTime() / 1000), Math.floor(endDate.getTime() / 1000));
+    const fetchMessages = async () => {
+      if (startDate && endDate) {
+          const currentDay = new Date().toDateString();
+          const adjustedEndDate = new Date(endDate);
+  
+          if (adjustedEndDate.toDateString() === currentDay) {
+            adjustedEndDate.setTime(Date.now()); 
+          } else {
+            adjustedEndDate.setHours(23, 59, 59, 999); 
+          }
+  
+        const sessionMessages = await getMessagesInRange(undefined, Math.floor(startDate.getTime() / 1000), Math.floor(adjustedEndDate.getTime() / 1000));
         setMessages(sessionMessages);
-      };
-      fetchMessages();
-    }
-    setTotalSessions(messages.length)
-    
-    const uniqueSessions =new Set(messages.map(msg => msg.id)).size;
-    setUniqueSessionsCount(uniqueSessions);
+        const uniqueSessions = new Set(sessionMessages.map(msg => msg.id)).size;
+        const uniqueSenders = new Set(sessionMessages.map(msg => msg.sender_id)).size;
+        const totalConversations = sessionMessages.length;
 
-    const uniqueSenders = new Set(messages.map(msg =>msg.sender_id)).size;
-    setUniqueSenders(uniqueSenders);
+        let thumbsUpCount = 0;
+        let thumbsDownCount = 0;
+        
 
-    function isSlotMessage(msg: Message): boolean {
-      return msg.type_name === 'slot' && msg.data.name === 'closing_feedback';
-    }
-    
-    const thumbsUp = messages.filter(msg => isSlotMessage(msg)).length;
-    const thumbsDown = messages.filter(msg => !isSlotMessage(msg)).length; 
-    setThumbsUpCount(thumbsUp); 
-    setThumbsDownCount(thumbsDown);
- 
+        sessionMessages.forEach((msg) => {
+          if (msg.type_name === 'slot' && msg.data.name === 'closing_feedback') {
+            thumbsUpCount++;
+          } else {
+            thumbsDownCount++;
+          }
+        });
+        setUniqueSessionsCount(uniqueSessions);
+        setUniqueSenders(uniqueSenders);
+        setThumbsUpCount(thumbsUpCount);
+        setThumbsDownCount(thumbsDownCount);
+        setTotalConversations(totalConversations);
+      }
+    };
 
-    const totalConversations = messages.reduce((acc,msg) => acc + msg.id, 0);
-    const averageConversations = messages.length > 0 ? (totalConversations / messages.length) : 0;
-    setAverageFlows(averageConversations);
-    setTotalSessions(messages.length)
-
-  }, [startDate, endDate,messages]);
+    fetchMessages();
+  }, [startDate, endDate]);
 
   const handleDateChange = (date: Date) => {
     if (!startDate || (startDate && endDate)) {
       setStartDate(date);
-      setEndDate(date);
+      setEndDate(null);
     } else if (startDate && !endDate) {
       if (date >= startDate) {
         setEndDate(date);
@@ -80,33 +83,11 @@ export const DashboardComponent = () => {
     }
   };
 
-  const rangeString = startDate && endDate
-    ? `${startDate.toLocaleDateString()} TO ${endDate.toLocaleDateString()}`
-    : startDate
-      ? `${startDate.toLocaleDateString()} TO (end date not selected)`
-      : endDate
-        ? `(start date not selected) TO ${endDate.toLocaleDateString()}`
-        : 'No date selected';
-  
-  const handleToggle = (toggleName: 'showAll' | 'showInternal' | 'showExternal') => {
+  const handleToggle = (toggleName:  'showInternal' | 'showExternal') => {
   const newToggleState = {
-    showAll: false,
     showInternal: false,
     showExternal: false,
   }; 
-
-  if (toggleName === 'showAll') {
-    newToggleState.showInternal= true;
-    newToggleState.showExternal= true;
-  } else {
-   if(toggleName === 'showInternal'){
-    newToggleState.showInternal= true;
-    newToggleState.showExternal= false;
-  }else if(toggleName === 'showExternal'){
-    newToggleState.showExternal= true;
-    newToggleState.showInternal= false;
-  }}
-  setToggleState(newToggleState);
 
   const isInternalMessage = (messages : any) => {
     return messages.data && typeof messages.data.name === 'string' && messages.data.name === 'is_internal';
@@ -116,11 +97,19 @@ export const DashboardComponent = () => {
     return messages.data && typeof messages.data.name === 'string' && messages.data.name !== 'is_internal';
   };
 
-  const filteredMessages = messages.filter(messages =>
-    toggleState.showAll ||
-    (toggleState.showInternal && isInternalMessage(messages)) ||
-    (toggleState.showExternal && isExternalMessage(messages))
-  );
+   if(toggleName === 'showInternal'){
+    newToggleState.showInternal= true;
+    newToggleState.showExternal= false;
+    let filteredMessages = messages.filter (messages => (toggleState.showInternal && isInternalMessage(messages)))
+    setMessages(filteredMessages);
+
+  }else if(toggleName === 'showExternal'){
+    newToggleState.showExternal= true;
+    newToggleState.showInternal= false;
+    let filteredMessages = messages.filter (messages =>  (toggleState.showExternal && isExternalMessage(messages)))
+    setMessages(filteredMessages);
+  }
+  setToggleState(newToggleState);
 }
 
   return (
@@ -128,22 +117,20 @@ export const DashboardComponent = () => {
       <Grid hasGutter>
         <GridItem span={12} style={{ textAlign: 'center', marginBottom: '5px' }}> 
           <CalendarMonth
-            date={startDate && endDate|| new Date()}
-            onChange={(event, date) => handleDateChange(date)}
+            date={startDate || endDate || new Date()}
+            onChange={(_event, date) => handleDateChange(date)}
             onMonthChange={() => {}}
             style={{ width: '50%', justifyContent: 'center'}} 
           />
+          {startDate && endDate && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+              Selected Date Range: {startDate.toLocaleString()} - {endDate.toLocaleString()}
+            </div>
+          )}
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <div style={{ textAlign: 'center', margin: '20px 0' }}>{rangeString}</div>
           </div>
           <div style={{display: 'flex', justifyContent: 'center', gap: '8rem'}}>
           <b> User Type </b>
-          <Checkbox
-            label="Show All"
-            isChecked={toggleState.showAll}
-            onChange={() => handleToggle('showAll')} 
-            id="toggle-all"
-          />
           <Checkbox
             label="Show Internal"
             isChecked={toggleState.showInternal}
@@ -161,7 +148,7 @@ export const DashboardComponent = () => {
         </Grid>
         
       <div style={{ flexGrow: 1, padding: '0 10px' }}>
-        <Grid hasGutter style={{ marginTop: '60px'}}>
+        <Grid hasGutter style={{ marginTop: '50px'}}>
           <GridItem span={6}>
             <b><h1 style={{ textAlign: 'center' }}>Feedback</h1></b>
             <ChartDonut
@@ -191,7 +178,7 @@ export const DashboardComponent = () => {
             <ChartPie
               data={[
                 { x: 'Unique Sessions', y: uniqueSessionsCount },
-                { x: 'Total Sessions', y: totalSessions }
+                { x: 'Total Conversations', y: totalConversations }
               ]}
               height={200}
               width={300}
@@ -208,23 +195,7 @@ export const DashboardComponent = () => {
               }}
             />
           </GridItem>
-          <GridItem span={6}>
-            <h4 style={{ textAlign: 'center' }}>Conversations</h4>
-            <ChartBar
-              data={[
-                { x: 'Average Conversations', y: averageFlows },
-                { x: 'Total Conversations', y: totalSessions }
-              ]}
-              height={200}
-              width={700}
-              themeColor='multi'
-              containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />}
-              padding={{
-                bottom: 50
-              }}
-            />
-          </GridItem>
-          <GridItem span={6}>
+          <GridItem span={6} style={{ marginTop: '50px'}}>
             <h4 style={{ textAlign: 'center' }}>Usage Over Time</h4>
             <ChartArea
               data={[{
@@ -237,12 +208,12 @@ export const DashboardComponent = () => {
               labels={({ datum }) => `${datum.x}: ${datum.y}`}
             />
           </GridItem>
-          <GridItem span={6}>
+          <GridItem span={6} style={{ marginTop: '50px'}}>
             <h4 style={{ textAlign: 'center' }}>Unique Users</h4>
-            <ChartScatter
+            <ChartArea
               data={[{
                 name: 'Unique Users',
-                data: messages.map((messages, idx) => ({ x: idx, y: uniqueSenders }))
+                data: messages.map((_, idx) => ({ x: idx, y: uniqueSenders }))
               }]}
               height={200}
               width={300}
