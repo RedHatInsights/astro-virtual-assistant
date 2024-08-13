@@ -5,6 +5,10 @@ import {
   Card,
   Grid,
   GridItem,
+  PageSectionVariants,
+  PageSection,
+  Split,
+  SplitItem,
 } from '@patternfly/react-core';
 import {
   ChartDonut,
@@ -17,7 +21,7 @@ import { Message } from '../Types';
 
 
 export const DashboardComponent = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [uniqueSessionsCount, setUniqueSessionsCount] = useState(0);
@@ -113,115 +117,96 @@ export const DashboardComponent = () => {
 }
 
   return (
-    <Card style={{ width: '100vw', height: '200vh', display: 'flex', flexDirection: 'column', paddingTop: '5px' }}> 
-      <Grid hasGutter>
-        <GridItem span={12} style={{ textAlign: 'center', marginBottom: '5px' }}> 
+    <PageSection variant={PageSectionVariants.light}>
+      <Split hasGutter>
+        <SplitItem>
           <CalendarMonth
-            date={startDate || endDate || new Date()}
+            date={endDate || startDate}
             onChange={(_event, date) => handleDateChange(date)}
             onMonthChange={() => {}}
-            style={{ width: '50%', justifyContent: 'center'}} 
+            rangeStart={startDate}
           />
-          {startDate && endDate && (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-              Selected Date Range: {startDate.toLocaleString()} - {endDate.toLocaleString()}
-            </div>
-          )}
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <div>
+            <b> User Type </b>
+            <Checkbox
+              label="Show Internal"
+              isChecked={toggleState.showInternal}
+              onChange={() => handleToggle('showInternal')}
+              id="toggle-internal"
+            />
+            <Checkbox
+              label="Show External"
+              isChecked={toggleState.showExternal}
+              onChange={() => handleToggle('showExternal')}
+              id="toggle-external"
+            />
           </div>
-          <div style={{display: 'flex', justifyContent: 'center', gap: '8rem'}}>
-          <b> User Type </b>
-          <Checkbox
-            label="Show Internal"
-            isChecked={toggleState.showInternal}
-            onChange={() => handleToggle('showInternal')}
-            id="toggle-internal"
-          />
-          <Checkbox
-            label="Show External"
-            isChecked={toggleState.showExternal}
-            onChange={() => handleToggle('showExternal')}
-            id="toggle-external"
-          />
-          </div>
-          </GridItem>
-        </Grid>
-        
-      <div style={{ flexGrow: 1, padding: '0 10px' }}>
-        <Grid hasGutter style={{ marginTop: '50px'}}>
-          <GridItem span={6}>
-            <b><h1 style={{ textAlign: 'center' }}>Feedback</h1></b>
-            <ChartDonut
-              data={[
-                { x: 'Thumbs Up', y: thumbsUp },
-                { x: 'Thumbs Down', y: thumbsDown }
-              ]}
-              title="Feedback"
-              subTitle="Thumbs Up vs Down"
-              height={200}
-              width={300}
-              constrainToVisibleArea
-              labels={({ datum }) => `${datum.x}: ${datum.y}`}
-              legendPosition="bottom"
-              themeColor='cyan'
-              legendData={[
-                { name: `Thumbs Up: ${thumbsUp}` },
-                { name: `Thumbs Down: ${thumbsDown}` }
-              ]}
-              padding={{
-                bottom: 50
-              }}
-            />
-          </GridItem>
-          <GridItem span={6}>
-            <h4 style={{ textAlign: 'center' }}>Session Statistics</h4>
-            <ChartPie
-              data={[
-                { x: 'Unique Sessions', y: uniqueSessionsCount },
-                { x: 'Total Conversations', y: totalConversations }
-              ]}
-              height={200}
-              width={300}
-              constrainToVisibleArea
-              themeColor='multi'
-              labels={({ datum }) => `${datum.x}: ${datum.y}`}
-              legendPosition="bottom"
-              legendData={[
-                { name: `Unique Sessions: ${thumbsUp}` },
-                { name: `Total Sessions: ${thumbsDown}` }
-              ]}
-              padding={{
-                bottom: 50
-              }}
-            />
-          </GridItem>
-          <GridItem span={6} style={{ marginTop: '50px'}}>
-            <h4 style={{ textAlign: 'center' }}>Usage Over Time</h4>
-            <ChartArea
-              data={[{
-                name: 'Usage Over Time',
-                data: messages.map((msg, idx) => ({ x: idx, y: msg.id }))
-              }]}
-              themeColor='purple'
-              height={200}
-              width={300}
-              labels={({ datum }) => `${datum.x}: ${datum.y}`}
-            />
-          </GridItem>
-          <GridItem span={6} style={{ marginTop: '50px'}}>
-            <h4 style={{ textAlign: 'center' }}>Unique Users</h4>
-            <ChartArea
-              data={[{
-                name: 'Unique Users',
-                data: messages.map((_, idx) => ({ x: idx, y: uniqueSenders }))
-              }]}
-              height={200}
-              width={300}
-              themeColor='blue'
-            />
-          </GridItem>
-        </Grid>
-      </div>
-    </Card>
+        </SplitItem>
+        <SplitItem isFilled>
+          <Grid hasGutter style={{ marginTop: '50px'}}>
+            <GridItem span={1} rowSpan={1}>
+              <Card component="div">
+                <ChartDonut
+                  data={[
+                    { x: 'Up', y: thumbsUp },
+                    { x: 'Down', y: thumbsDown }
+                  ]}
+                  title="Feedback"
+                  subTitle="Thumbs Up vs Down"
+                  constrainToVisibleArea
+                  labels={({ datum }) => `${datum.x}: ${datum.y}`}
+                  legendPosition="bottom"
+                  themeColor='cyan'
+                  legendData={[
+                    { name: `Thumbs Up: ${thumbsUp}` },
+                    { name: `Thumbs Down: ${thumbsDown}` }
+                  ]}
+                  padding={{
+                    bottom: 50
+                  }}
+                />
+              </Card>
+            </GridItem>
+            <GridItem span={1} rowSpan={1}>
+              <Card component="div">
+                <ChartPie
+                  data={[
+                    { x: 'Unique Sessions', y: uniqueSessionsCount },
+                    { x: 'Total Conversations', y: totalConversations }
+                  ]}
+                  constrainToVisibleArea
+                  themeColor='multi'
+                  labels={({ datum }) => `${datum.x}: ${datum.y}`}
+                  legendPosition="bottom"
+                  legendData={[
+                    { name: `Unique Sessions: ${thumbsUp}` },
+                    { name: `Total Sessions: ${thumbsDown}` }
+                  ]}
+                />
+              </Card>
+            </GridItem>
+            <GridItem span={2}>
+              <ChartArea
+                data={[{
+                  name: 'Usage Over Time',
+                  data: messages.map((msg, idx) => ({ x: idx, y: msg.id }))
+                }]}
+                themeColor='purple'
+                labels={({ datum }) => `${datum.x}: ${datum.y}`}
+              />
+            </GridItem>
+            <GridItem span={2} style={{ marginTop: '50px'}}>
+              <ChartArea
+                data={[{
+                  name: 'Unique Users',
+                  data: messages.map((_, idx) => ({ x: idx, y: uniqueSenders }))
+                }]}
+                themeColor='blue'
+              />
+            </GridItem>
+          </Grid>
+        </SplitItem>
+      </Split>
+    </PageSection>
   );
 };
