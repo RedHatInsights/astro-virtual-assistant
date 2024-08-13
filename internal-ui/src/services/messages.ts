@@ -29,6 +29,11 @@ const getMessages = async (senderId?: string, cursor?: number): Promise<Array<Va
     throw new Error('Invalid request');
 };
 
+export const getSessionsInRange = async (senderId?: string, start?: number, end?: number): Promise<Array<Session>> => {
+    const messages = await getMessagesInRange(senderId, start, end);
+    return addMessages([], messages);
+}
+
 export const getMessagesInRange = async (senderId?: string, start?: number, end?: number): Promise<Array<ValidMessage>> => {
     const request = senderId ? `/api/virtual-assistant/v1/messages/${senderId}` : `/api/virtual-assistant/v1/messages`;
     const sendRequest = async (start?: number, end?: number, offset?: number, limit?: number): Promise<RequestedMessageResponse> => {

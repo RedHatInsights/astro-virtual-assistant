@@ -109,6 +109,18 @@ export interface MessageUserFeaturization extends MessageBase<"user_featurizatio
 export type Message = MessageAction | MessageActionExecutionRejected | MessageActiveLoop | MessageBot | MessageRestart | MessageSessionStarted | MessageSlot | MessageUser | MessageUserFeaturization;
 export type ValidMessage = MessageBot | MessageUser | MessageSlot | MessageSessionStarted;
 
+export function isTypeMessageUser(msg: Message): msg is MessageUser {
+    return msg.type_name === "user" && msg.data && typeof msg.data.text === "string";
+}
+
+export function isTypeMessageBot(msg: Message): msg is MessageBot {
+    return msg.type_name === "bot" && msg.data && typeof msg.data.text === "string";
+}
+
+export function isTypeMessageSlot(msg: Message): msg is MessageSlot {
+    return msg.type_name === "slot" && msg.data && typeof msg.data.name === "string";
+}
+
 
 interface MetadataBase {
     assistant_id: string;
