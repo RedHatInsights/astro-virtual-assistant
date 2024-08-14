@@ -90,6 +90,8 @@ class Enable2fa(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
+
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -99,7 +101,7 @@ class Enable2fa(FormValidationAction):
         ):
             dispatcher.utter_message(response="utter_enable_2fa_individual_1")
             dispatcher.utter_message(response="utter_enable_2fa_individual_2")
-            return
+            return events
 
         if requested_slot == ORG_OR_ACCOUNT_SLOT:
             option = tracker.get_slot(ORG_OR_ACCOUNT_SLOT)
@@ -110,7 +112,7 @@ class Enable2fa(FormValidationAction):
                 dispatcher.utter_message(response="utter_enable_org_2fa_info_1")
                 dispatcher.utter_message(response="utter_enable_org_2fa_info_2")
 
-        return []
+        return events
 
 
 class ActionEnable2fa(Action):
@@ -171,6 +173,8 @@ class FormDisable2fa(FormValidationAction):
     async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[Dict[Text, Any]]:
+        events = await super().run(dispatcher, tracker, domain)
+
         is_org_admin = tracker.get_slot(_SLOT_IS_ORG_ADMIN)
         requested_slot = tracker.get_slot("requested_slot")
 
@@ -180,7 +184,7 @@ class FormDisable2fa(FormValidationAction):
         ):
             dispatcher.utter_message(response="utter_disable_2fa_individual_1")
             dispatcher.utter_message(response="utter_disable_2fa_individual_2")
-            return
+            return events
 
         if requested_slot == ORG_OR_ACCOUNT_SLOT:
             option = tracker.get_slot(ORG_OR_ACCOUNT_SLOT)
@@ -190,7 +194,7 @@ class FormDisable2fa(FormValidationAction):
             elif option == "org" and is_org_admin:
                 dispatcher.utter_message(response="utter_disable_org_2fa_info")
 
-        return []
+        return events
 
 
 class ActionDisable2fa(Action):
