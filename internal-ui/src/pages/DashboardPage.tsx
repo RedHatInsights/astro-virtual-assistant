@@ -7,8 +7,6 @@ import {
 import {Link} from "react-router-dom";
 import {DashboardComponent} from "../components/DashboardComponent.tsx";
 
-
-
 export const DashboardPage: React.FunctionComponent = () => {
     return (
         <>

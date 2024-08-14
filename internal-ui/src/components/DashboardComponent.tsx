@@ -56,8 +56,7 @@ export const DashboardComponent = () => {
   const [thumbsDown, setThumbsDownCount] = useState(0);
 
   // Filters
-  // starting date at the beginning of the month
-  const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(1)));
+  const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(1))); // starts at the beginning of the month
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [toggleState, setToggleState] = useState<{internal: boolean, external: boolean, orgAdmins: boolean}>({ 
     internal: false,
@@ -241,7 +240,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
-          <Card component="div">
+          <Card>
             <ChartDonut
               data={[
                 { x: 'Positive', y: thumbsUp },
@@ -256,7 +255,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
-          <Card component="div">
+          <Card>
             <ChartDonut
               data={[
                 { x: 'Users', y: uniqueSenders },
@@ -270,7 +269,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
-          <Card component="div">
+          <Card>
             <ChartDonut
               data={[
                 { x: 'Bot', y: botMessageCount },
@@ -285,7 +284,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
-          <Card component="div" isFullHeight isLarge>
+          <Card isFullHeight isLarge>
             <CardBody component='strong'>
               <List isPlain iconSize="large">
                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
@@ -295,7 +294,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={4} rowSpan={4}>
-          <Card isCompact>
+          <Card>
             <CardTitle>{filteredSessions.length} Sessions</CardTitle>
             <Chart
               ariaTitle="Sessions over time"
@@ -315,7 +314,7 @@ export const DashboardComponent = () => {
             </Chart>
           </Card>
         </GridItem>
-        <GridItem span={5} rowSpan={4}>
+        <GridItem span={4} rowSpan={4}>
           <Card>
             <CardTitle>Intents</CardTitle>
             <Chart
