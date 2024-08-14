@@ -10,16 +10,29 @@ intents:
 entities: []
 
 slots:
-  org_or_account:
-    type: text
+  org_or_account_2fa_enable:
+    type: categorical
     influence_conversation: true
+    values:
+      - personal
+      - org
     mappings:
-      - type: from_text
+      - type: custom
         conditions:
           - active_loop: form_enable_2fa
-            requested_slot: org_or_account
+            requested_slot: org_or_account_2fa_enable
+
+  org_or_account_2fa_disable:
+    type: categorical
+    influence_conversation: true
+    values:
+      - personal
+      - org
+    mappings:
+      - type: custom
+        conditions:
           - active_loop: form_disable_2fa
-            requested_slot: org_or_account
+            requested_slot: org_or_account_2fa_disable
 
   enable_2fa_continue:
     type: bool
@@ -61,22 +74,22 @@ actions:
 forms:
   form_enable_2fa:
     required_slots:
-      - org_or_account
+      - org_or_account_2fa_enable
       - enable_2fa_continue
   form_disable_2fa:
     required_slots:
-      - org_or_account
+      - org_or_account_2fa_disable
       - disable_2fa_continue
 
 responses:
-  utter_ask_form_enable_2fa_org_or_account:
+  utter_ask_form_enable_2fa_org_or_account_2fa_enable:
     - text: "It looks like you're an Org Admin. Do you want to enable two-factor authentication for yourself or your entire org?"
       buttons:
         - title: Enable two-factor authentication for my account only
           payload: personal
         - title: Enable two-factor authentication for my org
           payload: org
-  utter_ask_form_disable_2fa_org_or_account:
+  utter_ask_form_disable_2fa_org_or_account_2fa_disable:
     - text: "It looks like you're and Org Admin. Do you want to remove two-factor authentication for yourself or remove the requirement for your entire org?"
       buttons:
         - title: Disable two-factor authentication for my account only

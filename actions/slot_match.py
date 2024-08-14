@@ -45,6 +45,7 @@ def resolve_slot_match(
     for options in slot_match.options:
         for value in options.synonyms:
             ratio = fuzz.QRatio(user_message, value)
+            print("ratio....", ratio)
             if ratio >= accepted_rate:
                 return {slot_match.slot: options.value}
 
