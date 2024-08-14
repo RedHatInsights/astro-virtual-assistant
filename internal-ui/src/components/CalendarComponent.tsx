@@ -1,5 +1,12 @@
-import { CalendarMonth } from '@patternfly/react-core/dist/esm/components/CalendarMonth/CalendarMonth';
-import { List, ListItem, ListVariant, Card, CardTitle, CardBody, } from '@patternfly/react-core';
+import {
+    CalendarMonth,
+    List,
+    ListItem,
+    ListVariant,
+    Card,
+    CardTitle,
+    CardBody
+} from '@patternfly/react-core';
 
 // dont allow dates older than 3 months
 const OLDEST_ALLOWED_DATE = new Date();
