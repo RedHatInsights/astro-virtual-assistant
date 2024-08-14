@@ -196,47 +196,49 @@ export const DashboardComponent = () => {
               setEndDate(end);
             }}
           />
-          <div>
-            <b> Filter </b>
-            <Checkbox
-              label="Internal"
-              isChecked={toggleState.internal}
-              onChange={() => {
-                setToggleState(prev => (
-                  {...prev, 
-                    internal: !prev.internal, 
-                    external: prev.internal && prev.external
-                  }
-                ));
-              }}
-              id="toggle-internal"
-            />
-            <Checkbox
-              label="External"
-              isChecked={toggleState.external}
-              onChange={() => {
-                setToggleState(prev => (
-                  {...prev, 
-                    internal: prev.internal && prev.external,
-                    external: !prev.external
-                  }
-                ));
-              }}
-              id="toggle-external"
-            />
-            <Checkbox
-              label="Org Admins"
-              isChecked={toggleState.orgAdmins}
-              onChange={() => {
-                setToggleState(prev => (
-                  {...prev, 
-                    orgAdmins: !prev.orgAdmins
-                  }
-                ));
-              }}
-              id="toggle-org-admins"
-            />
-          </div>
+          <Card>
+            <CardTitle>Filters</CardTitle>
+            <CardBody>
+              <Checkbox
+                label="Internal"
+                isChecked={toggleState.internal}
+                onChange={() => {
+                  setToggleState(prev => (
+                    {...prev, 
+                      internal: !prev.internal, 
+                      external: prev.internal && prev.external
+                    }
+                  ));
+                }}
+                id="toggle-internal"
+              />
+              <Checkbox
+                label="External"
+                isChecked={toggleState.external}
+                onChange={() => {
+                  setToggleState(prev => (
+                    {...prev, 
+                      internal: prev.internal && prev.external,
+                      external: !prev.external
+                    }
+                  ));
+                }}
+                id="toggle-external"
+              />
+              <Checkbox
+                label="Org Admins"
+                isChecked={toggleState.orgAdmins}
+                onChange={() => {
+                  setToggleState(prev => (
+                    {...prev, 
+                      orgAdmins: !prev.orgAdmins
+                    }
+                  ));
+                }}
+                id="toggle-org-admins"
+              />
+            </CardBody>
+          </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
           <Card component="div">
@@ -283,7 +285,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={2} rowSpan={1}>
-          <Card component="div" isFullHeight>
+          <Card component="div" isFullHeight isLarge>
             <CardBody component='strong'>
               <List isPlain iconSize="large">
                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
@@ -293,7 +295,7 @@ export const DashboardComponent = () => {
           </Card>
         </GridItem>
         <GridItem span={4} rowSpan={4}>
-          <Card>
+          <Card isCompact>
             <CardTitle>{filteredSessions.length} Sessions</CardTitle>
             <Chart
               ariaTitle="Sessions over time"

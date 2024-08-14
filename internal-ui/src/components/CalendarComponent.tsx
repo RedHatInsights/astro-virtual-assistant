@@ -1,5 +1,9 @@
 import { CalendarMonth } from '@patternfly/react-core/dist/esm/components/CalendarMonth/CalendarMonth';
 
+// dont allow dates older than 3 months
+const OLDEST_ALLOWED_DATE = new Date();
+OLDEST_ALLOWED_DATE.setMonth(OLDEST_ALLOWED_DATE.getMonth() - 3);
+
 export const CalendarComponent = ({
     startDate,
     endDate,
@@ -12,6 +16,9 @@ export const CalendarComponent = ({
     const handleDateChange = (date: Date) => {
         if (date > new Date()) {
             date = new Date(); // no future dates
+        }
+        if (date < OLDEST_ALLOWED_DATE) {
+            date = OLDEST_ALLOWED_DATE; // no dates older than 3 months
         }
 
         if (date < startDate) {
