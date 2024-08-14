@@ -25,6 +25,7 @@ import {
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
 import { CheckCircleIcon } from '@patternfly/react-icons';
+import { CalendarComponent } from './CalendarComponent';
 
 // for now, will set up pulling from prometheus later
 const TRACKING_INTENTS = [
@@ -183,23 +184,17 @@ export const DashboardComponent = () => {
     fetchMessages();
   }, [startDate, endDate]);
 
-  const handleDateChange = (date: Date) => {
-    if (date < endDate) {
-      setStartDate(date);
-    } else {
-      setEndDate(date);
-    }
-  };
-
   return (
     <PageSection variant={PageSectionVariants.light} isWidthLimited >
       <Grid hasGutter >
         <GridItem span={3} rowSpan={4}>
-          <CalendarMonth
-            date={endDate}
-            onChange={(_event, date) => handleDateChange(date)}
-            onMonthChange={() => {}}
-            rangeStart={startDate}
+          <CalendarComponent
+            startDate={startDate}
+            endDate={endDate}
+            updateDateRange={(start, end) => {
+              setStartDate(start);
+              setEndDate(end);
+            }}
           />
           <div>
             <b> Filter </b>
