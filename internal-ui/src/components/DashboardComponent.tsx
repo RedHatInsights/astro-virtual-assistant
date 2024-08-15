@@ -264,7 +264,7 @@ export const DashboardComponent = () => {
                             title={uniqueSenders.toString()}
                             subTitle="User"
                             constrainToVisibleArea
-                            themeColor='red'
+                            themeColor='green'
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
                         />
                     </Card>
@@ -280,7 +280,7 @@ export const DashboardComponent = () => {
                             subTitle="Messages"
                             constrainToVisibleArea
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
-                            themeColor='red'
+                            themeColor='multi'
                         />
                     </Card>
                 </GridItem>
@@ -322,6 +322,7 @@ export const DashboardComponent = () => {
                             ariaTitle="Intents"
                             containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.y} ${datum.x}`} />}
                             name="by_intent"
+                            themeColor="multi"
                         >
                             <ChartAxis /> 
                             <ChartAxis dependentAxis showGrid />
