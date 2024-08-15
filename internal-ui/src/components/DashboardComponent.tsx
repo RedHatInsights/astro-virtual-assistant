@@ -61,7 +61,7 @@ export const DashboardComponent = () => {
     const [thumbsDown, setThumbsDownCount] = useState(0);
 
     // Filters
-    const [startDate, setStartDate] = useState<Date>(ONE_WEEK_AGO);
+    const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(1))); // starts at the beginning of the month
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [toggleState, setToggleState] = useState<{internal: boolean, external: boolean, orgAdmins: boolean}>({ 
         internal: false,
