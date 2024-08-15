@@ -42,6 +42,9 @@ const TRACKING_INTENTS = [
     "intent_advisor_.*"
 ]
 
+const ONE_WEEK_AGO = new Date();
+ONE_WEEK_AGO.setDate(ONE_WEEK_AGO.getDate() - 6);
+
 export const DashboardComponent = () => {
     const [sessions, setSessions] = useState<Session[]>([]);
     const [filteredSessions, setFilteredSessions] = useState<Session[]>([]);
@@ -57,7 +60,7 @@ export const DashboardComponent = () => {
     const [thumbsDown, setThumbsDownCount] = useState(0);
 
     // Filters
-    const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(1))); // starts at the beginning of the month
+    const [startDate, setStartDate] = useState<Date>(ONE_WEEK_AGO); // starts at the beginning of the month
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [toggleState, setToggleState] = useState<{internal: boolean, external: boolean, orgAdmins: boolean}>({ 
         internal: false,
