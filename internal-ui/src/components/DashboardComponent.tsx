@@ -247,7 +247,7 @@ export const DashboardComponent = () => {
                                 { x: 'Positive', y: thumbsUp },
                                 { x: 'Negative', y: thumbsDown }
                             ]}
-                            title={(thumbsUp/(thumbsUp + thumbsDown)) * 100 + '%'}
+                            title={Math.ceil((thumbsUp/(thumbsUp + thumbsDown)) * 100) + '%'}
                             subTitle="Positive feedback"
                             constrainToVisibleArea
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
