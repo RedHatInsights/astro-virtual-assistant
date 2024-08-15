@@ -335,7 +335,7 @@ export const DashboardComponent = () => {
                             name="by_intent"
                             themeColor="multi"
                         >
-                            <ChartAxis /> 
+                            <ChartAxis tickValues={[]}/> 
                             <ChartAxis dependentAxis showGrid />
                             <ChartGroup>
                                 {Object.entries(intentCounts).map(([key, value]) => (
