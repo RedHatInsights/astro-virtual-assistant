@@ -20,7 +20,7 @@ import {
     ChartLine,
     ChartBar,
 } from '@patternfly/react-charts';
-import { CheckCircleIcon } from '@patternfly/react-icons';
+import { BalanceScaleIcon, CheckCircleIcon, UserIcon } from '@patternfly/react-icons';
 
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
@@ -55,6 +55,7 @@ export const DashboardComponent = () => {
     const [botMessageCount, setBotMessageCount] = useState(0);
     const [userMessageCount, setUserMessageCount] = useState(0);
     const [uniqueSenders, setUniqueSenders] = useState(0);
+    const [firstTimeUsers, setFirstTimeUsers] = useState(0);
     const [totalConversations, setTotalConversations] = useState(0);
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
@@ -126,6 +127,7 @@ export const DashboardComponent = () => {
         let botMessageCount = 0;
         let userMessageCount = 0;
         let conversationCount = 0;
+        let firstTimeUsers = 0;
 
         const intentCounts: { [key: string]: number } = {};
 
@@ -142,6 +144,10 @@ export const DashboardComponent = () => {
 
                     if (msg.data.metadata.utter_action === 'utter_ask_closing_got_help') {
                         conversationCount++;
+                    }
+
+                    if (msg.data.metadata.utter_action === 'utter_core_first_time') {
+                        firstTimeUsers++;
                     }
                     botMessageCount++;
                 } else if (isTypeMessageUser(msg)) {
@@ -164,6 +170,7 @@ export const DashboardComponent = () => {
         setBotMessageCount(botMessageCount);
         setUserMessageCount(userMessageCount);
         setTotalConversations(conversationCount);
+        setFirstTimeUsers(firstTimeUsers);
 
         setIntentCounts(intentCounts);
 
@@ -292,7 +299,8 @@ export const DashboardComponent = () => {
                         <CardBody component='strong'>
                             <List isPlain iconSize="large">
                                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
-                                <ListItem icon={<CheckCircleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
                             </List>
                         </CardBody>
                     </Card>
