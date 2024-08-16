@@ -48,6 +48,8 @@ nlu:
       - sources
       - set up an oracle cloud integration
       - create aws cloud connection
+      - i want to hook up my azure account to the console
+      - hook up my azure account
 
   - intent: intent_integration_edit
     examples: |

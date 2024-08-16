@@ -203,6 +203,10 @@ nlu:
       - can you have a real time conversatoin
       - do you have tech support
       - can i talk to a technical support agent
+      - connect me with a person
+      - i need live chat assistance
+      - how can I do to talk with an operator
+      - customer service
 
   - intent: intent_services_offline
     examples: |
