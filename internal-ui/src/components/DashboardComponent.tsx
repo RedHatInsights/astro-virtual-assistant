@@ -20,7 +20,7 @@ import {
     ChartLine,
     ChartBar,
 } from '@patternfly/react-charts';
-import { CheckCircleIcon } from '@patternfly/react-icons';
+import { BalanceScaleIcon, CheckCircleIcon, UserIcon } from '@patternfly/react-icons';
 
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
@@ -42,6 +42,9 @@ const TRACKING_INTENTS = [
     "intent_advisor_.*"
 ]
 
+const ONE_WEEK_AGO = new Date();
+ONE_WEEK_AGO.setDate(ONE_WEEK_AGO.getDate() - 6);
+
 export const DashboardComponent = () => {
     const [sessions, setSessions] = useState<Session[]>([]);
     const [filteredSessions, setFilteredSessions] = useState<Session[]>([]);
@@ -52,12 +55,13 @@ export const DashboardComponent = () => {
     const [botMessageCount, setBotMessageCount] = useState(0);
     const [userMessageCount, setUserMessageCount] = useState(0);
     const [uniqueSenders, setUniqueSenders] = useState(0);
+    const [firstTimeUsers, setFirstTimeUsers] = useState(0);
     const [totalConversations, setTotalConversations] = useState(0);
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
 
     // Filters
-    const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(1))); // starts at the beginning of the month
+    const [startDate, setStartDate] = useState<Date>(ONE_WEEK_AGO);
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [toggleState, setToggleState] = useState<{internal: boolean, external: boolean, orgAdmins: boolean}>({ 
         internal: false,
@@ -123,6 +127,7 @@ export const DashboardComponent = () => {
         let botMessageCount = 0;
         let userMessageCount = 0;
         let conversationCount = 0;
+        let firstTimeUsers = 0;
 
         const intentCounts: { [key: string]: number } = {};
 
@@ -139,6 +144,10 @@ export const DashboardComponent = () => {
 
                     if (msg.data.metadata.utter_action === 'utter_ask_closing_got_help') {
                         conversationCount++;
+                    }
+
+                    if (msg.data.metadata.utter_action === 'utter_core_first_time') {
+                        firstTimeUsers++;
                     }
                     botMessageCount++;
                 } else if (isTypeMessageUser(msg)) {
@@ -161,6 +170,7 @@ export const DashboardComponent = () => {
         setBotMessageCount(botMessageCount);
         setUserMessageCount(userMessageCount);
         setTotalConversations(conversationCount);
+        setFirstTimeUsers(firstTimeUsers);
 
         setIntentCounts(intentCounts);
 
@@ -247,7 +257,7 @@ export const DashboardComponent = () => {
                                 { x: 'Positive', y: thumbsUp },
                                 { x: 'Negative', y: thumbsDown }
                             ]}
-                            title={(thumbsUp/(thumbsUp + thumbsDown)) * 100 + '%'}
+                            title={Math.ceil((thumbsUp/(thumbsUp + thumbsDown)) * 100) + '%'}
                             subTitle="Positive feedback"
                             constrainToVisibleArea
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
@@ -264,7 +274,7 @@ export const DashboardComponent = () => {
                             title={uniqueSenders.toString()}
                             subTitle="User"
                             constrainToVisibleArea
-                            themeColor='red'
+                            themeColor='green'
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
                         />
                     </Card>
@@ -280,7 +290,7 @@ export const DashboardComponent = () => {
                             subTitle="Messages"
                             constrainToVisibleArea
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
-                            themeColor='red'
+                            themeColor='multi'
                         />
                     </Card>
                 </GridItem>
@@ -289,7 +299,8 @@ export const DashboardComponent = () => {
                         <CardBody component='strong'>
                             <List isPlain iconSize="large">
                                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
-                                <ListItem icon={<CheckCircleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
                             </List>
                         </CardBody>
                     </Card>
@@ -322,8 +333,9 @@ export const DashboardComponent = () => {
                             ariaTitle="Intents"
                             containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.y} ${datum.x}`} />}
                             name="by_intent"
+                            themeColor="multi"
                         >
-                            <ChartAxis /> 
+                            <ChartAxis tickValues={[]}/> 
                             <ChartAxis dependentAxis showGrid />
                             <ChartGroup>
                                 {Object.entries(intentCounts).map(([key, value]) => (
