@@ -115,3 +115,42 @@ nlu:
       - view subscription documentation on the portal
       - view documentation on the red hat portal
       - view subs documentation on the red hat portal
+
+  - intent: intent_subs_simple_content_access
+    examples: |
+      - What is Simple Content Access?
+      - Simple content access
+      - what's SCA?
+      - what is SCA
+      - how can I connect through sca
+      - what's new entitlement way?
+      - new entitlement way
+      - where does entitlement go
+      - getting started with simple content access
+      - getting started with SCA
+      - Simple content access subscription
+
+  - intent: intent_subs_activation_keys
+    examples: |
+      - register a system with activation keys
+      - activation keys
+      - activation keys on Hybrid Cloud Console
+      - create activation key
+      - configure activation key
+      - delete activation key
+      - preconfigured activation key
+      - manage activation key
+      - edit activation key
+      - view activation key
+      - use activation key
+
+  - intent: intent_subs_product_usage
+    examples: |
+      - What is my current subscription usage
+      - what's my current capacity?
+      - current subscriptions usage
+      - subscriptions usage
+      - current capacity
+      - what product am I subscribed to?
+      - subscribed product
+      - product I am subscribed to
