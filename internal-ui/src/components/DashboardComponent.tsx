@@ -20,12 +20,13 @@ import {
     ChartLine,
     ChartBar,
 } from '@patternfly/react-charts';
-import { BalanceScaleIcon, CheckCircleIcon, OutlinedClockIcon, PowerOffIcon, UserIcon } from '@patternfly/react-icons';
+import { BalanceScaleIcon, CheckCircleIcon, FilterIcon, OutlinedClockIcon, PowerOffIcon, UserIcon } from '@patternfly/react-icons';
 
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
 import { CalendarComponent } from './CalendarComponent';
 import { LoadingPageSection } from './LoadingPageSection';
+import { HelpPopover } from './HelpPopoverComponent';
 
 // for now, will set up pulling from prometheus later
 const TRACKING_INTENTS = [
@@ -264,7 +265,7 @@ export const DashboardComponent = () => {
                         }}
                     />
                     <Card>
-                        <CardTitle>Filters</CardTitle>
+                        <CardTitle>Filters <FilterIcon /></CardTitle>
                         <CardBody>
                             <Checkbox
                                 label="Internal"
@@ -377,7 +378,12 @@ export const DashboardComponent = () => {
                                 <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - (intentCounts["nlu_fallback"] || 0)) / userMessageCount) * 100)}% Intents Recognized</ListItem>
                                 <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
                                 {!toggleState.activeSessions &&
-                                    <ListItem icon={<PowerOffIcon />}>{filteredSessions.length - activeSessions} Inactive Sessions</ListItem>
+                                    <ListItem icon={<PowerOffIcon />}>{filteredSessions.length - activeSessions} Inactive Sessions
+                                        <HelpPopover
+                                            title="When is a session inactive?"
+                                            content="If a user did not send a message after opening the assistant, the session has been inactive."
+                                        />
+                                    </ListItem>
                                 }
                             </List>
                         </CardBody>
