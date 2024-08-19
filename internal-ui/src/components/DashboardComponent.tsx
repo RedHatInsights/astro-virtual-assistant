@@ -20,7 +20,7 @@ import {
     ChartLine,
     ChartBar,
 } from '@patternfly/react-charts';
-import { BalanceScaleIcon, CheckCircleIcon, PowerOffIcon, UserIcon } from '@patternfly/react-icons';
+import { BalanceScaleIcon, CheckCircleIcon, OutlinedClockIcon, PowerOffIcon, UserIcon } from '@patternfly/react-icons';
 
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
@@ -63,6 +63,8 @@ export const DashboardComponent = () => {
     const [totalConversations, setTotalConversations] = useState(0);
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
+    const [averageSessionTime, setAverageSessionTime] = useState(0);
+
 
     // Filters
     const [startDate, setStartDate] = useState<Date>(ONE_WEEK_AGO);
@@ -174,6 +176,8 @@ export const DashboardComponent = () => {
         let conversationCount = 0;
         let firstTimeUsers = 0;
 
+        let durations = 0; // total time in all filtered sessions
+
         const intentCounts: { [key: string]: number } = {};
 
         filtered.forEach((session) => {
@@ -210,6 +214,8 @@ export const DashboardComponent = () => {
                     userMessageCount++;
                 }
             });
+
+            durations += session.lastTimestamp - session.timestamp;
         });
 
         setBotMessageCount(botMessageCount);
@@ -218,6 +224,9 @@ export const DashboardComponent = () => {
         setFirstTimeUsers(firstTimeUsers);
 
         setIntentCounts(intentCounts);
+
+        const totalDurationInMinutes = (durations / 1000) / 60;
+        setAverageSessionTime(Math.floor(totalDurationInMinutes / filtered.length));
 
         const senders = new Set(filtered.map((session) => session.senderId));
         setUniqueSenders(senders.size);
@@ -364,7 +373,8 @@ export const DashboardComponent = () => {
                         <CardBody component='strong'>
                             <List isPlain iconSize="large">
                                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
-                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<OutlinedClockIcon />}>{averageSessionTime} Minutes Active on Average</ListItem>
+                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - (intentCounts["nlu_fallback"] || 0)) / userMessageCount) * 100)}% Intents Recognized</ListItem>
                                 <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
                                 {!toggleState.activeSessions &&
                                     <ListItem icon={<PowerOffIcon />}>{filteredSessions.length - activeSessions} Inactive Sessions</ListItem>
