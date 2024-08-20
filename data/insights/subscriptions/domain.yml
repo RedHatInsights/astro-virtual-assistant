@@ -12,7 +12,6 @@ intents:
   - intent_subs_activation_keys
   - intent_subs_product_usage
 
-
 entities: []
 
 slots:

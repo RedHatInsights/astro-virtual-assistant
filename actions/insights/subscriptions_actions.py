@@ -136,6 +136,8 @@ class SubsProductUsage(FormValidationAction):
             if product_type == "rhel":
                 dispatcher.utter_message(response="utter_subs_product_usage_rhel_page")
             elif product_type == "openshift":
-                dispatcher.utter_message(response="utter_subs_product_usage_openshift_page")
+                dispatcher.utter_message(
+                    response="utter_subs_product_usage_openshift_page"
+                )
 
         return events
