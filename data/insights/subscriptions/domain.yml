@@ -99,10 +99,10 @@ responses:
         - title: OpenShift
           payload: openshift
   utter_subs_product_usage_rhel_page:
-    - text: "Check out the [RHEL usage page here](https://console.redhat.com/subscriptions/usage/rhel). That page will show your RHEL usage for both annual and on-demand subscriptions."
+    - text: "You can monitor your RHEL subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/rhel). Usage information is available for both Annual and On-demand subscriptions."
   utter_subs_product_usage_openshift_page:
-    - text: "Check out the [OpenShift usage page here](https://console.redhat.com/subscriptions/usage/openshift). That page will show your OpenShift usage for both annual and on-Demand subscriptions."
+    - text: "You can monitor your Openshift subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/openshift). Usage information is available for both Annual and On-demand subscriptions."
   utter_subs_simple_content_access_docs:
-    - text: "Check out [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
+    - text: "Simple Content Access simplifies workflows for managing your subscriptions. For more information on getting started, visit the [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
   utter_subs_activation_keys_docs:
-    - text: "Check out [Activation key documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_activation_keys_on_the_hybrid_cloud_console/assembly-creating-managing-activation-keys)."
+    - text: "To auto-configure your systems, you'll need an activation key. For managing your tokens, visit the [Activation key documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_activation_keys_on_the_hybrid_cloud_console/assembly-creating-managing-activation-keys)."
