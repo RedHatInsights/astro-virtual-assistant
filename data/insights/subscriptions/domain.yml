@@ -99,9 +99,9 @@ responses:
         - title: OpenShift
           payload: openshift
   utter_subs_product_usage_rhel_page:
-    - text: "Check out the [RHEL's usage page here](https://console.redhat.com/subscriptions/usage/rhel)."
+    - text: "Check out the [RHEL usage page here](https://console.redhat.com/subscriptions/usage/rhel). That page will show your RHEL usage for both annual and on-demand subscriptions."
   utter_subs_product_usage_openshift_page:
-    - text: "Check out the [OpenShift's usage page here](https://console.redhat.com/subscriptions/usage/openshift)."
+    - text: "Check out the [OpenShift usage page here](https://console.redhat.com/subscriptions/usage/openshift). That page will show your OpenShift usage for both annual and on-Demand subscriptions."
   utter_subs_simple_content_access_docs:
     - text: "Check out [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
   utter_subs_activation_keys_docs:
