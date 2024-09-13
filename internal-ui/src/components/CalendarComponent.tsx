@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
     CalendarMonth,
     List,
@@ -7,10 +8,7 @@ import {
     CardTitle,
     CardBody
 } from '@patternfly/react-core';
-
-// dont allow dates older than 3 months
-const OLDEST_ALLOWED_DATE = new Date();
-OLDEST_ALLOWED_DATE.setMonth(OLDEST_ALLOWED_DATE.getMonth() - 3);
+import { SimpleSelect, SimpleSelectOption } from '@patternfly/react-templates';
 
 export const CalendarComponent = ({
     startDate,
@@ -21,28 +19,59 @@ export const CalendarComponent = ({
     endDate: Date;
     updateDateRange: (startDate: Date, endDate: Date) => void;
 }) => {
+    const [selectedMonth, setSelectedMonth] = useState<string>('');
+    const [selectedYear, setSelectedYear] = useState<string>('');
+    const [monthOptions, setMonthOptions] = useState<SimpleSelectOption[]>([]);
+    const [yearOptions, setYearOptions] = useState<SimpleSelectOption[]>([]);
+
+    useEffect(() => {
+        const calculateMonthsAndYears = () => {
+            const today = new Date();
+            const pastDate = new Date();
+            pastDate.setDate(today.getDate() - 180);
+
+            const months = new Set<string>();
+            const years = new Set<string>();
+
+            for (let d = new Date(pastDate); d <= today; d.setMonth(d.getMonth() + 1)) {
+                months.add(d.toLocaleString('default', { month: 'long' }));
+                years.add(d.getFullYear().toString());
+            }
+
+            setMonthOptions(Array.from(months).map(month => ({ content: month, value: month })));
+            setYearOptions(Array.from(years).map(year => ({ content: year, value: year })));
+        };
+
+        calculateMonthsAndYears();
+    }, []);
+
     const handleDateChange = (date: Date) => {
         if (date > new Date()) {
             date = new Date(); // no future dates
         }
-        if (date < OLDEST_ALLOWED_DATE) {
-            date = OLDEST_ALLOWED_DATE; // no dates older than 3 months
+
+        let start = startDate;
+        let end = endDate;
+
+        // If the selected date is between startDate and endDate, decide based on proximity
+        const startDiff = Math.abs(date.getTime() - startDate.getTime());
+        const endDiff = Math.abs(date.getTime() - endDate.getTime());
+        if (startDiff < endDiff) {
+            start = date;
+        } else {
+            end = date;
         }
 
-        if (date < startDate) {
-            updateDateRange(date, endDate);
-        } else if (date > endDate) {
-            updateDateRange(startDate, date);
-        } else {
-            // If the selected date is between startDate and endDate, decide based on proximity
-            const startDiff = Math.abs(date.getTime() - startDate.getTime());
-            const endDiff = Math.abs(date.getTime() - endDate.getTime());
-            if (startDiff < endDiff) {
-                updateDateRange(date, endDate);
-            } else {
-                updateDateRange(startDate, date);
-            }
+        // ensure that the start date and end date are not more than 3 months apart
+        const three_months = 1000 * 60 * 60 * 24 * 30 * 3;
+        const rangeDiff = Math.abs(end.getTime() - start.getTime());
+        if (rangeDiff > three_months) {
+            end = new Date(start.getTime() + three_months);
         }
+
+        updateDateRange(start, end);
+        setSelectedMonth('');
+        setSelectedYear('');
     };
 
     const handleDateChangeWithPresets = (preset: string) => {
@@ -62,6 +91,37 @@ export const CalendarComponent = ({
                 return
         }
         updateDateRange(newStartDate, newEndDate);
+        setSelectedMonth('');
+        setSelectedYear('');
+    }
+
+    const handleMonthSelect = (selection: string | number) => {
+        if (typeof selection === 'number') {
+            return;
+        }
+        setSelectedMonth(selection);
+        updateDateBasedOnMonth(selection, selectedYear);
+    }
+    
+    const handleYearSelect = (selection: string | number) => {
+        if (typeof selection === 'number') {
+            return;
+        }
+        setSelectedYear(selection);
+        updateDateBasedOnMonth(selectedMonth, selection);
+    }
+
+    const updateDateBasedOnMonth = (month: string, year: string) => {
+        if (!(month && year)) {
+            return;
+        }
+
+        const start = new Date(`${month} 1, ${year}`);
+        const end = new Date(start);
+        end.setMonth(end.getMonth() + 1);
+        end.setDate(end.getDate() - 1);
+
+        updateDateRange(start, end);
     }
 
     return (
@@ -80,6 +140,15 @@ export const CalendarComponent = ({
                         <ListItem className="pf-v5-c-button pf-m-link pf-m-inline" onClick={() => handleDateChangeWithPresets("1 month")}>1 month</ListItem>
                         <ListItem className="pf-v5-c-button pf-m-link pf-m-inline" onClick={() => handleDateChangeWithPresets("3 months")}>3 months</ListItem>
                     </List>
+                    <br />By month:<br />
+                    <SimpleSelect
+                        initialOptions={monthOptions}
+                        onSelect={(_ev, selection) => handleMonthSelect(selection)}
+                    />
+                    <SimpleSelect
+                        initialOptions={yearOptions}
+                        onSelect={(_ev, selection) => handleYearSelect(selection)}
+                    />
                 </CardBody>
             </Card>
         </>
