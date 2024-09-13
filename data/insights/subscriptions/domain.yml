@@ -8,13 +8,30 @@ intents:
   - intent_register_rhel_system
   - intent_subscriptions_doc
   - intent_subscriptions_generic
+  - intent_subs_simple_content_access
+  - intent_subs_activation_keys
+  - intent_subs_product_usage
 
 entities: []
 
-slots: {}
+slots:
+  subs_product_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_subs_product_usage
+            requested_slot: subs_product_type
 
 actions:
   - action_check_subscriptions
+  - validate_form_subs_product_usage
+
+forms:
+  form_subs_product_usage:
+    required_slots:
+      - subs_product_type
 
 responses:
   utter_capabilities_subscriptions:
@@ -74,3 +91,18 @@ responses:
         * {active} active subscriptions
         * {expiring} subscriptions that are expiring soon
         * {expired} that have already expired
+  utter_ask_form_subs_product_usage_subs_product_type:
+    - text: "Which product's usage are you looking for?"
+      buttons:
+        - title: RHEL
+          payload: rhel
+        - title: OpenShift
+          payload: openshift
+  utter_subs_product_usage_rhel_page:
+    - text: "You can monitor your RHEL subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/rhel). Usage information is available for both Annual and On-demand subscriptions."
+  utter_subs_product_usage_openshift_page:
+    - text: "You can monitor your Openshift subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/openshift). Usage information is available for both Annual and On-demand subscriptions."
+  utter_subs_simple_content_access_docs:
+    - text: "Simple Content Access simplifies workflows for managing your subscriptions. For more information on getting started, visit the [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
+  utter_subs_activation_keys_docs:
+    - text: "To auto-configure your systems, you'll need an activation key. For managing your tokens, visit the [Activation key documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_activation_keys_on_the_hybrid_cloud_console/assembly-creating-managing-activation-keys)."
