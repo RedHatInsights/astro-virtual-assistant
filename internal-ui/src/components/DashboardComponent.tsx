@@ -20,11 +20,13 @@ import {
     ChartLine,
     ChartBar,
 } from '@patternfly/react-charts';
-import { BalanceScaleIcon, CheckCircleIcon, UserIcon } from '@patternfly/react-icons';
+import { BalanceScaleIcon, CheckCircleIcon, FilterIcon, OutlinedClockIcon, PowerOffIcon, UserIcon } from '@patternfly/react-icons';
 
 import { getSessionsInRange } from '../services/messages';
 import { Session, isTypeMessageUser, isTypeMessageSlot, isTypeMessageBot } from '../Types';
 import { CalendarComponent } from './CalendarComponent';
+import { LoadingPageSection } from './LoadingPageSection';
+import { HelpPopover } from './HelpPopoverComponent';
 
 // for now, will set up pulling from prometheus later
 const TRACKING_INTENTS = [
@@ -50,27 +52,36 @@ export const DashboardComponent = () => {
     const [filteredSessions, setFilteredSessions] = useState<Session[]>([]);
 
     // Stats
-    const [sessionCounts, setSessionCounts] = useState<{ x: string; y: number; }[]>([]);
+    const [sessionCounts, setSessionCounts] = useState<{ x: string; y: number; name: string; }[]>([]);
     const [intentCounts, setIntentCounts] = useState<{ [key: string]: number }>({});
     const [botMessageCount, setBotMessageCount] = useState(0);
     const [userMessageCount, setUserMessageCount] = useState(0);
     const [uniqueSenders, setUniqueSenders] = useState(0);
+    const [activeSessions, setActiveSessions] = useState(0);
+    const [activeSessionsCount, setActiveSessionsCount] = useState<{ x: string; y: number; name: string; }[]>([]);
+    const [inactiveSessionsCount, setInactiveSessionsCount] = useState<{ x: string; y: number; name: string; }[]>([]);
     const [firstTimeUsers, setFirstTimeUsers] = useState(0);
     const [totalConversations, setTotalConversations] = useState(0);
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
+    const [averageSessionTime, setAverageSessionTime] = useState(0);
+
 
     // Filters
     const [startDate, setStartDate] = useState<Date>(ONE_WEEK_AGO);
     const [endDate, setEndDate] = useState<Date>(new Date());
-    const [toggleState, setToggleState] = useState<{internal: boolean, external: boolean, orgAdmins: boolean}>({ 
+    const [toggleState, setToggleState] = useState<{ internal: boolean, external: boolean, orgAdmins: boolean, activeSessions: boolean }>({
         internal: false,
         external: false,
-        orgAdmins: false
+        orgAdmins: false,
+        activeSessions: false
     });
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const calculateCountsPerDay = useCallback(() => {
         const sessionCountByDay: { [key: string]: number } = {};
+        const activeSessionCountByDay: { [key: string]: number } = {};
 
         filteredSessions.forEach((session) => {
             const day = new Date(session.timestamp * 1000).toISOString().split('T')[0];
@@ -78,34 +89,62 @@ export const DashboardComponent = () => {
                 sessionCountByDay[day] = 0;
             }
             sessionCountByDay[day]++;
+
+            if (!activeSessionCountByDay[day]) {
+                activeSessionCountByDay[day] = 0;
+            }
+
+            session.messages.filter(isTypeMessageUser).some((msg) => {
+                if (msg.data.text !== "/intent_core_session_start") {
+                    activeSessionCountByDay[day]++;
+                    return true;
+                }
+                return false;
+            });
         });
 
         const sessionCountsArray = [];
+        const activeSessionCountsArray = [];
+        const inactiveSessionCountsArray = [];
         const currentDate = new Date(startDate);
         while (currentDate <= endDate) {
             const day = currentDate.toISOString().split('T')[0];
             sessionCountsArray.push({
                 x: day.toString(),
                 y: sessionCountByDay[day] || 0,
+                name: "Total"
+            });
+            activeSessionCountsArray.push({
+                x: day.toString(),
+                y: activeSessionCountByDay[day] || 0,
+                name: "Active"
+            });
+            inactiveSessionCountsArray.push({
+                x: day.toString(),
+                y: (sessionCountByDay[day] || 0) - (activeSessionCountByDay[day] || 0),
+                name: "Inactive"
             });
             currentDate.setDate(currentDate.getDate() + 1);
         }
 
         setSessionCounts(sessionCountsArray);
+        setActiveSessionsCount(activeSessionCountsArray);
+        setInactiveSessionsCount(inactiveSessionCountsArray);
     }, [filteredSessions, startDate, endDate]);
 
     // filter messages and calculate totals
     useEffect(() => {
-        let thumbsUp = 0;
-        let thumbsDown = 0;
-
+        let activeSessions = 0;
         const filtered = sessions.filter((session) => {
             let internal = false;
             let orgAdmin = false;
+            let active = false;
             session.messages.filter(isTypeMessageUser).forEach((msg) => {
                 if (msg.data.text === "/intent_core_session_start") {
                     orgAdmin = msg.data.metadata.is_org_admin;
                 }
+                // if there was a different user message, the session was active
+                else if (!active) active = true;
             });
             session.messages.filter(isTypeMessageSlot).forEach((msg) => {
                 if (msg.data.name === 'is_internal') {
@@ -113,21 +152,32 @@ export const DashboardComponent = () => {
                 }
             });
 
-            if ((toggleState.internal && !internal) 
-                || (toggleState.external && internal) 
-                || (toggleState.orgAdmins && !orgAdmin))
-            {
+            if ((toggleState.internal && !internal)
+                || (toggleState.external && internal)
+                || (toggleState.orgAdmins && !orgAdmin)
+                || (toggleState.activeSessions && !active)) {
                 return false;
             }
+
+            if (active) {
+                activeSessions++;
+            }
+
             return true;
         });
 
         setFilteredSessions(filtered);
+        setActiveSessions(activeSessions);
+
+        let thumbsUp = 0;
+        let thumbsDown = 0;
 
         let botMessageCount = 0;
         let userMessageCount = 0;
         let conversationCount = 0;
         let firstTimeUsers = 0;
+
+        let durations = 0; // total time in all filtered sessions
 
         const intentCounts: { [key: string]: number } = {};
 
@@ -165,6 +215,8 @@ export const DashboardComponent = () => {
                     userMessageCount++;
                 }
             });
+
+            durations += session.lastTimestamp - session.timestamp;
         });
 
         setBotMessageCount(botMessageCount);
@@ -174,6 +226,9 @@ export const DashboardComponent = () => {
 
         setIntentCounts(intentCounts);
 
+        const totalDurationInMinutes = (durations / 1000) / 60;
+        setAverageSessionTime(Math.floor(totalDurationInMinutes / filtered.length));
+
         const senders = new Set(filtered.map((session) => session.senderId));
         setUniqueSenders(senders.size);
 
@@ -181,13 +236,16 @@ export const DashboardComponent = () => {
         setThumbsDownCount(thumbsDown);
 
         calculateCountsPerDay();
-    }, [toggleState.internal, toggleState.external, toggleState.orgAdmins, sessions, calculateCountsPerDay]);
+
+        setIsLoading(false);
+    }, [toggleState, sessions, calculateCountsPerDay]);
 
     useEffect(() => {
+        setIsLoading(true);
         const fetchMessages = async () => {
-            const start = Math.floor(new Date(startDate.setHours(0,0,0,0)).getTime() / 1000);
+            const start = Math.floor(new Date(startDate.setHours(0, 0, 0, 0)).getTime() / 1000);
             const end = Math.floor(endDate.getTime() / 1000);
-    
+
             const sessionsInRange = await getSessionsInRange(undefined, start, end);
             setSessions(sessionsInRange);
         };
@@ -207,15 +265,16 @@ export const DashboardComponent = () => {
                         }}
                     />
                     <Card>
-                        <CardTitle>Filters</CardTitle>
+                        <CardTitle>Filters <FilterIcon /></CardTitle>
                         <CardBody>
                             <Checkbox
                                 label="Internal"
                                 isChecked={toggleState.internal}
                                 onChange={() => {
                                     setToggleState(prev => (
-                                        {...prev, 
-                                            internal: !prev.internal, 
+                                        {
+                                            ...prev,
+                                            internal: !prev.internal,
                                             external: prev.internal && prev.external
                                         }
                                     ));
@@ -227,7 +286,8 @@ export const DashboardComponent = () => {
                                 isChecked={toggleState.external}
                                 onChange={() => {
                                     setToggleState(prev => (
-                                        {...prev, 
+                                        {
+                                            ...prev,
                                             internal: prev.internal && prev.external,
                                             external: !prev.external
                                         }
@@ -240,13 +300,28 @@ export const DashboardComponent = () => {
                                 isChecked={toggleState.orgAdmins}
                                 onChange={() => {
                                     setToggleState(prev => (
-                                        {...prev, 
+                                        {
+                                            ...prev,
                                             orgAdmins: !prev.orgAdmins
                                         }
                                     ));
                                 }}
                                 id="toggle-org-admins"
                             />
+                            <Checkbox
+                                label="Active Sessions"
+                                isChecked={toggleState.activeSessions}
+                                onChange={() => {
+                                    setToggleState(prev => (
+                                        {
+                                            ...prev,
+                                            activeSessions: !prev.activeSessions
+                                        }
+                                    ));
+                                }}
+                                id="toggle-active-sessions"
+                            />
+                            {isLoading && <LoadingPageSection />}
                         </CardBody>
                     </Card>
                 </GridItem>
@@ -257,7 +332,7 @@ export const DashboardComponent = () => {
                                 { x: 'Positive', y: thumbsUp },
                                 { x: 'Negative', y: thumbsDown }
                             ]}
-                            title={Math.ceil((thumbsUp/(thumbsUp + thumbsDown)) * 100) + '%'}
+                            title={Math.ceil((thumbsUp / (thumbsUp + thumbsDown)) * 100) + '%'}
                             subTitle="Positive feedback"
                             constrainToVisibleArea
                             labels={({ datum }) => `${datum.x}: ${datum.y}`}
@@ -299,8 +374,17 @@ export const DashboardComponent = () => {
                         <CardBody component='strong'>
                             <List isPlain iconSize="large">
                                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
-                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - intentCounts["nlu_fallback"]) / userMessageCount) * 100)}% Intents Recognized</ListItem>
+                                <ListItem icon={<OutlinedClockIcon />}>{averageSessionTime} Minutes Active on Average</ListItem>
+                                <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - (intentCounts["nlu_fallback"] || 0)) / userMessageCount) * 100)}% Intents Recognized</ListItem>
                                 <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
+                                {!toggleState.activeSessions &&
+                                    <ListItem icon={<PowerOffIcon />}>{filteredSessions.length - activeSessions} Inactive Sessions
+                                        <HelpPopover
+                                            title="When is a session inactive?"
+                                            content="If a user did not send a message after opening the assistant, the session has been inactive."
+                                        />
+                                    </ListItem>
+                                }
                             </List>
                         </CardBody>
                     </Card>
@@ -310,16 +394,31 @@ export const DashboardComponent = () => {
                         <CardTitle>{filteredSessions.length} Sessions</CardTitle>
                         <Chart
                             ariaTitle="Sessions over time"
-                            containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.x}: ${datum.y}`} />}
+                            containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.x}: ${datum.y} ${datum.name}`} />}
                             name="usage"
+                            legendData={[{ name: 'Total' }, { name: "Active" }, { name: 'Inactive', symbol: { type: 'dash' } }]}
+                            legendOrientation="horizontal"
+                            legendPosition="bottom"
                         >
                             {/* do not show dates */}
-                            <ChartAxis tickValues={[]} /> 
+                            <ChartAxis tickValues={[]} />
                             <ChartAxis dependentAxis showGrid />
                             <ChartGroup>
                                 <ChartLine
                                     data={sessionCounts}
-                                    themeColor='purple'
+                                    interpolation="monotoneX"
+                                />
+                                <ChartLine
+                                    data={activeSessionsCount}
+                                    interpolation="monotoneX"
+                                />
+                                <ChartLine
+                                    data={inactiveSessionsCount}
+                                    style={{
+                                        data: {
+                                            strokeDasharray: '3,3'
+                                        }
+                                    }}
                                     interpolation="monotoneX"
                                 />
                             </ChartGroup>
@@ -335,7 +434,7 @@ export const DashboardComponent = () => {
                             name="by_intent"
                             themeColor="multi"
                         >
-                            <ChartAxis tickValues={[]}/> 
+                            <ChartAxis tickValues={[]} />
                             <ChartAxis dependentAxis showGrid />
                             <ChartGroup>
                                 {Object.entries(intentCounts).map(([key, value]) => (

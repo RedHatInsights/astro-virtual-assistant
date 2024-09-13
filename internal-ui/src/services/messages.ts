@@ -133,10 +133,12 @@ const addMessages = (sessions: ReadonlyArray<Session>, messages: ReadonlyArray<V
                 senderId: m.sender_id,
                 messages: [m],
                 timestamp: m.timestamp,
+                lastTimestamp: m.timestamp,
                 hasSessionStarted: m.type_name === "session_started"
             });
         } else {
             newSessions[firstSessionFromSender].messages.push(m);
+            newSessions[firstSessionFromSender].lastTimestamp = m.timestamp;
         }
     });
 
