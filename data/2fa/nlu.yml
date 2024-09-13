@@ -75,6 +75,14 @@ nlu:
       - two-factor auth
       - two factor auth
       - two factor authentication
+      - 2 factor authentication
+      - 2 factor auth
+      - 2-factor authentication
+      - 2-factor auth
+      - auth 2 factor
+      - authentication 2 factor
+      - auth 2fa
+      - authentication 2fa
 
   - intent: intent_setup_recovery_codes
     examples: |
