@@ -147,9 +147,6 @@ export const DashboardComponent = () => {
             });
             const internal = session.messages.filter(isTypeMessageSlot).filter(msg => msg.data.name === 'is_internal').some(msg => msg.data.value);
 
-            if (toggleState.external) {
-                console.log(internal);
-            }
             if ((toggleState.internal && !internal)
                 || (toggleState.external && internal)
                 || (toggleState.orgAdmins && !orgAdmin)
@@ -242,7 +239,9 @@ export const DashboardComponent = () => {
         setIsLoading(true);
         const fetchMessages = async () => {
             const start = Math.floor(new Date(startDate.setHours(0, 0, 0, 0)).getTime() / 1000);
-            const end = Math.floor(endDate.getTime() / 1000);
+            const endDateEndOfDay = new Date(endDate);
+            endDateEndOfDay.setHours(23, 59, 59, 999);
+            const end = Math.floor(endDateEndOfDay.getTime() / 1000);
 
             const sessionsInRange = await getSessionsInRange(undefined, start, end);
             setSessions(sessionsInRange);
