@@ -136,7 +136,6 @@ export const DashboardComponent = () => {
     useEffect(() => {
         let activeSessions = 0;
         const filtered = sessions.filter((session) => {
-            let internal = false;
             let orgAdmin = false;
             let active = false;
             session.messages.filter(isTypeMessageUser).forEach((msg) => {
@@ -146,11 +145,7 @@ export const DashboardComponent = () => {
                 // if there was a different user message, the session was active
                 else if (!active) active = true;
             });
-            session.messages.filter(isTypeMessageSlot).forEach((msg) => {
-                if (msg.data.name === 'is_internal') {
-                    internal = msg.data.value === true ? true : false;
-                }
-            });
+            const internal = session.messages.filter(isTypeMessageSlot).filter(msg => msg.data.name === 'is_internal').some(msg => msg.data.value)
 
             if ((toggleState.internal && !internal)
                 || (toggleState.external && internal)
