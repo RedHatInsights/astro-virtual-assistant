@@ -145,8 +145,11 @@ export const DashboardComponent = () => {
                 // if there was a different user message, the session was active
                 else if (!active) active = true;
             });
-            const internal = session.messages.filter(isTypeMessageSlot).filter(msg => msg.data.name === 'is_internal').some(msg => msg.data.value)
+            const internal = session.messages.filter(isTypeMessageSlot).filter(msg => msg.data.name === 'is_internal').some(msg => msg.data.value);
 
+            if (toggleState.external) {
+                console.log(internal);
+            }
             if ((toggleState.internal && !internal)
                 || (toggleState.external && internal)
                 || (toggleState.orgAdmins && !orgAdmin)
