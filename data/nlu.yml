@@ -466,3 +466,28 @@ nlu:
       - I want to do something else
       - Lets start over
       - I don't want to do this anymore
+
+  - intent: intent_core_other_languages
+    examples: |
+      - does the platform support other languages?
+      - does console.redhat.com support french?
+      - support for other languages?
+      - language accessibility
+      - change my language settings
+      - update settings for language
+      - how to change to spanish
+      - languge settings
+      - english only?
+      - do you speak another language
+      - do you speak japanese
+      - can you speak french
+      - translate to spanish
+      - translate to english
+      - translate to french
+      - translate to czech
+      - i need a spanish translation
+      - i don't speak english
+      - no english
+      - no habla ingles
+      - 英語を話せません
+      - i need a different language
