@@ -24,11 +24,11 @@ forms:
 
 responses:
   utter_ask_insights_product_kind:
-    - text: "Are you looking for help with Insights for Ansible, Openshift, or RHEL?"
+    - text: "Are you looking for help with Insights for Ansible, OpenShift, or RHEL?"
       buttons:
         - title: Ansible
           payload: ansible
-        - title: Openshift
+        - title: OpenShift
           payload: openshift
         - title: RHEL
           payload: rhel
