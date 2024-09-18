@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import UserUtteranceReverted
+from rasa_sdk.events import UserUtteranceReverted, SlotSet
 from rasa_sdk.types import DomainDict
 
 from actions.slot_match import FuzzySlotMatch, FuzzySlotMatchOption, resolve_slot_match
@@ -141,3 +141,13 @@ class SubsProductUsage(FormValidationAction):
                 )
 
         return events
+
+
+class SubsProductUsageResetSlots(Action):
+    def name(self) -> Text:
+        return "action_subs_product_usage_reset_slots"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[Dict[Text, Any]]:
+        return [SlotSet(SUBS_PRODUCT_TYPE_SLOT, None)]
