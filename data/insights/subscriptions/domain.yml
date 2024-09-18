@@ -101,7 +101,7 @@ responses:
   utter_subs_product_usage_rhel_page:
     - text: "You can monitor your RHEL subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/rhel). Usage information is available for both Annual and On-demand subscriptions."
   utter_subs_product_usage_openshift_page:
-    - text: "You can monitor your Openshift subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/openshift). Usage information is available for both Annual and On-demand subscriptions."
+    - text: "You can monitor your OpenShift subscription usage on the [Subscription Usage Dashboard](https://console.redhat.com/subscriptions/usage/openshift). Usage information is available for both Annual and On-demand subscriptions."
   utter_subs_simple_content_access_docs:
     - text: "Simple Content Access simplifies workflows for managing your subscriptions. For more information on getting started, visit the [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
   utter_subs_activation_keys_docs:

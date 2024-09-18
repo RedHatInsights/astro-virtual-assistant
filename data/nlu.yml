@@ -111,9 +111,9 @@ nlu:
       - What's my committed spend?
       - Have I met my commitment for this year?
       - Whats my yearly spend?
-      - What's my Openshift cluster spend?
-      - How much am I spending on Openshift clusters?
-      - Show me how much I'm spending on Openshift?
+      - What's my OpenShift cluster spend?
+      - How much am I spending on OpenShift clusters?
+      - Show me how much I'm spending on OpenShift?
       - How much did my organization spend this month?
       - Show this month's spending
       - How much is my line of business spending?
