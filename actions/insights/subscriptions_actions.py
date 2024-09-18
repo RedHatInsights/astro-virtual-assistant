@@ -142,6 +142,7 @@ class SubsProductUsage(FormValidationAction):
 
         return events
 
+
 class SubsProductUsageResetSlots(Action):
     def name(self) -> Text:
         return "action_subs_product_usage_reset_slots"

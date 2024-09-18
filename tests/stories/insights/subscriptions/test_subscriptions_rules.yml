@@ -4,6 +4,7 @@ stories:
   - story: Subscriptions Product Usage (SU5)
     steps:
       - intent: intent_subs_product_usage
+      - action: action_subs_product_usage_reset_slots
       - action: form_subs_product_usage
       - active_loop: form_subs_product_usage
 
