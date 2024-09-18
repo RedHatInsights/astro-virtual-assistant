@@ -27,6 +27,7 @@ slots:
 actions:
   - action_check_subscriptions
   - validate_form_subs_product_usage
+  - action_subs_product_usage_reset_slots
 
 forms:
   form_subs_product_usage:
