@@ -1,0 +1,14 @@
+version: "3.1"
+
+intents:
+  - intent_ansible_namespaces_access_issues
+
+entities: []
+
+actions: []
+
+slots: {}
+
+responses:
+  utter_ansible_inform_reach_out_to_support:
+    - text: "I'm sorry you are having trouble accessing a namespace. Please reach out to [partner-help@redhat.com](mailto:partner-help@redhat.com) for any questions about the namespace access."
