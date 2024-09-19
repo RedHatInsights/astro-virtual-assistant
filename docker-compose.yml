@@ -1,11 +1,11 @@
 version: '3.1'
 services:
   postgres:
-    image: postgres:latest
+    image: quay.io/sclorg/postgresql-15-c9s:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRESQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRESQL_USER: ${DB_USERNAME}
+      POSTGRESQL_DATABASE: ${DB_NAME}
     ports:
         - "5432:${DB_PORT}"
