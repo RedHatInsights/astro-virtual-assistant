@@ -5,6 +5,7 @@ export interface Sender {
 export interface Session {
     senderId: string;
     timestamp: number;
+    lastTimestamp: number;
     hasSessionStarted: boolean;
     messages: Array<ValidMessage>
 }

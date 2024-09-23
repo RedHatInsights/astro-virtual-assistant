@@ -48,3 +48,11 @@ rules:
       - intent: intent_core_something_else
       - action: action_deactivate_loop
       - action: utter_core_how_can_i_help
+
+  - rule: User asks for other languages
+    steps:
+      - intent: intent_core_other_languages
+      - action: utter_core_other_languages_1
+      - action: utter_core_other_languages_2
+      - action: form_closing
+      - active_loop: form_closing
