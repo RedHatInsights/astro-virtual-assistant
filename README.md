@@ -177,3 +177,29 @@ To make it easier to review all our intents and their training examples, there a
   - GOOGLE_CLOUD_ACCOUNT_SECRET: Private key of the service account email
   
   This is currently done automatically on commits to main branch by one of our github workflows.
+
+## Apple silicon
+
+There are some extra steps required on apple silicon CPUs
+
+### tensorflow
+
+The tensorflow versions required by rasa is not available on apple silicon. Fortunately there is a [bridge package](https://developer.apple.com/metal/tensorflow-plugin/) available for installation.
+
+In your python venv run the following:
+```sh
+# pip on macos only has tensorflow versions >=2.13.0
+python -m pip install tensorflow-macos==2.12.0 # rasa requires 2.12.0
+python -m pip install tensorflow-metal
+
+```
+
+### Out of memory issues while training a mode
+
+You may see that the `make train` has exited with code **9**. This code means that some other process killed the process. After inspection, the train command was eating all the memory. You can reduce the memory requirements by reducing the number of epochs of the training. The numbers can be adjusted in the `./config.yml` file.
+
+Because in Mac you can't install python packages outside of venv, you might hav to change some of the make commands so they do not run the pipenv twice. For example:
+```diff
+- pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS} --logging-config-file logging-config.yml 
++ ${RASA_EXEC} run ${RASA_RUN_ARGS} --logging-config-file logging-config.yml
+```

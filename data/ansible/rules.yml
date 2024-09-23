@@ -1,0 +1,9 @@
+version: "3.1"
+
+rules:
+  - rule: Reach out to support
+    steps:
+      - intent: intent_ansible_namespaces_access_issues
+      - action: utter_ansible_inform_reach_out_to_support
+      - action: form_closing
+      - active_loop: form_closing
