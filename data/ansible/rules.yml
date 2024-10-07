@@ -7,3 +7,18 @@ rules:
       - action: utter_ansible_inform_reach_out_to_support
       - action: form_closing
       - active_loop: form_closing
+  - rule: Assist with free trial
+    steps:
+      - intent: intent_ansible_assist_with_free_trial
+      - action: utter_ansible_inform_assist_with_free_trial_1
+      - action: utter_ansible_inform_assist_with_free_trial_2
+      - action: form_closing
+      - active_loop: form_closing
+  - rule: Learn about Automation calculator
+    steps:
+      - intent: intent_ansible_learn_about_automation_calculator
+      - action: utter_ansible_inform_automation_calculator_1
+      - action: utter_ansible_inform_automation_calculator_2
+      - action: utter_ansible_inform_automation_calculator_3
+      - action: form_closing
+      - active_loop: form_closing

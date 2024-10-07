@@ -12,3 +12,18 @@ slots: {}
 responses:
   utter_ansible_inform_reach_out_to_support:
     - text: "I'm sorry you are having trouble accessing a namespace. Please reach out to [partner-help@redhat.com](mailto:partner-help@redhat.com) for any questions about the namespace access."
+  utter_ansible_inform_assist_with_free_trial_1:
+    - text: |
+        You can get access to a free trial of the Ansible Automation Platform [here](https://console.redhat.com/ansible/ansible-dashboard).
+  utter_ansible_inform_assist_with_free_trial_2:
+    - text: |
+        Wondering why you should convert to premium? Click here to learn more: [https://www.redhat.com/en/about/value-of-Red-Hat](https://www.redhat.com/en/about/value-of-Red-Hat)
+  utter_ansible_inform_automation_calculator_1:
+    - text: |
+        The automation calculator provides graphs, metrics, and calculations that help you determine the total savings on your investment in automated process.
+  utter_ansible_inform_automation_calculator_2:
+    - text: |
+        Here is some documentation to learn more about the Automation Calculator: [Using the automation calculator](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.1/html-single/using_the_automation_calculator/index)
+  utter_ansible_inform_automation_calculator_3:
+    - text: |
+        To get started with Automation Calculator, please visit out dashboard: [here](https://console.redhat.com/ansible/automation-analytics/reports/automation_calculator)

@@ -14,3 +14,28 @@ nlu:
       - ansible namespace doesn't work
       - how do I get access to an ansible namespace
       - fix ansible namespace
+  - intent: intent_ansible_assist_with_free_trial
+    examples: |
+      - how can i start free trial for ansible
+      - ansible free trial
+      - i want to try ansible
+      - is there a free trial for ansible
+      - free trial ansible
+      - get ansible
+      - whats included in a free trial
+      - how long is ansible free trial
+      - difference between free ansible trial and premium
+      - ansible trial
+      - try ansible
+
+  - intent: intent_ansible_learn_about_automation_calculator
+    examples: |
+      - automation calculator
+      - how does automation calculator work
+      - calculator
+      - what is the value
+      - ROI
+      - calculate my automation ROI
+      - show me my automation savings
+      - tangible benefits of automation
+      - how much did i save with ansible
