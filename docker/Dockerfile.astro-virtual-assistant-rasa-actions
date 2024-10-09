@@ -20,9 +20,6 @@ RUN INSTALL_PKGS="python39 python39-devel glibc-langpack-en libpq-devel gcc shad
 RUN alternatives --set python /usr/bin/python3.9
 RUN python --version
 
-RUN python -m venv /pipenv-venv
-ENV PATH="/pipenv-venv/bin:$PATH"
-
 RUN python -m ensurepip --upgrade && \
     python -m pip install --upgrade pip && \
     python -m pip install pipenv
