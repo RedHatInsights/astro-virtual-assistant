@@ -99,7 +99,7 @@ responses:
   utter_integration_no_permissions:
     - text: >
         You do not have the correct permissions to set up integrations, but you can read the
-        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
+        [documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
         and request access from your org admin.
   utter_integration_what:
     - text: >
@@ -112,7 +112,7 @@ responses:
   utter_integration_learn_more_1:
     - text: >
         You can read more about our integrations offerings in our
-        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
+        [documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index)
   utter_integration_learn_more_2:
     - text: >
         In case you'd like my help in setting up an integration in the future, you can always start a new conversation.
@@ -333,7 +333,7 @@ responses:
   utter_integration_setup_error:
     - text: >
         I'm unable to create the integration for you. Please follow the
-        [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#doc-wrapper)
+        [documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#doc-wrapper)
         to see if you can resolve the issue.
         I apologize for the inconvenience.
   utter_ask_integration_setup_use_secret:
@@ -365,5 +365,5 @@ responses:
   utter_integration_troubleshoot_2:
     - text: >
         Please review
-        [our integrations](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#assembly-installing-configuring-insights-for-splunk_integrations) 
+        [our integrations](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html-single/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index#assembly-installing-configuring-insights-for-splunk_integrations) 
         documentation -- each integration has its own section on troubleshooting common errors.

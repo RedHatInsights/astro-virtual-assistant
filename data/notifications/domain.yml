@@ -75,7 +75,7 @@ responses:
   utter_notifications_learn_dashboard:
     - text: "[Notifications dashboard](/settings/notifications)"
   utter_notifications_learn_docs:
-    - text: "[Documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
+    - text: "[Documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html/configuring_notifications_on_the_red_hat_hybrid_cloud_console/index)"
   utter_notifications_bundle_which_event:
     - text: "What event would you like to {option}?"
   utter_notifications_error:

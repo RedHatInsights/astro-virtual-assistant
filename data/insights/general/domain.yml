@@ -37,4 +37,4 @@ responses:
   utter_insights_general_openshift_docs:
     - text: "Please refer to our [documentation](https://docs.openshift.com/container-platform/4.11/support/remote_health_monitoring/about-remote-health-monitoring.html) for help."
   utter_insights_general_rhel_config_guide:
-    - text: "Please refer to our [configuration guide](https://access.redhat.com/documentation/en-us/red_hat_insights/1-latest/html/client_configuration_guide_for_red_hat_insights/index) for help."
+    - text: "Please refer to our [configuration guide](https://docs.redhat.com/en/documentation/red_hat_insights/1-latest/html/client_configuration_guide_for_red_hat_insights/index) for help."
