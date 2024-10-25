@@ -37,6 +37,7 @@ class Flow(Enum):
     INTEGRATIONS_SETUP = "integrations_setup"
     USER_ACCESS = "user_access"
     VULNERABILITY = "vulnerability"
+    ACTIVATION_KEY_CREATE = "activation_key_create"
 
 
 def flow_started_count(flow_name: Flow):
