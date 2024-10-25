@@ -58,7 +58,6 @@ nlu:
       - activate subs
       - how to activate subscription?
       - how do i activate my subscription?
-      - how to use the activation keys?
       - activate my new subscription
       - i have a new subscription that hasn't been activated anywhere
       - are you able to activate a new sub for me?
@@ -129,20 +128,6 @@ nlu:
       - getting started with simple content access
       - getting started with SCA
       - Simple content access subscription
-
-  - intent: intent_subs_activation_keys
-    examples: |
-      - register a system with activation keys
-      - activation keys
-      - activation keys on Hybrid Cloud Console
-      - create activation key
-      - configure activation key
-      - delete activation key
-      - preconfigured activation key
-      - manage activation key
-      - edit activation key
-      - view activation key
-      - use activation key
 
   - intent: intent_subs_product_usage
     examples: |

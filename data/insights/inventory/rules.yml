@@ -1,0 +1,26 @@
+version: "3.1"
+
+rules:
+  - rule: User wants to know about activation keys
+    steps:
+      - intent: intent_inventory_info_activation_key
+      - action: utter_inventory_info_activation_key_1
+      - action: utter_inventory_info_activation_key_2
+      - action: utter_inventory_info_activation_key_3
+
+  - rule: User wants to create an activation key
+    steps:
+      - intent: intent_inventory_create_activation_key
+      - action: form_inventory_create_activation_key
+      - active_loop: form_inventory_create_activation_key
+
+  - rule: User wants to create an activation key (continued)
+    condition:
+      - active_loop: form_inventory_create_activation_key
+    steps:
+      - action: form_inventory_create_activation_key
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: form_closing
+      - active_loop: form_closing

@@ -1,0 +1,43 @@
+version: "3.1"
+
+intents:
+  - intent_inventory_create_activation_key
+  - intent_inventory_info_activation_key
+
+entities: []
+
+slots:
+  inventory_ak_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: form_inventory_create_activation_key
+            requested_slot: inventory_ak_name
+actions:
+  - validate_form_inventory_create_activation_key
+
+forms:
+  form_inventory_create_activation_key:
+    required_slots:
+      - inventory_ak_name
+
+responses:
+  utter_inventory_info_activation_key_1:
+    - text: "Activation keys assist you in registering and auto-configuring systems. Metadata such as role, system purpose, and usage can be automatically attached to systems via an activation key, and monitored with Subscription Watch."
+  utter_inventory_info_activation_key_2:
+    - text: "For activation information, visit the [Activation key documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_activation_keys_on_the_hybrid_cloud_console/assembly-creating-managing-activation-keys)."
+  utter_inventory_info_activation_key_3:
+    - text: "To manage your keys, visit [here](/insights/connector/activation-keys), or I can help you create one."
+      buttons:
+        - title: "Help me create an activation key."
+          payload: "/intent_inventory_create_activation_key"
+  utter_inventory_create_activation_key_1:
+    - text: "Sure, I can help you create an activation key."
+  utter_ask_form_inventory_create_activation_key_inventory_ak_name:
+    - text: "What would you like to name it? This can not be changed later."
+  utter_inventory_create_activation_key_success:
+    - text: "Great! I've created the activation key. Configure the system's purpose and workloads on the details page for {inventory_ak_name}."
+  utter_inventory_create_activation_key_failure:
+    - text: "I'm sorry, I was unable to create the activation key. Please follow the steps [here](/insights/connector/activation-keys)."
