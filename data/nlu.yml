@@ -516,3 +516,21 @@ nlu:
       - I want to change language for Japanese.
       - I searching to change language
       - 証明書のダウンロードを実施したい
+
+  - intent: intent_core_export_inventory
+    examples: |
+      - how can I export all of my systems from Red Hat Console?
+      - how to export systems inventory in CSV format?
+      - export systems inventory in csv format
+      - how can I dump systems data to csv/xlsx file
+      - export systems list
+      - Can I export this list of servers somehow?
+      - How to export a csv list from systems inventory?
+      - How to export to a file de list of systems?
+      - how can i export a list of inventory systems
+      - export a csv
+      - export my systems
+      - export systems inventory
+      - list my systems
+      - dump systems data to file
+      - export systems to a file

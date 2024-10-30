@@ -26,6 +26,7 @@ intents:
   - intent_core_here
   - intent_core_something_else
   - intent_core_other_languages
+  - intent_core_export_inventory
 
 entities:
   - preference
@@ -207,3 +208,7 @@ responses:
     - text: "I'm sorry, console.redhat.com and its services are only available in English."
   utter_core_other_languages_2:
     - text: "To help me understand your questions, please ask them in English."
+  utter_core_export_inventory_1:
+    - text: "You can export your system inventory by clicking the export button (next to the 'Delete' button) in the [Systems Inventory UI](https://console.redhat.com/insights/inventory?page=1&per_page=50#SIDs=&tags=) or via API."
+  utter_core_export_inventory_2:
+    - text: "You have the option to export to CSV or JSON. To read more about this feature, check out our [Exporting Inventory Data](https://docs.redhat.com/en/documentation/red_hat_insights/1-latest/html-single/viewing_and_managing_system_inventory/index#assembly-exporting-inventory-data_user-access) documentation."
