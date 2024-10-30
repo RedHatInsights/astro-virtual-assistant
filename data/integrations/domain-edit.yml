@@ -200,12 +200,12 @@ responses:
   utter_integration_error_fetching:
     - text: >
         I'm unable to retrieve the integrations for you. 
-        Please follow the [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index) to see if you can resolve the issue. 
+        Please follow the [documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index) to see if you can resolve the issue. 
         I apologize for the inconvenience.
   utter_integration_error:
     - text: >
         I'm unable to complete the action for you. 
-        Please follow the [documentation](https://access.redhat.com/documentation/en-us/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index) to see if you can resolve the issue. 
+        Please follow the [documentation](https://docs.redhat.com/en/documentation/red_hat_hybrid_cloud_console/1-latest/html/integrating_the_red_hat_hybrid_cloud_console_with_third-party_applications/index) to see if you can resolve the issue. 
         I apologize for the inconvenience.
   utter_integration_not_found:
     - text: >

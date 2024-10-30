@@ -460,7 +460,7 @@ class IntegrationSetupRedHat(IntegrationSetupCommon):
                         "type": "command",
                         "command": "redirect",
                         "params": {
-                            "url": "https://access.redhat.com/documentation/en-us/cost_management_service/1-latest#installing-cost-operator_adding-an-ocp-source"
+                            "url": "https://docs.redhat.com/en/documentation/cost_management_service/1-latest#installing-cost-operator_adding-an-ocp-source"
                         },
                     }
                 )

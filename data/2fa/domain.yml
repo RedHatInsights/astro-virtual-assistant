@@ -139,7 +139,7 @@ responses:
           enable_org_2fa: "{enable_org_2fa}"
           environment: "{environment}"
   utter_2fa_docs:
-    - text: "Check out our [two-factor authentication documentation](https://access.redhat.com/documentation/en-us/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
+    - text: "Check out our [two-factor authentication documentation](https://docs.redhat.com/en/documentation/red_hat_customer_portal/1/html/using_two-factor_authentication/index)."
   utter_revoke_2fa_help_1:
     - text: "If you can't get into your device for two-factor authentication, you'll need to revoke two-factor authentication. All requests to revoke two-factor authentication must be made by phone to Red Hat Customer Service."
   utter_revoke_2fa_help_2:
