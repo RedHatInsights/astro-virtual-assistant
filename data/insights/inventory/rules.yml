@@ -11,6 +11,7 @@ rules:
   - rule: User wants to create an activation key
     steps:
       - intent: intent_inventory_create_activation_key
+      - action: utter_inventory_create_activation_key_1
       - action: form_inventory_create_activation_key
       - active_loop: form_inventory_create_activation_key
 
@@ -22,5 +23,6 @@ rules:
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
+      - action: action_inventory_create_activation_key_clear
       - action: form_closing
       - active_loop: form_closing

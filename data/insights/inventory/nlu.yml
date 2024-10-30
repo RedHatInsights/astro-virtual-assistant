@@ -28,6 +28,7 @@ nlu:
   - intent: intent_inventory_create_activation_key
     examples: |
       - create activation key
+      - create an activation key plz
       - generate activation key
       - activation key creation
       - create an activation key for me
