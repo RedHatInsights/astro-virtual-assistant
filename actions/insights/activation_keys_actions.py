@@ -21,6 +21,7 @@ logger = logging.initialize_logging()
 
 ACTIVATION_KEY_NAME = "inventory_activation_key_name"
 
+
 class ValidateFormActivationKeyCreate(FormValidationAction):
     def name(self) -> Text:
         return "validate_form_inventory_create_activation_key"
@@ -44,7 +45,7 @@ class ValidateFormActivationKeyCreate(FormValidationAction):
     ) -> Dict[Text, Any]:
         # must contain only numbers, letters, underscores, and hyphens.
         print("value: ", value)
-        pattern = r'^[a-zA-Z0-9_-]+$'
+        pattern = r"^[a-zA-Z0-9_-]+$"
         if value and re.match(pattern, value):
             return {ACTIVATION_KEY_NAME: value}
         dispatcher.utter_message(response="utter_inventory_activation_key_name_invalid")
@@ -64,15 +65,27 @@ class ValidateFormActivationKeyCreate(FormValidationAction):
             # post to rhsm 	/api/rhsm/v2/activation_keys
             body = {"name": name, "role": "", "serviceLevel": "", "usage": ""}
             response = await send_console_request(
-                "rhsm", "/api/rhsm/v2/activation_keys", tracker, method="post", json=body, fetch_content=False
+                "rhsm",
+                "/api/rhsm/v2/activation_keys",
+                tracker,
+                method="post",
+                json=body,
+                fetch_content=False,
             )
 
-            if not response.ok: 
+            if not response.ok:
                 # error json format: {"error":{"code":400,"message":"name should be present, unique and only contain letters, numbers, underscores, or hyphens"}}
                 error_json = await response.json()
-                error_message = error_json.get("error", {}).get("message", "Unknown error")
-                dispatcher.utter_message(response="utter_inventory_create_activation_key_failure_1")
-                dispatcher.utter_message(response="utter_inventory_create_activation_key_failure_2", error_message=error_message)
+                error_message = error_json.get("error", {}).get(
+                    "message", "Unknown error"
+                )
+                dispatcher.utter_message(
+                    response="utter_inventory_create_activation_key_failure_1"
+                )
+                dispatcher.utter_message(
+                    response="utter_inventory_create_activation_key_failure_2",
+                    error_message=error_message,
+                )
                 logger.error(
                     "Failed to get a response from the rhsm API: status {}; result {}".format(
                         response.status, error_message
@@ -81,7 +94,9 @@ class ValidateFormActivationKeyCreate(FormValidationAction):
                 )
                 flow_finished_count(Flow.ACTIVATION_KEY_CREATE, sub_flow_name="error")
             else:
-                dispatcher.utter_message(response="utter_inventory_create_activation_key_success")
+                dispatcher.utter_message(
+                    response="utter_inventory_create_activation_key_success"
+                )
                 flow_finished_count(Flow.ACTIVATION_KEY_CREATE)
 
         return events
@@ -94,6 +109,7 @@ class ValidateFormActivationKeyCreate(FormValidationAction):
         domain: DomainDict,
     ) -> List[Text]:
         return domain_slots
+
 
 class ActionActivationKeysClear(Action):
     def name(self) -> Text:
