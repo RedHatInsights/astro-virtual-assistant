@@ -7,7 +7,7 @@ nlu:
       - how do I use my activation key
       - what are activation keys for?
       - what is the purpose of activation keys?
-      - register systens with activation keys
+      - register systems with activation keys
       - configure activation keys
       - why use an activation key
       - delete activation key
@@ -31,7 +31,6 @@ nlu:
       - generate activation key
       - activation key creation
       - create an activation key for me
-      - register system
       - register activation key for system
       - create activation key
       - configure activation key

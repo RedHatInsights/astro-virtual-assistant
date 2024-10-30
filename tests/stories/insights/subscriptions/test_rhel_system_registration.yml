@@ -22,7 +22,7 @@ stories:
   - story: User asks for RHEL system registration help - 3
     steps:
       - user: |
-          Can you help me register my system?
+          Can you help me register my rhel system?
         intent: intent_register_rhel_system
       - action: utter_rhel_system_registration
       - action: form_closing
