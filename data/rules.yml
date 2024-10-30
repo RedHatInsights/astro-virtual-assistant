@@ -62,3 +62,5 @@ rules:
       - intent: intent_core_export_inventory
       - action: utter_core_export_inventory_1
       - action: utter_core_export_inventory_2
+      - action: form_closing
+      - active_loop: form_closing
