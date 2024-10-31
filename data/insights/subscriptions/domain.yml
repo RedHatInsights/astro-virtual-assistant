@@ -9,7 +9,6 @@ intents:
   - intent_subscriptions_doc
   - intent_subscriptions_generic
   - intent_subs_simple_content_access
-  - intent_subs_activation_keys
   - intent_subs_product_usage
 
 entities: []
@@ -107,5 +106,3 @@ responses:
     - text: "Simple Content Access simplifies workflows for managing your subscriptions. For more information on getting started, visit the [Simple Content Access documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_simple_content_access/index)."
   utter_subs_simple_content_access_learn_more:
     - text: "If you'd like to learn more about why Red Hat is moving towards Simple Content Access, please check out the [Transition of Red Hat's subscription services to Red Hat Hybrid Cloud Console](https://access.redhat.com/articles/transition_of_subscription_services_to_the_hybrid_cloud_console)."
-  utter_subs_activation_keys_docs:
-    - text: "To auto-configure your systems, you'll need an activation key. For managing your tokens, visit the [Activation key documentation here](https://docs.redhat.com/en/documentation/subscription_central/1-latest/html/getting_started_with_activation_keys_on_the_hybrid_cloud_console/assembly-creating-managing-activation-keys)."
