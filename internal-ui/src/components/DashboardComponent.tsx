@@ -10,6 +10,7 @@ import {
     CardBody,
     List,
     ListItem,
+    CardFooter,
 } from '@patternfly/react-core';
 import {
     ChartDonut,
@@ -41,7 +42,10 @@ const TRACKING_INTENTS = [
     "intent_favorites_.*",
     "intent_feedback_.*",
     "intent_image_builder_.*",
-    "intent_advisor_.*"
+    "intent_advisor_.*",
+    "intent_inventory_.*",
+    "intent_access_*",
+    "intent_services_offline",
 ]
 
 const ONE_WEEK_AGO = new Date();
@@ -65,6 +69,10 @@ export const DashboardComponent = () => {
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
     const [averageSessionTime, setAverageSessionTime] = useState(0);
+
+    const [contactAdminUsage, setContactAdminUsage] = useState(0);
+    const [requestTamUsage, setRequestTamUsage] = useState(0);
+    const [servicesOfflineUsage, setServicesOfflineUsage] = useState(0);
 
 
     // Filters
@@ -172,6 +180,10 @@ export const DashboardComponent = () => {
         let conversationCount = 0;
         let firstTimeUsers = 0;
 
+        let contactAdminUsage = 0;
+        let requestTamUsage = 0;
+        let servicesOfflineUsage = 0;
+
         let durations = 0; // total time in all filtered sessions
 
         const intentCounts: { [key: string]: number } = {};
@@ -207,6 +219,17 @@ export const DashboardComponent = () => {
                         }
                         intentCounts[matchedIntent]++;
                     }
+
+                    if (intentName === 'intent_access_contact_admin') {
+                        contactAdminUsage++;
+                    }
+                    if (intentName === 'intent_access_request_tam') {
+                        requestTamUsage++;
+                    }
+                    if (intentName === 'intent_services_offline') {
+                        servicesOfflineUsage++;
+                    }
+
                     userMessageCount++;
                 }
             });
@@ -220,6 +243,10 @@ export const DashboardComponent = () => {
         setFirstTimeUsers(firstTimeUsers);
 
         setIntentCounts(intentCounts);
+
+        setContactAdminUsage(contactAdminUsage);
+        setRequestTamUsage(requestTamUsage);
+        setServicesOfflineUsage(servicesOfflineUsage);
 
         const totalDurationInMinutes = (durations / 1000) / 60;
         setAverageSessionTime(Math.floor(totalDurationInMinutes / filtered.length));
@@ -441,6 +468,14 @@ export const DashboardComponent = () => {
                                 ))}
                             </ChartGroup>
                         </Chart>
+                        <CardFooter component="strong">
+                            Usage
+                            <List>
+                                <ListItem>Request TAM: {requestTamUsage}</ListItem>
+                                <ListItem>Contact Admin: {contactAdminUsage}</ListItem>
+                                <ListItem>Services Offline: {servicesOfflineUsage}</ListItem>
+                            </List>
+                        </CardFooter>
                     </Card>
                 </GridItem>
             </Grid>
