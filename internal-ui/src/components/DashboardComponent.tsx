@@ -48,6 +48,8 @@ const TRACKING_INTENTS = [
     "intent_services_offline",
 ]
 
+const TIME_TO_LOOK_UP_ORG_ADMIN = .25 // quarter hour
+
 const ONE_WEEK_AGO = new Date();
 ONE_WEEK_AGO.setDate(ONE_WEEK_AGO.getDate() - 6);
 
@@ -406,6 +408,14 @@ export const DashboardComponent = () => {
                                         <HelpPopover
                                             title="When is a session inactive?"
                                             content="If a user did not send a message after opening the assistant, the session has been inactive."
+                                        />
+                                    </ListItem>
+                                }
+                                {contactAdminUsage > 0 &&
+                                    <ListItem icon={<PowerOffIcon />}>{contactAdminUsage * TIME_TO_LOOK_UP_ORG_ADMIN} Engineering Hours Saved
+                                        <HelpPopover
+                                            title="What does this include?"
+                                            content="This considers the time it takes to look up an org admin and contact them."
                                         />
                                     </ListItem>
                                 }
