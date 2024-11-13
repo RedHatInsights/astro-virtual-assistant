@@ -400,6 +400,14 @@ export const DashboardComponent = () => {
                         <CardBody component='strong'>
                             <List isPlain iconSize="large">
                                 <ListItem icon={<CheckCircleIcon />}>{totalConversations} Conversations</ListItem>
+                                {contactAdminUsage > 0 &&
+                                    <ListItem icon={<CheckCircleIcon />}>{contactAdminUsage * TIME_TO_LOOK_UP_ORG_ADMIN} Engineering Hours Saved
+                                        <HelpPopover
+                                            title="What does this include?"
+                                            content="This considers the time it takes to look up an org admin and contact them."
+                                        />
+                                    </ListItem>
+                                }
                                 <ListItem icon={<OutlinedClockIcon />}>{averageSessionTime} Minutes Active on Average</ListItem>
                                 <ListItem icon={<BalanceScaleIcon />}>{Math.floor(((userMessageCount - (intentCounts["nlu_fallback"] || 0)) / userMessageCount) * 100)}% Intents Recognized</ListItem>
                                 <ListItem icon={<UserIcon />}>{firstTimeUsers} First Time Users</ListItem>
@@ -408,14 +416,6 @@ export const DashboardComponent = () => {
                                         <HelpPopover
                                             title="When is a session inactive?"
                                             content="If a user did not send a message after opening the assistant, the session has been inactive."
-                                        />
-                                    </ListItem>
-                                }
-                                {contactAdminUsage > 0 &&
-                                    <ListItem icon={<PowerOffIcon />}>{contactAdminUsage * TIME_TO_LOOK_UP_ORG_ADMIN} Engineering Hours Saved
-                                        <HelpPopover
-                                            title="What does this include?"
-                                            content="This considers the time it takes to look up an org admin and contact them."
                                         />
                                     </ListItem>
                                 }
