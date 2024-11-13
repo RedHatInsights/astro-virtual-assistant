@@ -44,6 +44,7 @@ rules:
     steps:
       - intent: intent_subs_simple_content_access
       - action: utter_subs_simple_content_access_docs
+      - action: utter_subs_simple_content_access_disable
       - action: utter_subs_simple_content_access_learn_more
       - action: form_closing
       - active_loop: form_closing
