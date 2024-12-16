@@ -263,13 +263,13 @@ parameters:
   required: true
 - descripton: Virtual Assistant API image name
   name: API_IMAGE_NAME
-  value: "quay.io/cloudservices/virtual-assistant-api"
+  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-api"
 - descripton: Virtual Assistant actions server image name
   name: ACTIONS_IMAGE_NAME
-  value: "quay.io/cloudservices/virtual-assistant-actions"
+  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-actions"
 - descripton: Virtual Assistant internal API image name
   name: INTERNAL_IMAGE_NAME
-  value: "quay.io/cloudservices/virtual-assistant-internal"
+  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-internal"
 - description: The Image tag
   name: IMAGE_TAG
   value: "latest"
