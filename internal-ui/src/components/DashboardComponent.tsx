@@ -71,6 +71,8 @@ export const DashboardComponent = () => {
     const [thumbsUp, setThumbsUpCount] = useState(0);
     const [thumbsDown, setThumbsDownCount] = useState(0);
     const [averageSessionTime, setAverageSessionTime] = useState(0);
+    // checking which pages were used the most
+    const [pagesUsed, setPagesUsed] = useState<{ [key: string]: number }>({});
 
     const [contactAdminUsage, setContactAdminUsage] = useState(0);
     const [requestTamUsage, setRequestTamUsage] = useState(0);
@@ -189,6 +191,7 @@ export const DashboardComponent = () => {
         let durations = 0; // total time in all filtered sessions
 
         const intentCounts: { [key: string]: number } = {};
+        const pagesUsed: { [key: string]: number } = {};
 
         filtered.forEach((session) => {
             session.messages.forEach((msg) => {
@@ -233,6 +236,18 @@ export const DashboardComponent = () => {
                     }
 
                     userMessageCount++;
+                } else if (isTypeMessageSlot(msg)) {
+                    if (msg.data.name === 'current_url') {
+                        const url = msg.data.value;
+                        console.log(url);
+                        if (typeof url !== 'string') {
+                            return
+                        }
+                        if (!pagesUsed[url]) {
+                            pagesUsed[url] = 0;
+                        }
+                        pagesUsed[url]++;
+                    }
                 }
             });
 
@@ -245,6 +260,7 @@ export const DashboardComponent = () => {
         setFirstTimeUsers(firstTimeUsers);
 
         setIntentCounts(intentCounts);
+        setPagesUsed(pagesUsed);
 
         setContactAdminUsage(contactAdminUsage);
         setRequestTamUsage(requestTamUsage);
@@ -486,6 +502,27 @@ export const DashboardComponent = () => {
                                 <ListItem>Services Offline: {servicesOfflineUsage}</ListItem>
                             </List>
                         </CardFooter>
+                    </Card>
+                </GridItem>
+                <GridItem span={4} rowSpan={4}>
+                    <Card>
+                        <CardTitle>Pages users talk to the bot on</CardTitle>
+                        <Chart
+                            ariaTitle="Pages"
+                            containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.y} ${datum.x}`} />}
+                            name="by_page"
+                            themeColor="multi"
+                        >
+                            <ChartAxis tickValues={[]} />
+                            <ChartAxis dependentAxis showGrid />
+                            <ChartGroup>
+                                {Object.entries(pagesUsed).map(([key, value]) => (
+                                    <ChartBar
+                                        data={[{ x: key, y: value }]}
+                                    />
+                                ))}
+                            </ChartGroup>
+                        </Chart>
                     </Card>
                 </GridItem>
             </Grid>
