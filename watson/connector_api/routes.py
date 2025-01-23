@@ -11,12 +11,10 @@ from watson.connector_api.api_types import TalkRequest
 
 api_blueprint = Blueprint("api", __name__)
 
+
 def get_watson_assistant():
     authenticator = IAMAuthenticator(app.watson_api_key)
-    assistant = AssistantV2(
-        version=app.watson_env_version,
-        authenticator=authenticator
-    )
+    assistant = AssistantV2(version=app.watson_env_version, authenticator=authenticator)
     assistant.set_service_url(app.watson_api_url)
     return assistant
 
@@ -30,7 +28,7 @@ def health():
 @require_identity_header
 def talk():
     data = request.get_json()
-    identity = request.headers.get('x-rh-identity')
+    identity = request.headers.get("x-rh-identity")
     org_id = get_org_id_from_identity(identity)
 
     if not data:
@@ -40,7 +38,7 @@ def talk():
         validated_data = TalkRequest(**data)
     except ValidationError as e:
         return jsonify({"errors": e.errors()}), 400
-    
+
     assistant = get_watson_assistant()
 
     # Create session if not provided
@@ -49,7 +47,7 @@ def talk():
         watson_session_response = assistant.create_session(
             assistant_id=app.watson_env_id
         ).get_result()
-        session_id = watson_session_response['session_id']
+        session_id = watson_session_response["session_id"]
 
     print("session_id", session_id)
     # Send message to Watson Assistant
@@ -57,12 +55,9 @@ def talk():
     watson_message_response = assistant.message(
         assistant_id=app.watson_env_id,
         environment_id=app.watson_env_id,
-        session_id = session_id,
-        user_id = org_id, # using org_id and user_id to identity unique users
-        input = {
-            'message_type': 'text',
-            'text': user_message
-        }
+        session_id=session_id,
+        user_id=org_id,  # using org_id and user_id to identity unique users
+        input={"message_type": "text", "text": user_message},
     ).get_result()
 
     ## reformat watson message response to include session id and other things

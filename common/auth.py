@@ -90,14 +90,17 @@ def check_identity(identity_header):
         return False
     return True
 
+
 def require_identity_header(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        identity_header = request.headers.get('x-rh-identity')
+        identity_header = request.headers.get("x-rh-identity")
         if not identity_header or not check_identity(identity_header):
             return jsonify(message="Invalid x-rh-identity"), 401
         return func(*args, **kwargs)
+
     return wrapper
+
 
 def get_org_id_from_identity(identity):
     decoded_identity = base64.b64decode(identity).decode("utf8")

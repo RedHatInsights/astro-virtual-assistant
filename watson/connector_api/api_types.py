@@ -7,6 +7,7 @@ class TalkRequestMetadata(BaseModel):
     # account: str
     # org_id: str
 
+
 class TalkRequest(BaseModel):
     message: str
     metadata: TalkRequestMetadata
