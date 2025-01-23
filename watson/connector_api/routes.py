@@ -5,8 +5,8 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 from common.config import app
 
-from .auth import require_identity_header, get_org_id_from_identity
-from .api_types import TalkRequest
+from common.auth import require_identity_header, get_org_id_from_identity
+from watson.connector_api.api_types import TalkRequest
 
 
 api_blueprint = Blueprint("api", __name__)

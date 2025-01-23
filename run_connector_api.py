@@ -2,7 +2,7 @@ from flask import Flask
 import os
 from common.config import app
 
-from connector_api.routes import api_blueprint
+from watson.connector_api.routes import api_blueprint
 
 api = Flask(__name__)
 
