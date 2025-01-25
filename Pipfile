@@ -15,7 +15,7 @@ logstash-formatter = ">=0.5.17"
 prometheus-client = ">=0.14.1"
 pyjwt = ">=2.7.0"
 watchtower = ">=3.0.0"
-websockets = "==10.0"
+websockets = "==14.2"
 aiohttp = ">=3.10.5"
 
 [dev-packages]
