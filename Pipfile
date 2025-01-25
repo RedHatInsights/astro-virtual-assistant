@@ -27,7 +27,7 @@ google = "*"
 pyyaml = "*"
 
 [api-packages]
-rasa = "==3.6.20"
+rasa = "==3.6.21"
 
 [action-packages]
 rasa-sdk = "==3.8.0"
