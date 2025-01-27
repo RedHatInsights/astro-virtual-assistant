@@ -7,10 +7,12 @@ from common.requests import send_console_request_watson
 
 api_blueprint = Blueprint("internal_api", __name__)
 
+
 class ExecuteFunctionRequest(BaseModel):
     session_id: str
     function_name: str
     metadata: Optional[dict] = None
+
 
 def run_function(request_session_id, function_name, functions_map):
     if function_name not in functions_map:
@@ -22,13 +24,15 @@ def run_function(request_session_id, function_name, functions_map):
 
     # Ensure the normalizer is a callable function
     if not callable(normalizer):
-        raise ValueError(f"The normalizer for function '{function_name}' is not callable")
+        raise ValueError(
+            f"The normalizer for function '{function_name}' is not callable"
+        )
 
-    #TODO: Handle auth + Redis interaction here to obtain the necessry headers
+    # TODO: Handle auth + Redis interaction here to obtain the necessry headers
 
     try:
 
-        #TODO: update this with a new function that can handle auth
+        # TODO: update this with a new function that can handle auth
         data = send_console_request_watson(**console_request_args)
 
         # Normalize the data using the provided normalizer function
@@ -61,9 +65,14 @@ def execute_function():
     request_session_id = validated_data.session_id
 
     try:
-        function_response = run_function(request_session_id, function_name, functions_map)
+        function_response = run_function(
+            request_session_id, function_name, functions_map
+        )
     except Exception as e:
         print(e)
-        return jsonify({"message": "internal error encountered while executing function"}), 500
+        return (
+            jsonify({"message": "internal error encountered while executing function"}),
+            500,
+        )
 
     return jsonify(function_response), 200

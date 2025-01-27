@@ -104,8 +104,11 @@ def send_console_request_watson(
     fetch_content: bool = True,
     **kwargs,
 ) -> Any:
-    #TODO: this will be and implementation of send_console_request() without the Rasa tracker
+    # TODO: this will be and implementation of send_console_request() without the Rasa tracker
     if app_name == "cat_facts":
-        return  {"fact":"The first cat show was organized in 1871 in London. Cat shows later became a worldwide craze.","length":93}
+        return {
+            "fact": "The first cat show was organized in 1871 in London. Cat shows later became a worldwide craze.",
+            "length": 93,
+        }
     else:
         return {"app_name": app_name}
