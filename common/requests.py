@@ -94,3 +94,18 @@ async def send_console_request(
         if fetch_content:
             return bad_response, None
         return bad_response
+
+
+def send_console_request_watson(
+    app_name: str,
+    path: str,
+    method: str = "get",
+    headers: Optional[Header] = None,
+    fetch_content: bool = True,
+    **kwargs,
+) -> Any:
+    #TODO: this will be and implementation of send_console_request() without the Rasa tracker
+    if app_name == "cat_facts":
+        return  {"fact":"The first cat show was organized in 1871 in London. Cat shows later became a worldwide craze.","length":93}
+    else:
+        return {"app_name": app_name}
