@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = ">=3.0.0"
+pydantic = "*"
+aiohttp = "*"
+logstash_formatter = "*"
+requests = "*"
+jwt = "*"
+common = {editable=true, path="../../libs/common/src"}
+
+[requires]
+python_version = "3.12"

@@ -1,8 +1,0 @@
-version: "3.1"
-
-stories:
-  - story: Starts closing flow with checkpoint
-    steps:
-      - checkpoint: check_closing
-      - action: form_closing
-      - active_loop: form_closing

@@ -1,9 +1,0 @@
-version: "3.1"
-
-stories:
-  - story: Subscriptions Activation Keys docs (SU8)
-    steps:
-      - intent: intent_inventory_info_activation_key
-      - action: utter_inventory_info_activation_key_1
-      - action: utter_inventory_info_activation_key_2
-      - action: utter_inventory_info_activation_key_3

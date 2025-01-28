@@ -4,44 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-dotenv = "*"
-python-decouple = "*"
-requests = ">=2.31.0"
-rapidfuzz = "*"
-jsonpickle = "*"
-app-common-python = "==0.2.7"
-boto3 = ">=1.24.89"
-logstash-formatter = ">=0.5.17"
-prometheus-client = ">=0.14.1"
-pyjwt = ">=2.7.0"
-watchtower = ">=3.0.0"
-websockets = "==10.0"
-aiohttp = ">=3.10.5"
-
-[dev-packages]
-pyopenssl = ">=23.2.0"
-pytest = "*"
-black = ">=23.9.1"
-gspread = "*"
-google = "*"
-pyyaml = "*"
-
-[api-packages]
-rasa = "==3.6.20"
-
-[action-packages]
-rasa-sdk = "==3.8.0"
-
-[internal-packages]
-flask = ">=3.0.0"
-sqlalchemy = "<2.1"
-psycopg2-binary = "*"
-
-[connector-api-packages]
-flask = ">=3.0.0"
-pydantic = ">=2.10.5"
-ibm-watson = ">=9.0.0"
-ibm-cloud-sdk-core = "3.22.1"
+common = {editable=true, path="./libs/common/src"}
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"
