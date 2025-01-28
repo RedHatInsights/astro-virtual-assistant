@@ -12,10 +12,12 @@ include scripts/make/Makefile.test.mk
 include scripts/make/Makefile.lint.mk
 
 # install and train the project
-install:
-	pipenv install
+install: install-root
 	make install -C services/virtual-assistant
 	make install -C services/watson-extension
+
+install-root:
+	pipenv install
 
 # runs the assistant
 run:

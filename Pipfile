@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+black = "*"
 common = {editable=true, path="./libs/common/src"}
 
 [requires]
