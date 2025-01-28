@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = ">=3.0.0"
+pydantic = ">=2.10.5"
+ibm-watson = ">=9.0.0"
+ibm-cloud-sdk-core = "3.22.1"
+common = {editable=true, path="../../libs/common/src"}
+
+[requires]
+python_version = "3.12"

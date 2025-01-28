@@ -1,50 +1,30 @@
-__CONTAINER_EXEC ?= podman
+__CONTAINER_EXEC ?= $(shell command -v podman)
 
-ifeq (, $(shell which ${__CONTAINER_EXEC} 2> /dev/null))
-	__CONTAINER_EXEC := docker
+ifeq (, $(shell command -v podman 2> /dev/null))
+	__CONTAINER_EXEC := $(shell command -v docker)
 endif
 
 CONTAINER_EXEC ?= ${__CONTAINER_EXEC}
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
-export IS_RUNNING_LOCALLY=1
-
-include make/Makefile.variables.mk
-include make/Makefile.test.mk
-include make/Makefile.lint.mk
-include make/Makefile.train.mk
-include make/Makefile.hyperopt.mk
+include scripts/make/Makefile.variables.mk
+include scripts/make/Makefile.test.mk
+include scripts/make/Makefile.lint.mk
 
 # install and train the project
-install:
-	pipenv install --categories "packages dev-packages api-packages"
+install: install-root
+	make install -C services/virtual-assistant
+	make install -C services/watson-extension
 
-create-internal:
-	mkdir -p .venv-internal
-	python3 -m venv .venv-internal
-
-install-internal:
-	if [ ! -d .venv-internal ]; then ${MAKE} create-internal; fi
-	. .venv-internal/bin/activate && pipenv install --categories "packages dev-packages internal-packages" --skip-lock
-
-clean:
-	rm -rf results .rasa models/* .astro
+install-root:
+	pipenv install
 
 # runs the assistant
 run:
-	pipenv run ${RASA_EXEC} run ${RASA_RUN_ARGS} --logging-config-file logging-config.yml
+	make run -C services/virtual-assistant
 
-run-interactive:
-	pipenv run ${RASA_EXEC} interactive ${RASA_TRAIN_ARGS} ${RASA_RUN_ARGS}
-
-run-actions:
-	pipenv run ${RASA_ACTIONS_EXEC} --actions actions --auto-reload --logging-config_file logging-config.yml
-
-run-cli:
-	pipenv run ${RASA_EXEC} shell ${RASA_RUN_ARGS}
-
-run-internal:
-	. .venv-internal/bin/activate && ${INTERNAL_EXEC} run ${INTERNAL_RUN_ARGS}
+run-watson-extension:
+	make run -C services/watson-extension
 
 run-db:
 	pipenv run make db
@@ -58,8 +38,3 @@ drop-db:
 
 compose:
 	pipenv run ${COMPOSE_EXEC} up
-
-internal-ui-update:
-	npm install --prefix internal-ui
-	npm run build --prefix internal-ui
-	rm -rf internal/public && cp -R internal-ui/dist internal/public && git add internal/public

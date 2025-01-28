@@ -41,7 +41,7 @@ Intents and responses are spread throughout the data directory in `domain.yml` f
 
 The custom actions (python code) is found within [actions](./actions) and holds the required code to execute it.
 
-Test files are found in the [tests](./tests) folders.
+Test files are found in the [tests](libs/common/tests) folders.
 
 
 ### Training the model
@@ -100,7 +100,7 @@ python -c "import channels.console"
 ## Makefile targets
 
 We use a custom makefile with some useful targets. The main Makefile is located on the root of the project at:
-[Makefile](./Makefile). We have submodules stored in [make](./make) folder
+[Makefile](./Makefile). We have submodules stored in [make](scripts/make) folder
 
 Each module has its own targets to help us with the development.
 
