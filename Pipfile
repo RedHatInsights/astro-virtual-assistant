@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 black = "*"
+pytest = "*"
 common = {editable=true, path="./libs/common/src"}
 
 [requires]
