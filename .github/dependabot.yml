@@ -1,7 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"
+    directories:
+      - "/"
+      - "/services/virtual-assistant/"
+      - "/services/watson-extension/"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
