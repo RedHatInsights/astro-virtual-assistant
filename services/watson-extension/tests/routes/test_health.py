@@ -1,19 +1,17 @@
 import pytest
-from quart import Quart
-from quart_schema import QuartSchema
+from quart.typing import TestClientProtocol
+from common import app_with_blueprint
 
 from routes.health import blueprint
 
-@pytest.fixture
-async def app() -> Quart:
-    app = Quart(__name__)
-    app.register_blueprint(blueprint)
-    QuartSchema(app)
-    return app
 
-async def test_status(app) -> None:
-    test_client = app.test_client()
+@pytest.fixture
+async def test_client() -> TestClientProtocol:
+    return app_with_blueprint(blueprint).test_client()
+
+
+async def test_status(test_client) -> None:
     response = await test_client.get("/health/status")
-    assert response.status == '200 OK'
+    assert response.status == "200 OK"
     data = await response.get_json()
     assert data == {"status": "ok"}
