@@ -24,6 +24,6 @@ jobs:
       - name: Verify Pipfile and Pipfile.lock are in sync
         run: pipenv verify
       - name: Install dependencies
-        run: make install-root
+        run: make install
       - name: Python test
         run: make test-python
