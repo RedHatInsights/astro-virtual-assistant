@@ -4,7 +4,7 @@ import requests
 from common.config import app
 from .header import Header
 
-from flask import request, jsonify
+from quart import request, jsonify
 import base64
 import functools
 import json
@@ -89,11 +89,11 @@ def check_identity(identity_header):
 
 def require_identity_header(func):
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    async def wrapper(*args, **kwargs):
         identity_header = request.headers.get("x-rh-identity")
         if not identity_header or not check_identity(identity_header):
             return jsonify(message="Invalid x-rh-identity"), 401
-        return func(*args, **kwargs)
+        return await func(*args, **kwargs)
 
     return wrapper
 
