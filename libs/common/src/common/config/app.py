@@ -150,4 +150,5 @@ watson_env_version = _config(
 
 def log_config():
     import sys
+
     _log_config(sys.modules[__name__])

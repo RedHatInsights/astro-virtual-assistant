@@ -24,8 +24,12 @@ __repository_chain.append(RepositoryOpenshift())
 
 config = Config(ChainMap(*__repository_chain))
 
-def log_config(module):
-    import logging
+
+def log_config(module, logging_function=None):
+    if logging_function is None:
+        import logging
+
+        logging_function = logging.info
 
     primitives = (bool, str, int, float, type(None))
 
@@ -43,17 +47,17 @@ def log_config(module):
 
     def get_value(key: str, value) -> str:
         if value is None or (
-                isinstance(value, int) and not isinstance(value, bool) and value == 0
+            isinstance(value, int) and not isinstance(value, bool) and value == 0
         ):
             return f"--not-set-- ({value})"
 
         upper_key = key.upper()
         accepted_variables = ["dev_sso_refresh_token_url"]
         if (
-                any(
-                    banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
-                )
-                and key not in accepted_variables
+            any(
+                banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
+            )
+            and key not in accepted_variables
         ):
             return "*********"
 
@@ -61,7 +65,7 @@ def log_config(module):
 
     for k, v in module.__dict__.items():
         if should_log(k, v):
-            logging.info(f"Using {k}: {get_value(k, v)}")
+            logging_function(f"Using {k}: {get_value(k, v)}")
 
 
 # We could implement expanvars If we need variable expansion
