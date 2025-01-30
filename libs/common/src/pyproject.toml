@@ -4,5 +4,6 @@ dynamic = ["version"]
 # Keep in sync with Pipfile
 dependencies = [
     "python-decouple",
-    "app_common_python"
+    "app_common_python",
+    "quart"
 ]

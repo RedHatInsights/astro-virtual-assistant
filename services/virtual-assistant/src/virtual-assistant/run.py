@@ -1,13 +1,15 @@
-from flask import Flask
-import os
+from quart import Quart
 from common.config import app
+from quart_schema import QuartSchema
 
 from routes import api_blueprint
 
-api = Flask(__name__)
+api = Quart(__name__)
 
 base_url = app.connector_api_base_url
 api.register_blueprint(api_blueprint, url_prefix=base_url)
+
+QuartSchema(api, openapi_path=base_url + "/openapi.json")
 
 if __name__ == "__main__":
     port = int(app.connector_api_port)

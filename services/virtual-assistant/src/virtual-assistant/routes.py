@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from quart import Blueprint, jsonify, request
 from pydantic import ValidationError
 from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -20,13 +20,13 @@ def get_watson_assistant():
 
 
 @api_blueprint.route("/", methods=["GET"])
-def health():
+async def health():
     return jsonify({"status": "Ok"})
 
 
 @api_blueprint.route("/talk", methods=["POST"])
 @require_identity_header
-def talk():
+async def talk():
     data = request.get_json()
     identity = request.headers.get("x-rh-identity")
     org_id = get_org_id_from_identity(identity)

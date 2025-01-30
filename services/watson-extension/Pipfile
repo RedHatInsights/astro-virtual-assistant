@@ -11,7 +11,6 @@ logstash_formatter = "*"
 requests = "*"
 jwt = "*"
 common = {editable=true, path="../../libs/common/src"}
-quart-schema = "*"
 
 [dev-packages]
 pytest = "*"
