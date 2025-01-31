@@ -44,14 +44,29 @@ class TalkInput(BaseModel):
 
 class TalkRequest(BaseModel):
     session_id: Optional[str] = None
+    input: TalkInput
+
+
+class TalkResponseOptionsItems(BaseModel):
+    label: str
     input: Optional[TalkInput] = None
 
 
-class ApiResponse(BaseModel):
-    text: str
+class TalkResponseListItems(BaseModel):
+    text: Optional[str] = None
+    options: Optional[List[TalkResponseOptionsItems]] = None
 
 
-def watson_response_formatter(session_id: str, response: dict):
+class TalkResponse(BaseModel):
+    response: Optional[List[TalkResponseListItems]] = None
+    session_id: str
+
+
+class TalkRequestError(BaseModel):
+    message: str
+
+
+def watson_response_formatter(session_id: str, response: dict) -> TalkResponse:
     watson_generic = response["output"]["generic"]
     normalized_watson_response = []
 
@@ -84,4 +99,5 @@ def watson_response_formatter(session_id: str, response: dict):
         "session_id": session_id,
         "response": normalized_watson_response,
     }
-    return normalized_response
+
+    return TalkResponse(**normalized_response)
