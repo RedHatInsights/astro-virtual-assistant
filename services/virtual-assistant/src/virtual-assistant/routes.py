@@ -27,7 +27,7 @@ async def health():
 @api_blueprint.route("/talk", methods=["POST"])
 @require_identity_header
 async def talk():
-    data = request.get_json()
+    request_body = await request.get_json()
     identity = request.headers.get("x-rh-identity")
     org_id = get_org_id_from_identity(identity)
 
