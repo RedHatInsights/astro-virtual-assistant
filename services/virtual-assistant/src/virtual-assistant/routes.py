@@ -34,7 +34,7 @@ async def health():
 @validate_request(TalkRequest)
 @validate_response(TalkResponse, 200)
 @validate_response(TalkRequestError, 400)
-async def talk(data: TalkRequest):
+async def talk(data: TalkRequest) -> TalkResponse:
     identity = request.headers.get("x-rh-identity")
     org_id = get_org_id_from_identity(identity)
 
