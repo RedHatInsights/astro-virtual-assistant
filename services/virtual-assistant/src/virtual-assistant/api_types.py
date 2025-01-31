@@ -32,7 +32,6 @@ class TalkRequestInputAnalytics(BaseModel):
 
 
 class TalkInput(BaseModel):
-    # TODO: update to support empty list `[]` for intents and entities key
     message_type: Optional[str] = None
     text: Optional[str] = None
     intents: Optional[List[TalkRequestInputIntents]] = None
@@ -57,21 +56,32 @@ def watson_response_formatter(session_id: str, response: dict):
     normalized_watson_response = []
 
     for generic in watson_generic:
-        print("generic", generic)
         if generic["response_type"] == "text":
             normalized_watson_response.append({"text": generic["text"]})
 
         if generic["response_type"] == "option":
             options = []
             for option in generic["options"]:
-                options.append({"label": option["label"], "input": option["value"].get("input")})
+                options.append(
+                    {"label": option["label"], "input": option["value"].get("input")}
+                )
             normalized_watson_response.append({"options": options})
 
         if generic["response_type"] == "suggestion":
             options = []
             for suggestion in generic["suggestions"]:
-                options.append({"label": suggestion["label"], "input": suggestion["value"].get("input")})
-            normalized_watson_response.append({"text": generic["title"], "options": options})
+                options.append(
+                    {
+                        "label": suggestion["label"],
+                        "input": suggestion["value"].get("input"),
+                    }
+                )
+            normalized_watson_response.append(
+                {"text": generic["title"], "options": options}
+            )
 
-    normalized_response = {"session_id": session_id, "response": normalized_watson_response}
+    normalized_response = {
+        "session_id": session_id,
+        "response": normalized_watson_response,
+    }
     return normalized_response

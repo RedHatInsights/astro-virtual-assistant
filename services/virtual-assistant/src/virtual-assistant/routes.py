@@ -52,7 +52,6 @@ async def talk():
     print("session_id", session_id)
     watson_input = validated_request_body.input.dict(exclude_none=True)
     watson_input["message_type"] = "text"
-    print("watson_input", watson_input)
 
     # Send message to Watson Assistant
     watson_message_response = assistant.message(
@@ -66,4 +65,3 @@ async def talk():
     response = watson_response_formatter(session_id, watson_message_response)
     ## reformat watson message response to include session id and other things
     return jsonify(response), 200
-
