@@ -8,6 +8,7 @@ except ModuleNotFoundError:
     DEFAULT_RASA_PORT = 0
 
 from . import config as _config
+from . import log_config as _log_config
 
 name = _config("APP_NAME", default="astro-virtual-assistant")
 
@@ -148,41 +149,6 @@ watson_env_version = _config(
 
 
 def log_config():
-    import logging
     import sys
 
-    primitives = (bool, str, int, float, type(None))
-
-    def is_primitive(obj):
-        return isinstance(obj, primitives)
-
-    def should_log(key, value) -> bool:
-        if not is_primitive(value):
-            return False
-
-        if key.startswith("_"):
-            return False
-
-        return True
-
-    def get_value(key: str, value) -> str:
-        if value is None or (
-            isinstance(value, int) and not isinstance(value, bool) and value == 0
-        ):
-            return f"--not-set-- ({value})"
-
-        upper_key = key.upper()
-        accepted_variables = ["dev_sso_refresh_token_url"]
-        if (
-            any(
-                banned in upper_key for banned in ["PASSWORD", "TOKEN", "SECRET", "KEY"]
-            )
-            and key not in accepted_variables
-        ):
-            return "*********"
-
-        return str(value)
-
-    for k, v in sys.modules[__name__].__dict__.items():
-        if should_log(k, v):
-            logging.info(f"Using {k}: {get_value(k, v)}")
+    _log_config(sys.modules[__name__])
