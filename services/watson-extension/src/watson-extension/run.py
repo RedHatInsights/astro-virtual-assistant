@@ -1,4 +1,4 @@
-from quart import Quart, Blueprint
+from quart import Quart, Blueprint, logging
 import config
 
 from routes import health
@@ -12,7 +12,7 @@ root.register_blueprint(health.blueprint)
 app.register_blueprint(root)
 QuartSchema(app, openapi_path=config.base_url + "/openapi.json")
 
+config.log_config()
+
 if __name__ == "__main__":
-    port = config.port
-    print(f"Starting app at port {port} with base URL: {config.base_url}")
-    app.run(port=port)
+    app.run(port=config.port)
