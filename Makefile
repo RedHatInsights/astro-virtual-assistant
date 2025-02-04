@@ -13,13 +13,9 @@ include scripts/make/Makefile.lint.mk
 
 export PIPENV_IGNORE_VIRTUALENVS=1
 
-# install and train the project
-install: install-root
-	make install -C services/virtual-assistant
-	make install -C services/watson-extension
-
-install-root:
-	pipenv install
+# install
+install:
+	uv sync
 
 # runs the assistant
 run:

@@ -6,10 +6,8 @@ include scripts/make/Makefile.variables.mk
 
 test: test-python
 
-test-python-root:
-	pipenv run pytest
-
-test-python: test-python-root
+test-python:
+	make -C libs/common test
 	make -C services/watson-extension test
 
 test-openapi:

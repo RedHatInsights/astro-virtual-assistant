@@ -1,0 +1,12 @@
+[project]
+name = "virtual-assistant"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "common",
+    "ibm-watson>=9.0.0",
+    "ibm-cloud-sdk-core>=3.22.1"
+]
+
+[tool.uv.sources]
+common = { workspace = true }
