@@ -6,6 +6,7 @@ requires-python = ">=3.12"
 dependencies = [
     "quart>=0.20.0",
     "quart-schema[pydantic]>=0.21.0",
+    "quart-injector==0.0.0b1",
     "pydantic>=2.10.5",
     "logstash_formatter>=0.5.17",
 ]

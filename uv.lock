@@ -112,6 +112,7 @@ dependencies = [
     { name = "logstash-formatter" },
     { name = "pydantic" },
     { name = "quart" },
+    { name = "quart-injector" },
     { name = "quart-schema", extra = ["pydantic"] },
 ]
 
@@ -127,6 +128,7 @@ requires-dist = [
     { name = "logstash-formatter", specifier = ">=0.5.17" },
     { name = "pydantic", specifier = ">=2.10.5" },
     { name = "quart", specifier = ">=0.20.0" },
+    { name = "quart-injector", specifier = "==0.0.0b1" },
     { name = "quart-schema", extras = ["pydantic"], specifier = ">=0.21.0" },
 ]
 
@@ -452,6 +454,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/4b/cbd8e699e64a6f16ca3a8220661b5f83792b3017d0f79807cb8708d33913/iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3", size = 4646 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ef/a6/62565a6e1cf69e10f5727360368e451d4b7f58beeac6173dc9db836a5b46/iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374", size = 5892 },
+]
+
+[[package]]
+name = "injector"
+version = "0.22.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/f6/3a74e4b983b92eebb77b2f27ee526aa7eaf0e62a5913847d59361b4bae5f/injector-0.22.0.tar.gz", hash = "sha256:79b2d4a0874c75d3aa735f11c5b32b89d9542711ca07071161882c5e9cc15ed6", size = 86166 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3f/37/37fee65c78ae3f9675e6190bfd12304e5d8d99564f0ec91716bf2bfbbb5f/injector-0.22.0-py2.py3-none-any.whl", hash = "sha256:74379ccef3b893bc7d0b7d504c255b5160c5a55e97dc7bdcc73cb33cc7dce3a1", size = 20461 },
 ]
 
 [[package]]
@@ -783,6 +794,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1d/9d/12e1143a5bd2ccc05c293a6f5ae1df8fd94a8fc1440ecc6c344b2b30ce13/quart-0.20.0.tar.gz", hash = "sha256:08793c206ff832483586f5ae47018c7e40bdd75d886fee3fabbdaa70c2cf505d", size = 63874 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7e/e9/cc28f21f52913adf333f653b9e0a3bf9cb223f5083a26422968ba73edd8d/quart-0.20.0-py3-none-any.whl", hash = "sha256:003c08f551746710acb757de49d9b768986fd431517d0eb127380b656b98b8f1", size = 77960 },
+]
+
+[[package]]
+name = "quart-injector"
+version = "0.0.0b1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "injector" },
+    { name = "quart" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/db/e4/51737e60114d975e8705246afbbfbc19d8c3d2c3c50abcd98b6fac72eaaf/quart-injector-0.0.0b1.tar.gz", hash = "sha256:5909726a7499aeb4c50961efb1902df08914b3e283df7e5b2822c9713e439200", size = 4740 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/88/f1a11d348e49e48009e9377ff499a31ecafe3674614d67d81337df976116/quart_injector-0.0.0b1-py3-none-any.whl", hash = "sha256:4de9a3e22ac15785809270e4d2f4f86b56a15596edb024522b06b2de33cb7fdb", size = 4833 },
 ]
 
 [[package]]
