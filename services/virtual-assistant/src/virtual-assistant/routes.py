@@ -5,11 +5,11 @@ from ibm_cloud_sdk_core.api_exception import ApiException
 from common.config import app
 from common.logging import initialize_logging
 from common.auth import require_identity_header, get_org_id_from_identity
-from common.types.api import (
+from common.types.errors import ValidationError
+from api_types import (
     TalkRequest,
     TalkResponse,
 )
-from common.types.errors import ValidationError
 from watson import WatsonAssistant
 
 

@@ -2,7 +2,7 @@ from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 from common.config import app
-from common.types.api import TalkInput, TalkResponse
+from api_types import TalkInput, TalkResponse
 
 
 class WatsonAssistant:
