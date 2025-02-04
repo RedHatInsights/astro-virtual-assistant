@@ -5,10 +5,9 @@ name = "pypi"
 
 [packages]
 "quart-schema[pydantic]" = "*"
-pydantic = ">=2.10.5"
 ibm-watson = ">=9.0.0"
 ibm-cloud-sdk-core = "3.22.1"
-common = {editable=true, path="../../libs/common/src"}
+common = {file = "../../libs/common/src", editable = true}
 
 [requires]
 python_version = "3.12"

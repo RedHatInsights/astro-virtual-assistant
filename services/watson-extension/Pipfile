@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 "quart-schema[pydantic]" = "*"
-pydantic = "*"
 aiohttp = "*"
 logstash_formatter = "*"
 requests = "*"

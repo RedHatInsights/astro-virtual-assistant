@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "132bc48c2758279a046fc7a9f10ee42b589b94884d9c0a2fc142224f0803e651"
+            "sha256": "4af464e2da0c5f9d135baefde0dc03df8c6c90deaed8e78fe045063930a83cb3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -163,7 +163,7 @@
         },
         "common": {
             "editable": true,
-            "path": "../../libs/common/src"
+            "file": "../../libs/common/src"
         },
         "flask": {
             "hashes": [
@@ -183,11 +183,11 @@
         },
         "h2": {
             "hashes": [
-                "sha256:03a46bcf682256c95b5fd9e9a99c1323584c3eec6440d379b9903d709476bc6d",
-                "sha256:a83aca08fbe7aacb79fec788c9c0bac936343560ed9ec18b82a13a12c28d2abb"
+                "sha256:479a53ad425bb29af087f3458a61d30780bc818e4ebcf01f0b536ba916462ed0",
+                "sha256:c8a52129695e88b1a0578d8d2cc6842bbd79128ac685463b887ee278126ad01f"
             ],
-            "markers": "python_full_version >= '3.6.1'",
-            "version": "==4.1.0"
+            "markers": "python_version >= '3.9'",
+            "version": "==4.2.0"
         },
         "hpack": {
             "hashes": [
@@ -252,6 +252,12 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==3.1.5"
+        },
+        "logstash-formatter": {
+            "hashes": [
+                "sha256:163f5ef62df5459f1d36dcb54e9c3f8f0c90157a324a3361887532b615bf4fb9"
+            ],
+            "version": "==0.5.17"
         },
         "markupsafe": {
             "hashes": [
@@ -333,7 +339,6 @@
                 "sha256:427d664bf0b8a2b34ff5dd0f5a18df00591adcee7198fbd71981054cef37b584",
                 "sha256:ca5daa827cce33de7a42be142548b0096bf05a7e7b365aebfa5f8eeec7128236"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==2.10.6"
         },

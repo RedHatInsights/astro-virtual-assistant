@@ -5,5 +5,7 @@ dynamic = ["version"]
 dependencies = [
     "python-decouple",
     "app_common_python",
-    "quart"
+    "quart",
+    "pydantic",
+    "logstash_formatter"
 ]
