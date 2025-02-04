@@ -2,7 +2,6 @@ from quart import Blueprint, jsonify, request
 from quart_schema import validate_request, validate_response
 from ibm_cloud_sdk_core.api_exception import ApiException
 
-from common.config import app
 from common.logging import initialize_logging
 from common.auth import require_identity_header, get_org_id_from_identity
 from common.types.errors import ValidationError

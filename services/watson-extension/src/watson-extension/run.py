@@ -1,4 +1,4 @@
-from quart import Quart, Blueprint, logging
+from quart import Quart, Blueprint
 import config
 
 from routes import health

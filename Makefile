@@ -7,6 +7,10 @@ endif
 CONTAINER_EXEC ?= ${__CONTAINER_EXEC}
 COMPOSE_EXEC ?= ${CONTAINER_EXEC}-compose
 
+ifeq (,$(shell command -v uv 2>/dev/null))
+$(error "uv was not found. Install it by following: https://github.com/astral-sh/uv?tab=readme-ov-file#installation")
+endif
+
 include scripts/make/Makefile.variables.mk
 include scripts/make/Makefile.test.mk
 include scripts/make/Makefile.lint.mk
@@ -19,10 +23,10 @@ install:
 
 # runs the assistant
 run:
-	make run -C services/virtual-assistant
+	uv run --directory services/virtual-assistant src/virtual-assistant/run.py
 
 run-watson-extension:
-	make run -C services/watson-extension
+	uv run --directory services/watson-extension src/watson-extension/run.py
 
 run-db:
 	pipenv run make db
