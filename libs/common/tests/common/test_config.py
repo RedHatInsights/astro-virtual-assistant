@@ -155,7 +155,6 @@ def test_clowdapp_missing_required_endpoint():
     try:
         with pytest.raises(UndefinedValueError):
             import_app_config()
-            from common.config import app
     finally:
         clear_app_config()
 

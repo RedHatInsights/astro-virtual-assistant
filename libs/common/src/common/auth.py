@@ -35,7 +35,10 @@ def get_auth_header(tracker: object, header: Header) -> Header:
 
         raise ValueError("No offline token found")
 
-    identity = get_user_identity(tracker)
+    # This is changing
+    # identity = get_user_identity(tracker)
+    identity = None
+
     if identity is not None:
         header.add_header("x-rh-identity", identity)
         return header

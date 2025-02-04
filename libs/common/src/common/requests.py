@@ -82,7 +82,7 @@ async def send_console_request(
                         return console_response, await console_response.text()
 
                 return console_response
-    except Exception as e:
+    except Exception:
         logger.error(
             f"Exception while handling request: {method.upper()} {url}", exc_info=True
         )

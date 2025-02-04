@@ -3,14 +3,15 @@
 #
 
 PRETTIER_ARGS = -c
-BLACK_ARGS =
+RUFF_ARGS =
 
-lint: BLACK_ARGS += --diff --check
+lint: RUFF_ARGS += --no-fix
 lint: --lint
 
+lint-fix: RUFF_ARGS += --fix
 lint-fix: --lint
 
---lint: --lint-black
+--lint: --lint-ruff
 
---lint-black:
-	pipenv run black . $(BLACK_ARGS)
+--lint-ruff:
+	uv run ruff check . $(RUFF_ARGS)
