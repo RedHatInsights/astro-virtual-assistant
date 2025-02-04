@@ -169,3 +169,7 @@ cython_debug/
 
 # VS Code
 *.code-workspace
+
+
+# virtual-assistant dev
+.va-session-storage

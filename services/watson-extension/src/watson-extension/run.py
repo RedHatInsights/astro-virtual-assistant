@@ -1,18 +1,43 @@
+
+import injector
+import quart_injector
 from quart import Quart, Blueprint
 import config
+from common.session_storage import SessionStorage
+from common.session_storage.file import FileSessionStorage
+from common.quart_schema import VirtualAssistantOpenAPIProvider
 
 from routes import health
 from quart_schema import QuartSchema
 
 app = Quart(__name__)
 
-root = Blueprint("root", __name__, url_prefix=config.base_url)
-root.register_blueprint(health.blueprint)
+public_root = Blueprint("public_root", __name__, url_prefix=config.base_url)
+private_root = Blueprint("private_root", __name__)
 
-app.register_blueprint(root)
-QuartSchema(app, openapi_path=config.base_url + "/openapi.json")
+# Connecting private routes (/)
+private_root.register_blueprint(health.blueprint)
+
+
+# Connect public routes ({config.base_url})
+
+app.register_blueprint(public_root)
+app.register_blueprint(private_root)
 
 config.log_config()
+
+def configure(binder: injector.Binder) -> None:
+    # Read configuration and assemble our dependencies
+
+    # This gets injected into routes when it is requested.
+    # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
+    binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
+
+
+quart_injector.wire(app, configure)
+
+# Must happen after routes, injector, etc
+QuartSchema(app, openapi_path=config.base_url + "/openapi.json", openapi_provider_class=VirtualAssistantOpenAPIProvider)
 
 if __name__ == "__main__":
     app.run(port=config.port)
