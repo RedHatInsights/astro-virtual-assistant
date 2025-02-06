@@ -1,10 +1,9 @@
 
-import injector
 import quart_injector
 from quart import Quart, Blueprint
 import config
 from common.session_storage import SessionStorage
-from common.session_storage.file import FileSessionStorage
+from common.session_storage.configure import configure as configure_session_storage
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 
 from routes import health
@@ -26,15 +25,7 @@ app.register_blueprint(private_root)
 
 config.log_config()
 
-def configure(binder: injector.Binder) -> None:
-    # Read configuration and assemble our dependencies
-
-    # This gets injected into routes when it is requested.
-    # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
-    binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
-
-
-quart_injector.wire(app, configure)
+quart_injector.wire(app, configure_session_storage)
 
 # Must happen after routes, injector, etc
 QuartSchema(app, openapi_path=config.base_url + "/openapi.json", openapi_provider_class=VirtualAssistantOpenAPIProvider)

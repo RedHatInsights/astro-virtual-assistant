@@ -7,5 +7,6 @@ dependencies = [
     "app_common_python",
     "quart",
     "pydantic",
-    "logstash_formatter"
+    "logstash_formatter",
+    "redis>=5.2.1",
 ]

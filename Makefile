@@ -38,5 +38,8 @@ drop-db:
 	${CONTAINER_EXEC} stop postgres
 	${CONTAINER_EXEC} rm postgres
 
+redis:
+	${CONTAINER_EXEC} run --name va-redis -d -p 6379:${REDIS_PORT} redis
+
 compose:
 	pipenv run ${COMPOSE_EXEC} up
