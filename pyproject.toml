@@ -9,6 +9,7 @@ dependencies = [
     "quart-injector==0.0.0b1",
     "pydantic>=2.10.5",
     "logstash_formatter>=0.5.17",
+    "redis>=5.2.1",
 ]
 
 [dependency-groups]
