@@ -35,8 +35,7 @@ def configure(binder: injector.Binder) -> None:
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
     if app_config.session_storage == "redis":
         binder.bind(SessionStorage, to=RedisSessionStorage())
-
-    if app_config.session_storage == "file":
+    elif app_config.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 
 quart_injector.wire(app, configure)
