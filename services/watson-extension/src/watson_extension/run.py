@@ -1,10 +1,11 @@
-
 import injector
 import quart_injector
 from quart import Quart, Blueprint
 import config
+from common.config import app as app_config
 from common.session_storage import SessionStorage
 from common.session_storage.file import FileSessionStorage
+from common.session_storage.redis import RedisSessionStorage
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 
 from routes import health
@@ -32,8 +33,10 @@ def configure(binder: injector.Binder) -> None:
 
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
-    binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
-
+    if app_config.session_storage == "redis":
+        binder.bind(SessionStorage, to=RedisSessionStorage())
+    elif app_config.session_storage == "file":
+        binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 
 quart_injector.wire(app, configure)
 

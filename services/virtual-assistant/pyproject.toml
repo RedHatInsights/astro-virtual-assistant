@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "common",
     "ibm-watson>=9.0.0",
-    "ibm-cloud-sdk-core>=3.22.1"
+    "ibm-cloud-sdk-core>=3.22.1",
 ]
 
 [tool.uv.sources]
