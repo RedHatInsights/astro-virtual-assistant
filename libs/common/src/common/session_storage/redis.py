@@ -30,5 +30,4 @@ class RedisSessionStorage(SessionStorage):
     async def store(self, session: Session):
         """Write the session_id/identity header pair to Redis."""
         await self.redis_client.set(session.key, session.value)
-        print(f"Session ({session.key} written to Redis.")
 
