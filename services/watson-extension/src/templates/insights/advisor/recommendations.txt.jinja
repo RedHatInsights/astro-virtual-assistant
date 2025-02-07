@@ -1,0 +1,9 @@
+{%- if rules -%}
+Here are your top {{ category }} recommendations from Advisor.
+{% for rule in rules %}
+ {{ loop.index }}. [{{ rule.description }}]({{ rule.link }})
+{% endfor %}
+You can see additional recommendations on the [Advisor dashboard]({{ dashboard_link }}).
+{%- else -%}
+You don't have any {{ category }} recommendations right now.
+{%- endif -%}

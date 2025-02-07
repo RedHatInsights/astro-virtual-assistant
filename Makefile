@@ -26,7 +26,7 @@ run:
 	uv run --directory services/virtual-assistant src/virtual-assistant/run.py
 
 run-watson-extension:
-	uv run --directory services/watson-extension src/watson-extension/run.py
+	uv run --directory services/watson-extension src/run.py
 
 run-db:
 	pipenv run make db

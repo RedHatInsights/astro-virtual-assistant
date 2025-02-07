@@ -1,5 +1,0 @@
-Here are your top recommendations from advisor
- 1. Hello world
- 2. Foo bar
- 3. ...
- 4. Profit!
