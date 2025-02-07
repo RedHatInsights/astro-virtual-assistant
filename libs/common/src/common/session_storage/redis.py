@@ -16,7 +16,6 @@ class RedisSessionStorage(SessionStorage):
             port=app.redis_port,
             username=app.redis_username,
             password=app.redis_password,
-            db=app.redis_db,
             decode_responses=True,
         )
 
