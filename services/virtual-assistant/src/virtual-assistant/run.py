@@ -1,11 +1,14 @@
+import injector
 import quart_injector
 from quart import Quart
 from quart_schema import QuartSchema, RequestSchemaValidationError
 
-from common.session_storage.configure import configure as configure_session_storage
 from common.config import app
 from common.logging import initialize_logging
 from common.quart_schema import VirtualAssistantOpenAPIProvider
+from common.session_storage import SessionStorage
+from common.session_storage.file import FileSessionStorage
+from common.session_storage.redis import RedisSessionStorage
 from common.types.errors import ValidationError
 
 from routes import api_blueprint
@@ -24,7 +27,19 @@ async def handle_request_validation_error(error):
     return ValidationError(message=str(error.validation_error)), 400
 
 
-quart_injector.wire(api, configure_session_storage)
+def configure(binder: injector.Binder) -> None:
+    # Read configuration and assemble our dependencies
+
+    # This gets injected into routes when it is requested.
+    # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> TalkResponse:
+    if app.session_storage == "redis":
+        binder.bind(SessionStorage, to=RedisSessionStorage())
+
+    if app.session_storage == "file":
+        binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
+
+
+quart_injector.wire(api, configure)
 
 QuartSchema(api, openapi_path=base_url + "/openapi.json", openapi_provider_class=VirtualAssistantOpenAPIProvider)
 
