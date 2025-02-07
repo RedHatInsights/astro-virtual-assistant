@@ -11,7 +11,8 @@ def configure(binder: injector.Binder) -> None:
 
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> Response:
-    if app.use_redis:
+    if app.session_storage == "redis":
         binder.bind(SessionStorage, to=RedisSessionStorage())
-    else:
+
+    if app.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))

@@ -125,12 +125,12 @@ database_ca_path = _config("DB_CA_PATH", default=None)
 
 lock_store_type = _config("LOCK_STORE_TYPE", default="in_memory")
 
-use_redis = _config("USE_REDIS", default=False, cast=bool)
+session_storage = _config("SESSION_STORAGE", default="file")
 redis_hostname = _config("REDIS_HOSTNAME", default=None)
 redis_port = _config("REDIS_PORT", default=6379, cast=int)
 redis_username = _config("REDIS_USERNAME", default=None)
 redis_password = _config("REDIS_PASSWORD", default=None)
-redis_db = _config("REDIS_DB", default=0, cast=int)
+redis_db = _config("REDIS_DB", default="0")
 
 connector_api_base_url = _config(
     "CONNECTOR_API_BASE_URL", default="/api/virtual-assistant/v1"
