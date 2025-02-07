@@ -34,8 +34,7 @@ def configure(binder: injector.Binder) -> None:
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> TalkResponse:
     if app.session_storage == "redis":
         binder.bind(SessionStorage, to=RedisSessionStorage())
-
-    if app.session_storage == "file":
+    elif app.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 
 
