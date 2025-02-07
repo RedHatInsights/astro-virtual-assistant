@@ -114,7 +114,6 @@ dependencies = [
     { name = "quart" },
     { name = "quart-injector" },
     { name = "quart-schema", extra = ["pydantic"] },
-    { name = "redis" },
 ]
 
 [package.dev-dependencies]
@@ -131,7 +130,6 @@ requires-dist = [
     { name = "quart", specifier = ">=0.20.0" },
     { name = "quart-injector", specifier = "==0.0.0b1" },
     { name = "quart-schema", extras = ["pydantic"], specifier = ">=0.21.0" },
-    { name = "redis", specifier = ">=5.2.1" },
 ]
 
 [package.metadata.requires-dev]
@@ -231,12 +229,14 @@ source = { editable = "libs/common" }
 dependencies = [
     { name = "app-common-python" },
     { name = "python-decouple" },
+    { name = "redis" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "app-common-python", specifier = ">=0.2.7" },
     { name = "python-decouple", specifier = ">=3.8" },
+    { name = "redis", specifier = ">=5.2.1" },
 ]
 
 [[package]]
