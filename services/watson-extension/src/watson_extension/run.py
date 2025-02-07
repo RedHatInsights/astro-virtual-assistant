@@ -8,6 +8,7 @@ from common.session_storage.file import FileSessionStorage
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 
 from routes import health
+from routes import insights
 from quart_schema import QuartSchema
 
 app = Quart(__name__)
@@ -18,8 +19,8 @@ private_root = Blueprint("private_root", __name__)
 # Connecting private routes (/)
 private_root.register_blueprint(health.blueprint)
 
-
 # Connect public routes ({config.base_url})
+public_root.register_blueprint(insights.blueprint)
 
 app.register_blueprint(public_root)
 app.register_blueprint(private_root)
