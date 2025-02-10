@@ -7,14 +7,12 @@ classDiagram
     direction LR
 
     namespace Client {
-        class AdvisorClient {
-        <<interface>>
-        +find_rule_category_by_name(category_name) RuleCategory
-        +find_rules(category_id, total_risk, sort, only_workloads) FindRulesResponse
+        class AbstractClient {
+            <<interface>>
         }
 
-        class AdvisorClientHttp {
-        +__init__(advisor_url, user_identity, platform_request)
+        class ConcreteClientHttp {
+            +__init__(service_url, user_identity, platform_request)
         }
 
         class UserIdentity {
@@ -23,21 +21,6 @@ classDiagram
         class PlatformRequest {
 
         }
-        class AdvisorURL {
-
-        }
-
-        class RuleCategory {
-        <<dataclass>>
-        +id: string
-        +name: string
-        }
-
-        class FindRulesResponse {
-        <<dataclass>>
-        +rules: List[Rule]
-        +link: string
-        }
     }
 
     class HttpSession {
@@ -45,43 +28,40 @@ classDiagram
     }
 
     namespace Routes {
-        class AdvisorGetRecommendations {
-            +call() AdvisorGetRecommendationsResponse
+        class Route {
+            +call() RouteResponse
         }
 
-        class AdvisorGetRecommendationsResponse {
+        class RouteResponse {
             response: string
         }
 
     }
 
     namespace Testing {
-        class TestAdvisorClient {
+        class TestClient {
 
         }
 
-        class TestAdvisorRoute {
+        class TestRoute {
 
         }
 
     }
 
-    AdvisorClient <|-- AdvisorClientHttp : Implements
-    AdvisorClientHttp *-- AdvisorURL
-    AdvisorClientHttp *-- UserIdentity
-    AdvisorClientHttp *-- PlatformRequest
+    AbstractClient <|-- ConcreteClientHttp : Implements
+    ConcreteClientHttp *-- UserIdentity
+    ConcreteClientHttp *-- PlatformRequest
+
     PlatformRequest *-- HttpSession
 
-    AdvisorClient ..> RuleCategory
-    AdvisorClient ..> FindRulesResponse
+    AbstractClient *-- Route
 
-    AdvisorClient *-- AdvisorGetRecommendations
+    Route --> RouteTemplate
+    Route ..> RouteResponse
 
-    AdvisorGetRecommendations --> AdvisorGetRecommendationsTemplate
-    AdvisorGetRecommendations ..> AdvisorGetRecommendationsResponse
+    TestClient --> HttpSession : Mocks
+    TestClient --> ConcreteClientHttp : Testee
 
-    TestAdvisorClient --> HttpSession : Mocks
-    TestAdvisorClient --> AdvisorClientHttp : Testee
-
-    TestAdvisorRoute --> AdvisorClient : Mocks
-    TestAdvisorRoute --> AdvisorGetRecommendations : Testee
+    TestRoute --> AbstractClient : Mocks
+    TestRoute --> Route : Testee
