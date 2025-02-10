@@ -2,6 +2,7 @@ import aiohttp
 import injector
 from quart import Quart, Blueprint
 
+from common.session_storage.redis import RedisSessionStorage
 from watson_extension.clients import AdvisorURL
 from watson_extension.clients.aiohttp_session import aiohttp_session
 from watson_extension.clients.insights.advisor import AdvisorClient, AdvisorClientHttp
@@ -21,7 +22,10 @@ def injector_from_config(binder: injector.Binder) -> None:
 
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
-    binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
+    if config.session_storage == "redis":
+        binder.bind(SessionStorage, to=RedisSessionStorage())
+    elif config.session_storage == "file":
+        binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 
     # urls
     binder.bind(AdvisorURL, to="http://localhost/")
