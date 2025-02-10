@@ -1,0 +1,87 @@
+---
+  config:
+    class:
+      hideEmptyMembersBox: false
+---
+classDiagram
+    direction LR
+
+    namespace Client {
+        class AdvisorClient {
+        <<interface>>
+        +find_rule_category_by_name(category_name) RuleCategory
+        +find_rules(category_id, total_risk, sort, only_workloads) FindRulesResponse
+        }
+
+        class AdvisorClientHttp {
+        +__init__(advisor_url, user_identity, platform_request)
+        }
+
+        class UserIdentity {
+        }
+
+        class PlatformRequest {
+
+        }
+        class AdvisorURL {
+
+        }
+
+        class RuleCategory {
+        <<dataclass>>
+        +id: string
+        +name: string
+        }
+
+        class FindRulesResponse {
+        <<dataclass>>
+        +rules: List[Rule]
+        +link: string
+        }
+    }
+
+    class HttpSession {
+        <<Library>>
+    }
+
+    namespace Routes {
+        class AdvisorGetRecommendations {
+            +call() AdvisorGetRecommendationsResponse
+        }
+
+        class AdvisorGetRecommendationsResponse {
+            response: string
+        }
+
+    }
+
+    namespace Testing {
+        class TestAdvisorClient {
+
+        }
+
+        class TestAdvisorRoute {
+
+        }
+
+    }
+
+    AdvisorClient <|-- AdvisorClientHttp : Implements
+    AdvisorClientHttp *-- AdvisorURL
+    AdvisorClientHttp *-- UserIdentity
+    AdvisorClientHttp *-- PlatformRequest
+    PlatformRequest *-- HttpSession
+
+    AdvisorClient ..> RuleCategory
+    AdvisorClient ..> FindRulesResponse
+
+    AdvisorClient *-- AdvisorGetRecommendations
+
+    AdvisorGetRecommendations --> AdvisorGetRecommendationsTemplate
+    AdvisorGetRecommendations ..> AdvisorGetRecommendationsResponse
+
+    TestAdvisorClient --> HttpSession : Mocks
+    TestAdvisorClient --> AdvisorClientHttp : Testee
+
+    TestAdvisorRoute --> AdvisorClient : Mocks
+    TestAdvisorRoute --> AdvisorGetRecommendations : Testee

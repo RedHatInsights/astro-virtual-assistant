@@ -17,3 +17,6 @@ def get_resource_contents(resource):
 
 async def async_value(value):
     return value
+
+def get_test_template(resource: str) -> str:
+    return get_resource_contents('templates/' + resource)

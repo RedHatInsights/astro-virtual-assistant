@@ -8,7 +8,7 @@ from watson_extension.clients.insights.advisor import RuleCategory, AdvisorClien
 from ..common import app_with_blueprint
 
 from watson_extension.routes.insights.advisor import blueprint
-from ... import async_value
+from ... import async_value, get_test_template
 
 
 @pytest.fixture
@@ -40,13 +40,7 @@ async def test_recommendations(test_client, advisor_client) -> None:
     response = await test_client.get("/advisor/recommendations", query_string={"category": "performance"})
     assert response.status == "200 OK"
     data = await response.get_json()
-    assert data["response"] == (
-        "Here are your top performance recommendations from Advisor.\n"
-        "\n"
-        " 1. [I am a rule](I am link)\n"
-        "\n"
-        "You can see additional recommendations on the [Advisor dashboard](i-am-not-zelda)."
-    )
+    assert data["response"] == get_test_template("insights/advisor/recommendations.txt")
 
 async def test_recommendations_none(test_client, advisor_client) -> None:
     advisor_client.find_rule_category_by_name = MagicMock(return_value=async_value(RuleCategory(id="4", name="performance")))
@@ -55,8 +49,7 @@ async def test_recommendations_none(test_client, advisor_client) -> None:
         link="i-am-not-zelda"
     )))
 
-
     response = await test_client.get("/advisor/recommendations", query_string={"category": "performance"})
     assert response.status == "200 OK"
     data = await response.get_json()
-    assert data["response"] == "You don't have any performance recommendations right now."
+    assert data["response"] == get_test_template("insights/advisor/recommendations-not-found.txt")

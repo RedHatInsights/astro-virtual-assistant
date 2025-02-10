@@ -28,7 +28,7 @@ async def test_find_rule_category_by_name(client, aiohttp_mock) -> None:
     aiohttp_mock.get(
         "/api/insights/v1/rulecategory/",
         status=200,
-        body=get_resource_contents('insights/advisor/categories.json')
+        body=get_resource_contents('requests/insights/advisor/categories.json')
     )
     category = await client.find_rule_category_by_name("performance")
     assert category.id == 4
@@ -38,7 +38,7 @@ async def test_find_rule_category_by_name_unknown_rule(client, aiohttp_mock) -> 
     aiohttp_mock.get(
         "/api/insights/v1/rulecategory/",
         status=200,
-        body=get_resource_contents('insights/advisor/categories.json')
+        body=get_resource_contents('requests/insights/advisor/categories.json')
     )
     with pytest.raises(ValueError):
         await client.find_rule_category_by_name("unknown")
@@ -47,7 +47,7 @@ async def test_find_rules(client, aiohttp_mock) -> None:
     aiohttp_mock.get(
         "/api/insights/v1/rule?impacting=true&rule_status=enabled&limit=3",
         status=200,
-        body=get_resource_contents('insights/advisor/rules_0.json')
+        body=get_resource_contents('requests/insights/advisor/rules_0.json')
     )
     response = await client.find_rules()
     assert len(response.rules) == 3
@@ -60,7 +60,7 @@ async def test_find_rules_with_category_id(client, aiohttp_mock) -> None:
     aiohttp_mock.get(
         "/api/insights/v1/rule?impacting=true&rule_status=enabled&category=4&limit=3",
         status=200,
-        body=get_resource_contents('insights/advisor/rules_1.json')
+        body=get_resource_contents('requests/insights/advisor/rules_1.json')
     )
     response = await client.find_rules(category_id="4")
     assert len(response.rules) == 3
@@ -73,7 +73,7 @@ async def test_find_rules_with_total_risk(client, aiohttp_mock) -> None:
     aiohttp_mock.get(
         "/api/insights/v1/rule?impacting=true&rule_status=enabled&total_risk=4&limit=3",
         status=200,
-        body=get_resource_contents('insights/advisor/rules_2.json')
+        body=get_resource_contents('requests/insights/advisor/rules_2.json')
     )
     response = await client.find_rules(total_risk=4)
     assert len(response.rules) == 3
@@ -86,7 +86,7 @@ async def test_find_rules_with_sort_and_only_workloads(client, aiohttp_mock) -> 
     aiohttp_mock.get(
         "/api/insights/v1/rule?impacting=true&rule_status=enabled&sort=-publish_date&filter[system_profile][sap_system]=true&limit=3",
         status=200,
-        body=get_resource_contents('insights/advisor/rules_3.json')
+        body=get_resource_contents('requests/insights/advisor/rules_3.json')
     )
     response = await client.find_rules(sort=FindRuleSort.PublishDate, only_workloads=True)
     assert len(response.rules) == 3
