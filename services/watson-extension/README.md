@@ -20,4 +20,5 @@ The following UML diagram illustrates an API that returns advisor recommendation
 It requires a single client (RHEL Advisor) and one template. 
 The diagram also highlights different test levels, showing what is being mocked and tested at each stage.
 
-![sample-diagram](./diagram.mermaid)
+![API Diagram](./diagram.mermaid)
+
