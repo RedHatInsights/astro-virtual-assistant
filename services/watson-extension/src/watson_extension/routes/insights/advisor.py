@@ -50,15 +50,11 @@ async def recommendations(query_args: RecommendationsRequestQuery, advisor_clien
         only_workloads = True
 
     rules_response = await advisor_client.find_rules(category_id=category_id, total_risk=total_risk, sort=sort, only_workloads=only_workloads)
-    try:
-        return RecommendationsResponse(
-            response=await render_template(
-                'insights/advisor/recommendations.txt.jinja',
-                rules=rules_response.rules,
-                dashboard_link=rules_response.link,
-                category=query_args.category.value
-            )
+    return RecommendationsResponse(
+        response=await render_template(
+            'insights/advisor/recommendations.txt.jinja',
+            rules=rules_response.rules,
+            dashboard_link=rules_response.link,
+            category=query_args.category.value
         )
-    except Exception as e:
-        print(e)
-        raise e
+    )
