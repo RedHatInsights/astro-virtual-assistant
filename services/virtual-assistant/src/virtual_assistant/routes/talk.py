@@ -15,7 +15,7 @@ blueprint = Blueprint("health", __name__, url_prefix="/talk")
 logger = initialize_logging("virtual-assistant")
 
 @blueprint.route("/", methods=["POST"])
-# @require_identity_header
+@require_identity_header
 @validate_request(TalkRequest)
 @validate_response(TalkResponse, 200)
 @validate_response(ValidationError, 400)
