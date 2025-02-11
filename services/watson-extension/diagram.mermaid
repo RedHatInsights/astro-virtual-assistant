@@ -1,0 +1,67 @@
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+
+    namespace Client {
+        class AbstractClient {
+            <<interface>>
+        }
+
+        class ConcreteClientHttp {
+            +__init__(service_url, user_identity, platform_request)
+        }
+
+        class UserIdentity {
+        }
+
+        class PlatformRequest {
+
+        }
+    }
+
+    class HttpSession {
+        <<Library>>
+    }
+
+    namespace Routes {
+        class Route {
+            +call() RouteResponse
+        }
+
+        class RouteResponse {
+            response: string
+        }
+
+    }
+
+    namespace Testing {
+        class TestClient {
+
+        }
+
+        class TestRoute {
+
+        }
+
+    }
+
+    AbstractClient <|-- ConcreteClientHttp : Implements
+    ConcreteClientHttp *-- UserIdentity
+    ConcreteClientHttp *-- PlatformRequest
+
+    PlatformRequest *-- HttpSession
+
+    AbstractClient *-- Route
+
+    Route --> RouteTemplate
+    Route ..> RouteResponse
+
+    TestClient --> HttpSession : Mocks
+    TestClient --> ConcreteClientHttp : Testee
+
+    TestRoute --> AbstractClient : Mocks
+    TestRoute --> Route : Testee
