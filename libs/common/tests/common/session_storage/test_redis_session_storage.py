@@ -22,7 +22,7 @@ def redis(redis_fixture):
 def session_storage(redis):
     return RedisSessionStorage(redis)
 
-async def test_redis_session_storage_storal(session_storage, redis):
+async def test_redis_session_storage_store(session_storage, redis):
     await session_storage.put(Session(key="my-key", user_identity="my.identity"))
     raw = await redis.get("my-key")
     assert raw == b'{"key": "my-key", "user_identity": "my.identity"}'
