@@ -3,7 +3,7 @@ from ibm_cloud_sdk_core.api_exception import ApiException
 from quart import Blueprint, request
 from quart_schema import validate_request, validate_response
 
-from common.auth import require_identity_header, get_org_id_from_identity
+from common.auth import get_org_id_from_identity
 from common.logging import initialize_logging
 from common.types.errors import ValidationError
 from virtual_assistant.api_types import TalkRequest, TalkResponse

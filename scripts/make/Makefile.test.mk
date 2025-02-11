@@ -8,6 +8,7 @@ test: test-python
 
 test-python:
 	uv run --directory libs/common pytest
+	uv run --directory services/virtual-assistant pytest
 	uv run --directory services/watson-extension pytest
 
 test-openapi:

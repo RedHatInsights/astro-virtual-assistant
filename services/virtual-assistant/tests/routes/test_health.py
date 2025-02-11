@@ -1,8 +1,8 @@
 import pytest
 from quart.typing import TestClientProtocol
-from .common import app_with_blueprint
+from tests.routes.common import app_with_blueprint
 
-from watson_extension.routes.health import blueprint
+from virtual_assistant.routes.health import blueprint
 
 
 @pytest.fixture
