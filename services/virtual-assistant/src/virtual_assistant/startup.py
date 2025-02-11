@@ -1,21 +1,16 @@
-import aiohttp
 import injector
 from quart import Quart, Blueprint
 from redis.asyncio import StrictRedis
 
 from common.session_storage.redis import RedisSessionStorage
-from watson_extension.clients import AdvisorURL
-from watson_extension.clients.aiohttp_session import aiohttp_session
-from watson_extension.clients.insights.advisor import AdvisorClient, AdvisorClientHttp
-from watson_extension.clients.platform_request import PlatformRequest
-from watson_extension.routes import health
-from watson_extension.routes import insights
-
-import watson_extension.config as config
-
 from common.session_storage import SessionStorage
 from common.session_storage.file import FileSessionStorage
-from watson_extension.clients.identity import UserIdentity, user_identity_fixed
+
+import virtual_assistant.config as config
+from virtual_assistant.routes import health
+from virtual_assistant.routes import talk
+from virtual_assistant.watson import WatsonAssistant, WatsonAssistantImpl, authenticate
+
 
 @injector.provider
 def redis_session_storage_provider() -> RedisSessionStorage:
@@ -26,10 +21,15 @@ def redis_session_storage_provider() -> RedisSessionStorage:
         password=config.redis_password,
     ))
 
-def injector_from_config(binder: injector.Binder) -> None:
-    # Read configuration and assemble our dependencies
-    binder.bind(UserIdentity, user_identity_fixed)
+@injector.provider
+def watson_provider() -> WatsonAssistant:
+    return WatsonAssistantImpl(
+        assistant=authenticate(config.watson_api_key,config.watson_env_version,config.watson_api_url),
+        assistant_id=config.watson_env_id, # Todo: Should we use a different id for the assistant?
+        environment_id=config.watson_env_id,
+    )
 
+def injector_from_config(binder: injector.Binder) -> None:
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
     if config.session_storage == "redis":
@@ -37,18 +37,7 @@ def injector_from_config(binder: injector.Binder) -> None:
     elif config.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 
-    # urls
-    binder.bind(AdvisorURL, to="http://localhost/")
-
-def injector_defaults(binder: injector.Binder) -> None:
-    # clients
-    binder.bind(AdvisorClient, AdvisorClientHttp)
-
-    # platform request
-    binder.bind(PlatformRequest, PlatformRequest)
-
-    # aiohttp session
-    binder.bind(aiohttp.ClientSession, aiohttp_session)
+    binder.bind(WatsonAssistant, to=watson_provider)
 
 def wire_routes(app: Quart) -> None:
     public_root = Blueprint("public_root", __name__, url_prefix=config.base_url)
@@ -58,7 +47,7 @@ def wire_routes(app: Quart) -> None:
     private_root.register_blueprint(health.blueprint)
 
     # Connect public routes ({config.base_url})
-    public_root.register_blueprint(insights.blueprint)
+    public_root.register_blueprint(talk.blueprint)
 
     app.register_blueprint(public_root)
     app.register_blueprint(private_root)

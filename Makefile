@@ -23,7 +23,7 @@ install:
 
 # runs the assistant
 run:
-	uv run --directory services/virtual-assistant src/virtual-assistant/run.py
+	uv run --directory services/virtual-assistant src/run.py
 
 run-watson-extension:
 	uv run --directory services/watson-extension src/run.py

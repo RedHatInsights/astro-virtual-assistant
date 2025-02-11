@@ -2,7 +2,7 @@ import logging
 from logging import Formatter
 
 from logstash_formatter import LogstashFormatterV1
-from .config import app
+from .config import shared_config as app
 
 
 class VirtualAssistantLogFormatter(Formatter):
@@ -18,7 +18,7 @@ class VirtualAssistantLogFormatter(Formatter):
 _app_logger = None
 
 
-def initialize_logging():
+def initialize_logging(name: str):
     global _app_logger
     if _app_logger is None:
         if all(
@@ -49,6 +49,6 @@ def initialize_logging():
             cw_handler.setFormatter(LogstashFormatterV1())
             logging.root.addHandler(cw_handler)
 
-        _app_logger = logging.getLogger(app.name)
+        _app_logger = logging.getLogger(name)
 
     return _app_logger
