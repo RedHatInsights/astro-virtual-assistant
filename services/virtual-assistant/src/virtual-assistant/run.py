@@ -2,6 +2,7 @@ import injector
 import quart_injector
 from quart import Quart
 from quart_schema import QuartSchema, RequestSchemaValidationError
+from redis.asyncio import StrictRedis
 
 from common.config import app
 from common.logging import initialize_logging
@@ -26,6 +27,14 @@ api.register_blueprint(api_blueprint, url_prefix=base_url)
 async def handle_request_validation_error(error):
     return ValidationError(message=str(error.validation_error)), 400
 
+@injector.provider
+def redis_session_storage_provider() -> RedisSessionStorage:
+    return RedisSessionStorage(StrictRedis(
+        host=app.redis_hostname,
+        port=app.redis_port,
+        username=app.redis_username,
+        password=app.redis_password,
+    ))
 
 def configure(binder: injector.Binder) -> None:
     # Read configuration and assemble our dependencies
@@ -33,7 +42,7 @@ def configure(binder: injector.Binder) -> None:
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> TalkResponse:
     if app.session_storage == "redis":
-        binder.bind(SessionStorage, to=RedisSessionStorage())
+        binder.bind(SessionStorage, to=redis_session_storage_provider)
     elif app.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
 

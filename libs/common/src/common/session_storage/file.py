@@ -21,13 +21,7 @@ class FileSessionStorage(SessionStorage):
         return storage.get(session_key, None)
 
     async def store(self, session: Session):
-        try:
-            storage = pickle.load(open(self.filename, "r+b"))
-        except Exception as e:
-            print(e)
-            print("helo")
-            storage = {}
-
+        storage = pickle.load(open(self.filename, "r+b"))
         storage[session.key] = session
         # noinspection PyTypeChecker
         pickle.dump(storage, open(self.filename, "w+b"))
