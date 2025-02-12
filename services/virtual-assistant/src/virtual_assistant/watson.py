@@ -107,7 +107,7 @@ class WatsonAssistantImpl(WatsonAssistant):
 
         Parameters:
         session_id: The watson assistant session id
-        org_id: The org_id. Currently used as the user_id for watson to identify unique users
+        user_id: Used as the user_id for watson to identify unique users (org_id in this case)
         input: The text or button message options for watson
 
         Returns:
