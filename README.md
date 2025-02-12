@@ -9,8 +9,9 @@ Warning: Instructions below might be outdated
 
 ### Setting up your environment
 
-Astro uses [pipenv](https://pypi.org/project/) to manage it's dependencies. 
-Follow the [instructions on pipenv](https://pypi.org/project/pipenv/#installation) to install it.
+
+Astro also uses [uv](https://pypi.org/project/uv/) to manage it's dependencies.
+Follow the [instructions on uv](https://pypi.org/project/uv/#installation) to install it.
 
 After installing [pipenv](https://pypi.org/project/), you are now ready to install the project development dependencies 
 by running:
