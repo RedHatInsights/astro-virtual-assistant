@@ -101,7 +101,7 @@ class WatsonAssistantImpl(WatsonAssistant):
         return session_id
 
     def send_watson_message(
-        self, session_id: str, org_id: str, input: TalkInput
+        self, session_id: str, user_id: str, input: TalkInput
     ) -> dict:
         """Send a message to watson assistant
 
@@ -117,6 +117,6 @@ class WatsonAssistantImpl(WatsonAssistant):
             assistant_id=self.assistant_id,
             environment_id=self.environment_id,
             session_id=session_id,
-            user_id=org_id,  # using org_id as user_id to identity unique users
+            user_id=user_id,  # using org_id as user_id to identity unique users
             input=input,
         ).get_result()
