@@ -36,7 +36,14 @@ def format_response(session_id: str, response: dict) -> TalkResponse:
 
     for generic in watson_generic:
         if generic["response_type"] == "text":
-            normalized_watson_response.append({"text": generic["text"]})
+            if generic["text"].startswith("/"): # command message
+                params = generic["text"].split(" ")
+                normalized_watson_response.append({"command": {
+                    "type": params[0].strip("/"),
+                    "args": params[1:]
+                }})
+            else:
+                normalized_watson_response.append({"text": generic["text"]})
 
         if generic["response_type"] == "option":
             options = []
@@ -94,13 +101,13 @@ class WatsonAssistantImpl(WatsonAssistant):
         return session_id
 
     def send_watson_message(
-        self, session_id: str, org_id: str, input: TalkInput
+        self, session_id: str, user_id: str, input: TalkInput
     ) -> dict:
         """Send a message to watson assistant
 
         Parameters:
         session_id: The watson assistant session id
-        org_id: The org_id. Currently used as the user_id for watson to identify unique users
+        user_id: Used as the user_id for watson to identify unique users (org_id in this case)
         input: The text or button message options for watson
 
         Returns:
@@ -110,6 +117,6 @@ class WatsonAssistantImpl(WatsonAssistant):
             assistant_id=self.assistant_id,
             environment_id=self.environment_id,
             session_id=session_id,
-            user_id=org_id,  # using org_id as user_id to identity unique users
+            user_id=user_id,  # using org_id as user_id to identity unique users
             input=input,
         ).get_result()
