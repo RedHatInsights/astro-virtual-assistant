@@ -1,20 +1,19 @@
 import quart_injector
 from quart import Quart
-import watson_extension.config as config
+from quart_schema import QuartSchema, RequestSchemaValidationError
+import virtual_assistant.config as config
+
 from common.logging import initialize_logging
 from common.quart_schema import VirtualAssistantOpenAPIProvider
-
-from quart_schema import QuartSchema, RequestSchemaValidationError
-
 from common.types.errors import ValidationError
-from watson_extension.startup import wire_routes, injector_from_config, injector_defaults
+from virtual_assistant.startup import wire_routes, injector_from_config
 
 initialize_logging(config.name)
-app = Quart(__name__)
 config.log_config()
+app = Quart(__name__)
 
 wire_routes(app)
-quart_injector.wire(app, [injector_defaults, injector_from_config])
+quart_injector.wire(app, injector_from_config)
 
 @app.errorhandler(RequestSchemaValidationError)
 async def handle_request_validation_error(error):

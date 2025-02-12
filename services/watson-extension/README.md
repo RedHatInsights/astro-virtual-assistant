@@ -31,7 +31,16 @@ API spec is [served](http://127.0.0.1:5050/api/virtual-assistant-watson-extensio
 There are also [redocs](http://127.0.0.1:5050/redocs), [scalar](http://127.0.0.1:5050/scalar) and [swagger](http://127.0.0.1:5050/docs) frontends available for convenience.
 
 ## Developing
-TBA
+
+This section is still in development, this should be updated as we make changes to our design.
+
+The current architecture makes use of `clients` to communicate with other services in the platform, `routes` to handle
+incoming requests from watson and `templates` to render the messages we got from the customers.
+
+We could create an additional layer to handle the business logic if we feel the routes is doing too much work already.
+
+We are currently targeting only UI on our console, but we could configure out templates to use different outputs
+depending on the formats we require.
 
 ## Testing
 Tests can be found on [tests](./tests) and are run by invoking `make tests` on the root of the project. The tests

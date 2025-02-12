@@ -1,25 +1,18 @@
 import builtins
-import sys
 import os
 from unittest import mock
-import importlib
-from .. import path_to_resource
+import sys
 
+from .. import path_to_resource
 import pytest
 from decouple import UndefinedValueError
 
 __config_modules = [
     "app_common_python",
     "common.config",
-    "common.config.app",
 ]
 
-
-def import_app_config():
-    for module in __config_modules:
-        importlib.import_module(module)
-
-
+@pytest.fixture(autouse=True)
 def clear_app_config():
     for module in __config_modules:
         if module in sys.modules:
@@ -34,67 +27,93 @@ def clear_app_config():
     },
     clear=True,
 )
-def test_clowdapp():
-    try:
-        import_app_config()
-        from common.config import app
+def test_clowdapp_public_endpoints():
+    from common.config import config
+    assert config("ENDPOINT__ADVISOR_BACKEND__API__URL") == "http://n-api.svc:8000"
+    assert config("ENDPOINT__NOTIFICATIONS_GW__SERVICE__URL") == "http://n-gw.svc:1337"
 
-        assert app.is_running_locally is False
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": path_to_resource("clowdapp.json"),
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_clowdapp_private_endpoints():
+    from common.config import config
+    assert config("PRIVATE_ENDPOINT__VIRTUAL_ASSISTANT__ACTIONS__URL") == "http://my-virtual-assistant-actions:10000"
 
-        assert app.dev_offline_refresh_token is None
-        assert app.dev_sso_refresh_token_url is None
 
-        assert app.console_dot_base_url == "https://console.redhat.com"
-        assert app.requests_timeout == 5
-        assert app.app_name == "astro-virtual-assistant"
-        assert app.group_id == app.app_name
-        assert app.api_listen_address == "0.0.0.0"
-        assert app.api_url_expiry == 30
-        assert app.aws_region == "us-east-1"
-        assert app.log_level == "INFO"
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": path_to_resource("clowdapp.json"),
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_database():
+    from common.config import config
+    assert config("DB_ADMIN_PASSWORD") == "s3cr3t"
+    assert config("DB_ADMIN_USERNAME") == "postgres"
+    assert config("DB_HOSTNAME") == "some.host"
+    assert config("DB_NAME") == "some-db"
+    assert config("DB_PASSWORD") == "secret"
+    assert config("DB_PORT") == 15432
+    assert config("DB_SSL_MODE") == "require"
+    assert config("DB_USERNAME") == "aUser"
 
-        assert app.namespace is None
-        assert app.hostname is None
-        assert app.prometheus is False
+    with pytest.raises(UndefinedValueError):
+        assert config("DB_CA_PATH") is None
 
-        assert app.prometheus_port == 9000
-        assert app.api_port == 8000
-        assert app.actions_port == 10000
 
-        assert app.logging_cloudwatch_access_key_id == "my-key-id"
-        assert app.logging_cloudwatch_secret_access_key == "very-secret"
-        assert app.logging_cloudwatch_region == "eu-central-1"
-        assert app.logging_cloudwatch_log_group == "my-log-group"
-        assert app.logging_cloudwatch_create_log_group is True
-        assert app.logging_cloudwatch_log_stream == os.uname().nodename
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": path_to_resource("clowdapp.json"),
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_logging():
+    from common.config import config
+    assert config("LOGGING_CLOUDWATCH_ACCESS_KEY_ID") == "my-key-id"
+    assert config("LOGGING_CLOUDWATCH_SECRET_ACCESS_KEY") == "very-secret"
+    assert config("LOGGING_CLOUDWATCH_REGION") == "eu-central-1"
+    assert config("LOGGING_CLOUDWATCH_LOG_GROUP") == "my-log-group"
 
-        assert app.advisor_url == "http://n-api.svc:8000"
-        assert app.notifications_gw_url == "http://n-gw.svc:1337"
-        assert app.notifications_url == "http://notifications.svc:1337"
-        assert app.sources_url == "http://sources.svc:1337"
-        assert app.vulnerability_url == "http://v-engine.svc:1234"
-        assert app.content_sources_url == "http://c-s-service.svc:8080"
-        assert app.rhsm_url == "http://rhsm-api-proxy.svc:8000"
-        assert app.actions_url == "http://my-virtual-assistant-actions:10000"
 
-        assert app.tracker_store_type == "InMemoryTrackerStore"
-        assert app.database_host == "some.host"
-        assert app.database_port == 15432
-        assert app.database_user == "aUser"
-        assert app.database_password == "secret"
-        assert app.database_name == "some-db"
-        assert app.database_ssl_mode == "require"
-        assert app.database_ca_path is None  # No ca path on file
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": path_to_resource("clowdapp.json"),
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_redis():
+    from common.config import config
+    assert config("REDIS_HOSTNAME") == "my-hostname"
+    assert config("REDIS_PORT") == 99137
+    assert config("REDIS_USERNAME") == "my-username"
+    assert config("REDIS_PASSWORD") == "my-s3cret"
 
-        assert app.lock_store_type == "in_memory"
-        assert app.redis_hostname is None
-        assert app.redis_port is None
-        assert app.redis_username is None
-        assert app.redis_password is None
-
-    finally:
-        clear_app_config()
-
+@mock.patch.dict(
+    os.environ,
+    {
+        "ACG_CONFIG": path_to_resource("clowdapp.json"),
+        "__DOT_ENV_FILE": ".i-dont-exist",
+    },
+    clear=True,
+)
+def test_other_params():
+    from common.config import config
+    assert config("METRICS_PATH") == "/metrics"
+    assert config("METRICS_PORT") == 9000
+    assert config("PRIVATE_PORT") == 10000
+    assert config("PUBLIC_PORT") == 8000
+    assert config("WEB_PORT") == 8000
 
 @mock.patch.dict(
     os.environ,
@@ -104,102 +123,25 @@ def test_clowdapp():
     },
     clear=True,
 )
-def test_clowdapp_with_db_ca():
-    try:
-        import_app_config()
-        from common.config import app
+def test_with_db_ca():
+    def get_contents_of_file(path: str):
+        buff = []
+        with open(path, "r") as f:
+            for line in f:
+                buff.append(line)
 
-        assert app.is_running_locally is False
+        return ''.join(buff)
 
-        assert app.database_ca_path is not None
-        assert isinstance(app.database_ca_path, str) is True
-
-    finally:
-        clear_app_config()
-
-
-@mock.patch.dict(
-    os.environ,
-    {
-        "ACG_CONFIG": path_to_resource("clowdapp-redis.json"),
-        "__DOT_ENV_FILE": ".i-dont-exist",
-    },
-    clear=True,
-)
-def test_clowdapp_with_redis():
-    try:
-        import_app_config()
-        from common.config import app
-
-        assert app.is_running_locally is False
-
-        assert app.lock_store_type == "in_memory"
-        assert app.redis_hostname == "my-hostname"
-        assert app.redis_port == 99137
-        assert app.redis_username == "my-username"
-        assert app.redis_password == "my-s3cret"
-
-    finally:
-        clear_app_config()
-
-
-@mock.patch.dict(
-    os.environ,
-    {
-        "ACG_CONFIG": path_to_resource("clowdapp-missing-vulnerability-endpoint.json"),
-        "__DOT_ENV_FILE": ".i-dont-exist",
-    },
-    clear=True,
-)
-def test_clowdapp_missing_required_endpoint():
-    try:
-        with pytest.raises(UndefinedValueError):
-            import_app_config()
-    finally:
-        clear_app_config()
-
+    from common.config import config
+    assert config("DB_USERNAME") == "aUser"
+    assert get_contents_of_file(config("DB_CA_PATH")) == "some-stuff-in-here"
 
 @mock.patch.dict(
     os.environ,
     {"IS_RUNNING_LOCALLY": "1", "__DOT_ENV_FILE": ".i-dont-exist"},
     clear=True,
 )
-def test_loads_file_when_running_locally():
-    try:
-        import_app_config()
-        from common.config import app
-
-        assert app.is_running_locally is True
-
-        assert app.console_dot_base_url == "https://console.redhat.com"
-
-        assert app.advisor_url == app.console_dot_base_url
-        assert app.notifications_gw_url == app.console_dot_base_url
-        assert app.notifications_url == app.console_dot_base_url
-        assert app.sources_url == app.console_dot_base_url
-        assert app.vulnerability_url == app.console_dot_base_url
-        assert app.content_sources_url == app.console_dot_base_url
-        assert app.rhsm_url == app.console_dot_base_url
-
-        assert app.database_host is None
-        assert app.database_port == 0
-        assert app.database_user is None
-        assert app.database_password is None
-        assert app.database_name is None
-        assert app.database_ssl_mode is None
-
-        assert app.lock_store_type == "in_memory"
-        assert app.namespace is None
-    finally:
-        clear_app_config()
-
-
-@mock.patch.dict(
-    os.environ,
-    {"IS_RUNNING_LOCALLY": "1", "__DOT_ENV_FILE": ".i-dont-exist"},
-    clear=True,
-)
-def test_loads_namespace():
+def test_openshift_namespace():
     def openshift_mock_open(*args, **kwargs):
         if args[0] == "/var/run/secrets/kubernetes.io/serviceaccount/namespace":
             return mock.mock_open(read_data="my-cool-namespace")(*args, **kwargs)
@@ -207,10 +149,5 @@ def test_loads_namespace():
         return builtins.open(*args, **kwargs)
 
     with mock.patch("builtins.open", openshift_mock_open):
-        try:
-            import_app_config()
-            from common.config import app
-
-            assert app.namespace == "my-cool-namespace"
-        finally:
-            clear_app_config()
+        from common.config import config
+        assert config("NAMESPACE") == "my-cool-namespace"

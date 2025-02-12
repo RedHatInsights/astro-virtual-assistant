@@ -9,6 +9,13 @@
     "sslMode": "require",
     "username": "aUser"
   },
+  "inMemoryDb": {
+    "hostname": "my-hostname",
+    "port": 99137,
+    "username": "my-username",
+    "password": "my-s3cret",
+    "db": "the-db"
+  },
   "endpoints": [
     {
       "app": "advisor-backend",

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import requests
 
-from common.config import app
+from common.config import shared_config as app
 from .header import Header
 
 from quart import request, jsonify
