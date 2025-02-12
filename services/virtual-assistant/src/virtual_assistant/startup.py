@@ -9,7 +9,7 @@ from common.session_storage.file import FileSessionStorage
 import virtual_assistant.config as config
 from virtual_assistant.routes import health
 from virtual_assistant.routes import talk
-from virtual_assistant.watson import WatsonAssistant, WatsonAssistantImpl, authenticate
+from virtual_assistant.watson import WatsonAssistant, WatsonAssistantImpl, build_assistant
 
 
 @injector.provider
@@ -24,7 +24,7 @@ def redis_session_storage_provider() -> RedisSessionStorage:
 @injector.provider
 def watson_provider() -> WatsonAssistant:
     return WatsonAssistantImpl(
-        assistant=authenticate(config.watson_api_key,config.watson_env_version,config.watson_api_url),
+        assistant=build_assistant(config.watson_api_key, config.watson_env_version, config.watson_api_url),
         assistant_id=config.watson_env_id, # Todo: Should we use a different id for the assistant?
         environment_id=config.watson_env_id,
     )
