@@ -9,12 +9,12 @@ from common.types.errors import ValidationError
 from virtual_assistant.api_types import TalkRequest, TalkResponse
 from virtual_assistant.watson import WatsonAssistant, format_response
 
-blueprint = Blueprint("health", __name__, url_prefix="/talk")
+blueprint = Blueprint("talk", __name__, url_prefix="/talk")
 
 # Todo: Refactor this to use injector
 logger = initialize_logging("virtual-assistant")
 
-@blueprint.route("/", methods=["POST"])
+@blueprint.route("", methods=["POST"])
 @require_identity_header
 @validate_request(TalkRequest)
 @validate_response(TalkResponse, 200)
@@ -23,6 +23,7 @@ async def talk(data: TalkRequest, assistant: injector.Inject[WatsonAssistant]) -
     identity = request.headers.get("x-rh-identity")
     org_id = get_org_id_from_identity(identity)
 
+    # Todo: Get this from redis?
     session_id = assistant.create_session(data.session_id)
     logger.info(f"session_id: {session_id}")
 
