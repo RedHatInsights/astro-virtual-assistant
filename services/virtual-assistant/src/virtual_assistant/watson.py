@@ -36,7 +36,14 @@ def format_response(session_id: str, response: dict) -> TalkResponse:
 
     for generic in watson_generic:
         if generic["response_type"] == "text":
-            normalized_watson_response.append({"text": generic["text"]})
+            if generic["text"].startswith("/"): # command message
+                params = generic["text"].split(" ")
+                normalized_watson_response.append({"command": {
+                    "type": params[0].strip("/"),
+                    "args": params[1:]
+                }})
+            else:
+                normalized_watson_response.append({"text": generic["text"]})
 
         if generic["response_type"] == "option":
             options = []
