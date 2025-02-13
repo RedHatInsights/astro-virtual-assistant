@@ -1,5 +1,8 @@
+from typing import Optional
+
 from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+import asyncio
 
 from abc import ABC, abstractmethod
 
@@ -7,12 +10,12 @@ from virtual_assistant.api_types import TalkResponse, TalkInput
 
 class WatsonAssistant(ABC):
     @abstractmethod
-    def create_session(self, session_id) -> str: ...
+    async def create_session(self, session_id: Optional[str] = None) -> str: ...
     @abstractmethod
-    def send_watson_message(self, session_id: str, user_id: str, input: TalkInput) -> dict: ...
+    async def send_watson_message(self, session_id: str, user_id: str, input: TalkInput) -> dict: ...
 
 
-def authenticate(api_key: str, env_version: str, api_url: str) -> AssistantV2:
+def build_assistant(api_key: str, env_version: str, api_url: str) -> AssistantV2:
     """Authentication for watson assistant"""
     authenticator = IAMAuthenticator(api_key)
     assistant = AssistantV2(
@@ -83,7 +86,7 @@ class WatsonAssistantImpl(WatsonAssistant):
         self.assistant_id = assistant_id
         self.environment_id = environment_id
 
-    def create_session(self, session_id: str) -> str:
+    async def create_session(self, session_id: Optional[str] = None) -> str:
         """Creates a watson assistant session if the provided session id is None
 
         Parameters:
@@ -94,14 +97,13 @@ class WatsonAssistantImpl(WatsonAssistant):
         """
 
         if not session_id:
-            return self.assistant.create_session(
-                assistant_id=self.environment_id
-            ).get_result()["session_id"]
+            response = await asyncio.to_thread(self.assistant.create_session, assistant_id=self.environment_id)
+            return response.get_result()["session_id"]
 
         return session_id
 
-    def send_watson_message(
-        self, session_id: str, user_id: str, input: TalkInput
+    async def send_watson_message(
+        self, session_id: str, user_id: str, input: dict
     ) -> dict:
         """Send a message to watson assistant
 
@@ -113,10 +115,12 @@ class WatsonAssistantImpl(WatsonAssistant):
         Returns:
         dict: The response, in dictionary type, received from watson
         """
-        return self.assistant.message(
+        response = await asyncio.to_thread(
+            self.assistant.message,
             assistant_id=self.assistant_id,
             environment_id=self.environment_id,
             session_id=session_id,
             user_id=user_id,  # using org_id as user_id to identity unique users
             input=input,
-        ).get_result()
+        )
+        return response.get_result()

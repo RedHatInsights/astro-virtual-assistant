@@ -24,15 +24,15 @@ async def talk(data: TalkRequest, assistant: injector.Inject[WatsonAssistant]) -
     org_id = get_org_id_from_identity(identity)
 
     # Todo: Get this from redis?
-    session_id = assistant.create_session(data.session_id)
+    session_id = await assistant.create_session(data.session_id)
     logger.info(f"session_id: {session_id}")
 
     # Send message to Watson Assistant
     try:
-        watson_message_response = assistant.send_watson_message(
+        watson_message_response = await assistant.send_watson_message(
             session_id=session_id,
             user_id=org_id,  # using org_id as user_id to identity unique users
-            input=data.input.dict(exclude_none=True),
+            input=data.input.model_dump(exclude_none=True),
         )
     except ApiException as e:
         # Todo: Should we just let raise this error and let the handler wrap it into a validation error?
