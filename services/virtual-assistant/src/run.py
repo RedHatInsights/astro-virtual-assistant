@@ -3,12 +3,12 @@ from quart import Quart
 from quart_schema import QuartSchema, RequestSchemaValidationError
 import virtual_assistant.config as config
 
-from common.logging import initialize_logging
+from common.logging import build_logger
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 from common.types.errors import ValidationError
 from virtual_assistant.startup import wire_routes, injector_from_config
 
-initialize_logging(config.name)
+build_logger(config.logger_type)
 config.log_config()
 app = Quart(__name__)
 

@@ -29,7 +29,7 @@ def log_config(module, logging_function=None):
     if logging_function is None:
         import logging
 
-        logging_function = logging.info
+        logging_function = logging.getLogger(__name__).info
 
     primitives = (bool, str, int, float, type(None))
 

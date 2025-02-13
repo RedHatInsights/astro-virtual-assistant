@@ -1,7 +1,7 @@
 import quart_injector
 from quart import Quart
 import watson_extension.config as config
-from common.logging import initialize_logging
+from common.logging import build_logger
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 
 from quart_schema import QuartSchema, RequestSchemaValidationError
@@ -9,7 +9,7 @@ from quart_schema import QuartSchema, RequestSchemaValidationError
 from common.types.errors import ValidationError
 from watson_extension.startup import wire_routes, injector_from_config, injector_defaults
 
-initialize_logging(config.name)
+build_logger(config.logger_type)
 app = Quart(__name__)
 config.log_config()
 
