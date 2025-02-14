@@ -1,9 +1,14 @@
+
 import aiohttp
 import injector
+import quart
 from quart import Quart, Blueprint
 from redis.asyncio import StrictRedis
 
 from common.session_storage.redis import RedisSessionStorage
+from watson_extension.auth import Authentication
+from watson_extension.auth.api_key_authentication import ApiKeyAuthentication
+from watson_extension.auth.no_authentication import NoAuthentication
 from watson_extension.clients import AdvisorURL
 from watson_extension.clients.aiohttp_session import aiohttp_session
 from watson_extension.clients.insights.advisor import AdvisorClient, AdvisorClientHttp
@@ -26,6 +31,10 @@ def redis_session_storage_provider() -> RedisSessionStorage:
         password=config.redis_password,
     ))
 
+@injector.provider
+def api_key_authentication_provider() -> Authentication:
+    return ApiKeyAuthentication(config.api_keys)
+
 def injector_from_config(binder: injector.Binder) -> None:
     # Read configuration and assemble our dependencies
     binder.bind(UserIdentity, user_identity_fixed)
@@ -36,6 +45,11 @@ def injector_from_config(binder: injector.Binder) -> None:
         binder.bind(SessionStorage, to=redis_session_storage_provider)
     elif config.session_storage == "file":
         binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
+
+    if config.authentication_type == "no-auth":
+        binder.bind(Authentication, to=NoAuthentication)
+    elif config.authentication_type == "api-key":
+        binder.bind(Authentication, to=api_key_authentication_provider)
 
     # urls
     binder.bind(AdvisorURL, to="http://localhost/")
@@ -59,6 +73,10 @@ def wire_routes(app: Quart) -> None:
 
     # Connect public routes ({config.base_url})
     public_root.register_blueprint(insights.blueprint)
+
+    @public_root.before_request
+    async def authentication_check(authentication: injector.Inject[Authentication]):
+        await authentication.check_auth(quart.request)
 
     app.register_blueprint(public_root)
     app.register_blueprint(private_root)
