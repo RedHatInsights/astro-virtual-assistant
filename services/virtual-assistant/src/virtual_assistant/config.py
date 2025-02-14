@@ -1,10 +1,13 @@
 from decouple import undefined as __undefined
 from common.config import config, log_config as _log_config
+import logging
 
 name = config("APP_NAME", default="virtual-assistant")
 base_url = config("BASE_URL", default="/api/virtual-assistant/v2/")
 port = config("PORT", default=5000, cast=int)
 environment_name = config("ENVIRONMENT_NAME", default="stage", cast=str)
+
+logger_type = config("LOGGER_TYPE", default="basic")
 
 console_dot_base_url = config(
     "CONSOLEDOT_BASE_URL", default="https://console.redhat.com"
@@ -28,4 +31,4 @@ watson_env_version = config(
 def log_config():
     import sys
 
-    _log_config(sys.modules[__name__], print)
+    _log_config(sys.modules[__name__], logging.getLogger(__name__).info)
