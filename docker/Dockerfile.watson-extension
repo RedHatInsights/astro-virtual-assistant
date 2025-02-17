@@ -1,0 +1,42 @@
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+
+USER root
+
+ENV LANG=en_US.UTF-8 \
+    APP_ROOT=/opt/va-watson-extension
+
+# The uv installer requires curl (and certificates) to download the release archive
+RUN INSTALL_PKGS="curl ca-certificates tar jq" && \
+    microdnf --nodocs -y upgrade && \
+    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    microdnf -y clean all --enablerepo='*'
+
+# Download the latest installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+
+# Run the installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure the installed binary in on the PATH
+ENV PATH="/root/.local/bin/:$PATH"
+
+WORKDIR ${APP_ROOT}
+
+# Copy the project into the image
+ADD pyproject.toml uv.lock .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project
+
+ADD services/watson-extension/src/. services/watson-extension/src/.
+ADD services/watson-extension/pyproject.toml services/watson-extension/pyproject.toml
+ADD libs/common/src/. libs/common/src/.
+ADD libs/common/pyproject.toml libs/common/pyproject.toml
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --directory services/watson-extension --no-dev
+
+
+# Setting permissions to user for uv to operate accurately
+RUN mkdir -p /.cache/uv && chown -R 1001:1001 /.cache/uv && chown -R 1001:1001 ${APP_ROOT}
+USER 1001
