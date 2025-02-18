@@ -1034,6 +1034,7 @@ name = "virtual-assistant"
 version = "0.1.0"
 source = { virtual = "services/virtual-assistant" }
 dependencies = [
+    { name = "astro-virtual-assistant" },
     { name = "boto3" },
     { name = "common" },
     { name = "ibm-cloud-sdk-core" },
@@ -1043,6 +1044,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "astro-virtual-assistant", virtual = "." },
     { name = "boto3", specifier = ">=1.36.19" },
     { name = "common", editable = "libs/common" },
     { name = "ibm-cloud-sdk-core", specifier = ">=3.22.1" },
@@ -1068,6 +1070,7 @@ version = "0.1.0"
 source = { virtual = "services/watson-extension" }
 dependencies = [
     { name = "aiohttp" },
+    { name = "astro-virtual-assistant" },
     { name = "common" },
     { name = "requests" },
 ]
@@ -1075,6 +1078,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.11.11" },
+    { name = "astro-virtual-assistant", virtual = "." },
     { name = "common", editable = "libs/common" },
     { name = "requests", specifier = ">=2.32.3" },
 ]

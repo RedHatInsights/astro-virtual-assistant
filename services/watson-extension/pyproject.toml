@@ -4,9 +4,11 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
     "common",
+    "astro-virtual-assistant",
     "aiohttp>=3.11.11",
     "requests>=2.32.3",
 ]
 
 [tool.uv.sources]
 common = { workspace = true }
+astro-virtual-assistant = { workspace = true }

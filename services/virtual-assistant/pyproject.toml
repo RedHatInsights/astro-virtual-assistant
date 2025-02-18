@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
     "common",
+    "astro-virtual-assistant",
     "ibm-watson>=9.0.0",
     "ibm-cloud-sdk-core>=3.22.1",
     "boto3>=1.36.19",
@@ -12,3 +13,4 @@ dependencies = [
 
 [tool.uv.sources]
 common = { workspace = true }
+astro-virtual-assistant = { workspace = true }
