@@ -13,7 +13,7 @@ else:
     __platform_url = __undefined
 
 # Urls
-advisor_url = config("ADVISOR_URL", default=__platform_url)
+advisor_url = config("ENDPOINT__ADVISOR_BACKEND__API__URL", default=__platform_url)
 
 # Platform requests
 platform_request = config("PLATFORM_REQUEST", default="dev" if is_running_locally else "platform", cast=Choices(["dev", "platform"]))
@@ -30,10 +30,10 @@ if authentication_type == "api-key":
 # Session storage
 session_storage = config("SESSION_STORAGE", default="file", cast=Choices(["file", "redis"]))
 if session_storage == "redis":
-    redis_hostname = config("REDIS_HOSTNAME", default=None)
-    redis_port = config("REDIS_PORT", default=None)
-    redis_username = config("REDIS_USERNAME", default=None)
-    redis_password = config("REDIS_PASSWORD", default=None)
+    redis_hostname = config("REDIS_HOSTNAME")
+    redis_port = config("REDIS_PORT")
+    redis_username = config("REDIS_USERNAME")
+    redis_password = config("REDIS_PASSWORD")
 
 
 def log_config():
