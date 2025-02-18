@@ -122,7 +122,6 @@ name = "astro-virtual-assistant"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "hypercorn" },
     { name = "logstash-formatter" },
     { name = "pydantic" },
     { name = "quart" },
@@ -143,7 +142,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hypercorn", specifier = ">=0.17.3" },
     { name = "logstash-formatter", specifier = ">=0.5.17" },
     { name = "pydantic", specifier = ">=2.10.5" },
     { name = "quart", specifier = ">=0.20.0" },
