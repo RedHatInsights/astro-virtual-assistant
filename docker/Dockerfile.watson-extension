@@ -1,42 +1,29 @@
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest AS builder
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
+
+COPY --from=ghcr.io/astral-sh/uv /uv /bin/uv
+
+WORKDIR /app
+
+ADD libs /app/libs
+ADD services /app/services
+ADD .python-version /app
+ADD pyproject.toml /app
+ADD uv.lock /app
+
+RUN uv sync --frozen --no-dev --no-editable --directory services/watson-extension
+
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+WORKDIR /app
 
-USER root
+# Copy python
+COPY --from=builder /root/.local/share/uv/python/ /root/.local/share/uv/python/
 
-ENV LANG=en_US.UTF-8 \
-    APP_ROOT=/opt/va-watson-extension
+# Copy the application from the builder
+COPY --from=builder /app/services/watson-extension/src /app
+COPY --from=builder /app/.venv /app/.venv
 
-# The uv installer requires curl (and certificates) to download the release archive
-RUN INSTALL_PKGS="curl ca-certificates tar jq" && \
-    microdnf --nodocs -y upgrade && \
-    microdnf -y --setopt=tsflags=nodocs --setopt=install_weak_deps=0 install $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
-    microdnf -y clean all --enablerepo='*'
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Download the latest installer
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-
-# Run the installer then remove it
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-
-# Ensure the installed binary in on the PATH
-ENV PATH="/root/.local/bin/:$PATH"
-
-WORKDIR ${APP_ROOT}
-
-# Copy the project into the image
-ADD pyproject.toml uv.lock .
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev --no-install-project
-
-ADD services/watson-extension/src/. services/watson-extension/src/.
-ADD services/watson-extension/pyproject.toml services/watson-extension/pyproject.toml
-ADD libs/common/src/. libs/common/src/.
-ADD libs/common/pyproject.toml libs/common/pyproject.toml
-
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --directory services/watson-extension --no-dev
-
-
-# Setting permissions to user for uv to operate accurately
-RUN mkdir -p /.cache/uv && chown -R 1001:1001 /.cache/uv && chown -R 1001:1001 ${APP_ROOT}
 USER 1001
