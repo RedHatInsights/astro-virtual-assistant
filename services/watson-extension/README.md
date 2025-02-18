@@ -27,7 +27,7 @@ In reality, a route could use multiple clients to perform their operation.
 This service can be run by using `make run-watson-extension` from the root of the project. It will start the service
 listening on port 5050.
 
-API spec is [served](http://127.0.0.1:5050/api/virtual-assistant-watson-extension/v2//openapi.json) by the service.
+API spec is [served](http://127.0.0.1:5050/api/virtual-assistant-watson-extension/v2/openapi.json) by the service.
 There are also [redocs](http://127.0.0.1:5050/redocs), [scalar](http://127.0.0.1:5050/scalar) and [swagger](http://127.0.0.1:5050/docs) frontends available for convenience.
 
 ## Developing
