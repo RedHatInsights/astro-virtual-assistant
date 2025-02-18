@@ -27,6 +27,15 @@ classDiagram
         <<Library>>
     }
 
+    namespace Services {
+        class Service {
+        }
+
+        class ServiceResponse {
+
+        }
+    }
+
     namespace Routes {
         class Route {
             +call() RouteResponse
@@ -34,6 +43,10 @@ classDiagram
 
         class RouteResponse {
             response: string
+        }
+
+        class RouteTemplate {
+
         }
 
     }
@@ -55,7 +68,10 @@ classDiagram
 
     PlatformRequest *-- HttpSession
 
-    AbstractClient *-- Route
+    AbstractClient *-- Service
+    Service *-- Route
+
+    Service ..> ServiceResponse
 
     Route --> RouteTemplate
     Route ..> RouteResponse

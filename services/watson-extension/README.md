@@ -34,13 +34,34 @@ There are also [redocs](http://127.0.0.1:5050/redocs), [scalar](http://127.0.0.1
 
 This section is still in development, this should be updated as we make changes to our design.
 
-The current architecture makes use of `clients` to communicate with other services in the platform, `routes` to handle
-incoming requests from watson and `templates` to render the messages we got from the customers.
-
-We could create an additional layer to handle the business logic if we feel the routes is doing too much work already.
+The current architecture makes use of `clients` to communicate with other services in the platform, `core` layer to
+handle the business logic and `routes` to handle the incoming Http rests requests from watson and finally 
+`templates` to render the messages we got from the customers.
 
 We are currently targeting only UI on our console, but we could configure out templates to use different outputs
 depending on the formats we require.
+
+If we ever need to support a different communication mechanism (i.e. [MCP](https://modelcontextprotocol.io/introduction))
+we could do one of the following:
+
+1. Create 2 new python packages in this repository. One for the http-rest routes (i.e. watson-extension-rest)
+and other for mcp (i.e. watson-extension-mcp). The later could be built on quart, or we could use a library that implements
+MCP and has support for [injector](https://pypi.org/project/injector/).
+2. If what we need to support is compatible with HTTP (i.e. JSONRPC over HTTP), we could support it in the same application
+by using the headers to decide how to translate the input and output of the request.
+
+## Running locally
+
+To be able to communicate to services within console.redhat.com, you need to have a valid offline token for https://sso.redhat.com.
+All the API calls will be made on behalf of the user of this token. You can generate an offline token at
+[https://access.redhat.com/management/api](https://access.redhat.com/management/api) by clicking "Generate token".
+Copy this token to the environment variable `DEV_PLATFORM_REQUEST_OFFLINE_TOKEN` (`.env` file is supported).
+
+> If you want to use the stage environment, generate the token at
+> [https://access.stage.redhat.com/management/api](https://access.stage.redhat.com/management/api) and also set the
+> environment variable `DEV_PLATFORM_REQUEST_REFRESH_URL` to `https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token`
+>
+> You will also need to point the `PLATFORM_URL` environment variable to [https://console.stage.redhat.com](https://console.stage.redhat.com), and make sure that your http proxy url is set up properly.
 
 ## API
 

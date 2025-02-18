@@ -33,11 +33,11 @@ def injector_from_config(binder: injector.Binder) -> None:
     # This gets injected into routes when it is requested.
     # e.g. async def status(session_storage: injector.Inject[SessionStorage]) -> StatusResponse:
     if config.session_storage == "redis":
-        binder.bind(SessionStorage, to=redis_session_storage_provider)
+        binder.bind(SessionStorage, to=redis_session_storage_provider, scope=injector.singleton)
     elif config.session_storage == "file":
-        binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"))
+        binder.bind(SessionStorage, to=FileSessionStorage(".va-session-storage"), scope=injector.singleton)
 
-    binder.bind(WatsonAssistant, to=watson_provider)
+    binder.bind(WatsonAssistant, to=watson_provider, scope=injector.singleton)
 
 def wire_routes(app: Quart) -> None:
     public_root = Blueprint("public_root", __name__, url_prefix=config.base_url)
