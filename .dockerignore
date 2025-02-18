@@ -2,3 +2,4 @@
 .podman
 .kube
 .git
+.env
