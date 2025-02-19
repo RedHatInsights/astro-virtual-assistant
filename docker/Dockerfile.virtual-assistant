@@ -1,0 +1,29 @@
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest AS builder
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
+
+COPY --from=ghcr.io/astral-sh/uv /uv /bin/uv
+
+WORKDIR /app
+
+ADD libs /app/libs
+ADD services /app/services
+ADD .python-version /app
+ADD pyproject.toml /app
+ADD uv.lock /app
+
+RUN uv sync --frozen --no-dev --no-editable --directory services/virtual-assistant
+
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+WORKDIR /app
+
+# Copy python
+COPY --from=builder /root/.local/share/uv/python/ /root/.local/share/uv/python/
+
+# Copy the application from the builder
+COPY --from=builder /app/services/virtual-assistant/src /app
+COPY --from=builder /app/.venv /app/.venv
+
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
+
+USER 1001

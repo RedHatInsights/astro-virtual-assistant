@@ -3,3 +3,7 @@
 .kube
 .git
 .env
+libs/common/tests/
+services/virtual-assistant/tests/
+services/watson-extension/tests/
+**/pytest.ini
