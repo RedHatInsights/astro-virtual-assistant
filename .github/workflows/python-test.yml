@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: make install
       - name: Python test
-        run: make test-python-coverage
+        run: COVERAGE_FORMAT=xml make test-python-coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
