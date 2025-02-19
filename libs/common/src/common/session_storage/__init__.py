@@ -25,11 +25,9 @@ class SessionStorage(ABC):
         """
         Stores a session into the storage, replacing if it exists
         """
-        pass
 
     @abstractmethod
     async def retrieve(self, session_key: str) -> Optional[Session]:
         """
         Retrieves the session using the session key
         """
-        pass

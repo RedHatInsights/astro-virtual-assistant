@@ -33,3 +33,8 @@ async def test_redis_session_storage_retrieval(session_storage, redis):
     assert type(retrieved) is Session
     assert retrieved.key == "my-key"
     assert retrieved.user_identity == "my.identity"
+
+
+async def test_redis_session_storage_retrieval_not_found(session_storage, redis):
+    retrieved = await session_storage.get("my-key")
+    assert retrieved is None

@@ -1,91 +1,16 @@
 from __future__ import annotations
-import requests
 
-from common.config import shared_config as app
-from .header import Header
+import binascii
 
 from quart import request, jsonify
 import base64
 import functools
 import json
 
-import jwt
-
-local_dev_token: str | None = None
-
-
-# if local token specified, it defaults to it
-def get_auth_header(tracker: object, header: Header) -> Header:
-    global local_dev_token
-
-    if app.is_running_locally:
-        # if its already saved, use it
-        if local_dev_token is not None and _is_jwt_valid(local_dev_token):
-            header.add_header("Authorization", "Bearer " + local_dev_token)
-            return header
-        else:
-            local_dev_token = None
-
-        # need to set the offline token
-        offline_token = app.dev_offline_refresh_token
-        if offline_token is not None:
-            local_dev_token = _with_refresh_token(offline_token)
-            header.add_header("Authorization", "Bearer " + local_dev_token)
-            return header
-
-        raise ValueError("No offline token found")
-
-    # This is changing
-    # identity = get_user_identity(tracker)
-    identity = None
-
-    if identity is not None:
-        header.add_header("x-rh-identity", identity)
-        return header
-
-    raise ValueError("No authentication found")
-
-
-def _with_refresh_token(refresh_token: str) -> str:
-    result = requests.post(
-        app.dev_sso_refresh_token_url,
-        data={
-            "grant_type": "refresh_token",
-            "client_id": "rhsm-api",
-            "refresh_token": refresh_token,
-        },
-    )
-
-    if not result.ok:
-        raise "Unable to refresh token"
-
-    token = result.json()["access_token"]
-    _jwt_decode(token)
-
-    return token
-
-
-def _is_jwt_valid(token: str) -> bool:
-    try:
-        # We want to know if the token expired
-        _jwt_decode(token)
-        return True
-    except jwt.InvalidTokenError:
-        return False
-
-
-def _jwt_decode(token: str) -> None:
-    # Skip signature check - token service is going to validate for us
-    jwt.decode(
-        token,
-        options={"verify_signature": False, "verify_exp": True, "verify_nbf": True},
-    )
-
-
 def check_identity(identity_header):
     try:
         base64.b64decode(identity_header)
-    except Exception:
+    except binascii.Error:
         return False
     return True
 
