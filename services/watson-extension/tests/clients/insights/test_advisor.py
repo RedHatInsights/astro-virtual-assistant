@@ -4,7 +4,7 @@ from aioresponses import aioresponses
 
 from tests import get_resource_contents
 from watson_extension.clients import AdvisorURL
-from watson_extension.clients.identity import UserIdentity
+from watson_extension.clients.identity import FixedUserIdentityProvider
 from watson_extension.clients.insights.advisor import AdvisorClient, AdvisorClientHttp, FindRuleSort
 from watson_extension.clients.platform_request import PlatformRequest
 
@@ -22,7 +22,7 @@ async def session():
 
 @pytest.fixture
 async def client(session) -> AdvisorClient:
-    return AdvisorClientHttp(AdvisorURL(""), UserIdentity(""), PlatformRequest(session))
+    return AdvisorClientHttp(AdvisorURL(""), FixedUserIdentityProvider(), PlatformRequest(session))
 
 async def test_find_rule_category_by_name(client, aiohttp_mock) -> None:
     aiohttp_mock.get(

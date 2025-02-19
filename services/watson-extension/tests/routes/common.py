@@ -6,7 +6,8 @@ import quart_injector
 import injector
 
 from watson_extension.clients import AdvisorURL
-from watson_extension.clients.identity import UserIdentity, user_identity_fixed
+from watson_extension.clients.identity import FixedUserIdentityProvider, AbstractUserIdentityProvider
+
 
 def app_with_blueprint(blueprint: Blueprint, injector_module: Optional[Callable[[injector.Binder], None]] = None) -> Quart:
     app = Quart(__name__, template_folder="../../src/templates")
@@ -20,7 +21,7 @@ def app_with_blueprint(blueprint: Blueprint, injector_module: Optional[Callable[
     return app
 
 def _injector_config(binder: injector.Binder) -> None:
-    binder.bind(UserIdentity, user_identity_fixed)
+    binder.bind(AbstractUserIdentityProvider, FixedUserIdentityProvider)
 
     # URLs
     binder.bind(AdvisorURL, "http://127.0.0.1")
