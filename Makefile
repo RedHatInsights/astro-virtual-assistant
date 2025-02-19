@@ -15,8 +15,6 @@ include scripts/make/Makefile.variables.mk
 include scripts/make/Makefile.test.mk
 include scripts/make/Makefile.lint.mk
 
-export PIPENV_IGNORE_VIRTUALENVS=1
-
 # install
 install:
 	uv sync
@@ -28,18 +26,5 @@ run:
 run-watson-extension:
 	uv run --directory services/watson-extension src/run.py
 
-run-db:
-	pipenv run make db
-
-db:
-	${CONTAINER_EXEC} run --rm -it -p 5432:${DB_PORT} -e POSTGRESQL_PASSWORD=${DB_PASSWORD} -e POSTGRESQL_USER=${DB_USERNAME} -e POSTGRESQL_DATABASE=${DB_NAME} --name postgres quay.io/sclorg/postgresql-15-c9s:latest
-
-drop-db:
-	${CONTAINER_EXEC} stop postgres
-	${CONTAINER_EXEC} rm postgres
-
 redis:
 	${CONTAINER_EXEC} run --name va-redis -d -p 6379:${REDIS_PORT} redis
-
-compose:
-	pipenv run ${COMPOSE_EXEC} up
