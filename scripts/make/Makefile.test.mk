@@ -12,9 +12,9 @@ test-python:
 	uv run --directory services/watson-extension pytest
 
 test-python-coverage:
-	uv run --directory libs/common coverage run -m pytest && uv run --directory libs/common coverage report
-	uv run --directory services/virtual-assistant coverage run -m pytest && uv run --directory services/virtual-assistant coverage report
-	uv run --directory services/watson-extension coverage run -m pytest && uv run --directory services/watson-extension coverage report
+	uv run --directory libs/common coverage run -m pytest --junitxml=junit.xml -o junit_family=legacy && uv run --directory libs/common coverage report
+	uv run --directory services/virtual-assistant coverage run -m pytest --junitxml=junit.xml && uv run --directory services/virtual-assistant coverage report
+	uv run --directory services/watson-extension coverage run -m pytest --junitxml=junit.xml && uv run --directory services/watson-extension coverage report
 ifneq ($(COVERAGE_FORMAT),)
 	uv run --directory libs/common coverage $(COVERAGE_FORMAT)
 	uv run --directory services/virtual-assistant coverage $(COVERAGE_FORMAT)
