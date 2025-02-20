@@ -1,16 +1,17 @@
 from common.config import config, log_config as _log_config
-from decouple import Csv, Choices, undefined as __undefined
+from decouple import Csv, Choices
 import logging
 
 name = config("APP_NAME", default="virtual-assistant-watson-extension")
 base_url = config("BASE_URL", default="/api/virtual-assistant-watson-extension/v2/")
 port = config("PORT", default=5050, cast=int)
+environment_name = config("ENVIRONMENT_NAME", default="stage", cast=str)
 
 is_running_locally = config("IS_RUNNING_LOCALLY", default=False, cast=bool)
 if is_running_locally:
     __platform_url = config("PLATFORM_URL", default="https://console.redhat.com")
 else:
-    __platform_url = __undefined
+    __platform_url = None
 
 # Urls
 advisor_url = config("ENDPOINT__ADVISOR_BACKEND__API__URL", default=__platform_url)
