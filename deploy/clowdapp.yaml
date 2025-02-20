@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: virtual-assistant
+  name: virtual-assistant-v2
 objects:
 - apiVersion: cloud.redhat.com/v1alpha1
   kind: ClowdApp
@@ -10,25 +10,10 @@ objects:
     name: virtual-assistant
   spec:
     envName: ${ENV_NAME}
-    testing:
-      iqePlugin: astro-va
-    dependencies:
+    optionalDependencies:
       - advisor-backend
-      - notifications-gw
-      - notifications-backend
-      - vulnerability-engine
-      - content-sources-backend
-      - sources-api
-      - rhsm-api-proxy
-      - ccx-smart-proxy
-      - chrome-service
-      - rbac
 
     inMemoryDb: true
-    database:
-      name: virtual-assistant
-      version: 12
-
     deployments:
     - name: api
       minReplicas: ${{MIN_REPLICAS}}
@@ -43,8 +28,8 @@ objects:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /api/virtual-assistant/v1
-            port: 8000
+            path: /api/virtual-assistant/v2/health/status
+            port: 5000
             scheme: HTTP
           initialDelaySeconds: 240
           periodSeconds: 10
@@ -53,7 +38,7 @@ objects:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /api/virtual-assistant/v1
+            path: /api/virtual-assistant/v2/health/status
             port: 8000
             scheme: HTTP
           initialDelaySeconds: 240
@@ -63,73 +48,34 @@ objects:
         env:
           - name: CLOWDER_ENABLED
             value: ${CLOWDER_ENABLED}
+          - name: LOGGER_TYPE
+            value: ${LOGGER_TYPE}
           - name: LOG_LEVEL
             value: ${LOG_LEVEL}
-          - name: FAIL_FAST_ON_DEPENDENCIES
-            value: ${FAIL_FAST_ON_DEPENDENCIES}
-          - name: TRACKER_STORE_TYPE
-            value: ${TRACKER_STORE_TYPE}
-          - name: LOCK_STORE_TYPE
-            value: ${LOCK_STORE_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
-          - name: ACTIONS_ENDPOINT_URL
-            value: ${ACTIONS_ENDPOINT_URL}
-          - name: SANIC_REQUEST_MAX_HEADER_SIZE
+          - name: SERVER_REQUEST_MAX_HEADER_SIZE
             value: ${SERVER_REQUEST_MAX_HEADER_SIZE}
-          - name: SANIC_WORKERS
-            value: ${REST_WORKERS}
-        resources:
-          limits:
-            cpu: 1500m
-            memory: 1.6Gi
-          requests:
-            cpu: 1000m
-            memory: 1.2Gi
-    - name: actions
-      minReplicas: ${{MIN_REPLICAS}}
-      webServices:
-        private:
-          enabled: true
-        metrics:
-          enabled: true
-      podSpec:
-        image: ${ACTIONS_IMAGE_NAME}:${IMAGE_TAG}
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health
-            port: 10000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 27
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health
-            port: 10000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 30
-        env:
-          - name: CLOWDER_ENABLED
-            value: ${CLOWDER_ENABLED}
-          - name: LOG_LEVEL
-            value: ${LOG_LEVEL}
-          - name: FAIL_FAST_ON_DEPENDENCIES
-            value: ${FAIL_FAST_ON_DEPENDENCIES}
-          - name: TRACKER_STORE_TYPE
-            value: ${TRACKER_STORE_TYPE}
-          - name: PROMETHEUS
-            value: ${PROMETHEUS}
-          - name: CONSOLEDOT_BASE_URL
-            value: ${CONSOLEDOT_BASE_URL}
           - name: ENVIRONMENT_NAME
             value: ${ENVIRONMENT_NAME}
+          - name: CONSOLEDOT_BASE_URL
+            value: ${CONSOLEDOT_BASE_URL}
+          - name: SESSION_STORAGE
+            value: ${SESSION_STORAGE}
+          - name: WATSON_API_URL
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-watson
+                key: api.url
+          - name: WATSON_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: virtual-assistant-watson
+                key: api.key
+          - name: WATSON_ENV_ID
+            value: ${WATSON_ENV_ID}
+          - name: WATSON_ENV_VERSION
+            value: ${WATSON_ENV_VERSION}
         resources:
           limits:
             cpu: 250m
@@ -137,24 +83,21 @@ objects:
           requests:
             cpu: 100m
             memory: 80Mi
-
-    - name: internal
+    - name: watson-extension
       minReplicas: ${{MIN_REPLICAS}}
       webServices:
-        private:
+        public:
           enabled: true
+          apiPath: virtual-assistant-watson-extension
         metrics:
           enabled: true
       podSpec:
-        image: ${INTERNAL_IMAGE_NAME}:${IMAGE_TAG}
-        command:
-          - python
-          - run_internal.py
+        image: ${WATSON_EXTENSION_IMAGE_NAME}:${IMAGE_TAG}
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /
-            port: 9000
+            path: /api/virtual-assistant-watson-extension/v2/health/status
+            port: 10000
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -163,8 +106,8 @@ objects:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /
-            port: 9000
+            path: /api/virtual-assistant-watson-extension/v2/health/status
+            port: 10000
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -175,14 +118,14 @@ objects:
             value: ${CLOWDER_ENABLED}
           - name: LOG_LEVEL
             value: ${LOG_LEVEL}
-          - name: FAIL_FAST_ON_DEPENDENCIES
-            value: ${FAIL_FAST_ON_DEPENDENCIES}
-          - name: TRACKER_STORE_TYPE
-            value: ${TRACKER_STORE_TYPE}
+          - name: LOGGER_TYPE
+            value: ${LOGGER_TYPE}
           - name: PROMETHEUS
             value: ${PROMETHEUS}
-          - name: CONSOLEDOT_BASE_URL
-            value: ${CONSOLEDOT_BASE_URL}
+          - name: ENVIRONMENT_NAME
+            value: ${ENVIRONMENT_NAME}
+          - name: SESSION_STORAGE
+            value: ${SESSION_STORAGE}
         resources:
           limits:
             cpu: 250m
@@ -190,70 +133,24 @@ objects:
           requests:
             cpu: 100m
             memory: 80Mi
-    jobs:
-    - name: db-cleaner
-      schedule: ${CLEANER_SCHEDULE}
-      suspend: ${{CLEANER_SUSPEND}}
-      concurrencyPolicy: Forbid
-      restartPolicy: Never
-      podSpec:
-        image: quay.io/cloudservices/postgresql-rds:15
-        volumes:
-          - name: virtual-assistant-db-cleaner-volume
-            configMap:
-              name: virtual-assistant-db-cleaner-config
-        volumeMounts:
-          - name: virtual-assistant-db-cleaner-volume
-            mountPath: /virtual-assistant-db-cleaner
-        command: [ 'sh', '/virtual-assistant-db-cleaner/clean.sh' ]
-        env:
-          - name: PGHOST
-            valueFrom:
-              secretKeyRef:
-                name: virtual-assistant-db
-                key: db.host
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                name: virtual-assistant-db
-                key: db.name
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                name: virtual-assistant-db
-                key: db.user
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: virtual-assistant-db
-                key: db.password
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
-
-- apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    name: virtual-assistant-db-cleaner-config
-  data:
-    clean.sh: |
-      cat /virtual-assistant-db-cleaner/clean.sql | psql
-    clean.sql: |
-      \timing
-      DELETE FROM events WHERE timestamp < EXTRACT(EPOCH FROM (NOW() - interval '180 days'));
-      VACUUM ANALYZE events;
 parameters:
 - description: Minimum number of replicas required
   name: MIN_REPLICAS
   value: "1"
 - name: LOG_LEVEL
   value: INFO
-- name: FAIL_FAST_ON_DEPENDENCIES
-  value: "true"
+- description: Logging strategy to use. (basic, cloudwatch)
+  name: LOGGER_TYPE
+  value: cloudwatch
+- description: Session storage backend to use to share session data.
+  name: SESSION_STORAGE
+  value: redis
+- description: Watson environment id to use.
+  name: WATSON_ENV_ID
+  required: true
+- description: Version of the watson environment
+  name: WATSON_ENV_VERSION
+  value: 2024-08-25
 - description: Determines Clowder deployment
   name: CLOWDER_ENABLED
   value: "true"
@@ -263,41 +160,22 @@ parameters:
   required: true
 - descripton: Virtual Assistant API image name
   name: API_IMAGE_NAME
-  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-api"
+  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-api-v2"
 - descripton: Virtual Assistant actions server image name
-  name: ACTIONS_IMAGE_NAME
-  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-actions"
-- descripton: Virtual Assistant internal API image name
-  name: INTERNAL_IMAGE_NAME
-  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-internal"
+  name: WATSON_EXTENSION_IMAGE_NAME
+  value: "quay.io/redhat-services-prod/hcc-platex-services-tenant/virtual-assistant-watson-extension"
 - description: The Image tag
   name: IMAGE_TAG
   value: "latest"
-- description: Tracker store type
-  name: TRACKER_STORE_TYPE
-  value: "SQL"
-- description: Lock store type
-  name: LOCK_STORE_TYPE
-  value: "redis"
 - description: Enable Prometheus
   name: PROMETHEUS
   value: "True"
-- description: Actions endpoint url
-  name: ACTIONS_ENDPOINT_URL
-  value: http://virtual-assistant-actions:10000/webhook
 - description: ConsoleDot base url
   name: CONSOLEDOT_BASE_URL
   value: https://console.redhat.com
 - description: Server's max allowed header size
   name: SERVER_REQUEST_MAX_HEADER_SIZE
   value: "20000"
-- name: CLEANER_SUSPEND
-  value: 'false'
-- name: CLEANER_SCHEDULE
-  value: "1 0 * * *"
-- name: REST_WORKERS
-  description: The number of workers in Sanic's REST API
-  value: "1"
 - name: ENVIRONMENT_NAME
   description: The name of the environment. Needs to be either stage or prod
   value: "prod"
