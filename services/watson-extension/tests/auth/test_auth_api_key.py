@@ -15,6 +15,7 @@ async def test_api_key_valid(api_key):
     await auth.check_auth(request)
     request.args.get.assert_called_once_with("api_key")
 
+
 @given(st.text(), st.text())
 async def test_multiple_params(api_key1, api_key2):
     request = MagicMock(quart.Request)
@@ -22,6 +23,7 @@ async def test_multiple_params(api_key1, api_key2):
     auth = ApiKeyAuthentication([api_key1, api_key2])
     await auth.check_auth(request)
     request.args.get.assert_called_once_with("api_key")
+
 
 @given(st.text(), st.text())
 async def test_wrong_key(good_api_key, wrong_api_key):

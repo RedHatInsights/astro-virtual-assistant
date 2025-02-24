@@ -7,14 +7,18 @@ base_url = config("BASE_URL", default="/api/virtual-assistant/v2/")
 port = config("PORT", default=5000, cast=int)
 environment_name = config("ENVIRONMENT_NAME", default="stage", cast=str)
 
-logger_type = config("LOGGER_TYPE", default="basic", cast=Choices(['basic', 'cloudwatch']))
+logger_type = config(
+    "LOGGER_TYPE", default="basic", cast=Choices(["basic", "cloudwatch"])
+)
 
 console_dot_base_url = config(
     "CONSOLEDOT_BASE_URL", default="https://console.redhat.com"
 )
 
 # Session storage
-session_storage = config("SESSION_STORAGE", default="file", cast=Choices(["file", "redis"]))
+session_storage = config(
+    "SESSION_STORAGE", default="file", cast=Choices(["file", "redis"])
+)
 if session_storage == "redis":
     redis_hostname = config("REDIS_HOSTNAME")
     redis_port = config("REDIS_PORT")
@@ -27,6 +31,7 @@ watson_env_id = config("WATSON_ENV_ID")
 watson_env_version = config(
     "WATSON_ENV_VERSION", default="2024-08-25"
 )  # Needs updating if watson releases breaking change. See: https://cloud.ibm.com/apidocs/assistant-v2?code=python#versioning
+
 
 def log_config():
     import sys

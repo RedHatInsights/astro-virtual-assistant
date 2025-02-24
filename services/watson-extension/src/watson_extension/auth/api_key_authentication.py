@@ -5,8 +5,8 @@ from werkzeug.exceptions import Unauthorized
 
 from watson_extension.auth import Authentication
 
-class ApiKeyAuthentication(Authentication):
 
+class ApiKeyAuthentication(Authentication):
     def __init__(self, valid_keys: List[str]):
         self.valid_keys = valid_keys
 

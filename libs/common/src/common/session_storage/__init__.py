@@ -13,7 +13,6 @@ class SessionStorage(ABC):
     def __init__(self):
         pass
 
-
     async def put(self, session: Session):
         return await self.store(session)
 

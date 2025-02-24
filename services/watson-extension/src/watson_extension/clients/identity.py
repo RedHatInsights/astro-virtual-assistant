@@ -3,8 +3,10 @@ import abc
 import injector
 from common.session_storage import SessionStorage
 
+
 class AbstractUserIdentityProvider(abc.ABC):
     async def get_user_identity(self) -> str: ...
+
 
 class QuartUserIdentityProvider(AbstractUserIdentityProvider):
     def __init__(self, session_storage: injector.Inject[SessionStorage]):
@@ -15,6 +17,7 @@ class QuartUserIdentityProvider(AbstractUserIdentityProvider):
 
         session_id = request.headers["x-rh-session-id"]
         return (await self.session_storage.get(session_id)).user_identity
+
 
 class FixedUserIdentityProvider(AbstractUserIdentityProvider):
     async def get_user_identity(self):

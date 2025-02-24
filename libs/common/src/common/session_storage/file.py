@@ -3,6 +3,7 @@ from typing import Optional
 
 from . import Session, SessionStorage
 
+
 class FileSessionStorage(SessionStorage):
     """
     File session storage - only to be used for testing purposes when running both services in the same machine
