@@ -4,7 +4,13 @@ import watson_extension.config as config
 from common.logging import build_logger
 from common.quart_schema import VirtualAssistantOpenAPIProvider
 
-from quart_schema import QuartSchema, RequestSchemaValidationError
+from quart_schema import (
+    QuartSchema,
+    RequestSchemaValidationError,
+    Server,
+    ServerVariable,
+    Info,
+)
 
 from common.types.errors import ValidationError
 from watson_extension.startup import (
@@ -31,6 +37,53 @@ QuartSchema(
     app,
     openapi_path=config.base_url + "/openapi.json",
     openapi_provider_class=VirtualAssistantOpenAPIProvider,
+    info=Info(
+        title="Virtual assistant watson extension",
+        version="2.0.0",
+        description="Extension to provide data from the console to virtual assistant",
+    ),
+    servers=[
+        Server(
+            url="{server}" + config.base_url,
+            description="Virtual assistant watson extension",
+            variables={
+                "server": ServerVariable(
+                    enum=[
+                        "https://console.redhat.com",
+                        "https://console.stage.redhat.com",
+                    ],
+                    default="https://console.redhat.com",
+                    description="Available environments",
+                )
+            },
+        ),
+    ],
+    security_schemes={
+        "service2service": {
+            "type": "oauth2",
+            "flows": {
+                "clientCredentials": {
+                    "tokenUrl": "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
+                    "scopes": {
+                        "openid": "default",
+                        "api.iam.service_accounts": "default",
+                    },
+                }
+            },
+        },
+        "service2service-stage": {
+            "type": "oauth2",
+            "flows": {
+                "clientCredentials": {
+                    "tokenUrl": "https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
+                    "scopes": {
+                        "openid": "default",
+                        "api.iam.service_accounts": "default",
+                    },
+                }
+            },
+        },
+    },
 )
 
 if __name__ == "__main__":
