@@ -10,6 +10,7 @@ from common.session_storage.redis import RedisSessionStorage
 from watson_extension.auth import Authentication
 from watson_extension.auth.api_key_authentication import ApiKeyAuthentication
 from watson_extension.auth.no_authentication import NoAuthentication
+from watson_extension.auth.service_account_authentication import ServiceAccountAuthentication
 from watson_extension.clients import AdvisorURL
 from watson_extension.clients.aiohttp_session import aiohttp_session
 from watson_extension.clients.insights.advisor import AdvisorClient, AdvisorClientHttp
@@ -48,6 +49,10 @@ def redis_session_storage_provider() -> RedisSessionStorage:
 def api_key_authentication_provider() -> Authentication:
     return ApiKeyAuthentication(config.api_keys)
 
+@injector.provider
+def sa_authentication_provider() -> Authentication:
+    return ServiceAccountAuthentication(config.sa_client_id)
+
 def injector_from_config(binder: injector.Binder) -> None:
     # Read configuration and assemble our dependencies
     if config.is_running_locally:
@@ -72,6 +77,8 @@ def injector_from_config(binder: injector.Binder) -> None:
         binder.bind(Authentication, to=NoAuthentication, scope=injector.singleton)
     elif config.authentication_type == "api-key":
         binder.bind(Authentication, to=api_key_authentication_provider, scope=injector.singleton)
+    elif config.authentication_type == "service-account":
+        binder.bind(Authentication, to=sa_authentication_provider, scope=injector.singleton)
 
     # urls
     binder.bind(AdvisorURL, to=config.advisor_url, scope=injector.singleton)

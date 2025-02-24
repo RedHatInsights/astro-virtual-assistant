@@ -24,9 +24,11 @@ if platform_request == "dev":
 
 logger_type = config("LOGGER_TYPE", default="basic", cast=Choices(['basic', 'cloudwatch']))
 
-authentication_type = config("AUTHENTICATION_TYPE", default="no-auth", cast=Choices(['no-auth', 'api-key']))
+authentication_type = config("AUTHENTICATION_TYPE", default="no-auth", cast=Choices(['no-auth', 'api-key', 'service-account']))
 if authentication_type == "api-key":
     api_keys = config("API_KEYS", default=None, cast=Csv(str))
+elif authentication_type == "service-account":
+    sa_client_id = config("SA_CLIENT_ID")
 
 # Session storage
 session_storage = config("SESSION_STORAGE", default="file", cast=Choices(["file", "redis"]))
