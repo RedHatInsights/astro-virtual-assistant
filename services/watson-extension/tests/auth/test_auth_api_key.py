@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock
-from hypothesis import given, strategies as st
+from hypothesis import given, strategies as st, assume
 import quart
 import pytest
 
@@ -23,10 +23,12 @@ async def test_multiple_params(api_key1, api_key2):
     await auth.check_auth(request)
     request.args.get.assert_called_once_with("api_key")
 
-async def test_wrong_key():
+@given(st.text(), st.text())
+async def test_wrong_key(good_api_key, wrong_api_key):
+    assume(good_api_key != wrong_api_key)
     request = MagicMock(quart.Request)
-    request.args.get = MagicMock(return_value="hacker")
-    auth = ApiKeyAuthentication(["1234"])
+    request.args.get = MagicMock(return_value=wrong_api_key)
+    auth = ApiKeyAuthentication([good_api_key])
     with pytest.raises(Unauthorized):
         await auth.check_auth(request)
     request.args.get.assert_called_once_with("api_key")
