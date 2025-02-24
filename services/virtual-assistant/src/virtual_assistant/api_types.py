@@ -37,11 +37,14 @@ class TalkResponseCommandData(BaseModel):
     type: str
     args: Optional[List[str]] = None
 
+
 class TalkResponseCommand(TalkResponseItem):
     command: TalkResponseCommandData
 
 
 response_item_types = Union[TalkResponseText, TalkResponseCommand]
+
+
 class TalkResponse(BaseModel):
     response: Optional[List[response_item_types]] = None
     session_id: str

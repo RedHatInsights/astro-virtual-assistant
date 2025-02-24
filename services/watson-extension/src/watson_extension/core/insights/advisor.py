@@ -10,6 +10,7 @@ class RecommendationCategory(enum.Enum):
     """
     Categories to group different searching queries for rhel advisor recommendations
     """
+
     PERFORMANCE = "performance"
     SECURITY = "security"
     AVAILABILITY = "availability"
@@ -17,6 +18,7 @@ class RecommendationCategory(enum.Enum):
     NEW = "new"
     CRITICAL = "critical"
     WORKLOAD = "workload"
+
 
 class AdvisorCore:
     def __init__(self, advisor_client: injector.Inject[AdvisorClient]):
@@ -29,8 +31,15 @@ class AdvisorCore:
         total_risk: Optional[int] = None
         only_workloads: Optional[bool] = None
 
-        if category_type in {RecommendationCategory.SECURITY, RecommendationCategory.STABILITY, RecommendationCategory.AVAILABILITY, RecommendationCategory.PERFORMANCE}:
-            category = await self.advisor_client.find_rule_category_by_name(category_name)
+        if category_type in {
+            RecommendationCategory.SECURITY,
+            RecommendationCategory.STABILITY,
+            RecommendationCategory.AVAILABILITY,
+            RecommendationCategory.PERFORMANCE,
+        }:
+            category = await self.advisor_client.find_rule_category_by_name(
+                category_name
+            )
             category_id = category.id
             sort = FindRuleSort.TotalRisk
         elif category_type is RecommendationCategory.NEW:
@@ -40,4 +49,9 @@ class AdvisorCore:
         elif category_type is RecommendationCategory.WORKLOAD:
             only_workloads = True
 
-        return await self.advisor_client.find_rules(category_id=category_id, total_risk=total_risk, sort=sort, only_workloads=only_workloads)
+        return await self.advisor_client.find_rules(
+            category_id=category_id,
+            total_risk=total_risk,
+            sort=sort,
+            only_workloads=only_workloads,
+        )

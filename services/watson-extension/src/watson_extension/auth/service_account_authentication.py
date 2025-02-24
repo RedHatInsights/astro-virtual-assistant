@@ -7,8 +7,8 @@ from werkzeug.exceptions import Unauthorized
 
 from watson_extension.auth import Authentication
 
-class ServiceAccountAuthentication(Authentication):
 
+class ServiceAccountAuthentication(Authentication):
     def __init__(self, client_id: str):
         self.client_id = client_id
 

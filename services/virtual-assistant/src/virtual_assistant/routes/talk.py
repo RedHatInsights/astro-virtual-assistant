@@ -14,12 +14,15 @@ blueprint = Blueprint("talk", __name__, url_prefix="/talk")
 
 logger = logging.getLogger(__name__)
 
+
 @blueprint.route("", methods=["POST"])
 @require_identity_header
 @validate_request(TalkRequest)
 @validate_response(TalkResponse, 200)
 @validate_response(ValidationError, 400)
-async def talk(data: TalkRequest, assistant: injector.Inject[WatsonAssistant]) -> TalkResponse:
+async def talk(
+    data: TalkRequest, assistant: injector.Inject[WatsonAssistant]
+) -> TalkResponse:
     identity = request.headers.get("x-rh-identity")
     # Todo: Update to use user_id - org-id applies to multiple users
     org_id = get_org_id_from_identity(identity)

@@ -7,6 +7,7 @@ import base64
 import functools
 import json
 
+
 def check_identity(identity_header):
     try:
         base64.b64decode(identity_header)

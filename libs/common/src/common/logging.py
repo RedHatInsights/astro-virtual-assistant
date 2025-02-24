@@ -45,5 +45,6 @@ def _build_cloudwatch_logger() -> None:
     cw_handler.setFormatter(LogstashFormatterV1())
     logging.root.addHandler(cw_handler)
 
+
 def _build_default_logger() -> None:
     logging.basicConfig(level=logging.INFO)

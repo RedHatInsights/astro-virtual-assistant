@@ -10,17 +10,25 @@ import pytest
 from tests import get_resource_contents
 from werkzeug.exceptions import Unauthorized
 
-from watson_extension.auth.service_account_authentication import ServiceAccountAuthentication
+from watson_extension.auth.service_account_authentication import (
+    ServiceAccountAuthentication,
+)
+
 
 def get_identity_header(client_id):
     def set_client_id(header):
         header["identity"]["service_account"]["client_id"] = client_id
+
     return get_identity_header_with_updater(set_client_id)
 
+
 def get_identity_header_with_updater(updater):
-    identity_header_json = json.loads(get_resource_contents("auth/identity-header.json"))
+    identity_header_json = json.loads(
+        get_resource_contents("auth/identity-header.json")
+    )
     updater(identity_header_json)
     return base64.b64encode(json.dumps(identity_header_json).encode("utf-8"))
+
 
 @given(st.text())
 async def test_valid_header(client_id):
@@ -46,6 +54,7 @@ async def test_wrong_client_id(good_client_id, wrong_client_id):
         await auth.check_auth(request)
     request.headers.get.assert_called_once_with("x-rh-identity")
 
+
 async def test_identity_header_not_found():
     request = MagicMock(quart.Request)
     request.headers = MagicMock(Headers)
@@ -56,6 +65,7 @@ async def test_identity_header_not_found():
         await auth.check_auth(request)
 
     request.headers.get.assert_called_once_with("x-rh-identity")
+
 
 async def test_invalid_identity_header_not_b64():
     request = MagicMock(quart.Request)
@@ -68,6 +78,7 @@ async def test_invalid_identity_header_not_b64():
 
     request.headers.get.assert_called_once_with("x-rh-identity")
 
+
 async def test_invalid_identity_header_not_json():
     request = MagicMock(quart.Request)
     request.headers = MagicMock(Headers)
@@ -79,6 +90,7 @@ async def test_invalid_identity_header_not_json():
         await auth.check_auth(request)
 
     request.headers.get.assert_called_once_with("x-rh-identity")
+
 
 async def test_not_identity_header():
     def del_identity(x):
@@ -93,6 +105,7 @@ async def test_not_identity_header():
     with pytest.raises(Unauthorized):
         await auth.check_auth(request)
     request.headers.get.assert_called_once_with("x-rh-identity")
+
 
 async def test_not_sa():
     def del_service_account(x):

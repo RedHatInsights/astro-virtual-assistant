@@ -8,21 +8,23 @@ from abc import ABC, abstractmethod
 
 from virtual_assistant.api_types import TalkResponse, TalkInput
 
+
 class WatsonAssistant(ABC):
     @abstractmethod
     async def create_session(self, session_id: Optional[str] = None) -> str: ...
     @abstractmethod
-    async def send_watson_message(self, session_id: str, user_id: str, input: TalkInput) -> dict: ...
+    async def send_watson_message(
+        self, session_id: str, user_id: str, input: TalkInput
+    ) -> dict: ...
 
 
 def build_assistant(api_key: str, env_version: str, api_url: str) -> AssistantV2:
     """Authentication for watson assistant"""
     authenticator = IAMAuthenticator(api_key)
-    assistant = AssistantV2(
-        version=env_version, authenticator=authenticator
-    )
+    assistant = AssistantV2(version=env_version, authenticator=authenticator)
     assistant.set_service_url(api_url)
     return assistant
+
 
 def format_response(session_id: str, response: dict) -> TalkResponse:
     """Formats the message response from watson and maps it to the VA API reponse for the user
@@ -39,12 +41,11 @@ def format_response(session_id: str, response: dict) -> TalkResponse:
 
     for generic in watson_generic:
         if generic["response_type"] == "text":
-            if generic["text"].startswith("/"): # command message
+            if generic["text"].startswith("/"):  # command message
                 params = generic["text"].split(" ")
-                normalized_watson_response.append({"command": {
-                    "type": params[0].strip("/"),
-                    "args": params[1:]
-                }})
+                normalized_watson_response.append(
+                    {"command": {"type": params[0].strip("/"), "args": params[1:]}}
+                )
             else:
                 normalized_watson_response.append({"text": generic["text"]})
 
@@ -97,7 +98,9 @@ class WatsonAssistantImpl(WatsonAssistant):
         """
 
         if not session_id:
-            response = await asyncio.to_thread(self.assistant.create_session, assistant_id=self.environment_id)
+            response = await asyncio.to_thread(
+                self.assistant.create_session, assistant_id=self.environment_id
+            )
             return response.get_result()["session_id"]
 
         return session_id
