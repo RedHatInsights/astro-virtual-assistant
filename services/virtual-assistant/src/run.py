@@ -1,6 +1,12 @@
 import quart_injector
 from quart import Quart
-from quart_schema import QuartSchema, RequestSchemaValidationError
+from quart_schema import (
+    QuartSchema,
+    RequestSchemaValidationError,
+    Info,
+    Server,
+    ServerVariable,
+)
 import virtual_assistant.config as config
 
 from common.logging import build_logger
@@ -26,6 +32,27 @@ QuartSchema(
     app,
     openapi_path=config.base_url + "/openapi.json",
     openapi_provider_class=VirtualAssistantOpenAPIProvider,
+    info=Info(
+        title="Virtual assistant",
+        version="2.0.0",
+        description="Virtual assistant backend service",
+    ),
+    servers=[
+        Server(
+            url=f"http://{{env}}{config.base_url}",
+            description="Virtual assistant hosted services",
+            variables={
+                "env": ServerVariable(
+                    enum=[
+                        "console.redhat.com",
+                        "console.stage.redhat.com",
+                    ],
+                    default="console.redhat.com",
+                    description="Available environments",
+                )
+            },
+        )
+    ],
 )
 
 if __name__ == "__main__":
