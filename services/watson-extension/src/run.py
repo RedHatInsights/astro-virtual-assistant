@@ -44,15 +44,15 @@ QuartSchema(
     ),
     servers=[
         Server(
-            url="{server}" + config.base_url,
+            url=f"https://{{env}}{config.base_url}",
             description="Virtual assistant watson extension",
             variables={
-                "server": ServerVariable(
+                "env": ServerVariable(
                     enum=[
-                        "https://console.redhat.com",
-                        "https://console.stage.redhat.com",
+                        "console.redhat.com",
+                        "console.stage.redhat.com",
                     ],
-                    default="https://console.redhat.com",
+                    default="console.redhat.com",
                     description="Available environments",
                 )
             },
@@ -63,11 +63,7 @@ QuartSchema(
             "type": "oauth2",
             "flows": {
                 "clientCredentials": {
-                    "tokenUrl": "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
-                    "scopes": {
-                        "openid": "default",
-                        "api.iam.service_accounts": "default",
-                    },
+                    "tokenUrl": "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
                 }
             },
         },
@@ -75,11 +71,7 @@ QuartSchema(
             "type": "oauth2",
             "flows": {
                 "clientCredentials": {
-                    "tokenUrl": "https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
-                    "scopes": {
-                        "openid": "default",
-                        "api.iam.service_accounts": "default",
-                    },
+                    "tokenUrl": "https://sso.stage.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
                 }
             },
         },
