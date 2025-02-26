@@ -2,6 +2,8 @@
 
 Astro is a virtual assistant for console.redhat.com created with [Rasa](https://rasa.com/docs/rasa/).
 
+The next version is being developed in a different repository: [astro-virtual-assistant-v2](https://github.com/RedHatInsights/astro-virtual-assistant-v2).
+
 ## Development
 
 ### Setting up your environment
