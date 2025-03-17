@@ -30,7 +30,7 @@ pyyaml = "*"
 rasa = "==3.6.20"
 
 [action-packages]
-rasa-sdk = "==3.8.0"
+rasa-sdk = "==3.11.0"
 
 [internal-packages]
 flask = ">=3.0.0"
