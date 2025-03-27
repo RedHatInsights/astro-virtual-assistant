@@ -1,5 +1,5 @@
 dnspython == 2.6.1
 pymongo == 4.8.0
-pydantic == 2.11.0
+pydantic >= 2.8.2
 scikit-learn == 1.5.1
 tensorflow == 2.12.1
