@@ -5,3 +5,10 @@ rules:
     steps:
       - intent: intent_rhel_capabilities
       - action: utter_rhel_capabilities
+
+  - rule: User asks about RHEL planning
+    steps:
+      - intent: intent_rhel_planning
+      - action: utter_rhel_planning
+      - action: form_closing
+      - active_loop: form_closing
