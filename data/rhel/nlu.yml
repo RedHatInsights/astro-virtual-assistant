@@ -16,3 +16,29 @@ nlu:
       - RHEL capabilities
       - RHEL features
       - red hat enterprise linux
+
+  - intent: intent_rhel_planning
+    examples: |
+      - rhel pre-reqs for application streams?
+      - what are the rhel requirements for this app stream
+      - what version of rhel is this package available on
+      - app stream life cycle in date or out of date. want to know if it's supported
+      - application stream lifecycle dates?
+      - package lifecycle info
+      - rhel life cycle
+      - what's coming up in rhel
+      - do you know about rhel upcoming enhancements
+      - are there any new rhel features coming out soon?
+      - what upcoming deprecations are in rhel
+      - can you tell if i have rhel systems that are unsupported?
+      - do i have rhel systems that are out of support?
+      - rhel life cycle support dates?
+      - how long is rhel supported
+      - application stream life cycle question in rhel
+      - what is the rhel lifecycle
+      - can you tell me what new features there are in rhel
+      - rhel roadmap
+      - rhel planning
+      - rhel lifecycle
+      - can you tell me about rhel life cycle information
+      - What RHEL features are coming up?

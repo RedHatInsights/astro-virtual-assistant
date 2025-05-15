@@ -19,3 +19,5 @@ responses:
           payload: /intent_image_builder_getting_started
         - title: Register my RHEL systems
           payload: /intent_register_rhel_system
+  utter_rhel_planning:
+    - text: "You can check out RHEL life cycle data, application stream life cycle data, and future roadmap information in our RHEL planning tools: [Life Cycle](/insights/planning/lifecycle) and [Roadmap](/insights/planning/roadmap)."
