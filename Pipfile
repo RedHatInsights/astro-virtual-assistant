@@ -26,7 +26,7 @@ black = ">=23.9.1"
 rasa = "==3.6.21"
 
 [action-packages]
-rasa-sdk = "==3.12.0"
+rasa-sdk = "==3.13.0"
 
 [internal-packages]
 flask = ">=3.0.0"
