@@ -1,3 +1,5 @@
+## The repository has been superseded by https://github.com/RedHatInsights/astro-virtual-assistant-v2
+
 # Astro virtual assistant
 
 Astro is a virtual assistant for console.redhat.com created with [Rasa](https://rasa.com/docs/rasa/).
